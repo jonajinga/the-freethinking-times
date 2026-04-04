@@ -411,12 +411,18 @@
           return;
         }
         lastRange = { text: text };
-        // Position toolbar near selection on mobile
-        try {
-          var rect = range.getBoundingClientRect();
-          toolbar.style.top  = (rect.top  + window.scrollY - toolbar.offsetHeight - 8) + 'px';
-          toolbar.style.left = Math.max(8, rect.left + (rect.width / 2) - (toolbar.offsetWidth / 2)) + 'px';
-        } catch (e) {}
+        // Position toolbar near selection on desktop only
+        if (window.innerWidth > 640) {
+          try {
+            var rect = range.getBoundingClientRect();
+            toolbar.style.top  = (rect.top  + window.scrollY - toolbar.offsetHeight - 8) + 'px';
+            toolbar.style.left = Math.max(8, rect.left + (rect.width / 2) - (toolbar.offsetWidth / 2)) + 'px';
+          } catch (e) {}
+        } else {
+          // Mobile: CSS handles positioning as a bottom bar
+          toolbar.style.top  = '';
+          toolbar.style.left = '';
+        }
         toolbar.setAttribute('aria-hidden', 'false');
       }
 

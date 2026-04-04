@@ -1236,14 +1236,23 @@
     gap: var(--space-3);
   }
 
-  /* Annotation toolbar: use fixed positioning on mobile so it
-     doesn't get clipped by overflow:hidden ancestors */
+  /* Annotation toolbar: full-width bottom bar on mobile */
   .annotation-toolbar {
     position: fixed;
-    bottom: var(--space-6);
-    left: 50%;
-    transform: translateX(-50%);
-    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto !important;
+    transform: none;
+    border-radius: 0;
+    justify-content: center;
+    padding: var(--space-3) var(--space-4);
+    width: 100%;
+  }
+
+  .annotation-toolbar__btn {
+    font-size: var(--text-sm);
+    padding: var(--space-2) var(--space-4);
   }
 }
 
