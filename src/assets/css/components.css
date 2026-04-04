@@ -1300,35 +1300,44 @@ a.dateline:hover { color: var(--color-accent); }
   align-items: center;
 }
 
-/* ── GTranslate floating widget ─────────────────────────────── */
-/* float.js injects .gt_float_switcher directly into <body>, not inside
-   .gtranslate_wrapper — so target it here, not via the wrapper. */
-.gt_float_switcher {
-  transform: scale(0.55) !important;
-  transform-origin: bottom right !important;
+/* ── GTranslate dropdown widget — match drawer action button style ── */
+.nav-drawer__translate .gtranslate_wrapper a {
+  font-family: var(--font-ui) !important;
+  font-size: var(--text-xs) !important;
+  color: var(--color-ink-muted) !important;
+  background: var(--color-bg-alt) !important;
+  border: 1px solid var(--color-rule) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: var(--space-1) var(--space-3) !important;
+  text-decoration: none !important;
+  transition: color var(--transition-fast), border-color var(--transition-fast) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: var(--space-2) !important;
+  height: 1.75rem !important;
+  line-height: 1 !important;
 }
 
-/* Match widget background to site background */
-.gt_float_switcher,
-.gt_float_switcher .gt-current-lang,
-.gt_float_switcher .gt_switcher_dropdown {
-  background-color: var(--color-bg) !important;
+.nav-drawer__translate .gtranslate_wrapper a:hover {
+  color: var(--color-ink) !important;
+  border-color: var(--color-ink) !important;
 }
 
-/* In dark mode the site bg is near-black; GTranslate's text is dark-colored,
-   so override to a light warm tone so the widget stays legible. */
-[data-theme="dark"] .gt_float_switcher,
-[data-theme="dark"] .gt_float_switcher .gt-current-lang,
-[data-theme="dark"] .gt_float_switcher .gt_switcher_dropdown {
-  background-color: #E8E4DC !important;
+.nav-drawer__translate .gtranslate_wrapper select {
+  font-family: var(--font-ui) !important;
+  font-size: var(--text-xs) !important;
+  color: var(--color-ink-muted) !important;
+  background: var(--color-bg-alt) !important;
+  border: 1px solid var(--color-rule) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: var(--space-1) var(--space-3) !important;
+  height: 1.75rem !important;
+  cursor: pointer !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .gt_float_switcher,
-  :root:not([data-theme="light"]) .gt_float_switcher .gt-current-lang,
-  :root:not([data-theme="light"]) .gt_float_switcher .gt_switcher_dropdown {
-    background-color: #E8E4DC !important;
-  }
+.nav-drawer__translate .gtranslate_wrapper img {
+  width: 14px !important;
+  height: 14px !important;
 }
 
 /* ─── Changelog ──────────────────────────────────────────────────────────── */
