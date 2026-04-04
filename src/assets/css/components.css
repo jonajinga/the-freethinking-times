@@ -849,6 +849,8 @@ a.dateline:hover { color: var(--color-accent); }
 /* ── GTranslate in nav drawer ──────────────────────────────── */
 .nav-drawer__translate {
   padding: var(--space-3) var(--space-5);
+  display: flex;
+  justify-content: center;
 }
 
 /* ── Search Overlay ─────────────────────────────────────────── */
