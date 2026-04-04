@@ -846,15 +846,9 @@ a.dateline:hover { color: var(--color-accent); }
   border-color: var(--color-ink);
 }
 
-.nav-drawer__action-btn--translate {
-  width: auto;
-  padding: 0 var(--space-2);
-}
-
-/* ── GTranslate wrapper in masthead ────────────────────────── */
-.masthead__icon-btn-wrap {
-  display: flex;
-  align-items: center;
+/* ── GTranslate in nav drawer ──────────────────────────────── */
+.nav-drawer__translate {
+  padding: var(--space-3) var(--space-5);
 }
 
 /* ── Search Overlay ─────────────────────────────────────────── */
