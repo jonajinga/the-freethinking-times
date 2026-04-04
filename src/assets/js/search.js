@@ -71,6 +71,7 @@
 
   // ── Search ─────────────────────────────────────────────────────
   async function runSearch(query) {
+    if (!searchLoaded) await loadPagefind();
     if (!searchLoaded) return;
     currentQuery = query;
 

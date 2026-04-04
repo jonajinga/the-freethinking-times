@@ -397,6 +397,13 @@
   opacity: 1;
 }
 
+/* Hide tooltips on small screens to prevent overflow */
+@media (max-width: 600px) {
+  .article-action-btn::after {
+    display: none;
+  }
+}
+
 .article-action-btn.is-copied {
   color: var(--color-accent);
   border-color: var(--color-accent);

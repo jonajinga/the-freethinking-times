@@ -110,7 +110,7 @@
     }
   </script>
 
-  {# ── GTranslate (popup — renders inside .masthead__actions) ── #}
+  {# ── GTranslate (popup — renders in masthead + drawer) ── #}
   <script>
     window.gtranslateSettings = {
       "default_language": "en",
@@ -122,6 +122,18 @@
     };
   </script>
   <script src="https://cdn.gtranslate.net/widgets/latest/popup.js" defer></script>
+  {# Duplicate GTranslate into drawer wrapper for mobile #}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var src = document.querySelector('.gtranslate_wrapper');
+      var dest = document.querySelector('.gtranslate_wrapper_drawer');
+      if (src && dest) {
+        var clone = src.cloneNode(true);
+        clone.classList.remove('gtranslate_wrapper');
+        dest.appendChild(clone);
+      }
+    });
+  </script>
   <script defer src="https://cloud.umami.is/script.js" data-website-id="3866304f-237b-4532-b1be-ef47f336b2b0"></script>
 </body>
 </html>
