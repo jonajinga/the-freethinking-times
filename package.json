@@ -4,7 +4,7 @@
   "description": "The Freethinking Times — Independent journalism built on Eleventy",
   "scripts": {
     "start": "npx @11ty/eleventy --serve --quiet",
-    "dev": "npx @11ty/eleventy --serve --quiet",
+    "dev": "npx @11ty/eleventy --quiet && npx pagefind --site _site --output-path _site/pagefind && npx @11ty/eleventy --serve --quiet",
     "build": "npx @11ty/eleventy && npx pagefind --site _site --output-path _site/pagefind",
     "build:search": "npx pagefind --site _site --output-path _site/pagefind",
     "debug": "DEBUG=Eleventy* npx @11ty/eleventy"
