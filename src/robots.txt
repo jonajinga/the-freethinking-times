@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /
+
+Sitemap: https://thefreethinkingtimes.com/sitemap.xml
+Sitemap: https://thefreethinkingtimes.com/news-sitemap.xml

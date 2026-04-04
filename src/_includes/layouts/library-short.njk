@@ -1,0 +1,200 @@
+---
+layout: layouts/base.njk
+---
+{% block head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": "{{ workTitle }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ author }}"
+  },
+  "datePublished": "{{ originalPublication }}",
+  "inLanguage": "{{ originalLanguage or 'en' }}",
+  "isAccessibleForFree": true,
+  "url": "{{ site.url }}{{ page.url }}"
+}
+</script>
+{% endblock %}
+{# Context div — read by library.js. No chapter slug since this is a standalone short work. #}
+<div id="library-context"
+     data-work-slug="{{ workSlug }}"
+     data-chapter-slug="{{ chapterSlug or workSlug }}"
+     data-chapter-title="{{ title }}"
+     hidden></div>
+
+{# Inline script: apply focus mode before paint to avoid layout shift #}
+<script>document.documentElement.classList.add('is-library-reading');(function(){if(localStorage.getItem('tft-focus')==='on')document.documentElement.setAttribute('data-focus-mode','on');}());</script>
+
+{# ── Reading progress bar ── #}
+<div class="library-reading-progress" aria-hidden="true">
+  <div class="library-reading-progress__bar" id="reading-progress-bar"></div>
+</div>
+
+{# ── Sticky reading header ── #}
+<header class="library-reading-header">
+  <a class="library-reading-header__back" href="/library/">&larr; Library</a>
+  <span class="library-reading-header__title">{{ title }}</span>
+  <div class="library-reading-header__actions">
+    <button class="library-bookmark-btn" type="button" aria-pressed="false" aria-label="Bookmark this position">
+      Bookmark
+    </button>
+    <button class="library-panel-toggle" type="button" aria-expanded="false" aria-controls="library-panel">
+      Panel
+    </button>
+  </div>
+</header>
+
+{# ── Body wrapper ── #}
+<div class="library-body-wrapper">
+
+  <p class="library-body-chapter-info">
+    {% if era %}<span>{{ era }}</span>{% endif %}
+    {% if author %}&nbsp;&mdash;&nbsp;<span>{{ author }}</span>{% endif %}
+  </p>
+
+  <h1 class="library-body__heading">{{ title }}</h1>
+  {% if subtitle %}<p class="library-body-chapter-info">{{ subtitle }}</p>{% endif %}
+
+  <p class="library-body-meta">
+    <span>{{ content | wordCount }} words</span>
+    <span aria-hidden="true">&middot;</span>
+    <span>{{ content | readingTime }}</span>
+  </p>
+
+  {# ── Reader tools (Save, Share, Listen, Focus, Reading, Download, Print, Cite) ── #}
+  {% include "partials/library-reader-tools.njk" %}
+
+  {# TTS control bar — shown by JS when reading starts #}
+  <div id="tts-controls" class="tts-controls" hidden>
+    <div class="tts-controls__inner">
+      <button id="tts-pause-btn" class="tts-controls__btn" type="button" aria-label="Pause">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      </button>
+      <button id="tts-stop-btn" class="tts-controls__btn" type="button" aria-label="Stop">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="4" width="16" height="16"/></svg>
+      </button>
+      <span class="tts-controls__divider" aria-hidden="true"></span>
+      <div class="tts-controls__speed" role="group" aria-label="Speed">
+        <button class="tts-speed-btn" data-rate="0.75" type="button">0.75×</button>
+        <button class="tts-speed-btn is-active"  data-rate="1"    type="button">1×</button>
+        <button class="tts-speed-btn" data-rate="1.25" type="button">1.25×</button>
+        <button class="tts-speed-btn" data-rate="1.5"  type="button">1.5×</button>
+        <button class="tts-speed-btn" data-rate="2"    type="button">2×</button>
+      </div>
+      <select id="tts-voice-select" class="tts-controls__voice-select" aria-label="Voice"></select>
+    </div>
+  </div>
+
+  {# Cite overlay + modal #}
+  <div id="cite-overlay" class="cite-overlay" hidden aria-hidden="true"></div>
+  <div id="cite-modal" class="cite-modal" hidden role="dialog" aria-modal="true" aria-labelledby="cite-modal-title">
+    <div class="cite-modal__inner">
+      <div class="cite-modal__header">
+        <p class="cite-modal__title" id="cite-modal-title">Cite This Work</p>
+        <button id="cite-close" class="cite-modal__close" type="button" aria-label="Close citation panel">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="cite-modal__tabs" role="tablist" aria-label="Citation format">
+        <button class="cite-tab is-active" data-format="apa"     role="tab" aria-selected="true"  type="button">APA 7th</button>
+        <button class="cite-tab"           data-format="mla"     role="tab" aria-selected="false" type="button">MLA 9th</button>
+        <button class="cite-tab"           data-format="chicago" role="tab" aria-selected="false" type="button">Chicago 17th</button>
+      </div>
+      <div class="cite-modal__body">
+        <p id="cite-text" class="cite-modal__text"></p>
+      </div>
+      <button id="cite-copy-btn" class="cite-modal__copy-btn" type="button">Copy citation</button>
+    </div>
+  </div>
+
+  <div class="library-body article-body" data-pagefind-body>
+    <div aria-hidden="true" style="display:none">
+      <span data-pagefind-meta="section">Library</span>
+      <span data-pagefind-meta="work">{{ workTitle }}</span>
+      <span data-pagefind-meta="author">{{ author }}</span>
+    </div>
+    {{ content | safe }}
+  </div>
+
+</div>{# /.library-body-wrapper #}
+
+<div class="reading-floats" id="reading-floats" aria-hidden="true">
+  <span class="reading-pct" id="reading-pct"></span>
+  <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top">↑</button>
+</div>
+
+<div id="print-footnotes" class="print-footnotes" aria-hidden="true"></div>
+<div id="print-citations" class="print-citations" aria-hidden="true"></div>
+
+<footer class="print-footer" aria-hidden="true">
+  <span>{{ site.title }} — {{ site.url }}{{ page.url }}</span>
+  <span>{{ workTitle or title }} by {{ author }}</span>
+</footer>
+
+{# ── Within-chapter floating TOC (≥1200px; populated by progress.js) ── #}
+<div class="library-toc-float" id="toc-widget" hidden>
+  <p class="library-toc-float__title">On this page</p>
+  <nav id="toc-nav" aria-label="Section headings"></nav>
+</div>
+
+{# ── Panel overlay ── #}
+<div class="library-panel-overlay" aria-hidden="true"></div>
+
+{# ── Reading panel ── #}
+<aside id="library-panel" class="library-panel" aria-hidden="true" aria-label="Reading panel">
+  <div class="library-panel__header">
+    <span style="font-family:var(--font-ui);font-size:var(--text-sm);font-weight:700;">Reader</span>
+    <button class="library-panel__close" aria-label="Close panel">&times;</button>
+  </div>
+
+  <div class="library-panel__tabs" role="tablist">
+    <button class="library-panel__tab"
+            role="tab"
+            aria-selected="true"
+            data-target="panel-toc">Contents</button>
+    <button class="library-panel__tab"
+            role="tab"
+            aria-selected="false"
+            data-target="panel-bookmarks">Bookmarks</button>
+    <button class="library-panel__tab"
+            role="tab"
+            aria-selected="false"
+            data-target="panel-annotations">Notes</button>
+  </div>
+
+  <div class="library-panel__body">
+    {# TOC — single item for short works #}
+    <div id="panel-toc" class="library-panel__section" aria-hidden="false">
+      <a class="library-toc-item" href="#" aria-current="page">
+        <span class="library-toc-item__number">1.</span>
+        {{ title }}
+      </a>
+    </div>
+
+    {# Bookmarks tab #}
+    <div id="panel-bookmarks" class="library-panel__section" aria-hidden="true"></div>
+
+    {# Annotations tab #}
+    <div id="panel-annotations" class="library-panel__section" aria-hidden="true"></div>
+  </div>
+</aside>
+
+{# ── Annotation toolbar ── #}
+<div id="annotation-toolbar" class="annotation-toolbar" role="toolbar" aria-hidden="true" aria-label="Selection actions">
+  <button id="ann-highlight-btn" class="annotation-toolbar__btn" type="button">Highlight</button>
+  <div class="annotation-toolbar__divider" aria-hidden="true"></div>
+  <button id="ann-annotate-btn" class="annotation-toolbar__btn" type="button">Add Note</button>
+  <div class="annotation-toolbar__divider" aria-hidden="true"></div>
+  <button id="ann-dismiss-btn" class="annotation-toolbar__btn" type="button">Dismiss</button>
+</div>
+
+{% block scripts %}
+<script src="/assets/js/progress.js"></script>
+<script src="/assets/js/reading-list.js" defer></script>
+<script src="/assets/js/download.js" defer></script>
+<script src="/assets/js/reading-settings.js" defer></script>
+<script src="/assets/js/library.js" defer></script>
+{% endblock %}

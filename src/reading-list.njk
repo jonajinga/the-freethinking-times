@@ -1,0 +1,25 @@
+---
+layout: base
+title: Reading List
+description: Articles you have saved for later. Stored locally in your browser — no account required.
+permalink: /reading-list/
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+
+  <header style="padding-bottom: var(--space-8); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);">
+    <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-2);">Reading List</h1>
+    <p style="color: var(--color-ink-muted); font-size: var(--text-md); font-style: italic;">
+      Articles you have saved. Stored in your browser — nothing is sent anywhere.
+    </p>
+  </header>
+
+  <div id="reading-list-root">
+    <p style="color: var(--color-ink-faint); font-style: italic;">Loading…</p>
+  </div>
+
+</div>
+
+{% block scripts %}
+<script src="/assets/js/reading-list.js" defer></script>
+{% endblock %}

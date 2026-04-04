@@ -1,0 +1,52 @@
+---
+layout: layouts/base.njk
+title: Document Library
+description: "Primary source materials: FOIA responses, court filings, government reports, spending records, and other evidentiary materials underlying our reporting."
+permalink: /documents/
+---
+
+<div class="container">
+  <div class="doc-index-layout">
+
+    <header class="doc-index-header">
+      <p class="doc-index-header__kicker">Primary Sources</p>
+      <h1 class="doc-index-header__title">Document Library</h1>
+      <p class="doc-index-header__body">
+        Original documents underlying our reporting. FOIA responses, public records, court
+        filings, government reports, and other primary sources — reproduced in full with
+        context from our editors.
+      </p>
+    </header>
+
+    {% if collections.documents and collections.documents.length %}
+    <div class="doc-index-grid">
+      {% for doc in collections.documents %}
+      <article class="doc-card">
+        {% if doc.data.docType %}
+        <span class="doc-type-badge">{{ doc.data.docType }}</span>
+        {% endif %}
+        <h2 class="doc-card__title">
+          <a href="{{ doc.url }}">{{ doc.data.title }}</a>
+        </h2>
+        {% if doc.data.description %}
+        <p class="doc-card__desc">{{ doc.data.description }}</p>
+        {% endif %}
+        <div class="doc-card__meta">
+          {% if doc.data.source %}
+          <span class="doc-card__source">{{ doc.data.source }}</span>
+          {% endif %}
+          <time class="doc-card__date" datetime="{{ doc.date | htmlDateString }}">
+            Added {{ doc.date | readableDate }}
+          </time>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p style="color: var(--color-ink-muted); font-style: italic; padding: var(--space-10) 0;">
+      No documents in the library yet.
+    </p>
+    {% endif %}
+
+  </div>
+</div>

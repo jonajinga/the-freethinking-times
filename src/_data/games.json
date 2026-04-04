@@ -1,0 +1,30 @@
+[
+  {
+    "slug": "fifteen",
+    "title": "The Fifteen Puzzle",
+    "description": "Slide the tiles back into numerical order. A pure puzzle of logic and spatial reasoning.",
+    "icon": "🔢",
+    "url": "/games/fifteen/"
+  },
+  {
+    "slug": "trivia",
+    "title": "Freethinking Trivia",
+    "description": "Ten questions spanning philosophy, science, and the history of ideas. Answer carefully.",
+    "icon": "🧠",
+    "url": "/games/trivia/"
+  },
+  {
+    "slug": "word-scramble",
+    "title": "Word Scramble",
+    "description": "Reconstruct a famous freethinking quote from its scrambled words.",
+    "icon": "📜",
+    "url": "/games/word-scramble/"
+  },
+  {
+    "slug": "crossy-road",
+    "title": "Crossy Road",
+    "description": "Help a small dog cross a busy road. One hop at a time. Don't get hit.",
+    "icon": "🐕",
+    "url": "/games/crossy-road/"
+  }
+]

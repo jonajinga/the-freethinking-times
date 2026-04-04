@@ -1,0 +1,28 @@
+---
+layout: base
+title: Projects
+description: Independent research, interactive tools, and experimental journalism from The Freethinking Times.
+permalink: /projects/
+---
+
+<div class="container" style="padding-top: var(--space-12); padding-bottom: var(--space-16);">
+
+  <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+    <h1 style="font-family: var(--font-masthead); font-size: var(--text-4xl); margin-bottom: var(--space-4);">Projects</h1>
+    <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic; max-width: 60ch; line-height: var(--leading-normal);">
+      Interactive tools, historical databases, and research projects that go beyond
+      the article format. Each project is a living document — updated as new material emerges.
+    </p>
+  </header>
+
+  <div class="projects-grid">
+    {% for project in projects.index %}
+    <a href="{{ project.url }}" class="project-card">
+      <h2 class="project-card__title">{{ project.title }}</h2>
+      <p class="project-card__description">{{ project.description }}</p>
+      <span class="project-card__status">{{ project.status }} · {{ project.launched }}</span>
+    </a>
+    {% endfor %}
+  </div>
+
+</div>

@@ -1,0 +1,33 @@
+---
+layout: base
+title: Topics
+description: Browse all topics covered in The Freethinking Times.
+permalink: /topics/
+---
+
+<div class="container" style="padding-top: var(--space-12); padding-bottom: var(--space-16);">
+
+  <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+    <h1 style="font-family: var(--font-masthead); font-size: var(--text-4xl); margin-bottom: var(--space-4);">Topics</h1>
+    <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic; max-width: 55ch;">
+      Browse every subject covered across all sections of The Freethinking Times.
+      Each topic collects articles from News, Opinion, Analysis, and beyond.
+    </p>
+  </header>
+
+  <ul class="tag-list" style="gap: var(--space-3);">
+    {% for tag in collections.tagList %}
+    {% if tag != "post" %}
+    <li class="tag-list__item">
+      <a href="/topics/{{ tag | slugify }}/" style="padding: var(--space-2) var(--space-4); font-size: var(--text-sm);">
+        {{ tag }}
+        <span style="color: var(--color-ink-faint); margin-left: var(--space-2); font-size: var(--text-xs);">
+          ({{ collections[tag].length }})
+        </span>
+      </a>
+    </li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+
+</div>

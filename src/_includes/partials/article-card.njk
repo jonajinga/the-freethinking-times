@@ -1,0 +1,56 @@
+{#
+  Article Card Partial
+  Usage: {% include "partials/article-card.njk" %}
+  Expected variables: article (collection item), size ("lg"|"md"|"sm"|"xs"), showImage (bool)
+  Call like: {% set article = item %}{% set size = "md" %}{% include "partials/article-card.njk" %}
+#}
+
+{% set headlineSize = size or "md" %}
+{% set sectionKey = article.data.section | slugify %}
+
+<article class="article-card">
+
+  {# Optional image #}
+  {% if showImage and article.data.image %}
+  <a href="{{ article.url }}" tabindex="-1" aria-hidden="true">
+    <img
+      class="article-card__image"
+      src="{{ article.data.image }}"
+      alt="{{ article.data.imageAlt or article.data.title }}"
+      loading="lazy">
+  </a>
+  {% endif %}
+
+  {# Eyebrow: section + date #}
+  <div class="article-card__eyebrow">
+    {% if article.data.section %}
+    <a href="/{{ sectionKey }}/" class="section-badge section-badge--{{ sectionKey }}">
+      {{ article.data.section }}
+    </a>
+    {% endif %}
+    <a href="/archives/#{{ article.date | htmlDateString }}" class="dateline">
+      <time datetime="{{ article.date | htmlDateString }}">{{ article.date | shortDate }}</time>
+    </a>
+  </div>
+
+  {# Headline #}
+  <a class="article-card__headline article-card__headline--{{ headlineSize }}" href="{{ article.url }}">
+    {{ article.data.title }}
+  </a>
+
+  {# Dek / summary #}
+  {% if article.data.description and headlineSize != "xs" %}
+  <p class="article-card__dek">{{ article.data.description }}</p>
+  {% endif %}
+
+  {# Byline #}
+  <p class="article-card__byline">
+    {% if article.data.author %}
+    By <a href="/author/{{ article.data.author | slugify }}/">{{ authors[article.data.author].name or article.data.authorName or article.data.author }}</a>
+    {% endif %}
+    {% if article.templateContent %}
+    <span class="article-card__reading-time">{{ article.templateContent | readingTime }}</span>
+    {% endif %}
+  </p>
+
+</article>

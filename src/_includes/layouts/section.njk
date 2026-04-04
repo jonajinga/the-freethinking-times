@@ -1,0 +1,119 @@
+---
+layout: layouts/base.njk
+---
+
+<div class="container section-index">
+
+  {# Section Header #}
+  <header class="section-header">
+    <h1 class="section-badge section-badge--{{ sectionSlug or (title | lower | replace(' ','-')) }}"
+        style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-3);">
+      {{ title }}
+    </h1>
+    {% if description %}
+    <p style="color: var(--color-ink-muted); font-size: var(--text-md); max-width: 60ch; font-style: italic;">
+      {{ description }}
+    </p>
+    {% endif %}
+  </header>
+
+  <div class="section-grid">
+
+    {# Main content: article list #}
+    <div class="section-grid__main">
+      {% set sectionItems = collections[sectionSlug] if collections[sectionSlug] else [] %}
+
+      {% if sectionItems.length == 0 %}
+      <p style="color: var(--color-ink-muted); font-style: italic;">No articles published yet. Check back soon.</p>
+      {% else %}
+
+      {# Reading time filter #}
+      <div class="reading-filter" id="reading-filter" role="group" aria-label="Filter by reading time">
+        <span class="reading-filter__label">Filter:</span>
+        <button class="reading-filter__btn is-active" data-filter="all" type="button">All</button>
+        <button class="reading-filter__btn" data-filter="short" type="button">Short reads <span class="reading-filter__hint">(&lt;5 min)</span></button>
+        <button class="reading-filter__btn" data-filter="long" type="button">Long reads <span class="reading-filter__hint">(&gt;15 min)</span></button>
+      </div>
+
+      {# Lead story #}
+      {% set leadArticle = sectionItems[0] %}
+      <div class="section-lead js-filterable" data-reading-mins="{{ leadArticle.templateContent | readingMins }}"
+           style="padding-bottom: var(--space-8); border-bottom: 1px solid var(--color-rule); margin-bottom: var(--space-8);">
+        {% set article = leadArticle %}
+        {% set size = "lg" %}
+        {% set showImage = true %}
+        {% include "partials/article-card.njk" %}
+      </div>
+
+      {# Remaining articles #}
+      <ul class="article-list" role="list">
+        {% for item in sectionItems %}
+        {% if not loop.first %}
+        <li class="article-list__item js-filterable" data-reading-mins="{{ item.templateContent | readingMins }}">
+          {% set article = item %}
+          {% set size = "sm" %}
+          {% include "partials/article-card.njk" %}
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+
+      <p class="reading-filter__empty" id="filter-empty" hidden>No articles match this filter.</p>
+
+      {% endif %}
+    </div>
+
+    {# Sidebar #}
+    <aside class="section-grid__sidebar">
+
+      <div class="sidebar-widget">
+        <p class="sidebar-widget__title">Other Sections</p>
+        <ul style="list-style: none; padding: 0;">
+          {% for item in site.nav %}
+          {% if item.label != title %}
+          <li style="padding: var(--space-2) 0; border-bottom: 1px solid var(--color-rule);">
+            <a href="{{ item.url }}" style="font-family: var(--font-ui); font-size: var(--text-sm); color: var(--color-ink-muted); text-decoration: none;">
+              {{ item.label }}
+            </a>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+
+      {% set subscribeVariant = "sidebar" %}
+      {% include "partials/subscribe.njk" %}
+
+    </aside>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  var btns  = document.querySelectorAll('.reading-filter__btn');
+  var items = document.querySelectorAll('.js-filterable');
+  var empty = document.getElementById('filter-empty');
+  if (!btns.length || !items.length) return;
+
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var filter = btn.getAttribute('data-filter');
+      btns.forEach(function (b) { b.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+
+      var visible = 0;
+      items.forEach(function (item) {
+        var mins = parseInt(item.getAttribute('data-reading-mins'), 10) || 1;
+        var show = filter === 'all'
+          || (filter === 'short' && mins < 5)
+          || (filter === 'long'  && mins > 15);
+        item.hidden = !show;
+        if (show) visible++;
+      });
+
+      if (empty) empty.hidden = visible > 0;
+    });
+  });
+}());
+</script>

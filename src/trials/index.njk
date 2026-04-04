@@ -1,0 +1,33 @@
+---
+layout: base
+title: The Trials of Thought
+description: An interactive timeline of landmark trials where ideas were the defendant — from Socrates to Rushdie, each a window into what a society found intolerable and why.
+permalink: /trials/
+---
+
+<div class="container" style="padding-top: var(--space-12); padding-bottom: var(--space-20);">
+
+  <header class="project-section-header">
+    <a href="/projects/" class="project-back">← Projects</a>
+    <span class="section-badge section-badge--trials-of-thought">Trials of Thought</span>
+    <h1>The Trials of Thought</h1>
+    <p class="project-section-lede">Every era has something it cannot tolerate. Ideas that destabilize power, beliefs that threaten order, truths that expose lies. The trial is how societies make that intolerance official — dragging it into the light of a courtroom, forcing it to justify itself. These are the cases that revealed a civilization's limits. Read them carefully and you learn who that civilization really was.</p>
+  </header>
+
+  <div class="trials-timeline">
+    {% for trial in collections["trials-of-thought"] %}
+    <div class="trial-entry">
+      <div class="trial-year">{{ trial.data.yearLabel }}</div>
+      <h2 class="trial-name"><a href="{{ trial.url }}">{{ trial.data.title }}</a></h2>
+      <p class="trial-meta">
+        {{ trial.data.defendant }}
+        {% if trial.data.jurisdiction %} · {{ trial.data.jurisdiction }}{% endif %}
+        {% if trial.data.verdict %} · {{ trial.data.verdict }}{% endif %}
+      </p>
+      <p class="trial-description">{{ trial.data.description }}</p>
+      <a href="{{ trial.url }}" class="trial-link">Read the full case →</a>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>

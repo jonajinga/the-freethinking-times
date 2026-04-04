@@ -1,0 +1,75 @@
+---
+pagination:
+  data: collections.allContent
+  size: 1
+  alias: article
+  addAllPagesToCollections: false
+permalink: "/og/{{ article.url | ogSlug }}.svg"
+layout: false
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="1200" height="630" viewBox="0 0 1200 630"
+     role="img" aria-label="{{ article.data.title | escape }}">
+
+  <title>{{ article.data.title | escape }}</title>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#F4F1EB"/>
+
+  <!-- Left accent rule -->
+  <rect x="0" y="0" width="8" height="630" fill="#C0392B"/>
+
+  <!-- Top rule -->
+  <rect x="8" y="0" width="1192" height="1" fill="#C8C2B6"/>
+
+  <!-- Main content via foreignObject for text wrapping -->
+  <foreignObject x="80" y="60" width="1060" height="460">
+    <div xmlns="http://www.w3.org/1999/xhtml"
+         style="font-family: Georgia, 'Times New Roman', serif; color: #1A1A1A; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-start;">
+
+      <!-- Section label -->
+      {% if article.data.section %}
+      <div style="font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #C0392B; margin-bottom: 24px;">
+        {{ article.data.section | escape }}
+      </div>
+      {% endif %}
+
+      <!-- Title -->
+      <h1 style="font-family: Georgia, 'Times New Roman', serif; font-size: 56px; font-weight: 700; line-height: 1.1; color: #1A1A1A; margin: 0 0 24px 0; letter-spacing: -0.01em;">
+        {{ article.data.title | escape }}
+      </h1>
+
+      <!-- Description -->
+      {% if article.data.description %}
+      <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 22px; line-height: 1.5; color: #4A4845; margin: 0; font-style: italic; max-width: 800px;">
+        {{ article.data.description | escape }}
+      </p>
+      {% endif %}
+
+    </div>
+  </foreignObject>
+
+  <!-- Bottom bar -->
+  <rect x="0" y="560" width="1200" height="70" fill="#1A1A1A"/>
+
+  <!-- Site name in bottom bar -->
+  <text x="80" y="604"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="22"
+        font-weight="700"
+        letter-spacing="0.02em"
+        fill="#F4F1EB">The Freethinking Times</text>
+
+  <!-- Author + date in bottom bar -->
+  {% if article.data.authorName %}
+  <text x="1120" y="604"
+        font-family="'Helvetica Neue', Arial, sans-serif"
+        font-size="14"
+        letter-spacing="0.04em"
+        fill="#888380"
+        text-anchor="end">{{ article.data.authorName | escape }}</text>
+  {% endif %}
+
+</svg>

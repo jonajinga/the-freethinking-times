@@ -1,0 +1,32 @@
+---
+layout: base
+title: The Freethought Glossary
+description: A philosophical glossary of the terms that matter to the freethinking tradition — defined rigorously, explained honestly, placed in historical context.
+permalink: /glossary/
+---
+
+<div class="container" style="padding-top: var(--space-12); padding-bottom: var(--space-20);">
+
+  <header class="project-section-header">
+    <a href="/projects/" class="project-back">← Projects</a>
+    <span class="section-badge section-badge--glossary">Glossary</span>
+    <h1>The Freethought Glossary</h1>
+    <p class="project-section-lede">The vocabulary of freethought is old, contested, and often misused. These definitions are not dictionary entries — they are essays. Each term carries a history of arguments, schisms, and misunderstandings. Understanding them precisely is part of thinking clearly.</p>
+  </header>
+
+  <div class="glossary-index">
+    {% for entry in collections.glossary %}
+    <article class="glossary-card">
+      <header>
+        {% if entry.data.keyFigures and entry.data.keyFigures.length %}
+        <p class="glossary-card__meta">{{ entry.data.keyFigures | first }}</p>
+        {% endif %}
+        <h2 class="glossary-card__title"><a href="{{ entry.url }}">{{ entry.data.title }}</a></h2>
+      </header>
+      <p class="glossary-card__description">{{ entry.data.description }}</p>
+      <a href="{{ entry.url }}" class="glossary-card__link">Read the entry →</a>
+    </article>
+    {% endfor %}
+  </div>
+
+</div>

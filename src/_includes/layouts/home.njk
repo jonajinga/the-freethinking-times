@@ -1,0 +1,93 @@
+---
+layout: layouts/base.njk
+---
+
+<div class="container front-page">
+
+  {# ─── Lead / Hero ─────────────────────────────────────────── #}
+  <section class="front-hero" aria-label="Lead stories">
+    {% set leadStory = collections.featured | first or collections.allContent | first %}
+    {% if leadStory %}
+    {% set article = leadStory %}
+    {% set size = "lg" %}
+    {% include "partials/article-card.njk" %}
+    {% endif %}
+  </section>
+
+  {# ─── Secondary Stories ────────────────────────────────────── #}
+  {% set secondaryStories = collections.allContent | limit(4) %}
+  {% if secondaryStories.length > 1 %}
+  <section class="front-secondary" aria-label="More stories">
+    {% for item in secondaryStories %}
+    {% if not loop.first %}
+    {% set article = item %}
+    {% set size = "sm" %}
+    {% include "partials/article-card.njk" %}
+    {% endif %}
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {# ─── Section Strips ───────────────────────────────────────── #}
+  {% set frontSections = ["opinion", "analysis", "history"] %}
+  {% for sectionKey in frontSections %}
+  {% set sectionItems = collections[sectionKey] | limit(3) %}
+  {% if sectionItems and sectionItems.length > 0 %}
+  <section class="front-section-strip" aria-label="{{ sectionKey | title }} section">
+
+    {# Section label column #}
+    <div>
+      <a href="/{{ sectionKey }}/"
+         class="section-badge section-badge--{{ sectionKey }}"
+         style="font-size: var(--text-md); display: block; margin-bottom: var(--space-3);">
+        {{ sectionKey | replace("-", " ") | title }}
+      </a>
+      <p style="font-size: var(--text-sm); color: var(--color-ink-muted); font-style: italic; line-height: var(--leading-normal);">
+        {{ site.sections[sectionKey].description }}
+      </p>
+      <a href="/{{ sectionKey }}/" class="btn" style="margin-top: var(--space-4); font-size: var(--text-xs);">
+        View All →
+      </a>
+    </div>
+
+    {# Articles in this section #}
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-6);">
+      {% for item in sectionItems %}
+      {% set article = item %}
+      {% set size = "sm" %}
+      {% include "partials/article-card.njk" %}
+      {% endfor %}
+    </div>
+
+  </section>
+  {% endif %}
+  {% endfor %}
+
+  {# ─── Arts / Science / Letters row ────────────────────────── #}
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-8); padding: var(--space-8) 0; border-top: 1px solid var(--color-rule); margin-top: var(--space-4);">
+
+    {% set quickSections = ["arts-culture", "science-technology", "letters"] %}
+    {% for sectionKey in quickSections %}
+    {% set sectionItems = collections[sectionKey] | limit(3) %}
+    <div>
+      <a href="/{{ sectionKey }}/"
+         class="section-badge section-badge--{{ sectionKey }}"
+         style="display: block; margin-bottom: var(--space-4); font-size: var(--text-sm);">
+        {{ sectionKey | replace("-", " ") | title }}
+      </a>
+      {% for item in sectionItems %}
+      <div style="{% if not loop.last %}padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-rule); margin-bottom: var(--space-3);{% endif %}">
+        <a href="{{ item.url }}" style="font-family: var(--font-headline); font-size: var(--text-base); font-weight: 600; color: var(--color-ink); text-decoration: none; line-height: var(--leading-snug); display: block;">
+          {{ item.data.title }}
+        </a>
+        <time style="font-family: var(--font-ui); font-size: var(--text-xs); color: var(--color-ink-faint);">
+          {{ item.date | shortDate }}
+        </time>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+
+  </div>
+
+</div>{# /.container #}

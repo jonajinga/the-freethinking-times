@@ -1,0 +1,291 @@
+<header class="masthead" role="banner" data-pagefind-ignore>
+  <div class="container">
+
+    {# ── Nameplate ── title centered, hamburger left, icon actions right #}
+    <div class="masthead__nameplate">
+      <button
+        class="nav-drawer-toggle js-only"
+        id="nav-drawer-toggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="nav-drawer"
+        type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <a href="/" class="masthead__title notranslate" aria-label="{{ site.title }} — Home">
+        {{ site.title }}
+      </a>
+      <div class="masthead__actions">
+
+        {# Search — primary discovery #}
+        <button
+          class="masthead__icon-btn js-only"
+          id="search-open"
+          aria-label="Search"
+          aria-expanded="false"
+          aria-controls="search-modal"
+          type="button"
+          title="Search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </button>
+
+        {# Reading list — saved articles #}
+        <a href="/reading-list/"
+           class="masthead__icon-btn"
+           aria-label="Reading list"
+           title="Reading list">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+          </svg>
+        </a>
+
+        {# Email — contact / tips #}
+        <a href="mailto:hello@thefreethinkingtimes.com"
+           class="masthead__icon-btn"
+           aria-label="Email us"
+           title="Email us">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </a>
+
+        {# RSS — follow via feed reader #}
+        <a href="/feed.xml"
+           class="masthead__icon-btn"
+           aria-label="RSS feed"
+           title="RSS feed"
+           type="application/rss+xml">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 11a9 9 0 0 1 9 9"/>
+            <path d="M4 4a16 16 0 0 1 16 16"/>
+            <circle cx="5" cy="19" r="1" fill="currentColor"/>
+          </svg>
+        </a>
+
+        {# Support — help keep us independent #}
+        <a href="/support/"
+           class="masthead__icon-btn"
+           aria-label="Support us"
+           title="Support us">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </a>
+
+        {# Surprise Me — random article #}
+        <a href="/random/"
+           class="masthead__icon-btn"
+           aria-label="Surprise me — random article"
+           title="Surprise me">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="16 3 21 3 21 8"/>
+            <line x1="4" y1="20" x2="21" y2="3"/>
+            <polyline points="21 16 21 21 16 21"/>
+            <line x1="15" y1="15" x2="21" y2="21"/>
+          </svg>
+        </a>
+
+        {# Dark mode — set-and-forget preference #}
+        <button
+          class="masthead__icon-btn js-only"
+          id="theme-toggle"
+          aria-label="Toggle dark mode"
+          type="button"
+          title="Toggle dark mode">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        </button>
+
+      </div>
+    </div>
+
+    {# ── Section Nav ── #}
+    <nav class="site-nav" aria-label="Main navigation">
+      <div class="site-nav__inner">
+        <ul class="site-nav__list" role="list">
+          {% for item in site.nav %}
+          {% set sectionItems = collections[item.collection] if item.collection %}
+          {% set hasDropdown = item.type == "projects" or item.type == "games" or item.type == "library" or (sectionItems and sectionItems.length) %}
+          <li class="site-nav__item{% if hasDropdown %} site-nav__item--has-dropdown{% endif %}">
+            <a
+              class="site-nav__link"
+              href="{{ item.url }}"
+              {% if hasDropdown %}id="nav-{{ item.key }}" aria-haspopup="true" aria-expanded="false"{% endif %}
+              {% if page.url == item.url %}aria-current="page"{% endif %}>
+              {{ item.label }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      {# ── Nav Dropdowns — siblings of .site-nav__inner so they escape overflow:hidden ── #}
+      {% for item in site.nav %}
+      {% set sectionItems = collections[item.collection] if item.collection %}
+      {% set hasDropdown = item.type == "projects" or item.type == "games" or item.type == "library" or (sectionItems and sectionItems.length) %}
+      {% if hasDropdown %}
+      <div class="nav-dropdown" id="dropdown-{{ item.key }}" aria-label="{{ item.label }}">
+        {% if item.type == "library" %}
+          {% for w in library.works %}
+            {% if w.featured %}
+              <a href="/library/{{ w.slug }}/" class="nav-dropdown__item">
+                <span class="nav-dropdown__title">{{ w.title }}</span>
+                {% if w.description %}<span class="nav-dropdown__desc">{{ w.description }}</span>{% endif %}
+              </a>
+            {% endif %}
+          {% endfor %}
+          <a href="/library/subjects/" class="nav-dropdown__item">
+            <span class="nav-dropdown__title">Browse by Subject</span>
+            <span class="nav-dropdown__desc">Explore the catalogue by philosophical and historical theme.</span>
+          </a>
+          <a href="/library/authors/" class="nav-dropdown__item">
+            <span class="nav-dropdown__title">Browse by Author</span>
+            <span class="nav-dropdown__desc">Full biographies and collected works for each author.</span>
+          </a>
+          <a href="/library/" class="nav-dropdown__footer">View full library →</a>
+        {% elif item.type == "projects" %}
+          {% for project in projects.index %}
+          <a href="{{ project.url }}" class="nav-dropdown__item">
+            <span class="nav-dropdown__title">{{ project.title }}</span>
+            <span class="nav-dropdown__desc">{{ project.shortDescription }}</span>
+          </a>
+          {% endfor %}
+          <a href="/projects/" class="nav-dropdown__footer">View all projects →</a>
+        {% elif item.type == "games" %}
+          {% for game in games %}
+          <a href="{{ game.url }}" class="nav-dropdown__item">
+            <span class="nav-dropdown__title">{{ game.title }}</span>
+            <span class="nav-dropdown__desc">{{ game.description }}</span>
+          </a>
+          {% endfor %}
+          <a href="/games/" class="nav-dropdown__footer">View all games →</a>
+        {% else %}
+          {% for article in sectionItems | limit(4) %}
+          <a href="{{ article.url }}" class="nav-dropdown__item">
+            <span class="nav-dropdown__title">{{ article.data.title }}</span>
+            {% if article.data.description %}<span class="nav-dropdown__desc">{{ article.data.description }}</span>{% endif %}
+          </a>
+          {% endfor %}
+          <a href="{{ item.url }}" class="nav-dropdown__footer">All {{ item.label | lower }} →</a>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% endfor %}
+    </nav>
+
+  </div>{# /.container #}
+</header>
+
+{# ── Search Modal ── (lives outside header for z-index stacking) #}
+<div class="search-overlay js-only" id="search-overlay" aria-hidden="true"></div>
+
+<div
+  class="search-modal js-only"
+  id="search-modal"
+  role="dialog"
+  aria-label="Search"
+  aria-hidden="true"
+  aria-modal="true">
+
+  <div class="search-modal__header">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;color:var(--color-ink-faint)">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input
+      class="search-modal__input"
+      id="search-input"
+      type="search"
+      placeholder="Search articles, topics, authors…"
+      autocomplete="off"
+      autocorrect="off"
+      spellcheck="false"
+      aria-label="Search query"
+      aria-controls="search-results"
+      aria-autocomplete="list">
+    <button
+      class="search-modal__close"
+      id="search-close"
+      type="button"
+      aria-label="Close search">
+      ✕
+    </button>
+  </div>
+
+  <div class="search-filters" id="search-filters" aria-label="Filter results by section">
+    <button class="search-filter-btn is-active" data-filter-section="" type="button">All</button>
+    <button class="search-filter-btn" data-filter-section="News" type="button">News</button>
+    <button class="search-filter-btn" data-filter-section="Opinion" type="button">Opinion</button>
+    <button class="search-filter-btn" data-filter-section="Analysis" type="button">Analysis</button>
+    <button class="search-filter-btn" data-filter-section="History" type="button">History</button>
+    <button class="search-filter-btn" data-filter-section="Arts & Culture" type="button">Arts</button>
+    <button class="search-filter-btn" data-filter-section="Science & Technology" type="button">Science</button>
+    <button class="search-filter-btn" data-filter-section="Letters" type="button">Letters</button>
+  </div>
+
+  <div class="search-modal__results" id="search-results" role="listbox" aria-label="Search results">
+  </div>
+
+  <div class="search-modal__footer" aria-hidden="true">
+    <span><kbd>↑↓</kbd> navigate</span>
+    <span><kbd>↵</kbd> open</span>
+    <span><kbd>Esc</kbd> close</span>
+    <span><kbd>/</kbd> open from anywhere</span>
+  </div>
+
+</div>
+
+{# ── Nav Drawer ── #}
+<div class="nav-drawer-overlay js-only" id="nav-drawer-overlay" aria-hidden="true"></div>
+
+<nav
+  class="nav-drawer js-only"
+  id="nav-drawer"
+  aria-label="Full site navigation"
+  aria-hidden="true">
+
+  <div class="nav-drawer__header">
+    <span class="nav-drawer__label">{{ site.title }}</span>
+    <button class="nav-drawer__close" id="nav-drawer-close" type="button" aria-label="Close navigation menu">✕</button>
+  </div>
+
+  <ul class="nav-drawer__list" role="list">
+    {% for item in site.nav %}
+    <li>
+      <a
+        class="nav-drawer__link"
+        href="{{ item.url }}"
+        {% if page.url == item.url %}aria-current="page"{% endif %}>
+        {{ item.label }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <div class="nav-drawer__divider"></div>
+
+  <ul class="nav-drawer__list" role="list">
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/about/">About</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/masthead/">Masthead</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/ethics/">Ethics Policy</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/submit/">Submit a Piece</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/newsletter/">Newsletter</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/start-here/">Start Here</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/reading-list/">Reading List</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/archives/">Archives</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/editions/">Editions</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/corrections/">Corrections</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/support/">Support Us</a></li>
+  </ul>
+
+</nav>

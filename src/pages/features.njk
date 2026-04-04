@@ -1,0 +1,153 @@
+---
+layout: base
+title: Features
+description: A complete list of every feature The Freethinking Times website offers — reading tools, publishing infrastructure, and reader experience.
+permalink: /features/
+---
+
+<div class="container" style="padding-top: var(--space-12); padding-bottom: var(--space-20);">
+  <div class="container--prose">
+
+    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+      <h1 style="font-family: var(--font-masthead); font-size: var(--text-4xl); margin-bottom: var(--space-4);">Features</h1>
+      <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic;">
+        Everything this site can do — for readers and for the publication.
+      </p>
+    </header>
+
+    <div class="article-body">
+
+      <h2>Reading experience</h2>
+      <ul>
+        <li><strong>Dark / light mode</strong> — toggle in the masthead; respects system preference on first visit; preference saved to <code>localStorage</code></li>
+        <li><strong>Reading progress bar</strong> — fixed at the top of article and library pages; stops at the end of the body text</li>
+        <li><strong>Focus mode</strong> — hides the site masthead for distraction-free reading; persisted in <code>localStorage</code>; available on articles and library texts</li>
+        <li><strong>Reading settings</strong> — font size slider (14–24 px) and typeface choice (Serif / Sans / OpenDyslexic); preferences saved to <code>localStorage</code></li>
+        <li><strong>Read aloud</strong> — Web Speech API text-to-speech with play/pause/stop, speed presets (0.75×–2×), and voice selector</li>
+        <li><strong>Table of contents</strong> — auto-generated from h2/h3 headings on article pages with scroll-spy highlighting; floating within-chapter TOC on library pages (≥1200 px screens)</li>
+        <li><strong>Heading anchor links</strong> — link icon appears on hover for every h2/h3 for deep-linking to any section</li>
+        <li><strong>Back to top button</strong> — appears after scrolling 400 px on articles and library reading pages</li>
+        <li><strong>Reading percentage</strong> — shows how far through the current text you are; visible on articles and library reading pages</li>
+        <li><strong>Reading time</strong> — calculated from word count at build time; shown on every article card, article page, and library reading page</li>
+        <li><strong>Word count</strong> — displayed next to reading time on articles and library reading pages</li>
+        <li><strong>Pullquote sharing</strong> — select any text in an article body; a share button appears; shares via Web Share API or copies to clipboard</li>
+        <li><strong>Text selection colour</strong> — pansy purple, consistent with the publication's identity</li>
+      </ul>
+
+      <h2>Article actions</h2>
+      <ul>
+        <li><strong>Save to reading list</strong> — bookmark any article in the browser; no account required; accessible at <a href="/reading-list/">/reading-list/</a></li>
+        <li><strong>Share</strong> — share panel with X/Twitter, Facebook, LinkedIn, Reddit, Bluesky, Mastodon, copy link, and email</li>
+        <li><strong>Download</strong> — export article as plain text (.txt) or Markdown (.md)</li>
+        <li><strong>Print</strong> — print-optimised CSS suppresses all chrome and renders clean text; works for PDF saving</li>
+        <li><strong>Cite</strong> — citation modal with APA, MLA, and Chicago formats; one-click copy for each</li>
+        <li><strong>Annotation footnotes</strong> — inline tooltip footnotes via shortcode; no jump to the bottom of the page</li>
+      </ul>
+
+      <h2>Public Domain Library</h2>
+      <ul>
+        <li><strong>Library homepage</strong> at <a href="/library/">/library/</a> — featured works grid and full catalogue with subject and era filters</li>
+        <li><strong>Work landing pages</strong> — introduction, chapter list, reading progress indicators, and Continue Reading detection</li>
+        <li><strong>Chapter reader</strong> — all eight article reader tools available on library reading pages; word count, reading time, back-to-top, and reading percentage also included</li>
+        <li><strong>Reading panel</strong> — slide-out panel with Contents (chapter list), Bookmarks, and Notes tabs</li>
+        <li><strong>Annotation toolbar</strong> — highlight and annotate selected text; highlights and notes persist in <code>localStorage</code></li>
+        <li><strong>Reading position</strong> — scroll position saved per chapter to <code>localStorage</code>; restored on return (30-day expiry)</li>
+        <li><strong>Chapter completion</strong> — chapters marked complete at 88% scroll; progress visible on the work landing page</li>
+        <li><strong>Bookmarks</strong> — bookmark any scroll position within a chapter; listed in the reading panel</li>
+        <li><strong>Floating within-chapter TOC</strong> — auto-populated from headings with scroll-spy; visible at ≥1200 px</li>
+        <li><strong>Browse by Subject</strong> at <a href="/library/subjects/">/library/subjects/</a> — tag cloud and per-subject work listings</li>
+        <li><strong>Browse by Author</strong> at <a href="/library/authors/">/library/authors/</a> — author biographies and collected works</li>
+      </ul>
+
+      <h2>Navigation & discovery</h2>
+      <ul>
+        <li><strong>Full-site search</strong> via Pagefind — built at deploy time, no backend; section filter bar included</li>
+        <li><strong>Section navigation</strong> — dropdown menus per section showing recent articles; Library, Projects, and Games have curated dropdowns</li>
+        <li><strong>Mobile nav drawer</strong> — full site navigation in a slide-out drawer with primary sections and secondary links</li>
+        <li><strong>Surprise Me</strong> — button in the masthead that redirects to a random article</li>
+        <li><strong>Reading time filter</strong> — filter articles by All / Short reads (&lt;5 min) / Long reads (&gt;15 min) on section pages</li>
+        <li><strong>Related articles</strong> — ranked by shared tags with section fallback; shown at the bottom of every article</li>
+        <li><strong>Backlinks</strong> — each article shows other articles on the site that link to it, discovered at build time</li>
+        <li><strong>Tags / topics index</strong> at <a href="/topics/">/topics/</a></li>
+        <li><strong>Archives</strong> at <a href="/archives/">/archives/</a> — articles indexed by date</li>
+        <li><strong>Editions</strong> at <a href="/editions/">/editions/</a> — articles grouped into numbered editions; edition pages are printable with a full article text section included after the contents listing</li>
+      </ul>
+
+      <h2>Publishing & editorial</h2>
+      <ul>
+        <li><strong>Corrections log</strong> — articles carry corrections in front matter; aggregate view at <a href="/corrections/">/corrections/</a></li>
+        <li><strong>Suggest a correction</strong> — mailto link on every article</li>
+        <li><strong>Article series</strong> — numbered parts with previous/next navigation</li>
+        <li><strong>Inter-article response system</strong> — <code>responseTo</code> front matter links articles with banners shown on both</li>
+        <li><strong>Argument map</strong> — structured Claim → Evidence → Conclusion box for opinion pieces</li>
+        <li><strong>Dates link to archives</strong> — every date on articles and cards links to the corresponding archive anchor</li>
+        <li><strong>Contributors index</strong> at <a href="/contributors/">/contributors/</a> — bio cards and article links</li>
+        <li><strong>Per-author pages</strong> — bio and article history for each contributor</li>
+        <li><strong>Per-author RSS feeds</strong> at <code>/feeds/[author-slug].xml</code> with link autodiscovery</li>
+        <li><strong>Document library</strong> at <a href="/documents/">/documents/</a> — primary source library for FOIA responses and public records</li>
+        <li><strong>Changelog</strong> at <a href="/changelog/">/changelog/</a> — public record of site changes</li>
+      </ul>
+
+      <h2>Newsletter</h2>
+      <ul>
+        <li><strong>Newsletter page</strong> at <a href="/newsletter/">/newsletter/</a> — signup form, what to expect, past issues link, alternative follow options</li>
+        <li><strong>Buttondown integration</strong> — subscribe forms embedded across the site (inline, sidebar, footer variants); no backend required</li>
+        <li><strong>Confirmation redirect</strong> at <a href="/newsletter/confirmed/">/newsletter/confirmed/</a> — shown after clicking the confirmation link in Buttondown's double opt-in email</li>
+        <li><strong>Welcome redirect</strong> at <a href="/newsletter/welcome/">/newsletter/welcome/</a> — shown immediately after form submission</li>
+        <li><strong>No open or click tracking</strong> — Buttondown's open and click tracking are disabled; links include a UTM tag for aggregate site analytics only</li>
+      </ul>
+
+      <h2>Infrastructure & performance</h2>
+      <ul>
+        <li><strong>Progressive Web App</strong> — web manifest, cache-first service worker, offline fallback at <code>/offline.html</code></li>
+        <li><strong>XML sitemap</strong> at <a href="/sitemap.xml">/sitemap.xml</a> — all articles, library pages, and key static pages with <code>lastmod</code> dates</li>
+        <li><strong>Google News sitemap</strong> at <code>/news-sitemap.xml</code> — <code>news:news</code> namespace with publication, language, date, and title</li>
+        <li><strong>RSS feed</strong> at <a href="/feed.xml">/feed.xml</a> covering all sections</li>
+        <li><strong>Per-author RSS feeds</strong> at <code>/feeds/[author-slug].xml</code></li>
+        <li><strong>robots.txt</strong> — allows all crawlers including Googlebot-News; declares both sitemaps</li>
+        <li><strong>JSON-LD structured data</strong> — NewsArticle on article pages; Book and Chapter on library pages</li>
+        <li><strong>Open Graph social card images</strong> — auto-generated per article at build time</li>
+        <li><strong>Print CSS</strong> — suppresses nav, sidebar, and all non-essential chrome across article and edition pages</li>
+        <li><strong>Bunny Fonts</strong> — privacy-friendly font CDN; no IP logging, no cookies, no tracking</li>
+        <li><strong>Hosted on Cloudflare Pages</strong></li>
+      </ul>
+
+      <h2>Analytics & privacy</h2>
+      <ul>
+        <li><strong>Umami analytics</strong> — privacy-first; no cookies, no personally identifiable information; <a href="https://cloud.umami.is/analytics/us/share/c12DreGvxbQKjj2l" target="_blank" rel="noopener noreferrer">public dashboard</a></li>
+        <li><strong>No first-party cookies</strong> — all reader preferences and state stored in <code>localStorage</code></li>
+        <li><strong>No advertising networks or tracking pixels</strong></li>
+        <li><strong>Privacy policy</strong> at <a href="/privacy/">/privacy/</a></li>
+      </ul>
+
+      <h2>Translation & accessibility</h2>
+      <ul>
+        <li><strong>GTranslate widget</strong> — nine languages (English, French, Italian, Spanish, German, Portuguese, Arabic, Chinese, Japanese); floating selector</li>
+        <li><strong>Skip-to-main link</strong> — first element in the page for keyboard and screen reader navigation</li>
+        <li><strong>OpenDyslexic font</strong> — available via the reading settings panel; loaded on demand</li>
+        <li><strong>ARIA labels</strong> on all icon-only buttons; <code>aria-expanded</code> on all interactive toggles</li>
+      </ul>
+
+      <h2>Intellectual projects</h2>
+      <ul>
+        <li><strong>Freethought Glossary</strong> at <a href="/glossary/">/glossary/</a> — terms with etymology, key figures, related terms, and A–Z browse sidebar</li>
+        <li><strong>Thought Experiment Library</strong> at <a href="/thought-experiments/">/thought-experiments/</a></li>
+        <li><strong>Freethinker's Bookshelf</strong> at <a href="/bookshelf/">/bookshelf/</a> — annotated reading list with category, difficulty, and best-for metadata</li>
+        <li><strong>Trials of Thought</strong> at <a href="/trials/">/trials/</a> — landmark trials where ideas were the defendant; chronological from 399 BCE</li>
+        <li><strong>Games</strong> at <a href="/games/">/games/</a> — Fifteen Puzzle, Freethinking Trivia, Word Scramble, and a Crossy Road variant</li>
+      </ul>
+
+      <h2>Transparency</h2>
+      <ul>
+        <li><strong>Features page</strong> at <a href="/features/">/features/</a> — this page; complete inventory of site features</li>
+        <li><strong>Changelog</strong> at <a href="/changelog/">/changelog/</a> — public record of every site change</li>
+        <li><strong>Public analytics</strong> — <a href="https://cloud.umami.is/analytics/us/share/c12DreGvxbQKjj2l" target="_blank" rel="noopener noreferrer">live Umami dashboard</a> readable by anyone</li>
+        <li><strong>Editorial handbook</strong> at <a href="/editorial/">/editorial/</a> — public standards covering accuracy, sourcing, corrections, AI use, and complaints</li>
+        <li><strong>Corrections log</strong> at <a href="/corrections/">/corrections/</a> — aggregate view of all published corrections</li>
+      </ul>
+
+      <p><em>Last updated: 19 March 2026</em></p>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+{
+  "jon-ajinga": {
+    "name": "Jon Ajinga",
+    "slug": "jon-ajinga",
+    "bio": "Jon Ajinga is the founding editor of The Freethinking Times.",
+    "role": "Founding Editor",
+    "avatar": ""
+  },
+  "staff": {
+    "name": "The Freethinking Times",
+    "slug": "staff",
+    "bio": "Editorial and research staff of The Freethinking Times.",
+    "role": "Staff",
+    "avatar": ""
+  }
+}

@@ -1,0 +1,135 @@
+---
+layout: base
+title: Support The Freethinking Times
+description: Independent journalism has no corporate patron. Here is what your support makes possible, and how to provide it.
+permalink: /support/
+---
+
+<div class="container" style="padding-top: var(--space-12); padding-bottom: var(--space-16);">
+  <div class="container--prose">
+
+    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+      <h1 style="font-family: var(--font-masthead); font-size: var(--text-4xl); margin-bottom: var(--space-4); line-height: 1.1;">
+        Support Independent Journalism
+      </h1>
+      <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic; max-width: 55ch; line-height: var(--leading-normal);">
+        The Freethinking Times has no parent company, no institutional backer,
+        and no advertising revenue. It runs on time, conviction, and reader support.
+      </p>
+    </header>
+
+    <div class="article-body">
+
+      <h2>Why This Matters</h2>
+
+      <p>Most journalism you encounter is subsidized by something. Legacy outlets are owned by corporations or billionaires with interests to protect. Digital media runs on advertising revenue that rewards engagement over accuracy. Platforms optimize for what keeps you scrolling, not what helps you understand.</p>
+
+      <p>The Freethinking Times is subsidized by nothing except the belief that honest, adversarial, intellectually serious journalism is worth doing. That means it runs on an honest scarcity: there are only so many hours, and investigative work — the kind that requires FOIA requests, primary sources, and the willingness to sit with a story until it's right — takes time that has to be paid for somehow.</p>
+
+      <p>Reader support is how independent journalism pays for itself without compromising what it's for.</p>
+
+      <h2>What Your Support Makes Possible</h2>
+
+      <p>Concretely: more investigative pieces, which take longer to report and write. Better sourcing, which sometimes means paying for access to databases and documents. The ability to turn down work that would create conflicts of interest. And the time to get things right rather than fast.</p>
+
+      <p>There are no tiers, no paywalls, and no members-only content. Everything published here is free to read. Support is not a transaction — it is an act of alignment with a kind of journalism you want to exist in the world.</p>
+
+    </div>
+
+    {# ── Support options ── #}
+    <div style="margin: var(--space-10) 0;">
+
+      <hr class="heavy" style="margin-bottom: var(--space-10);">
+
+      {# Buy Me a Coffee #}
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); margin-bottom: var(--space-10);">
+
+        <div class="support-block">
+          <h3 class="support-block__heading">One-time support</h3>
+          <p class="support-block__body">
+            Buy Me a Coffee lets you make a one-time contribution of any amount,
+            no account required. Takes thirty seconds.
+          </p>
+          <div class="support-block__actions">
+            {#
+              Replace YOUR_BMAC_USERNAME with your Buy Me a Coffee username.
+              Sign up free at buymeacoffee.com, then update this link.
+            #}
+            <a
+              href="https://buymeacoffee.com/YOUR_BMAC_USERNAME"
+              class="btn btn--accent"
+              target="_blank"
+              rel="noopener noreferrer">
+              ☕ Buy Me a Coffee
+            </a>
+          </div>
+        </div>
+
+        <div class="support-block">
+          <h3 class="support-block__heading">Recurring support</h3>
+          <p class="support-block__body">
+            A small monthly amount is the most useful form of support for a
+            solo publication — it allows for planning and sustained work.
+          </p>
+          <div class="support-block__actions">
+            {#
+              Buy Me a Coffee also supports monthly memberships.
+              Or replace with a Patreon link: https://patreon.com/YOUR_PATREON
+              Update once you've created your page.
+            #}
+            <a
+              href="https://buymeacoffee.com/YOUR_BMAC_USERNAME/membership"
+              class="btn btn--accent"
+              target="_blank"
+              rel="noopener noreferrer">
+              Become a Member
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <hr style="margin-bottom: var(--space-10);">
+
+      {# Email subscribe — always free, always offered #}
+      <div style="margin-bottom: var(--space-10);">
+        <h2 style="font-family: var(--font-headline); font-size: var(--text-xl); margin-bottom: var(--space-3);">
+          The free version: subscribe by email
+        </h2>
+        <p style="color: var(--color-ink-muted); font-size: var(--text-base); max-width: 55ch; margin-bottom: var(--space-6); line-height: var(--leading-normal);">
+          If financial support isn't possible right now, subscribing by email
+          is genuinely useful. A larger readership makes the publication more
+          visible and more sustainable over time.
+        </p>
+        {% set subscribeVariant = "inline" %}
+        {% include "partials/subscribe.njk" %}
+      </div>
+
+      <hr style="margin-bottom: var(--space-10);">
+
+      {# Other ways to help #}
+      <div class="article-body">
+        <h2>Other ways to help</h2>
+
+        <p><strong>Share specific pieces.</strong> When an article is worth reading, send it to one person who would find it genuinely useful. Not broadcast — targeted. A good article landing in front of the right reader is worth more than a hundred passive impressions.</p>
+
+        <p><strong>Link to us.</strong> If you write, blog, or maintain any kind of online presence, linking to pieces you found valuable is how independent publications build the search presence that brings new readers.</p>
+
+        <p><strong>Write a letter.</strong> Reader correspondence published in the Letters section is part of the publication's editorial content. A thoughtful response to something we've published — sent to <a href="mailto:{{ site.email }}">{{ site.email }}</a> — contributes to the work directly.</p>
+
+        <p><strong>Tell us what we're missing.</strong> The best editorial tip is a story that matters and isn't being told. If you know of something that deserves investigation, <a href="mailto:{{ site.email }}">write to the editors</a>.</p>
+      </div>
+
+    </div>
+
+    {# Closing note #}
+    <div style="border-top: 1px solid var(--color-rule); padding-top: var(--space-8); margin-top: var(--space-4);">
+      <p style="font-family: var(--font-ui); font-size: var(--text-sm); color: var(--color-ink-faint); font-style: italic;">
+        The Freethinking Times does not accept advertising, sponsored content,
+        or funding from organizations with interests in our coverage areas.
+        Reader support is the only kind we take.
+      </p>
+    </div>
+
+  </div>
+</div>

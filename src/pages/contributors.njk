@@ -1,0 +1,39 @@
+---
+layout: layouts/base.njk
+title: Contributors
+description: The writers and editors of The Freethinking Times.
+permalink: /contributors/
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-16);">
+
+  <header class="section-header">
+    <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl);">Contributors</h1>
+    <p style="color: var(--color-ink-muted); font-size: var(--text-md); max-width: 60ch; font-style: italic; margin-top: var(--space-3);">
+      The writers, editors, and reporters of {{ site.title }}.
+    </p>
+  </header>
+
+  <ul role="list" style="list-style: none; padding: 0;">
+    {% for slug, authorData in authors %}
+    <li style="padding: var(--space-8) 0; border-bottom: 1px solid var(--color-rule);">
+      <p style="font-family: var(--font-ui); font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-faint); margin-bottom: var(--space-2);">
+        {{ authorData.role }}
+      </p>
+      <h2 style="font-family: var(--font-headline); font-size: var(--text-xl); font-weight: 700; margin-bottom: var(--space-2); line-height: var(--leading-snug);">
+        <a href="/author/{{ slug }}/" style="color: var(--color-ink); text-decoration: none;">{{ authorData.name }}</a>
+      </h2>
+      {% if authorData.bio %}
+      <p style="font-size: var(--text-sm); color: var(--color-ink-muted); line-height: var(--leading-normal); max-width: 60ch; margin-bottom: var(--space-3);">
+        {{ authorData.bio }}
+      </p>
+      {% endif %}
+      <a href="/author/{{ slug }}/"
+         style="font-family: var(--font-ui); font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-accent); text-decoration: none;">
+        View articles →
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+
+</div>

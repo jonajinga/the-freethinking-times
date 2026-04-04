@@ -1,0 +1,243 @@
+[
+  {
+    "date": "2026-03-19",
+    "title": "Editions, library & reader improvements",
+    "sections": [
+      {
+        "label": "Editions",
+        "entries": [
+          "Edition pages are now printable — Print / Save PDF button added to edition header",
+          "Printed editions include a table-of-contents listing followed by each article in full, one article per page, with eyebrow, title, dek, byline, and complete body text",
+          "Print header shows publication name, edition number, date, and article count; print footer shows the canonical URL"
+        ]
+      },
+      {
+        "label": "Public Domain Library",
+        "entries": [
+          "The Age of Reason and Common Sense added to Featured Works — all five library works are now featured",
+          "Library catalogue alphabetised A–Z by title (ignoring leading articles): The Age of Reason, Common Sense, An Enquiry Concerning Human Understanding, On Liberty, Why I Am Not a Christian",
+          "Word count and reading time now displayed on library chapter and short-text reading pages, between the title and the reader tools bar",
+          "Back-to-top button now works on library reading pages — progress.js previously gated floats visibility on the article progress bar, which is absent from library layouts",
+          "Reading percentage (% through) now shown on library reading pages alongside the back-to-top button",
+          "Floating within-chapter TOC max-height reduced to prevent it overlapping the back-to-top button at the bottom-right of the screen"
+        ]
+      },
+      {
+        "label": "Site",
+        "entries": [
+          "Features page added at /features/ — complete inventory of every site feature organised by category"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-03-19",
+    "title": "Newsletter, privacy & site polish",
+    "sections": [
+      {
+        "label": "Newsletter",
+        "entries": [
+          "New /newsletter/ page — full landing page with signup form, what to expect, past issues link, and alternative follow options",
+          "/newsletter/welcome/ — redirect destination after form submission; confirms subscription and sets expectations",
+          "/newsletter/confirmed/ — redirect destination after clicking Buttondown's confirmation link; links to Start Here, Library, and Reading List",
+          "subscribe.js now redirects to /newsletter/welcome/ on successful form submission instead of showing an inline message",
+          "New .subscribe-form--stacked CSS modifier for the vertical form layout on the newsletter page — restores right border and adjusts border-radius correctly"
+        ]
+      },
+      {
+        "label": "Privacy & transparency",
+        "entries": [
+          "Privacy policy updated: Buttondown section now accurately states open tracking and click tracking are disabled; UTM parameter use explained",
+          "Public Umami analytics dashboard linked from the privacy policy Analytics section",
+          "Analytics link added to footer bottom bar alongside Privacy, Corrections, Changelog, Sitemap, RSS — reordered with transparency items first",
+          "All contact email addresses unified to hello@thefreethinkingtimes.com — corrected misspelled domain (freetimingtimes) in about.njk, submit.njk, and support.njk",
+          "Privacy policy short-version subtitle updated"
+        ]
+      },
+      {
+        "label": "Site polish",
+        "entries": [
+          "Text selection highlight colour changed from red accent to pansy purple (#6A1B9A light / #B87ACC dark) — new --color-selection and --color-selection-ink design tokens",
+          "Pullquote share tooltip character limit raised from 400 to 600 — allows longer meaningful quotes to trigger the share button",
+          "Hamburger nav drawer: added Newsletter and Start Here, removed duplicate Games entry (already present in primary nav above divider)",
+          "Sitemap updated to include /library/, /library/subjects/, /library/authors/, all library work landing pages (collections.libraryWorks), and all library chapters (collections.libraryChapters)"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-03-19",
+    "title": "Public Domain Library launch",
+    "sections": [
+      {
+        "label": "Public Domain Library",
+        "entries": [
+          "New /library/ section launched — curated public domain texts from the freethought tradition",
+          "Five works published at launch: Common Sense (Paine), Why I Am Not a Christian (Russell), On Liberty (Mill), The Age of Reason (Paine), An Enquiry Concerning Human Understanding (Hume)",
+          "Work landing pages with chapter list, reading progress indicators, and Continue Reading detection",
+          "Browse by Subject at /library/subjects/ — tag cloud and per-subject work listings",
+          "Browse by Author at /library/authors/ — author biographies and collected works",
+          "Library column added to site footer",
+          "Library navbar dropdown — featured works, Browse by Subject, Browse by Author links"
+        ]
+      },
+      {
+        "label": "Library reader experience",
+        "entries": [
+          "All eight article reader tools available on library reading pages: Save, Share, Listen (TTS), Focus, Reading settings, Download, Print, Cite",
+          "Within-chapter floating table of contents on wide screens (≥1200px) — auto-populated from headings with scroll-spy highlighting",
+          "Focus mode on library pages hides the site masthead, leaving the reading header as sole navigation chrome",
+          "Sticky reading header with back link, chapter title, Bookmark and Panel toggle",
+          "Reading panel with Contents (chapter list), Bookmarks, and Notes tabs",
+          "Annotation toolbar for highlighting and note-taking on selected text",
+          "Reading progress bar and back-to-top button",
+          "Print CSS hides all reading chrome and renders clean text for PDF saving",
+          "Mobile reading overrides: reduced padding, fixed annotation toolbar positioning"
+        ]
+      },
+      {
+        "label": "Library infrastructure",
+        "entries": [
+          "JSON-LD Book and Chapter structured data on all library pages for schema.org compatibility",
+          "Pagefind search indexing for library content with work title and author metadata",
+          "scripts/split-gutenberg.js — CLI tool to strip Gutenberg boilerplate and split a plain-text source into numbered chapter Markdown files with frontmatter",
+          "libraryChapters, libraryByWork, libraryWorks, and libraryFeatured Eleventy collections",
+          "Computed data file (src/_data/library/subjects.js) for unique sorted subject list"
+        ]
+      },
+      {
+        "label": "Bug fixes & polish",
+        "entries": [
+          "Library index.md files were appearing in chapter lists — Eleventy sets fileSlug to empty string for index files, defeating the prior regex filter; fixed by filtering on inputPath instead",
+          "Enquiry section TOC showed duplicate numbers (chapterNumber + 'Section N:' in title) — stripped numeric prefix from all 12 section titles",
+          "Library navbar dropdown appeared at far left — drawer.js keys array was missing 'library', so positionDropdown() was never called for it",
+          "Library within-chapter TOC appeared even with no headings — CSS display:block overrides the browser's [hidden] attribute; fixed with :not([hidden]) selector",
+          "Switched from Google Fonts to Bunny Fonts — same typefaces, privacy-friendly CDN, no tracking; moved from @import in CSS to <link> in <head>"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-03-18",
+    "title": "Launch sprint",
+    "sections": [
+      {
+        "label": "Intellectual projects",
+        "entries": [
+          "Four new project sections launched: The Freethought Glossary (/glossary/), The Thought Experiment Library (/thought-experiments/), The Freethinker's Bookshelf (/bookshelf/), The Trials of Thought (/trials/)",
+          "34 content files written: 11 glossary terms, 5 thought experiment essays, 11 annotated bookshelf entries, 7 trial essays",
+          "Glossary terms include etymology, key figures, related terms, and A–Z browse sidebar",
+          "Bookshelf entries include category, difficulty, best-for metadata, and annotated prose",
+          "Trials timeline spans 399 BCE to present — integer year field (negative for BCE) drives chronological ordering"
+        ]
+      },
+      {
+        "label": "Article reader tools",
+        "entries": [
+          "Word count displayed next to reading time in the article byline",
+          "Download button — exports article as plain text (.txt) or Markdown (.md)",
+          "Reading settings panel — font size slider (14–24 px) and font choice (Serif / Sans / OpenDyslexic); preferences persisted in localStorage",
+          "OpenDyslexic font loaded on demand from CDN when selected",
+          "Surprise Me button in masthead — redirects to a random article",
+          "Article action buttons reorganised by purpose: Save → Share → Listen → Focus → Reading settings → Download → Print → Cite"
+        ]
+      },
+      {
+        "label": "Reader experience",
+        "entries": [
+          "Reading time on every article, calculated from word count at build time; displayed on all article cards",
+          "Reading time filter on section pages: All / Short reads (<5 min) / Long reads (>15 min)",
+          "Reading progress bar on article pages; stops at end of article body",
+          "Back to top button appears after scrolling 400 px",
+          "Table of contents auto-generated from h2/h3 headings with scroll-spy highlighting",
+          "Heading anchor links on h2/h3 — link icon on hover for deep-linking to any section",
+          "Focus / reading mode — wider margins, larger type, sidebar hidden, persisted in localStorage",
+          "Read aloud (Web Speech API): play/pause/stop, speed presets (0.75×–2×), voice selector",
+          "Pullquote sharing — select any text in an article body, share via Web Share API or clipboard",
+          "Related articles ranked by shared tags with section fallback",
+          "Article series support with numbered parts and previous/next navigation"
+        ]
+      },
+      {
+        "label": "Publishing & editorial",
+        "entries": [
+          "Share panel: X/Twitter, Facebook, LinkedIn, Reddit, Bluesky, Mastodon, copy link, email",
+          "Cite this source modal — APA, MLA, and Chicago formats with one-click copy",
+          "Reading list — browser-based bookmarking, no account required; accessible at /reading-list/",
+          "Corrections log — articles carry corrections in front matter; aggregate view at /corrections/",
+          "Annotation footnotes via shortcode — inline tooltip, no jump to page bottom",
+          "Argument map — structured Claim → Evidence → Conclusion box for opinion pieces",
+          "Inter-article response system — responseTo front matter links articles with banners on both",
+          "Edition format — articles belong to numbered editions, browsable at /editions/",
+          "Dates on articles and cards link to /archives/#YYYY-MM-DD",
+          "Suggest a correction — mailto link on every article",
+          "/start-here/ page — curated entry point for new readers",
+          "/editorial/ handbook — public standards covering accuracy, sourcing, corrections, AI use, and complaints",
+          "/documents/ section — primary source library for FOIA responses and public records",
+          "Contributors / authors index at /contributors/ with bio cards and article links",
+          "Per-author RSS feeds at /feeds/[author-slug].xml with link autodiscovery",
+          "Site changelog at /changelog/, backed by src/_data/changelog.json"
+        ]
+      },
+      {
+        "label": "Site & infrastructure",
+        "entries": [
+          "Full-site search via Pagefind with section filter bar",
+          "Progressive Web App: web manifest, cache-first service worker, offline fallback at /offline.html",
+          "JSON-LD NewsArticle structured data in every article — improves Google Top Stories eligibility",
+          "Open Graph social card images auto-generated per article at build time",
+          "Umami privacy-first analytics installed",
+          "Pansy favicon: SVG at 16 px; pansy icon in footer and masthead page",
+          "GTranslate floating widget — nine languages, dark mode corrected, publication nameplate protected",
+          "Comments section (Cusdis) — dark mode synced, card-style layout",
+          "Games section at /games/ — Fifteen Puzzle, Freethinking Trivia, Word Scramble, Crossy Road variant",
+          "Footer restructured into four columns: Sections, About, Transparency, Reader Tools",
+          "Print CSS suppresses nav, sidebar, interactive elements, and all non-essential chrome",
+          "Header and footer span full viewport width; masthead converted from absolute to flex layout",
+          "Mobile navigation: section nav collapses on small screens, subscribe form stacks correctly",
+          "Site URL corrected to https://thefreethinkingtimes.com — fixes canonical links, OG images, RSS"
+        ]
+      },
+      {
+        "label": "SEO & discoverability",
+        "entries": [
+          "XML sitemap at /sitemap.xml — all articles and key static pages with lastmod dates",
+          "Google News sitemap at /news-sitemap.xml — news:news namespace with publication, language, date, title",
+          "robots.txt — allows all crawlers including Googlebot-News; declares both sitemaps",
+          "OG article meta tags: article:published_time, article:modified_time, article:author, article:section, article:tag",
+          "news_keywords meta tag on article pages — comma-separated tags",
+          "Sitemap link added to footer Reader Tools column",
+          "Backlinks — each article shows other articles that link to it, discovered at build time"
+        ]
+      },
+      {
+        "label": "Bug fixes & polish",
+        "entries": [
+          "Header scroll stutter resolved — dual watermark hysteresis: 10 px down to compact, 30 px up to restore",
+          "slugify filter hardened against undefined input — resolves build crash on tag pages",
+          "Article header given stacking context so dropdown panels float above article body",
+          "All article action buttons given explicit background and appearance: none to eliminate cross-browser rendering differences",
+          "All dropdown panels harmonised to the same background token",
+          "Section badge links fixed — Science & Technology and Arts & Culture now resolve correctly",
+          "Freethinkers Map removed; Submit button removed from masthead"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-03-01",
+    "title": "Initial launch",
+    "entries": [
+      "Published first articles across News, Opinion, Analysis, History, Arts & Culture, Science & Technology, and Letters",
+      "Full-site search powered by Pagefind — built at deploy time, no backend required",
+      "Dark mode with system preference detection, manual toggle, and localStorage persistence",
+      "RSS feed at /feed.xml covering all sections",
+      "Print-optimised CSS for long-form reading and PDF saving",
+      "Per-section article collections with lead story and article list layouts",
+      "Author pages with bio and article history",
+      "Tag / topic index pages",
+      "Breaking news banner (conditional)",
+      "Nav drawer for mobile with full site navigation"
+    ]
+  }
+]

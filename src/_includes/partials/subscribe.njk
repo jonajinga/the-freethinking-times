@@ -1,0 +1,80 @@
+{#
+  Subscribe Form Partial
+  Usage: {% set subscribeVariant = "inline" %}{% include "partials/subscribe.njk" %}
+  Variants: "inline" (between articles), "sidebar" (sidebar widget), "footer" (footer strip)
+#}
+
+{% set variant = subscribeVariant or "inline" %}
+
+{% if variant == "inline" %}
+{# ── Full inline block — between articles or end of article ── #}
+<aside class="subscribe-block" aria-label="Subscribe to The Freethinking Times">
+  <p class="subscribe-block__eyebrow">Free. Independent. No spam.</p>
+  <h2 class="subscribe-block__heading">Get new pieces in your inbox</h2>
+  <p class="subscribe-block__body">
+    Every article from The Freethinking Times, delivered when it publishes.
+    No algorithms. No digest curation. Just the work, direct.
+  </p>
+  <form class="subscribe-form" novalidate>
+    <label for="subscribe-email-inline" class="visually-hidden">Your email address</label>
+    <input
+      class="subscribe-form__input"
+      id="subscribe-email-inline"
+      type="email"
+      name="email"
+      placeholder="your@email.com"
+      autocomplete="email"
+      required>
+    <button class="subscribe-form__btn" type="submit">Subscribe</button>
+  </form>
+  <div class="subscribe-status" role="alert" aria-live="polite"></div>
+  <p class="subscribe-block__notice">
+    Unsubscribe at any time. We don't share your address.
+  </p>
+</aside>
+
+{% elif variant == "sidebar" %}
+{# ── Sidebar widget ── #}
+<div class="sidebar-widget subscribe-block--sidebar" aria-label="Subscribe">
+  <p class="sidebar-widget__title">Newsletter</p>
+  <p class="subscribe-block__body">
+    New articles by email. Free. No spam. Unsubscribe anytime.
+  </p>
+  <form class="subscribe-form" novalidate>
+    <label for="subscribe-email-sidebar" class="visually-hidden">Your email address</label>
+    <input
+      class="subscribe-form__input"
+      id="subscribe-email-sidebar"
+      type="email"
+      name="email"
+      placeholder="your@email.com"
+      autocomplete="email"
+      required>
+    <button class="subscribe-form__btn" type="submit">Subscribe</button>
+  </form>
+  <div class="subscribe-status" role="alert" aria-live="polite"></div>
+</div>
+
+{% elif variant == "footer" %}
+{# ── Footer strip ── #}
+<div class="subscribe-block--footer" aria-label="Subscribe">
+  <h3 class="subscribe-block__heading">Get new pieces by email</h3>
+  <p class="subscribe-block__body">
+    Independent journalism delivered directly. Free, always. Unsubscribe at any time.
+  </p>
+  <form class="subscribe-form" novalidate>
+    <label for="subscribe-email-footer" class="visually-hidden">Your email address</label>
+    <input
+      class="subscribe-form__input"
+      id="subscribe-email-footer"
+      type="email"
+      name="email"
+      placeholder="your@email.com"
+      autocomplete="email"
+      required>
+    <button class="subscribe-form__btn" type="submit">Subscribe</button>
+  </form>
+  <div class="subscribe-status" role="alert" aria-live="polite"></div>
+</div>
+
+{% endif %}

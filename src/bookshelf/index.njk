@@ -1,0 +1,33 @@
+---
+layout: base
+title: The Freethinker's Bookshelf
+description: A curated, annotated reading list for the intellectually curious — books that shaped the freethinking tradition and books that should.
+permalink: /bookshelf/
+---
+
+<div class="container" style="padding-top: var(--space-12); padding-bottom: var(--space-20);">
+
+  <header class="project-section-header">
+    <a href="/projects/" class="project-back">← Projects</a>
+    <span class="section-badge section-badge--bookshelf">Bookshelf</span>
+    <h1>The Freethinker's Bookshelf</h1>
+    <p class="project-section-lede">Not a recommended reading list, but a considered one. Every book here earns its place by doing something specific: advancing an argument, documenting a tradition, or forcing more careful thought. Each annotation tells you what the book does and what it doesn't — including where it goes wrong.</p>
+  </header>
+
+  <div class="bookshelf-grid">
+    {% for book in collections.bookshelf %}
+    <article class="book-card">
+      <header>
+        {% if book.data.category %}
+        <p class="book-card__category">{{ book.data.category }}</p>
+        {% endif %}
+        <h3 class="book-card__title"><a href="{{ book.url }}">{{ book.data.title }}</a></h3>
+        <p class="book-card__author">{{ book.data.bookAuthor }}{% if book.data.year %} · {{ book.data.year }}{% endif %}</p>
+      </header>
+      <p class="book-card__description">{{ book.data.description }}</p>
+      <a href="{{ book.url }}" class="book-card__link">Explore this book →</a>
+    </article>
+    {% endfor %}
+  </div>
+
+</div>
