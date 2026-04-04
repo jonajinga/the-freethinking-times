@@ -291,8 +291,6 @@
     <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/support/">Support Us</a></li>
   </ul>
 
-  <div class="nav-drawer__divider"></div>
-
   {# ── Quick actions (icons only, duplicated from masthead for mobile) ── #}
   <div class="nav-drawer__actions">
     <button class="nav-drawer__action-btn js-only" type="button" aria-label="Search" title="Search" onclick="var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-drawer-overlay');d.classList.remove('is-open');o.classList.remove('is-open');d.setAttribute('aria-hidden','true');document.body.style.overflow='';var m=document.getElementById('search-modal'),so=document.getElementById('search-overlay');if(m){m.classList.add('is-open');m.setAttribute('aria-hidden','false');so&&so.classList.add('is-open');document.body.style.overflow='hidden';var i=document.getElementById('search-input');i&&i.focus();}">
@@ -318,8 +316,7 @@
     </button>
   </div>
 
-  {# GTranslate — always visible, not inside the hidden masthead__actions #}
-  <div class="nav-drawer__divider"></div>
+  {# GTranslate #}
   <div class="nav-drawer__translate">
     <div class="gtranslate_wrapper"></div>
   </div>
