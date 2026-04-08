@@ -922,17 +922,6 @@
   display: inline-flex;
 }
 
-/* Mobile: fixed bottom bar */
-@media (max-width: 640px) {
-  .annotation-toolbar {
-    position: fixed;
-    bottom: var(--space-4);
-    left: var(--space-4);
-    right: var(--space-4);
-    justify-content: center;
-  }
-}
-
 .annotation-toolbar__btn {
   background: none;
   border: none;
@@ -1261,7 +1250,7 @@
   .annotation-toolbar {
     position: fixed;
     bottom: 0;
-    left: 0;
+    left: 0 !important;
     right: 0;
     top: auto !important;
     transform: none;

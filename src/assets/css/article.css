@@ -26,7 +26,17 @@
 }
 
 @media (max-width: 900px) {
-  .bookmark-indicator { display: none; }
+  .bookmark-indicator {
+    left: 0;
+    width: 4px;
+    height: 2rem;
+    border-radius: 2px;
+    border: none;
+    background: rgba(250, 204, 21, 0.6);
+  }
+  .bookmark-indicator svg {
+    display: none;
+  }
 }
 
 /* ── Sticky article reading header ──────────────────────────── */
