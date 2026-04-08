@@ -455,47 +455,87 @@
     }
 
     if (toolbar && bodyEl) {
-      function evalSelection() {
+      var isMobile = 'ontouchstart' in window;
+
+      function showToolbar() {
+        if (_actionInProgress) return;
         var sel = window.getSelection();
         if (!sel || sel.isCollapsed || !sel.rangeCount) {
-          toolbar.setAttribute('aria-hidden', 'true');
-          lastRange = null;
+          hideToolbar();
           return;
         }
         var range = sel.getRangeAt(0);
         if (!bodyEl.contains(range.commonAncestorContainer)) {
-          toolbar.setAttribute('aria-hidden', 'true');
-          lastRange = null;
+          hideToolbar();
           return;
         }
         var text = sel.toString().trim();
         if (!text) {
-          toolbar.setAttribute('aria-hidden', 'true');
-          lastRange = null;
+          hideToolbar();
           return;
         }
         lastRange = { text: text };
-        // Position toolbar near selection on desktop only
-        if (window.innerWidth > 640) {
+        if (!isMobile) {
           try {
             var rect = range.getBoundingClientRect();
             toolbar.style.top  = (rect.top  + window.scrollY - toolbar.offsetHeight - 8) + 'px';
             toolbar.style.left = Math.max(8, rect.left + (rect.width / 2) - (toolbar.offsetWidth / 2)) + 'px';
           } catch (e) {}
         } else {
-          // Mobile: CSS handles positioning as a bottom bar
           toolbar.style.top  = '';
           toolbar.style.left = '';
         }
         toolbar.setAttribute('aria-hidden', 'false');
       }
 
-      document.addEventListener('selectionchange', evalSelection);
+      var _actionInProgress = false;
 
-      // touchend fires after finger lifts — re-evaluate so toolbar appears on mobile
-      bodyEl.addEventListener('touchend', function () {
-        setTimeout(evalSelection, 50);
-      });
+      function hideToolbar() {
+        toolbar.setAttribute('aria-hidden', 'true');
+        lastRange = null;
+        _actionInProgress = true;
+        setTimeout(function () { _actionInProgress = false; }, 400);
+      }
+
+      if (isMobile) {
+        document.addEventListener('selectionchange', function () {
+          clearTimeout(showToolbar._t);
+          showToolbar._t = setTimeout(function () {
+            var sel = window.getSelection();
+            if (sel && !sel.isCollapsed && sel.toString().trim()) {
+              showToolbar();
+            }
+          }, 300);
+        });
+
+        bodyEl.addEventListener('touchend', function () {
+          setTimeout(showToolbar, 300);
+        });
+
+        document.addEventListener('touchstart', function (e) {
+          if (toolbar.getAttribute('aria-hidden') === 'false' &&
+              !toolbar.contains(e.target) && !bodyEl.contains(e.target)) {
+            hideToolbar();
+          }
+        }, { passive: true });
+      } else {
+        document.addEventListener('selectionchange', function () {
+          clearTimeout(showToolbar._t);
+          showToolbar._t = setTimeout(showToolbar, 100);
+        });
+
+        document.addEventListener('mousedown', function (e) {
+          if (!toolbar.contains(e.target) && !bodyEl.contains(e.target)) {
+            hideToolbar();
+          }
+        });
+
+        window.addEventListener('scroll', function () {
+          if (toolbar.getAttribute('aria-hidden') === 'false') {
+            hideToolbar();
+          }
+        }, { passive: true });
+      }
 
       if (highlightBtn) {
         highlightBtn.addEventListener('click', function () {

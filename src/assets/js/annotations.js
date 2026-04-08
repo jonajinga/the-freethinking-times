@@ -315,27 +315,29 @@
     }
 
     if (toolbar && bodyEl) {
-      function evalSelection() {
+      var isMobile = 'ontouchstart' in window;
+
+      function showToolbar() {
+        if (_actionInProgress) return;
         var sel = window.getSelection();
         if (!sel || sel.isCollapsed || !sel.rangeCount) {
-          toolbar.setAttribute('aria-hidden', 'true');
-          lastRange = null;
+          hideToolbar();
           return;
         }
         var range = sel.getRangeAt(0);
         if (!bodyEl.contains(range.commonAncestorContainer)) {
-          toolbar.setAttribute('aria-hidden', 'true');
-          lastRange = null;
+          hideToolbar();
           return;
         }
         var text = sel.toString().trim();
         if (!text) {
-          toolbar.setAttribute('aria-hidden', 'true');
-          lastRange = null;
+          hideToolbar();
           return;
         }
         lastRange = { text: text };
-        if (window.innerWidth > 640) {
+
+        // Position: desktop near selection, mobile fixed at bottom (via CSS)
+        if (!isMobile) {
           try {
             var rect = range.getBoundingClientRect();
             toolbar.style.top = (rect.top + window.scrollY - toolbar.offsetHeight - 8) + 'px';
@@ -348,30 +350,62 @@
         toolbar.setAttribute('aria-hidden', 'false');
       }
 
-      document.addEventListener('selectionchange', function () {
-        // Debounce to avoid rapid firing
-        clearTimeout(evalSelection._t);
-        evalSelection._t = setTimeout(evalSelection, 100);
-      });
-      bodyEl.addEventListener('touchend', function () {
-        setTimeout(evalSelection, 100);
-      });
+      var _actionInProgress = false;
 
-      // Hide toolbar when clicking outside the body or toolbar
-      document.addEventListener('mousedown', function (e) {
-        if (!toolbar.contains(e.target) && !bodyEl.contains(e.target)) {
-          toolbar.setAttribute('aria-hidden', 'true');
-          lastRange = null;
-        }
-      });
+      function hideToolbar() {
+        toolbar.setAttribute('aria-hidden', 'true');
+        lastRange = null;
+        // Prevent selectionchange from re-showing toolbar after an action
+        _actionInProgress = true;
+        setTimeout(function () { _actionInProgress = false; }, 400);
+      }
 
-      // Hide toolbar on scroll (selection moves out of view)
-      window.addEventListener('scroll', function () {
-        if (toolbar.getAttribute('aria-hidden') === 'false') {
-          toolbar.setAttribute('aria-hidden', 'true');
-          lastRange = null;
-        }
-      }, { passive: true });
+      if (isMobile) {
+        // Mobile: show toolbar after touch selection completes
+        // Use a longer delay to let the browser finalize the selection
+        document.addEventListener('selectionchange', function () {
+          clearTimeout(showToolbar._t);
+          showToolbar._t = setTimeout(function () {
+            var sel = window.getSelection();
+            if (sel && !sel.isCollapsed && sel.toString().trim()) {
+              showToolbar();
+            }
+          }, 300);
+        });
+
+        // Also trigger on touchend inside the body
+        bodyEl.addEventListener('touchend', function () {
+          setTimeout(showToolbar, 300);
+        });
+
+        // Hide when tapping outside body and toolbar
+        document.addEventListener('touchstart', function (e) {
+          if (toolbar.getAttribute('aria-hidden') === 'false' &&
+              !toolbar.contains(e.target) && !bodyEl.contains(e.target)) {
+            hideToolbar();
+          }
+        }, { passive: true });
+      } else {
+        // Desktop: selectionchange with debounce
+        document.addEventListener('selectionchange', function () {
+          clearTimeout(showToolbar._t);
+          showToolbar._t = setTimeout(showToolbar, 100);
+        });
+
+        // Hide when clicking outside body and toolbar
+        document.addEventListener('mousedown', function (e) {
+          if (!toolbar.contains(e.target) && !bodyEl.contains(e.target)) {
+            hideToolbar();
+          }
+        });
+
+        // Hide on scroll (desktop only — mobile selection shouldn't dismiss on scroll)
+        window.addEventListener('scroll', function () {
+          if (toolbar.getAttribute('aria-hidden') === 'false') {
+            hideToolbar();
+          }
+        }, { passive: true });
+      }
 
       if (highlightBtn) {
         highlightBtn.addEventListener('click', function () {
