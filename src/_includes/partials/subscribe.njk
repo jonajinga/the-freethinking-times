@@ -15,7 +15,7 @@
     Every article from The Freethinking Times, delivered when it publishes.
     No algorithms. No digest curation. Just the work, direct.
   </p>
-  <form class="subscribe-form" novalidate>
+  <form class="subscribe-form" data-action="https://buttondown.com/api/emails/embed-subscribe/{{ site.newsletter.username }}" novalidate>
     <label for="subscribe-email-inline" class="visually-hidden">Your email address</label>
     <input
       class="subscribe-form__input"
@@ -40,7 +40,7 @@
   <p class="subscribe-block__body">
     New articles by email. Free. No spam. Unsubscribe anytime.
   </p>
-  <form class="subscribe-form" novalidate>
+  <form class="subscribe-form" data-action="https://buttondown.com/api/emails/embed-subscribe/{{ site.newsletter.username }}" novalidate>
     <label for="subscribe-email-sidebar" class="visually-hidden">Your email address</label>
     <input
       class="subscribe-form__input"
@@ -62,7 +62,7 @@
   <p class="subscribe-block__body">
     Independent journalism delivered directly. Free, always. Unsubscribe at any time.
   </p>
-  <form class="subscribe-form" novalidate>
+  <form class="subscribe-form" data-action="https://buttondown.com/api/emails/embed-subscribe/{{ site.newsletter.username }}" novalidate>
     <label for="subscribe-email-footer" class="visually-hidden">Your email address</label>
     <input
       class="subscribe-form__input"

@@ -24,7 +24,7 @@ layout: layouts/base.njk
      hidden></div>
 
 {# Inline script: apply focus mode before paint to avoid layout shift #}
-<script>document.documentElement.classList.add('is-library-reading');(function(){if(localStorage.getItem('tft-focus')==='on')document.documentElement.setAttribute('data-focus-mode','on');}());</script>
+<script>document.documentElement.classList.add('is-library-reading');(function(){if(localStorage.getItem((window.__PREFIX||'tft')+'-focus')==='on')document.documentElement.setAttribute('data-focus-mode','on');}());</script>
 
 {# ── Reading progress bar ── #}
 <div class="library-reading-progress" aria-hidden="true">
@@ -36,11 +36,14 @@ layout: layouts/base.njk
   <a class="library-reading-header__back" href="/library/{{ workSlug }}/">&larr; {{ workTitle or workSlug }}</a>
   <span class="library-reading-header__title">{{ title }}</span>
   <div class="library-reading-header__actions">
-    <button class="library-bookmark-btn" type="button" aria-pressed="false" aria-label="Bookmark this position">
-      Bookmark
-    </button>
     <button class="library-panel-toggle" type="button" aria-expanded="false" aria-controls="library-panel">
-      Panel
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+      Notes
     </button>
   </div>
 </header>
@@ -190,11 +193,15 @@ layout: layouts/base.njk
     <button class="library-panel__tab"
             role="tab"
             aria-selected="false"
-            data-target="panel-bookmarks">Bookmarks</button>
+            data-target="panel-highlights">Highlights</button>
     <button class="library-panel__tab"
             role="tab"
             aria-selected="false"
-            data-target="panel-annotations">Notes</button>
+            data-target="panel-notes">Notes</button>
+    <button class="library-panel__tab"
+            role="tab"
+            aria-selected="false"
+            data-target="panel-bookmarks">Bookmarks</button>
   </div>
 
   <div class="library-panel__body">
@@ -214,11 +221,14 @@ layout: layouts/base.njk
       {% endif %}
     </div>
 
+    {# Highlights tab (no notes) #}
+    <div id="panel-highlights" class="library-panel__section" aria-hidden="true"></div>
+
+    {# Notes tab (annotations with notes only) #}
+    <div id="panel-notes" class="library-panel__section" aria-hidden="true"></div>
+
     {# Bookmarks tab #}
     <div id="panel-bookmarks" class="library-panel__section" aria-hidden="true"></div>
-
-    {# Annotations tab #}
-    <div id="panel-annotations" class="library-panel__section" aria-hidden="true"></div>
   </div>
 </aside>
 
@@ -226,9 +236,11 @@ layout: layouts/base.njk
 <div id="annotation-toolbar" class="annotation-toolbar" role="toolbar" aria-hidden="true" aria-label="Selection actions">
   <button id="ann-highlight-btn" class="annotation-toolbar__btn" type="button">Highlight</button>
   <div class="annotation-toolbar__divider" aria-hidden="true"></div>
-  <button id="ann-annotate-btn" class="annotation-toolbar__btn" type="button">Add Note</button>
+  <button id="ann-annotate-btn" class="annotation-toolbar__btn" type="button">Note</button>
   <div class="annotation-toolbar__divider" aria-hidden="true"></div>
-  <button id="ann-dismiss-btn" class="annotation-toolbar__btn" type="button">Dismiss</button>
+  <button id="ann-bookmark-btn" class="annotation-toolbar__btn" type="button">Bookmark</button>
+  <div class="annotation-toolbar__divider" aria-hidden="true"></div>
+  <button id="ann-share-btn" class="annotation-toolbar__btn" type="button">Share</button>
 </div>
 
 {% block scripts %}

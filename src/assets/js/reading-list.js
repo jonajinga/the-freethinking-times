@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var KEY = 'tft-reading-list';
+  var KEY = (window.__PREFIX || 'tft') + '-reading-list';
 
   function load() {
     try {

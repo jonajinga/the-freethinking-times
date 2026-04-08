@@ -5,7 +5,7 @@
  */
 
 (function () {
-  const STORAGE_KEY = 'tft-theme';
+  const STORAGE_KEY = (window.__PREFIX || 'tft') + '-theme';
   const root = document.documentElement;
 
   function getSystemTheme() {

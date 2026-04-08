@@ -5,6 +5,8 @@
 (function () {
   'use strict';
 
+  var _p = window.__PREFIX || 'tft';
+
   /* ── Reading progress bar + % text + back-to-top ─────────── */
   var bar    = document.querySelector('.reading-progress');
   var floats = document.getElementById('reading-floats');
@@ -146,7 +148,7 @@
       var ttsOrigLabel = ttsBtn.getAttribute('aria-label');
       var ttsSpeaking  = false;
       var ttsPaused    = false;
-      var ttsRate      = parseFloat(localStorage.getItem('tft-tts-rate')) || 1;
+      var ttsRate      = parseFloat(localStorage.getItem(_p + '-tts-rate')) || 1;
       var ttsVoice     = null;
       var ttsText      = '';
 
@@ -157,7 +159,7 @@
         if (!list.length) list = voices;
         if (!voiceSelect) return;
         if (list.length <= 1) { voiceSelect.hidden = true; return; }
-        var saved = localStorage.getItem('tft-tts-voice');
+        var saved = localStorage.getItem(_p + '-tts-voice');
         voiceSelect.innerHTML = '';
         list.forEach(function (v) {
           var opt = document.createElement('option');
@@ -237,7 +239,7 @@
       speedBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
           ttsRate = parseFloat(btn.dataset.rate);
-          try { localStorage.setItem('tft-tts-rate', ttsRate); } catch (e) {}
+          try { localStorage.setItem(_p + '-tts-rate', ttsRate); } catch (e) {}
           speedBtns.forEach(function (b) { b.classList.remove('is-active'); });
           btn.classList.add('is-active');
           if (ttsSpeaking && !ttsPaused) {
@@ -252,7 +254,7 @@
         voiceSelect.addEventListener('change', function () {
           var voices = window.speechSynthesis.getVoices();
           ttsVoice = voices.find(function (v) { return v.name === voiceSelect.value; }) || null;
-          try { localStorage.setItem('tft-tts-voice', voiceSelect.value); } catch (e) {}
+          try { localStorage.setItem(_p + '-tts-voice', voiceSelect.value); } catch (e) {}
           if (ttsSpeaking && !ttsPaused) {
             window.speechSynthesis.cancel();
             window.speechSynthesis.speak(buildUtterance(ttsText));
@@ -278,7 +280,7 @@
     focusBtn.addEventListener('click', function () {
       var on = root.getAttribute('data-focus-mode') === 'on';
       root.setAttribute('data-focus-mode', on ? 'off' : 'on');
-      try { localStorage.setItem('tft-focus', on ? 'off' : 'on'); } catch (e) {}
+      try { localStorage.setItem(_p + '-focus', on ? 'off' : 'on'); } catch (e) {}
       syncFocusLabel();
     });
   }
@@ -582,7 +584,8 @@
     if (shareTooltip) shareTooltip.style.display = 'none';
   }
 
-  if (articleBody) {
+  // Skip pullquote share if annotation toolbar is present (it has its own share)
+  if (articleBody && !document.getElementById('annotation-toolbar')) {
     shareTooltip = makeShareTooltip();
 
     document.addEventListener('mouseup', function () {

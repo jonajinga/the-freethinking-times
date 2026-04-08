@@ -1,5 +1,6 @@
 const pluginRss = require("@11ty/eleventy-plugin-rss");
 const { DateTime } = require("luxon");
+const fs = require("fs");
 
 module.exports = function (eleventyConfig) {
 
@@ -9,7 +10,7 @@ module.exports = function (eleventyConfig) {
   // ─── Passthrough Copies ─────────────────────────────────────────────────────
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy({ "src/humans.txt": "humans.txt" });
-  eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
+  // robots.txt is now a Nunjucks template (robots.njk)
   eleventyConfig.addPassthroughCopy({ "src/_redirects": "_redirects" });
 
   // ─── Watch Targets ──────────────────────────────────────────────────────────
@@ -125,7 +126,10 @@ module.exports = function (eleventyConfig) {
   });
 
   // ─── Collections ─────────────────────────────────────────────────────────────
-  const sections = ["news", "opinion", "analysis", "arts-culture", "science-technology", "history", "letters"];
+  const siteData = JSON.parse(fs.readFileSync("./src/_data/site.json", "utf8"));
+  const sections = Object.keys(siteData.sections).filter(
+    key => !["thought-experiments", "trials-of-thought", "glossary", "bookshelf"].includes(key)
+  );
 
   // All content across every section, newest first
   eleventyConfig.addCollection("allContent", (collectionApi) => {

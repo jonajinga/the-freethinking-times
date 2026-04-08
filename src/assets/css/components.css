@@ -815,17 +815,18 @@ a.dateline:hover { color: var(--color-accent); }
 .nav-drawer__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2);
+  gap: var(--space-3);
   padding: var(--space-4) var(--space-5);
   justify-content: center;
+  align-content: center;
 }
 
 .nav-drawer__action-btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 2rem;
+  height: 2rem;
   color: var(--color-ink-muted);
   background: var(--color-bg-alt);
   border: 1px solid var(--color-rule);
@@ -833,12 +834,15 @@ a.dateline:hover { color: var(--color-accent); }
   padding: 0;
   text-decoration: none;
   cursor: pointer;
+  line-height: 1;
   transition: color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .nav-drawer__action-btn svg {
   width: 14px;
   height: 14px;
+  display: block;
+  flex-shrink: 0;
 }
 
 .nav-drawer__action-btn:hover {

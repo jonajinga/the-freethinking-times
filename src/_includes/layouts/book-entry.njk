@@ -10,7 +10,7 @@ layout: base
 </div>
 
 {# Apply focus mode before paint #}
-<script>(function(){if(localStorage.getItem('tft-focus')==='on')document.documentElement.setAttribute('data-focus-mode','on');}());</script>
+<script>(function(){if(localStorage.getItem((window.__PREFIX||'tft')+'-focus')==='on')document.documentElement.setAttribute('data-focus-mode','on');}());</script>
 
 <div class="container" style="padding-top: var(--space-12); padding-bottom: var(--space-20);">
 

@@ -15,11 +15,9 @@
 (function () {
   'use strict';
 
-  // ── Config ─────────────────────────────────────────────────────
-  const BUTTONDOWN_URL = 'https://buttondown.com/api/emails/embed-subscribe/thefreethinkingtimes';
-
   // ── Wire up all subscribe forms on the page ────────────────────
   document.querySelectorAll('.subscribe-form').forEach(form => {
+    const BUTTONDOWN_URL = form.dataset.action || 'https://buttondown.com/api/emails/embed-subscribe/thefreethinkingtimes';
     const input  = form.querySelector('.subscribe-form__input');
     const btn    = form.querySelector('.subscribe-form__btn');
     const status = form.nextElementSibling?.classList.contains('subscribe-status')

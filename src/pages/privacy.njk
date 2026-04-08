@@ -37,7 +37,9 @@ permalink: /privacy/
 
       <p>We use <a href="https://umami.is" target="_blank" rel="noopener noreferrer">Umami</a> for site analytics. Umami is designed to be privacy-first: it collects no personally identifiable information, sets no cookies, and does not track visitors across sites or sessions. It records page views, referrer, browser type, and general country — in aggregate, never linked to an individual.</p>
 
-      <p>Our analytics dashboard is public. You can view the same data we see at <a href="https://cloud.umami.is/analytics/us/share/c12DreGvxbQKjj2l" target="_blank" rel="noopener noreferrer">our public analytics page</a>.</p>
+      {% if site.analytics and site.analytics.dashboardUrl %}
+      <p>Our analytics dashboard is public. You can view the same data we see at <a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer">our public analytics page</a>.</p>
+      {% endif %}
 
       <h2>Comments</h2>
 

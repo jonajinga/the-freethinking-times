@@ -41,6 +41,9 @@ permalink: /features/
         <li><strong>Download</strong> — export article as plain text (.txt) or Markdown (.md)</li>
         <li><strong>Print</strong> — print-optimised CSS suppresses all chrome and renders clean text; works for PDF saving</li>
         <li><strong>Cite</strong> — citation modal with APA, MLA, and Chicago formats; one-click copy for each</li>
+        <li><strong>Highlight & annotate</strong> — select any text in an article to highlight it or add a personal note; highlights and notes persist in <code>localStorage</code></li>
+        <li><strong>Position bookmarks</strong> — save your scroll position in an article to return to later</li>
+        <li><strong>Notes panel</strong> — slide-out panel listing all your highlights, annotations, and bookmarks for the current article</li>
         <li><strong>Annotation footnotes</strong> — inline tooltip footnotes via shortcode; no jump to the bottom of the page</li>
       </ul>
 
@@ -114,7 +117,7 @@ permalink: /features/
 
       <h2>Analytics & privacy</h2>
       <ul>
-        <li><strong>Umami analytics</strong> — privacy-first; no cookies, no personally identifiable information; <a href="https://cloud.umami.is/analytics/us/share/c12DreGvxbQKjj2l" target="_blank" rel="noopener noreferrer">public dashboard</a></li>
+        <li><strong>Umami analytics</strong> — privacy-first; no cookies, no personally identifiable information{% if site.analytics and site.analytics.dashboardUrl %}; <a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer">public dashboard</a>{% endif %}</li>
         <li><strong>No first-party cookies</strong> — all reader preferences and state stored in <code>localStorage</code></li>
         <li><strong>No advertising networks or tracking pixels</strong></li>
         <li><strong>Privacy policy</strong> at <a href="/privacy/">/privacy/</a></li>
@@ -141,12 +144,13 @@ permalink: /features/
       <ul>
         <li><strong>Features page</strong> at <a href="/features/">/features/</a> — this page; complete inventory of site features</li>
         <li><strong>Changelog</strong> at <a href="/changelog/">/changelog/</a> — public record of every site change</li>
-        <li><strong>Public analytics</strong> — <a href="https://cloud.umami.is/analytics/us/share/c12DreGvxbQKjj2l" target="_blank" rel="noopener noreferrer">live Umami dashboard</a> readable by anyone</li>
+        {% if site.analytics and site.analytics.dashboardUrl %}<li><strong>Public analytics</strong> — <a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer">live Umami dashboard</a> readable by anyone</li>{% endif %}
         <li><strong>Editorial handbook</strong> at <a href="/editorial/">/editorial/</a> — public standards covering accuracy, sourcing, corrections, AI use, and complaints</li>
         <li><strong>Corrections log</strong> at <a href="/corrections/">/corrections/</a> — aggregate view of all published corrections</li>
+        <li><strong>Open source</strong> — the site's codebase is available as an open-source template; see <a href="/open-source/">/open-source/</a></li>
       </ul>
 
-      <p><em>Last updated: 19 March 2026</em></p>
+      <p><em>Last updated: 8 April 2026</em></p>
 
     </div>
   </div>

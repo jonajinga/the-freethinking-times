@@ -24,6 +24,7 @@
   .site-nav,
   .site-footer,
   .reading-progress,
+  .article-reading-header,
   .article-layout__aside,
   .article-header__actions,
   .reading-floats,
@@ -39,6 +40,10 @@
   .tts-controls,
   .cite-modal,
   .cite-overlay,
+  .library-panel,
+  .library-panel-overlay,
+  .article-notes-overlay,
+  .annotation-toolbar,
   .gtranslate_wrapper,
   .gt_float_switcher,
   .fn-tooltip { display: none !important; }

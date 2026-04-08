@@ -7,9 +7,10 @@
 (function () {
   'use strict';
 
+  var _p = window.__PREFIX || 'tft';
   var KEYS = {
-    fontSize: 'tft-rs-font-size',
-    font:     'tft-rs-font'
+    fontSize: _p + '-rs-font-size',
+    font:     _p + '-rs-font'
   };
 
   var btn   = document.getElementById('reading-settings-btn');
@@ -37,10 +38,10 @@
   }
 
   function loadOpenDyslexic() {
-    if (document.getElementById('tft-open-dyslexic')) return;
+    if (document.getElementById(_p + '-open-dyslexic')) return;
     // @fontsource/open-dyslexic provides woff2 files and correct @font-face declarations
     var link = document.createElement('link');
-    link.id = 'tft-open-dyslexic';
+    link.id = _p + '-open-dyslexic';
     link.rel = 'stylesheet';
     link.href = 'https://cdn.jsdelivr.net/npm/@fontsource/open-dyslexic@5/index.css';
     document.head.appendChild(link);

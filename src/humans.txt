@@ -1,12 +1,12 @@
 /* TEAM */
 Editor & Publisher: The Freethinking Times
-Contact: editor [at] freetimingtimes [dot] com
+Contact: hello [at] thefreethinkingtimes [dot] com
 Location: United States
 
 /* THANKS */
 Built with Eleventy (11ty.dev)
 Hosted on Cloudflare Pages
-Fonts via Google Fonts: Playfair Display, Lora, Source Serif 4, DM Sans
+Fonts via Bunny Fonts: Playfair Display, Lora, Source Serif 4, DM Sans
 
 /* SITE */
 Last update: 2026/03

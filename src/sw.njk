@@ -2,7 +2,7 @@
 permalink: /sw.js
 eleventyExcludeFromCollections: true
 ---
-const CACHE = 'tft-{{ buildTime }}';
+const CACHE = '{{ site.storagePrefix }}-{{ buildTime }}';
 const STATIC = [
   '/assets/css/main.css',
   '/assets/js/theme.js',

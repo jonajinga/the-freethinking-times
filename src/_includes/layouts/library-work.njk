@@ -96,7 +96,7 @@ layout: layouts/base.njk
 (function () {
   document.addEventListener('DOMContentLoaded', function () {
     var workSlug = (document.getElementById('library-context') || {}).dataset.workSlug || '';
-    var key = 'tft-lib-completed-' + workSlug;
+    var key = (window.__PREFIX || 'tft') + '-lib-completed-' + workSlug;
     var completed;
     try { completed = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) { completed = []; }
 
