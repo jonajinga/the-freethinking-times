@@ -967,6 +967,15 @@
   background: rgba(250, 204, 21, 0.25);
 }
 
+/* Highlights with notes — dotted underline to indicate attached note */
+.library-highlight--note {
+  border-bottom: 2px dotted rgba(200, 160, 0, 0.6);
+}
+
+[data-theme="dark"] .library-highlight--note {
+  border-bottom-color: rgba(250, 204, 21, 0.5);
+}
+
 /* Panel overlay backdrop */
 .library-panel-overlay {
   display: none;

@@ -227,13 +227,13 @@
       var list = load().filter(function (a) { return a.chapter === chapterSlug; });
       list.forEach(function (ann) {
         try {
-          highlightTextInEl(bodyEl, ann.quote, ann.id);
+          highlightTextInEl(bodyEl, ann.quote, ann.id, !!ann.note);
         } catch (e) {}
       });
     }
 
     // Simple text-match highlight (first occurrence only)
-    function highlightTextInEl(el, text, annId) {
+    function highlightTextInEl(el, text, annId, hasNote) {
       var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
       var node;
       while ((node = walker.nextNode())) {
@@ -241,7 +241,7 @@
         if (idx !== -1) {
           var before  = document.createTextNode(node.nodeValue.slice(0, idx));
           var mark    = document.createElement('mark');
-          mark.className  = 'library-highlight';
+          mark.className  = 'library-highlight' + (hasNote ? ' library-highlight--note' : '');
           mark.dataset.annId = annId;
           mark.textContent = text;
           var after   = document.createTextNode(node.nodeValue.slice(idx + text.length));
@@ -431,22 +431,21 @@
     var lastRange     = null;
 
     // Wrap the live selection range in a <mark> for immediate visual feedback
-    function wrapSelectionInMark(annId) {
+    function wrapSelectionInMark(annId, hasNote) {
       var sel = window.getSelection();
       if (!sel || !sel.rangeCount) return;
       var range = sel.getRangeAt(0);
+      var cls = 'library-highlight' + (hasNote ? ' library-highlight--note' : '');
       try {
         var mark = document.createElement('mark');
-        mark.className = 'library-highlight';
+        mark.className = cls;
         mark.dataset.annId = annId;
         range.surroundContents(mark);
       } catch (e) {
-        // surroundContents fails if selection crosses element boundaries;
-        // fall back to extracting and re-inserting
         try {
           var fragment = range.extractContents();
           var mark2 = document.createElement('mark');
-          mark2.className = 'library-highlight';
+          mark2.className = cls;
           mark2.dataset.annId = annId;
           mark2.appendChild(fragment);
           range.insertNode(mark2);
@@ -541,10 +540,9 @@
         highlightBtn.addEventListener('click', function () {
           if (!lastRange) return;
           var annId = Annotations.add(chapterSlug, lastRange.text, '');
-          wrapSelectionInMark(annId);
-          toolbar.setAttribute('aria-hidden', 'true');
+          wrapSelectionInMark(annId, false);
+          hideToolbar();
           window.getSelection().removeAllRanges();
-          lastRange = null;
         });
       }
 
@@ -553,10 +551,9 @@
           if (!lastRange) return;
           var note = prompt('Add a note (optional):') || '';
           var annId = Annotations.add(chapterSlug, lastRange.text, note);
-          wrapSelectionInMark(annId);
-          toolbar.setAttribute('aria-hidden', 'true');
+          wrapSelectionInMark(annId, !!note);
+          hideToolbar();
           window.getSelection().removeAllRanges();
-          lastRange = null;
         });
       }
 

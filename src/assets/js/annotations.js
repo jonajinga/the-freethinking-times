@@ -37,10 +37,10 @@
       try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {}
     }
 
-    function add(scrollPct, context, bodyPct) {
+    function add(scrollPct, context, bodyOffset) {
       var list = load();
       var id = 'bm-' + Date.now();
-      list.push({ id: id, scrollPct: scrollPct, bodyPct: bodyPct != null ? bodyPct : scrollPct, context: context || '', ts: Date.now() });
+      list.push({ id: id, scrollPct: scrollPct, bodyOffset: bodyOffset != null ? bodyOffset : -1, context: context || '', ts: Date.now() });
       save(list);
       return id;
     }
@@ -148,12 +148,12 @@
       // Re-apply all saved annotations
       var list = load();
       list.forEach(function (ann) {
-        try { highlightTextInEl(bodyEl, ann.quote, ann.id); }
+        try { highlightTextInEl(bodyEl, ann.quote, ann.id, !!ann.note); }
         catch (e) {}
       });
     }
 
-    function highlightTextInEl(el, text, annId) {
+    function highlightTextInEl(el, text, annId, hasNote) {
       var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
       var node;
       while ((node = walker.nextNode())) {
@@ -161,7 +161,7 @@
         if (idx !== -1) {
           var before = document.createTextNode(node.nodeValue.slice(0, idx));
           var mark = document.createElement('mark');
-          mark.className = 'library-highlight';
+          mark.className = 'library-highlight' + (hasNote ? ' library-highlight--note' : '');
           mark.dataset.annId = annId;
           mark.textContent = text;
           var after = document.createTextNode(node.nodeValue.slice(idx + text.length));
@@ -293,20 +293,21 @@
     var lastRange = null;
 
     // Wrap the live selection range in a <mark> for immediate visual feedback
-    function wrapSelectionInMark(annId) {
+    function wrapSelectionInMark(annId, hasNote) {
       var sel = window.getSelection();
       if (!sel || !sel.rangeCount) return;
       var range = sel.getRangeAt(0);
+      var cls = 'library-highlight' + (hasNote ? ' library-highlight--note' : '');
       try {
         var mark = document.createElement('mark');
-        mark.className = 'library-highlight';
+        mark.className = cls;
         mark.dataset.annId = annId;
         range.surroundContents(mark);
       } catch (e) {
         try {
           var fragment = range.extractContents();
           var mark2 = document.createElement('mark');
-          mark2.className = 'library-highlight';
+          mark2.className = cls;
           mark2.dataset.annId = annId;
           mark2.appendChild(fragment);
           range.insertNode(mark2);
@@ -411,10 +412,9 @@
         highlightBtn.addEventListener('click', function () {
           if (!lastRange) return;
           var annId = Annotations.add(lastRange.text, '');
-          wrapSelectionInMark(annId);
-          toolbar.setAttribute('aria-hidden', 'true');
+          wrapSelectionInMark(annId, false);
+          hideToolbar();
           window.getSelection().removeAllRanges();
-          lastRange = null;
         });
       }
 
@@ -423,10 +423,9 @@
           if (!lastRange) return;
           var note = prompt('Add a note (optional):') || '';
           var annId = Annotations.add(lastRange.text, note);
-          wrapSelectionInMark(annId);
-          toolbar.setAttribute('aria-hidden', 'true');
+          wrapSelectionInMark(annId, !!note);
+          hideToolbar();
           window.getSelection().removeAllRanges();
-          lastRange = null;
         });
       }
 
@@ -453,20 +452,23 @@
 
       if (bookmarkBtn) {
         bookmarkBtn.addEventListener('click', function () {
-          // Store both page scroll % (for jumping back) and body-relative % (for indicator)
           var scrollTop = window.scrollY || document.documentElement.scrollTop;
           var docHeight = document.documentElement.scrollHeight - window.innerHeight;
           var pagePct = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
 
-          var bodyRect = bodyEl.getBoundingClientRect();
-          var bodyTop = bodyRect.top + scrollTop;
-          var bodyPct = bodyEl.offsetHeight > 0
-            ? Math.round(((scrollTop - bodyTop) / bodyEl.offsetHeight) * 100)
-            : 0;
-          bodyPct = Math.max(0, Math.min(100, bodyPct));
+          // Get pixel offset of the selection from top of .article-body
+          var bodyOffset = -1;
+          var sel = window.getSelection();
+          if (sel && sel.rangeCount) {
+            try {
+              var selRect = sel.getRangeAt(0).getBoundingClientRect();
+              var bodyRect = bodyEl.getBoundingClientRect();
+              bodyOffset = Math.round(selRect.top - bodyRect.top + bodyEl.scrollTop);
+            } catch (e) {}
+          }
 
           var context = lastRange ? lastRange.text.slice(0, 80) : '';
-          Bookmarks.add(pagePct, context, bodyPct);
+          Bookmarks.add(pagePct, context, bodyOffset);
           toolbar.setAttribute('aria-hidden', 'true');
           window.getSelection().removeAllRanges();
           lastRange = null;
@@ -491,16 +493,23 @@
       var list = Bookmarks.loadAll();
       if (!list.length || !bodyEl) return;
 
-      var bodyHeight = bodyEl.offsetHeight;
+      var bodyRect = bodyEl.getBoundingClientRect();
+      var bodyAbsTop = bodyRect.top + (window.scrollY || 0);
 
       list.forEach(function (bm) {
-        // Use bodyPct if available (new bookmarks), fall back to scrollPct (legacy)
-        var pct = bm.bodyPct != null ? bm.bodyPct : bm.scrollPct;
-        var topPx = Math.round((pct / 100) * bodyHeight);
+        // Use stored pixel offset from body top if available
+        var topPx;
+        if (bm.bodyOffset != null && bm.bodyOffset >= 0) {
+          topPx = bm.bodyOffset;
+        } else {
+          // Legacy fallback: approximate from page scroll %
+          var pageScrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+          var pageY = Math.round((bm.scrollPct / 100) * pageScrollHeight);
+          topPx = Math.max(0, pageY - bodyAbsTop);
+        }
 
-        // For clicking, use page scroll %
-        var pageScrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-        var scrollTarget = Math.round((bm.scrollPct / 100) * pageScrollHeight);
+        // Scroll target for clicking
+        var scrollTarget = bodyAbsTop + topPx;
 
         var indicator = document.createElement('div');
         indicator.className = 'bookmark-indicator';
