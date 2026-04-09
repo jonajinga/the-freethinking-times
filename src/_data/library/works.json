@@ -83,5 +83,22 @@
     "chapters": 1,
     "featured": false,
     "description": "A lecture delivered at the National Secular Society in 1927 — still the clearest short statement of secular humanism ever written."
+  },
+  {
+    "slug": "works-of-ingersoll-v1",
+    "title": "The Works of Robert G. Ingersoll, Vol. 1",
+    "author": "Robert G. Ingersoll",
+    "authorSlug": "robert-ingersoll",
+    "year": 1909,
+    "era": "19th Century",
+    "type": "lectures",
+    "subjects": ["Freethought", "Philosophy", "Religion", "Agnosticism", "Liberty"],
+    "difficulty": "Accessible",
+    "language": "English",
+    "translated": false,
+    "translator": null,
+    "chapters": 9,
+    "featured": true,
+    "description": "Nine lectures by 'the Great Agnostic' — the most celebrated orator of nineteenth-century America. A sustained, witty, and fearless critique of religious orthodoxy paired with a passionate defence of individual liberty and the scientific method."
   }
 ]
