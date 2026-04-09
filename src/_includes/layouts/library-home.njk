@@ -15,7 +15,7 @@ layout: layouts/base.njk
       <h2 class="library-featured__heading" id="featured-heading">Featured Works</h2>
       {% set featuredWorks = [] %}
       {% for w in library.works %}
-        {% if w.featured %}{% set featuredWorks = (featuredWorks.push(w), featuredWorks) %}{% endif %}
+        {% if w.featured and not w.parentWork %}{% set featuredWorks = (featuredWorks.push(w), featuredWorks) %}{% endif %}
       {% endfor %}
       {% if featuredWorks.length %}
         <div class="library-featured__grid">
@@ -50,11 +50,13 @@ layout: layouts/base.njk
         {% set types = [] %}
         {% set eras = [] %}
         {% for w in library.works %}
+          {% if not w.parentWork %}
           {% for s in (w.subjects or []) %}
             {% if s not in subjectOptions %}{% set subjectOptions = subjectOptions.concat([s]) %}{% endif %}
           {% endfor %}
           {% if w.type and w.type not in types %}{% set types = types.concat([w.type]) %}{% endif %}
           {% if w.era and w.era not in eras %}{% set eras = eras.concat([w.era]) %}{% endif %}
+          {% endif %}
         {% endfor %}
 
         <div class="library-filter-bar" aria-label="Filter catalogue">
@@ -93,6 +95,7 @@ layout: layouts/base.njk
           </thead>
           <tbody id="catalogue-body">
             {% for w in library.works %}
+              {% if not w.parentWork %}
               <tr data-subject="{{ (w.subjects or []) | join(',') }}" data-type="{{ w.type or '' }}" data-era="{{ w.era or '' }}">
                 <td class="library-table__title-cell">
                   <a href="/library/{{ w.slug }}/">{{ w.title }}</a>
@@ -101,6 +104,7 @@ layout: layouts/base.njk
                 <td class="library-table__type">{{ w.type or "—" }}</td>
                 <td class="library-table__era">{{ w.era or (w.year ~ " CE") or "—" }}</td>
               </tr>
+              {% endif %}
             {% endfor %}
           </tbody>
         </table>

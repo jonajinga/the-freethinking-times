@@ -19,7 +19,7 @@ eleventyComputed:
 
     {% set subjectWorks = [] %}
     {% for w in library.works %}
-      {% if subject in (w.subjects or []) %}
+      {% if subject in (w.subjects or []) and not w.parentWork %}
         {% set subjectWorks = subjectWorks.concat([w]) %}
       {% endif %}
     {% endfor %}

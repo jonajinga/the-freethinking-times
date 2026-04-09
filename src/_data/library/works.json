@@ -85,8 +85,27 @@
     "description": "A lecture delivered at the National Secular Society in 1927 — still the clearest short statement of secular humanism ever written."
   },
   {
+    "slug": "works-of-ingersoll",
+    "title": "The Works of Robert G. Ingersoll",
+    "author": "Robert G. Ingersoll",
+    "authorSlug": "robert-ingersoll",
+    "year": 1909,
+    "era": "19th Century",
+    "type": "lectures",
+    "subjects": ["Freethought", "Philosophy", "Religion", "Agnosticism", "Liberty"],
+    "difficulty": "Accessible",
+    "language": "English",
+    "translated": false,
+    "translator": null,
+    "chapters": 12,
+    "featured": true,
+    "isParent": true,
+    "volumes": ["works-of-ingersoll-v1", "works-of-ingersoll-v2"],
+    "description": "The Dresden Edition lectures of 'the Great Agnostic' — the most celebrated orator of nineteenth-century America. A sustained, witty, and fearless critique of religious orthodoxy paired with a passionate defence of individual liberty and the scientific method."
+  },
+  {
     "slug": "works-of-ingersoll-v1",
-    "title": "The Works of Robert G. Ingersoll, Vol. 1",
+    "title": "Vol. 1 — Lectures",
     "author": "Robert G. Ingersoll",
     "authorSlug": "robert-ingersoll",
     "year": 1909,
@@ -98,7 +117,26 @@
     "translated": false,
     "translator": null,
     "chapters": 9,
-    "featured": true,
-    "description": "Nine lectures by 'the Great Agnostic' — the most celebrated orator of nineteenth-century America. A sustained, witty, and fearless critique of religious orthodoxy paired with a passionate defence of individual liberty and the scientific method."
+    "featured": false,
+    "parentWork": "works-of-ingersoll",
+    "description": "Nine lectures spanning 1869–1880: The Gods, Humboldt, Thomas Paine, Individuality, Heretics and Heresies, The Ghosts, The Liberty of Man Woman and Child, About Farming in Illinois, and What Must We Do to Be Saved?"
+  },
+  {
+    "slug": "works-of-ingersoll-v2",
+    "title": "Vol. 2 — Lectures",
+    "author": "Robert G. Ingersoll",
+    "authorSlug": "robert-ingersoll",
+    "year": 1909,
+    "era": "19th Century",
+    "type": "lectures",
+    "subjects": ["Freethought", "Philosophy", "Religion", "Agnosticism", "Liberty"],
+    "difficulty": "Accessible",
+    "language": "English",
+    "translated": false,
+    "translator": null,
+    "chapters": 3,
+    "featured": false,
+    "parentWork": "works-of-ingersoll",
+    "description": "Three major lectures: Some Mistakes of Moses (1879), Some Reasons Why (1881), and Orthodoxy (1884)."
   }
 ]

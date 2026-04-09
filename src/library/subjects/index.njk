@@ -20,7 +20,7 @@ permalink: /library/subjects/
         {% for subject in library.subjects %}
           {% set count = 0 %}
           {% for w in library.works %}
-            {% if subject in (w.subjects or []) %}{% set count = count + 1 %}{% endif %}
+            {% if subject in (w.subjects or []) and not w.parentWork %}{% set count = count + 1 %}{% endif %}
           {% endfor %}
           <a class="library-tag" href="/library/subjects/{{ subject | slugify }}/">
             {{ subject }}<span class="library-tag__count">{{ count }}</span>
@@ -43,7 +43,7 @@ permalink: /library/subjects/
           {% for subject in library.subjects %}
             {% set count = 0 %}
             {% for w in library.works %}
-              {% if subject in (w.subjects or []) %}{% set count = count + 1 %}{% endif %}
+              {% if subject in (w.subjects or []) and not w.parentWork %}{% set count = count + 1 %}{% endif %}
             {% endfor %}
             <tr>
               <td><a href="/library/subjects/{{ subject | slugify }}/">{{ subject }}</a></td>

@@ -35,7 +35,7 @@ eleventyComputed:
     {# ── Works in the library ── #}
     {% set authorWorks = [] %}
     {% for w in library.works %}
-      {% if w.authorSlug === libraryAuthor.slug %}
+      {% if w.authorSlug === libraryAuthor.slug and not w.parentWork %}
         {% set authorWorks = authorWorks.concat([w]) %}
       {% endif %}
     {% endfor %}

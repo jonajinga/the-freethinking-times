@@ -56,34 +56,65 @@ layout: layouts/base.njk
       </div>
     </article>
 
-    {# ── Chapter List ── #}
-    {% set chapters = collections.libraryByWork | chaptersForWork(workSlug) %}
-    {% if chapters and chapters.length %}
-      <nav class="library-chapter-list" id="chapter-list" aria-label="Chapters">
+    {# ── Volume List (for multi-volume works) ── #}
+    {% if isParent and volumes %}
+      <nav class="library-chapter-list" id="chapter-list" aria-label="Volumes">
         <h2 class="library-chapter-list__heading">
-          {{ chapters.length }} Chapter{{ "s" if chapters.length !== 1 }}
+          {{ volumes | length }} Volume{{ "s" if volumes.length !== 1 }}
         </h2>
-        {% for ch in chapters %}
+        {% for volSlug in volumes %}
+          {% set vol = null %}
+          {% for w in library.works %}
+            {% if w.slug == volSlug %}{% set vol = w %}{% endif %}
+          {% endfor %}
+          {% if vol %}
           <a class="library-chapter-item"
-             href="{{ ch.url }}"
-             data-chapter-slug="{{ ch.page.fileSlug }}">
-            <span class="library-chapter-item__number">{{ ch.data.chapterNumber or loop.index }}</span>
+             href="/library/{{ volSlug }}/">
+            <span class="library-chapter-item__number">{{ loop.index }}</span>
             <span class="library-chapter-item__body">
-              <span class="library-chapter-item__title">{{ ch.data.title }}</span>
-              {% if ch.data.subtitle %}
-                <span class="library-chapter-item__subtitle">{{ ch.data.subtitle }}</span>
+              <span class="library-chapter-item__title">{{ vol.title }}</span>
+              {% if vol.description %}
+                <span class="library-chapter-item__subtitle">{{ vol.description }}</span>
               {% endif %}
             </span>
             <span class="library-chapter-item__meta">
-              <span class="library-chapter-item__complete" aria-label="Not completed">&#9675;</span>
+              {{ vol.chapters }} chapter{{ "s" if vol.chapters !== 1 }}
             </span>
           </a>
+          {% endif %}
         {% endfor %}
       </nav>
+
+    {# ── Chapter List (for single-volume works) ── #}
     {% else %}
-      <p style="font-family:var(--font-ui);font-size:var(--text-sm);color:var(--color-ink-faint);padding:var(--space-8) 0;">
-        No chapters available yet.
-      </p>
+      {% set chapters = collections.libraryByWork | chaptersForWork(workSlug) %}
+      {% if chapters and chapters.length %}
+        <nav class="library-chapter-list" id="chapter-list" aria-label="Chapters">
+          <h2 class="library-chapter-list__heading">
+            {{ chapters.length }} Chapter{{ "s" if chapters.length !== 1 }}
+          </h2>
+          {% for ch in chapters %}
+            <a class="library-chapter-item"
+               href="{{ ch.url }}"
+               data-chapter-slug="{{ ch.page.fileSlug }}">
+              <span class="library-chapter-item__number">{{ ch.data.chapterNumber or loop.index }}</span>
+              <span class="library-chapter-item__body">
+                <span class="library-chapter-item__title">{{ ch.data.title }}</span>
+                {% if ch.data.subtitle %}
+                  <span class="library-chapter-item__subtitle">{{ ch.data.subtitle }}</span>
+                {% endif %}
+              </span>
+              <span class="library-chapter-item__meta">
+                <span class="library-chapter-item__complete" aria-label="Not completed">&#9675;</span>
+              </span>
+            </a>
+          {% endfor %}
+        </nav>
+      {% else %}
+        <p style="font-family:var(--font-ui);font-size:var(--text-sm);color:var(--color-ink-faint);padding:var(--space-8) 0;">
+          No chapters available yet.
+        </p>
+      {% endif %}
     {% endif %}
 
   </div>

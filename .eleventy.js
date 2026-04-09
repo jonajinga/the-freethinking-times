@@ -384,8 +384,11 @@ module.exports = function (eleventyConfig) {
 
   // Work landing pages (index.md files directly inside each work directory)
   eleventyConfig.addCollection("libraryWorks", (collectionApi) => {
+    const worksData = JSON.parse(fs.readFileSync("./src/_data/library/works.json", "utf8"));
+    const childSlugs = worksData.filter(w => w.parentWork).map(w => w.slug);
     return collectionApi
       .getFilteredByGlob("src/library/works/*/index.md")
+      .filter(item => !childSlugs.includes(item.data.workSlug))
       .sort((a, b) => (a.data.title || "").localeCompare(b.data.title || ""));
   });
 
