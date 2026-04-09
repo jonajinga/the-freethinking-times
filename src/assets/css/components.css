@@ -813,20 +813,25 @@ a.dateline:hover { color: var(--color-accent); }
 
 /* ── Drawer action buttons (icon-only mobile quick-actions) ── */
 .nav-drawer__actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 2.5rem);
+  justify-content: center;
+  justify-items: center;
   gap: var(--space-3);
   padding: var(--space-4) var(--space-5);
-  justify-content: center;
-  align-content: center;
+}
+
+/* Center the heart/support button in the middle column of its row */
+.nav-drawer__action-btn--heart {
+  grid-column: 2;
 }
 
 .nav-drawer__action-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
   color: var(--color-ink-muted);
   background: var(--color-bg-alt);
   border: 1px solid var(--color-rule);
