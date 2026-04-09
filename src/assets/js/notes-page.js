@@ -168,11 +168,18 @@
     var btnWrap = document.createElement('div');
     btnWrap.style.cssText = 'display:flex;gap:var(--space-2);align-items:center;';
 
+    var importBtn = document.createElement('button');
+    importBtn.className = 'reading-list-clear';
+    importBtn.type = 'button';
+    importBtn.textContent = 'Import';
+    importBtn.addEventListener('click', importNotes);
+    btnWrap.appendChild(importBtn);
+
     var exportBtn = document.createElement('button');
     exportBtn.className = 'reading-list-clear';
     exportBtn.type = 'button';
     exportBtn.textContent = 'Export';
-    exportBtn.addEventListener('click', function () { exportNotes(pages, keys); });
+    exportBtn.addEventListener('click', exportNotes);
     btnWrap.appendChild(exportBtn);
 
     var clearBtn = document.createElement('button');
@@ -317,48 +324,53 @@
     return max;
   }
 
-  // ── Export as Markdown ──────────────────────────────────────
-  function exportNotes(pages, keys) {
-    var lines = ['# Notes & Highlights', '', 'Exported from The Freethinking Times', '', '---', ''];
-
-    keys.forEach(function (id) {
-      var page = pages[id];
-      var meta = getPageMeta(page.slug, page.type);
-      lines.push('## ' + meta.title);
-      lines.push('URL: ' + window.location.origin + meta.url);
-      lines.push('');
-
-      if (page.annotations.length) {
-        page.annotations.sort(function (a, b) { return b.ts - a.ts; });
-        page.annotations.forEach(function (ann) {
-          lines.push('> ' + ann.quote);
-          if (ann.note) lines.push('');
-          if (ann.note) lines.push('**Note:** ' + ann.note);
-          lines.push('');
-          lines.push('*' + formatDate(ann.ts) + '*');
-          lines.push('');
-        });
+  // ── Export ──────────────────────────────────────────────────
+  function exportNotes() {
+    var dump = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+      if (key && (
+        key.indexOf(_p + '-art-') === 0 ||
+        key.indexOf(_p + '-lib-') === 0
+      )) {
+        dump[key] = localStorage.getItem(key);
       }
-
-      if (page.bookmarks.length) {
-        lines.push('### Bookmarks');
-        page.bookmarks.sort(function (a, b) { return b.ts - a.ts; });
-        page.bookmarks.forEach(function (bm) {
-          var text = bm.context ? '"' + bm.context + '"' : bm.scrollPct + '% through';
-          lines.push('- ' + text + ' (' + formatDate(bm.ts) + ')');
-        });
-        lines.push('');
-      }
-
-      lines.push('---');
-      lines.push('');
-    });
-
-    downloadFile('notes-export.md', lines.join('\n'));
+    }
+    downloadFile('notes-export.json', JSON.stringify(dump, null, 2), 'application/json');
   }
 
-  function downloadFile(filename, content) {
-    var blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+  // ── Import ─────────────────────────────────────────────────
+  function importNotes() {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.addEventListener('change', function () {
+      var file = input.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        try {
+          var data = JSON.parse(reader.result);
+          var count = 0;
+          Object.keys(data).forEach(function (key) {
+            if (key.indexOf(_p + '-art-') === 0 || key.indexOf(_p + '-lib-') === 0) {
+              localStorage.setItem(key, data[key]);
+              count++;
+            }
+          });
+          alert('Imported ' + count + ' items.');
+          render();
+        } catch (e) {
+          alert('Could not read file. Make sure it is a valid JSON export.');
+        }
+      };
+      reader.readAsText(file);
+    });
+    input.click();
+  }
+
+  function downloadFile(filename, content, type) {
+    var blob = new Blob([content], { type: (type || 'text/plain') + ';charset=utf-8' });
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
     a.href = url;

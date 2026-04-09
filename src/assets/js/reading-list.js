@@ -89,26 +89,54 @@
     var actions = document.createElement('div');
     actions.style.cssText = 'display:flex;justify-content:flex-end;gap:var(--space-2);margin-bottom:var(--space-4);';
 
+    var importBtn = document.createElement('button');
+    importBtn.className = 'reading-list-clear';
+    importBtn.type = 'button';
+    importBtn.textContent = 'Import';
+    importBtn.addEventListener('click', function () {
+      var input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.addEventListener('change', function () {
+        var file = input.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function () {
+          try {
+            var data = JSON.parse(reader.result);
+            if (Array.isArray(data)) {
+              var existing = load();
+              var urls = existing.map(function (i) { return i.url; });
+              data.forEach(function (item) {
+                if (item.url && item.title && urls.indexOf(item.url) === -1) {
+                  existing.push(item);
+                }
+              });
+              save(existing);
+              alert('Imported ' + data.length + ' items.');
+              render();
+            }
+          } catch (e) {
+            alert('Could not read file. Make sure it is a valid JSON export.');
+          }
+        };
+        reader.readAsText(file);
+      });
+      input.click();
+    });
+    actions.appendChild(importBtn);
+
     var exportBtn = document.createElement('button');
     exportBtn.className = 'reading-list-clear';
     exportBtn.type = 'button';
     exportBtn.textContent = 'Export';
     exportBtn.addEventListener('click', function () {
       var items = load();
-      var lines = ['# Reading List', '', 'Exported from The Freethinking Times', '', '---', ''];
-      items.forEach(function (item) {
-        lines.push('- [' + item.title + '](' + window.location.origin + item.url + ')');
-        var meta = [];
-        if (item.section) meta.push(item.section);
-        if (item.date) meta.push(item.date);
-        if (item.mins) meta.push(item.mins + ' min read');
-        if (meta.length) lines.push('  ' + meta.join(' · '));
-      });
-      var blob = new Blob([lines.join('\n')], { type: 'text/markdown;charset=utf-8' });
+      var blob = new Blob([JSON.stringify(items, null, 2)], { type: 'application/json;charset=utf-8' });
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
       a.href = url;
-      a.download = 'reading-list.md';
+      a.download = 'reading-list.json';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

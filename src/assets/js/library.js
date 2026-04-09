@@ -461,7 +461,7 @@
     }
 
     if (toolbar && bodyEl) {
-      var isMobile = 'ontouchstart' in window;
+      var isNarrow = window.matchMedia('(max-width: 640px)').matches;
 
       function showToolbar() {
         if (_actionInProgress) return;
@@ -481,7 +481,7 @@
           return;
         }
         lastRange = { text: text, range: range.cloneRange() };
-        if (!isMobile) {
+        if (!isNarrow) {
           try {
             var rect = range.getBoundingClientRect();
             toolbar.style.top  = (rect.top  + window.scrollY - toolbar.offsetHeight - 8) + 'px';
@@ -503,45 +503,32 @@
         setTimeout(function () { _actionInProgress = false; }, 400);
       }
 
-      if (isMobile) {
-        document.addEventListener('selectionchange', function () {
-          clearTimeout(showToolbar._t);
-          showToolbar._t = setTimeout(function () {
-            var sel = window.getSelection();
-            if (sel && !sel.isCollapsed && sel.toString().trim()) {
-              showToolbar();
-            }
-          }, 300);
-        });
-
-        bodyEl.addEventListener('touchend', function () {
-          setTimeout(showToolbar, 300);
-        });
-
-        document.addEventListener('touchstart', function (e) {
-          if (toolbar.getAttribute('aria-hidden') === 'false' &&
-              !toolbar.contains(e.target) && !bodyEl.contains(e.target)) {
-            hideToolbar();
+      document.addEventListener('selectionchange', function () {
+        clearTimeout(showToolbar._t);
+        showToolbar._t = setTimeout(function () {
+          var sel = window.getSelection();
+          if (sel && !sel.isCollapsed && sel.toString().trim()) {
+            showToolbar();
           }
-        }, { passive: true });
-      } else {
-        document.addEventListener('selectionchange', function () {
-          clearTimeout(showToolbar._t);
-          showToolbar._t = setTimeout(showToolbar, 100);
-        });
+        }, 200);
+      });
 
-        document.addEventListener('mousedown', function (e) {
-          if (!toolbar.contains(e.target) && !bodyEl.contains(e.target)) {
-            hideToolbar();
-          }
-        });
+      bodyEl.addEventListener('touchend', function () {
+        setTimeout(showToolbar, 250);
+      });
 
-        window.addEventListener('scroll', function () {
-          if (toolbar.getAttribute('aria-hidden') === 'false') {
-            hideToolbar();
-          }
-        }, { passive: true });
-      }
+      document.addEventListener('mousedown', function (e) {
+        if (toolbar.getAttribute('aria-hidden') === 'false' &&
+            !toolbar.contains(e.target) && !bodyEl.contains(e.target)) {
+          hideToolbar();
+        }
+      });
+      document.addEventListener('touchstart', function (e) {
+        if (toolbar.getAttribute('aria-hidden') === 'false' &&
+            !toolbar.contains(e.target) && !bodyEl.contains(e.target)) {
+          hideToolbar();
+        }
+      }, { passive: true });
 
       if (highlightBtn) {
         highlightBtn.addEventListener('click', function () {

@@ -329,7 +329,7 @@
     }
 
     if (toolbar && bodyEl) {
-      var isMobile = 'ontouchstart' in window;
+      var isNarrow = window.matchMedia('(max-width: 640px)').matches;
 
       function showToolbar() {
         if (_actionInProgress) return;
@@ -350,8 +350,9 @@
         }
         lastRange = { text: text, range: range.cloneRange() };
 
-        // Position: desktop near selection, mobile fixed at bottom (via CSS)
-        if (!isMobile) {
+        // On narrow screens, CSS handles positioning as a fixed bottom bar
+        // On wider screens (desktop + tablet), position near selection
+        if (!isNarrow) {
           try {
             var rect = range.getBoundingClientRect();
             toolbar.style.top = (rect.top + window.scrollY - toolbar.offsetHeight - 8) + 'px';
@@ -369,57 +370,39 @@
       function hideToolbar() {
         toolbar.setAttribute('aria-hidden', 'true');
         lastRange = null;
-        // Prevent selectionchange from re-showing toolbar after an action
         _actionInProgress = true;
         setTimeout(function () { _actionInProgress = false; }, 400);
       }
 
-      if (isMobile) {
-        // Mobile: show toolbar after touch selection completes
-        // Use a longer delay to let the browser finalize the selection
-        document.addEventListener('selectionchange', function () {
-          clearTimeout(showToolbar._t);
-          showToolbar._t = setTimeout(function () {
-            var sel = window.getSelection();
-            if (sel && !sel.isCollapsed && sel.toString().trim()) {
-              showToolbar();
-            }
-          }, 300);
-        });
-
-        // Also trigger on touchend inside the body
-        bodyEl.addEventListener('touchend', function () {
-          setTimeout(showToolbar, 300);
-        });
-
-        // Hide when tapping outside body and toolbar
-        document.addEventListener('touchstart', function (e) {
-          if (toolbar.getAttribute('aria-hidden') === 'false' &&
-              !toolbar.contains(e.target) && !bodyEl.contains(e.target)) {
-            hideToolbar();
+      // Listen to selectionchange on all devices
+      document.addEventListener('selectionchange', function () {
+        clearTimeout(showToolbar._t);
+        showToolbar._t = setTimeout(function () {
+          var sel = window.getSelection();
+          if (sel && !sel.isCollapsed && sel.toString().trim()) {
+            showToolbar();
           }
-        }, { passive: true });
-      } else {
-        // Desktop: selectionchange with debounce
-        document.addEventListener('selectionchange', function () {
-          clearTimeout(showToolbar._t);
-          showToolbar._t = setTimeout(showToolbar, 100);
-        });
+        }, 200);
+      });
 
-        // Hide when clicking outside body and toolbar
-        document.addEventListener('mousedown', function (e) {
-          if (!toolbar.contains(e.target) && !bodyEl.contains(e.target)) {
-            hideToolbar();
-          }
-        });
+      // Touch: also trigger on touchend for reliability
+      bodyEl.addEventListener('touchend', function () {
+        setTimeout(showToolbar, 250);
+      });
 
-        // Hide on scroll (desktop only — mobile selection shouldn't dismiss on scroll)
-        window.addEventListener('scroll', function () {
-          if (toolbar.getAttribute('aria-hidden') === 'false') {
-            hideToolbar();
-          }
-        }, { passive: true });
-      }
+      // Hide on tap/click outside body and toolbar
+      document.addEventListener('mousedown', function (e) {
+        if (toolbar.getAttribute('aria-hidden') === 'false' &&
+            !toolbar.contains(e.target) && !bodyEl.contains(e.target)) {
+          hideToolbar();
+        }
+      });
+      document.addEventListener('touchstart', function (e) {
+        if (toolbar.getAttribute('aria-hidden') === 'false' &&
+            !toolbar.contains(e.target) && !bodyEl.contains(e.target)) {
+          hideToolbar();
+        }
+      }, { passive: true });
 
       if (highlightBtn) {
         highlightBtn.addEventListener('click', function () {
