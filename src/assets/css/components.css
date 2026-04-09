@@ -96,6 +96,7 @@
 .site-nav__list {
   display: flex;
   justify-content: center;
+  align-items: center;
   list-style: none;
   padding: 0;
   margin: 0;
