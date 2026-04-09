@@ -78,14 +78,6 @@
     var list = load();
     root.innerHTML = '';
 
-    if (!list.length) {
-      root.innerHTML =
-        '<p style="color:var(--color-ink-faint);font-style:italic;padding:var(--space-8) 0;">'
-        + 'No saved articles yet. On any article, click <strong>Save</strong> to add it here.'
-        + '</p>';
-      return;
-    }
-
     var actions = document.createElement('div');
     actions.style.cssText = 'display:flex;justify-content:flex-end;gap:var(--space-2);margin-bottom:var(--space-4);';
 
@@ -151,8 +143,19 @@
     clearAll.addEventListener('click', function () {
       if (confirm('Remove all saved articles?')) { save([]); render(); }
     });
-    actions.appendChild(clearAll);
+    if (list.length) {
+      actions.appendChild(exportBtn);
+      actions.appendChild(clearAll);
+    }
     root.appendChild(actions);
+
+    if (!list.length) {
+      var empty = document.createElement('p');
+      empty.style.cssText = 'color:var(--color-ink-faint);font-style:italic;padding:var(--space-8) 0;';
+      empty.innerHTML = 'No saved articles yet. On any article, click <strong>Save</strong> to add it here.';
+      root.appendChild(empty);
+      return;
+    }
 
     var ul = document.createElement('ul');
     ul.className = 'reading-list';

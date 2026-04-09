@@ -134,22 +134,8 @@
     root.innerHTML = '';
 
     var keys = Object.keys(pages);
-    if (!keys.length) {
-      root.innerHTML =
-        '<p style="color:var(--color-ink-faint);font-style:italic;padding:var(--space-8) 0;">'
-        + 'No notes, highlights, or bookmarks yet. Select text on any article or library page to get started.'
-        + '</p>';
-      return;
-    }
 
-    // Sort by most recent activity
-    keys.sort(function (a, b) {
-      var aMax = getLatestTs(pages[a]);
-      var bMax = getLatestTs(pages[b]);
-      return bMax - aMax;
-    });
-
-    // Global actions
+    // Import button always visible
     var actions = document.createElement('div');
     actions.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-6);';
 
@@ -163,7 +149,6 @@
     count.textContent = totalAnn + ' highlight' + (totalAnn !== 1 ? 's' : '') + ' & note' + (totalAnn !== 1 ? 's' : '') +
       ', ' + totalBm + ' bookmark' + (totalBm !== 1 ? 's' : '') +
       ' across ' + keys.length + ' page' + (keys.length !== 1 ? 's' : '');
-    actions.appendChild(count);
 
     var btnWrap = document.createElement('div');
     btnWrap.style.cssText = 'display:flex;gap:var(--space-2);align-items:center;';
@@ -189,8 +174,26 @@
     clearBtn.addEventListener('click', clearAll);
     btnWrap.appendChild(clearBtn);
 
+    if (keys.length) {
+      actions.appendChild(count);
+      btnWrap.appendChild(exportBtn);
+      btnWrap.appendChild(clearBtn);
+    }
     actions.appendChild(btnWrap);
     root.appendChild(actions);
+
+    if (!keys.length) {
+      var empty = document.createElement('p');
+      empty.style.cssText = 'color:var(--color-ink-faint);font-style:italic;padding:var(--space-8) 0;';
+      empty.textContent = 'No notes, highlights, or bookmarks yet. Select text on any article or library page to get started.';
+      root.appendChild(empty);
+      return;
+    }
+
+    // Sort by most recent activity
+    keys.sort(function (a, b) {
+      return getLatestTs(pages[b]) - getLatestTs(pages[a]);
+    });
 
     // Render each page
     keys.forEach(function (id) {
