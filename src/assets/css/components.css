@@ -92,8 +92,8 @@
   color: var(--color-ink);
 }
 
-/* ── Masthead responsive: hide action buttons on mobile (moved to drawer) ── */
-@media (max-width: 600px) {
+/* ── Masthead responsive: hide action buttons on mobile + tablet (moved to drawer) ── */
+@media (max-width: 1024px) {
   .masthead__actions {
     display: none;
   }

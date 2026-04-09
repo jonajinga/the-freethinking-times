@@ -21,6 +21,7 @@ layout: layouts/base.njk
 {# Context div — read by library.js. No chapter slug since this is a standalone short work. #}
 <div id="library-context"
      data-work-slug="{{ workSlug }}"
+     data-work-title="{{ workTitle | escape }}"
      data-chapter-slug="{{ chapterSlug or workSlug }}"
      data-chapter-title="{{ title }}"
      hidden></div>

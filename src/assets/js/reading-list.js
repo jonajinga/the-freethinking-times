@@ -87,7 +87,35 @@
     }
 
     var actions = document.createElement('div');
-    actions.style.cssText = 'display:flex;justify-content:flex-end;margin-bottom:var(--space-4);';
+    actions.style.cssText = 'display:flex;justify-content:flex-end;gap:var(--space-2);margin-bottom:var(--space-4);';
+
+    var exportBtn = document.createElement('button');
+    exportBtn.className = 'reading-list-clear';
+    exportBtn.type = 'button';
+    exportBtn.textContent = 'Export';
+    exportBtn.addEventListener('click', function () {
+      var items = load();
+      var lines = ['# Reading List', '', 'Exported from The Freethinking Times', '', '---', ''];
+      items.forEach(function (item) {
+        lines.push('- [' + item.title + '](' + window.location.origin + item.url + ')');
+        var meta = [];
+        if (item.section) meta.push(item.section);
+        if (item.date) meta.push(item.date);
+        if (item.mins) meta.push(item.mins + ' min read');
+        if (meta.length) lines.push('  ' + meta.join(' · '));
+      });
+      var blob = new Blob([lines.join('\n')], { type: 'text/markdown;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'reading-list.md';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+    actions.appendChild(exportBtn);
+
     var clearAll = document.createElement('button');
     clearAll.className = 'reading-list-clear';
     clearAll.type = 'button';

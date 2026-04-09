@@ -18,6 +18,14 @@
 
   var isChapterPage = chapterSlug !== '';
 
+  // Save page metadata so the /notes/ page can link back
+  try {
+    localStorage.setItem(_p + '-lib-meta-' + workSlug, JSON.stringify({
+      url: '/library/' + workSlug + '/',
+      title: ctx.dataset.workTitle || workSlug
+    }));
+  } catch (e) {}
+
   // ─── ReadingPosition ──────────────────────────────────────
   var ReadingPosition = (function () {
     var KEY_PREFIX = _p + '-lib-pos-';
@@ -432,9 +440,8 @@
 
     // Wrap the live selection range in a <mark> for immediate visual feedback
     function wrapSelectionInMark(annId, hasNote) {
-      var sel = window.getSelection();
-      if (!sel || !sel.rangeCount) return;
-      var range = sel.getRangeAt(0);
+      if (!lastRange || !lastRange.range) return;
+      var range = lastRange.range;
       var cls = 'library-highlight' + (hasNote ? ' library-highlight--note' : '');
       try {
         var mark = document.createElement('mark');
@@ -473,7 +480,7 @@
           hideToolbar();
           return;
         }
-        lastRange = { text: text };
+        lastRange = { text: text, range: range.cloneRange() };
         if (!isMobile) {
           try {
             var rect = range.getBoundingClientRect();

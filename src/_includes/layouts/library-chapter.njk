@@ -19,6 +19,7 @@ layout: layouts/base.njk
 {# Context div — read by library.js #}
 <div id="library-context"
      data-work-slug="{{ workSlug }}"
+     data-work-title="{{ workTitle | escape }}"
      data-chapter-slug="{{ page.fileSlug }}"
      data-chapter-title="{{ title }}"
      hidden></div>

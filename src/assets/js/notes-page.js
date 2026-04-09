@@ -64,15 +64,17 @@
     } catch (e) { return ''; }
   }
 
-  function slugToTitle(slug) {
-    return slug.replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
-  }
-
-  function slugToUrl(slug, type) {
-    // Best-effort URL reconstruction from slug
-    // Articles could be in any section; link to search as fallback
-    if (type === 'library') return '/library/' + slug + '/';
-    return '/' + slug + '/';
+  function getPageMeta(slug, type) {
+    var metaKey = type === 'library' ? _p + '-lib-meta-' + slug : _p + '-art-meta-' + slug;
+    try {
+      var raw = localStorage.getItem(metaKey);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    // Fallback
+    return {
+      url: type === 'library' ? '/library/' + slug + '/' : '/',
+      title: slug.replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); })
+    };
   }
 
   function deleteAnnotation(key, id) {
@@ -163,12 +165,24 @@
       ' across ' + keys.length + ' page' + (keys.length !== 1 ? 's' : '');
     actions.appendChild(count);
 
+    var btnWrap = document.createElement('div');
+    btnWrap.style.cssText = 'display:flex;gap:var(--space-2);align-items:center;';
+
+    var exportBtn = document.createElement('button');
+    exportBtn.className = 'reading-list-clear';
+    exportBtn.type = 'button';
+    exportBtn.textContent = 'Export';
+    exportBtn.addEventListener('click', function () { exportNotes(pages, keys); });
+    btnWrap.appendChild(exportBtn);
+
     var clearBtn = document.createElement('button');
     clearBtn.className = 'reading-list-clear';
     clearBtn.type = 'button';
     clearBtn.textContent = 'Clear all';
     clearBtn.addEventListener('click', clearAll);
-    actions.appendChild(clearBtn);
+    btnWrap.appendChild(clearBtn);
+
+    actions.appendChild(btnWrap);
     root.appendChild(actions);
 
     // Render each page
@@ -181,10 +195,11 @@
       var header = document.createElement('div');
       header.style.cssText = 'display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--space-4);';
 
+      var meta = getPageMeta(page.slug, page.type);
       var titleLink = document.createElement('a');
-      titleLink.style.cssText = 'font-family:var(--font-headline);font-size:var(--text-lg);font-weight:700;color:var(--color-ink);text-decoration:none;';
-      titleLink.textContent = slugToTitle(page.slug);
-      titleLink.href = '#'; // Will be resolved below
+      titleLink.style.cssText = 'font-family:var(--font-headline);font-size:var(--text-lg);font-weight:700;color:var(--color-link);text-decoration:none;';
+      titleLink.textContent = meta.title;
+      titleLink.href = meta.url;
 
       var badge = document.createElement('span');
       badge.style.cssText = 'font-family:var(--font-ui);font-size:var(--text-xs);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-ink-faint);margin-left:var(--space-2);';
@@ -300,6 +315,58 @@
     page.annotations.forEach(function (a) { if (a.ts > max) max = a.ts; });
     page.bookmarks.forEach(function (b) { if (b.ts > max) max = b.ts; });
     return max;
+  }
+
+  // ── Export as Markdown ──────────────────────────────────────
+  function exportNotes(pages, keys) {
+    var lines = ['# Notes & Highlights', '', 'Exported from The Freethinking Times', '', '---', ''];
+
+    keys.forEach(function (id) {
+      var page = pages[id];
+      var meta = getPageMeta(page.slug, page.type);
+      lines.push('## ' + meta.title);
+      lines.push('URL: ' + window.location.origin + meta.url);
+      lines.push('');
+
+      if (page.annotations.length) {
+        page.annotations.sort(function (a, b) { return b.ts - a.ts; });
+        page.annotations.forEach(function (ann) {
+          lines.push('> ' + ann.quote);
+          if (ann.note) lines.push('');
+          if (ann.note) lines.push('**Note:** ' + ann.note);
+          lines.push('');
+          lines.push('*' + formatDate(ann.ts) + '*');
+          lines.push('');
+        });
+      }
+
+      if (page.bookmarks.length) {
+        lines.push('### Bookmarks');
+        page.bookmarks.sort(function (a, b) { return b.ts - a.ts; });
+        page.bookmarks.forEach(function (bm) {
+          var text = bm.context ? '"' + bm.context + '"' : bm.scrollPct + '% through';
+          lines.push('- ' + text + ' (' + formatDate(bm.ts) + ')');
+        });
+        lines.push('');
+      }
+
+      lines.push('---');
+      lines.push('');
+    });
+
+    downloadFile('notes-export.md', lines.join('\n'));
+  }
+
+  function downloadFile(filename, content) {
+    var blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 
   render();

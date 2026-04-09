@@ -15,6 +15,14 @@
   var pageSlug = ctx.dataset.pageSlug || '';
   if (!pageSlug) return;
 
+  var pageUrl   = ctx.dataset.pageUrl || '';
+  var pageTitle = ctx.dataset.pageTitle || '';
+
+  // Save page metadata so the /notes/ page can link back
+  try {
+    localStorage.setItem(_p + '-art-meta-' + pageSlug, JSON.stringify({ url: pageUrl, title: pageTitle }));
+  } catch (e) {}
+
   // ─── Storage helpers ──────────────────────────────────────
   function escHtml(str) {
     return String(str)
@@ -298,11 +306,10 @@
     var bookmarkBtn = document.getElementById('ann-bookmark-btn');
     var lastRange = null;
 
-    // Wrap the live selection range in a <mark> for immediate visual feedback
+    // Wrap the saved selection range in a <mark> for immediate visual feedback
     function wrapSelectionInMark(annId, hasNote) {
-      var sel = window.getSelection();
-      if (!sel || !sel.rangeCount) return;
-      var range = sel.getRangeAt(0);
+      if (!lastRange || !lastRange.range) return;
+      var range = lastRange.range;
       var cls = 'library-highlight' + (hasNote ? ' library-highlight--note' : '');
       try {
         var mark = document.createElement('mark');
@@ -341,7 +348,7 @@
           hideToolbar();
           return;
         }
-        lastRange = { text: text };
+        lastRange = { text: text, range: range.cloneRange() };
 
         // Position: desktop near selection, mobile fixed at bottom (via CSS)
         if (!isMobile) {
@@ -464,10 +471,9 @@
 
           // Get pixel offset of the selection from top of .article-body
           var bodyOffset = -1;
-          var sel = window.getSelection();
-          if (sel && sel.rangeCount) {
+          if (lastRange && lastRange.range) {
             try {
-              var selRect = sel.getRangeAt(0).getBoundingClientRect();
+              var selRect = lastRange.range.getBoundingClientRect();
               var bodyRect = bodyEl.getBoundingClientRect();
               bodyOffset = Math.round(selRect.top - bodyRect.top);
             } catch (e) {}
