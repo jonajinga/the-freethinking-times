@@ -440,29 +440,36 @@
 
     // Wrap the live selection range in a <mark> for immediate visual feedback
     function wrapSelectionInMark(annId, hasNote) {
-      if (!lastRange || !lastRange.range) return;
-      var range = lastRange.range;
+      if (!lastRange) return;
       var cls = 'library-highlight' + (hasNote ? ' library-highlight--note' : '');
-      try {
-        var mark = document.createElement('mark');
-        mark.className = cls;
-        mark.dataset.annId = annId;
-        range.surroundContents(mark);
-      } catch (e) {
+      var done = false;
+
+      if (lastRange.range) {
         try {
-          var fragment = range.extractContents();
-          var mark2 = document.createElement('mark');
-          mark2.className = cls;
-          mark2.dataset.annId = annId;
-          mark2.appendChild(fragment);
-          range.insertNode(mark2);
-        } catch (e2) {}
+          var mark = document.createElement('mark');
+          mark.className = cls;
+          mark.dataset.annId = annId;
+          lastRange.range.surroundContents(mark);
+          done = true;
+        } catch (e) {
+          try {
+            var fragment = lastRange.range.extractContents();
+            var mark2 = document.createElement('mark');
+            mark2.className = cls;
+            mark2.dataset.annId = annId;
+            mark2.appendChild(fragment);
+            lastRange.range.insertNode(mark2);
+            done = true;
+          } catch (e2) {}
+        }
+      }
+
+      if (!done && lastRange.text && bodyEl) {
+        highlightTextInEl(bodyEl, lastRange.text, annId, hasNote);
       }
     }
 
     if (toolbar && bodyEl) {
-      var isNarrow = window.matchMedia('(max-width: 640px)').matches;
-
       function showToolbar() {
         if (_actionInProgress) return;
         var sel = window.getSelection();
@@ -481,16 +488,6 @@
           return;
         }
         lastRange = { text: text, range: range.cloneRange() };
-        if (!isNarrow) {
-          try {
-            var rect = range.getBoundingClientRect();
-            toolbar.style.top  = (rect.top  + window.scrollY - toolbar.offsetHeight - 8) + 'px';
-            toolbar.style.left = Math.max(8, rect.left + (rect.width / 2) - (toolbar.offsetWidth / 2)) + 'px';
-          } catch (e) {}
-        } else {
-          toolbar.style.top  = '';
-          toolbar.style.left = '';
-        }
         toolbar.setAttribute('aria-hidden', 'false');
       }
 
