@@ -19,7 +19,7 @@
     data-url="{{ page.url }}"
     data-title="{{ workTitle }}: {{ title }}"
     data-section="Library"
-    data-date="{{ originalPublication }}-01-01"
+    data-date="{{ originalPublication }}"
     data-mins="{{ readingTimeMinutes or 0 }}">
     <svg class="bookmark-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
@@ -142,7 +142,7 @@
       aria-controls="download-panel"
       data-title="{{ workTitle }}: {{ title }}"
       data-author="{{ author }}"
-      data-date="{{ originalPublication }}-01-01"
+      data-date="{{ originalPublication }}"
       data-url="{{ site.url }}{{ page.url }}"
       data-slug="{{ page.fileSlug }}">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -188,7 +188,7 @@
 <div id="cite-data"
   data-title="{{ title }}"
   data-author="{{ author }}"
-  data-date="{{ originalPublication }}-01-01"
+  data-date="{{ originalPublication }}"
   data-publication="{{ workTitle }}"
   data-url="{{ site.url }}{{ page.url }}"
   hidden></div>

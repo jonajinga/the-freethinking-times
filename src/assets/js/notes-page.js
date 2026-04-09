@@ -77,6 +77,20 @@
     };
   }
 
+  function editAnnotation(key, id) {
+    try {
+      var list = JSON.parse(localStorage.getItem(key) || '[]');
+      var ann = list.find(function (a) { return a.id === id; });
+      if (!ann) return;
+      var newNote = prompt('Edit note:', ann.note || '');
+      if (newNote === null) return;
+      ann.note = newNote;
+      ann.modified = Date.now();
+      localStorage.setItem(key, JSON.stringify(list));
+    } catch (e) {}
+    render();
+  }
+
   function deleteAnnotation(key, id) {
     try {
       var list = JSON.parse(localStorage.getItem(key) || '[]');
@@ -160,23 +174,42 @@
     importBtn.addEventListener('click', importNotes);
     btnWrap.appendChild(importBtn);
 
-    var exportBtn = document.createElement('button');
-    exportBtn.className = 'reading-list-clear';
-    exportBtn.type = 'button';
-    exportBtn.textContent = 'Export';
-    exportBtn.addEventListener('click', exportNotes);
-    btnWrap.appendChild(exportBtn);
+    var exportJsonBtn = document.createElement('button');
+    exportJsonBtn.className = 'reading-list-clear';
+    exportJsonBtn.type = 'button';
+    exportJsonBtn.textContent = 'Export JSON';
+    exportJsonBtn.addEventListener('click', exportJSON);
+
+    var exportMdBtn = document.createElement('button');
+    exportMdBtn.className = 'reading-list-clear';
+    exportMdBtn.type = 'button';
+    exportMdBtn.textContent = 'Export Markdown';
+    exportMdBtn.addEventListener('click', exportMarkdown);
+
+    var printBtn = document.createElement('button');
+    printBtn.className = 'reading-list-clear';
+    printBtn.type = 'button';
+    printBtn.textContent = 'Print';
+    printBtn.addEventListener('click', printNotes);
+
+    var shareBtn = document.createElement('button');
+    shareBtn.className = 'reading-list-clear';
+    shareBtn.type = 'button';
+    shareBtn.textContent = 'Share';
+    shareBtn.addEventListener('click', shareNotes);
 
     var clearBtn = document.createElement('button');
     clearBtn.className = 'reading-list-clear';
     clearBtn.type = 'button';
     clearBtn.textContent = 'Clear all';
     clearBtn.addEventListener('click', clearAll);
-    btnWrap.appendChild(clearBtn);
 
     if (keys.length) {
       actions.appendChild(count);
-      btnWrap.appendChild(exportBtn);
+      btnWrap.appendChild(shareBtn);
+      btnWrap.appendChild(printBtn);
+      btnWrap.appendChild(exportMdBtn);
+      btnWrap.appendChild(exportJsonBtn);
       btnWrap.appendChild(clearBtn);
     }
     actions.appendChild(btnWrap);
@@ -256,9 +289,21 @@
           var meta = document.createElement('div');
           meta.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-top:var(--space-2);';
 
+          var dateStr = formatDate(ann.ts);
+          if (ann.modified) dateStr += ' (edited ' + formatDate(ann.modified) + ')';
           var date = document.createElement('span');
           date.style.cssText = 'font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);';
-          date.textContent = formatDate(ann.ts);
+          date.textContent = dateStr;
+
+          var btnWrap = document.createElement('div');
+          btnWrap.style.cssText = 'display:flex;gap:var(--space-2);';
+
+          var edit = document.createElement('button');
+          edit.style.cssText = 'background:none;border:none;font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);cursor:pointer;text-decoration:underline;';
+          edit.textContent = 'Edit';
+          edit.addEventListener('click', (function (k, i) {
+            return function () { editAnnotation(k, i); };
+          })(annKey, ann.id));
 
           var del = document.createElement('button');
           del.style.cssText = 'background:none;border:none;font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);cursor:pointer;text-decoration:underline;';
@@ -267,8 +312,10 @@
             return function () { deleteAnnotation(k, i); };
           })(annKey, ann.id));
 
+          btnWrap.appendChild(edit);
+          btnWrap.appendChild(del);
           meta.appendChild(date);
-          meta.appendChild(del);
+          meta.appendChild(btnWrap);
           card.appendChild(meta);
           section.appendChild(card);
         });
@@ -327,8 +374,8 @@
     return max;
   }
 
-  // ── Export ──────────────────────────────────────────────────
-  function exportNotes() {
+  // ── Export (JSON — for import/backup) ───────────────────────
+  function exportJSON() {
     var dump = {};
     for (var i = 0; i < localStorage.length; i++) {
       var key = localStorage.key(i);
@@ -340,6 +387,76 @@
       }
     }
     downloadFile('notes-export.json', JSON.stringify(dump, null, 2), 'application/json');
+  }
+
+  // ── Export (Markdown — readable) ───────────────────────────
+  function exportMarkdown() {
+    var pages = scanStorage();
+    var keys = Object.keys(pages);
+    var lines = ['# Notes & Highlights', '', '*Exported from ' + document.title + '*', '', '---', ''];
+
+    keys.forEach(function (id) {
+      var page = pages[id];
+      var meta = getPageMeta(page.slug, page.type);
+      lines.push('## ' + meta.title);
+      lines.push('URL: ' + window.location.origin + meta.url);
+      lines.push('');
+
+      if (page.annotations.length) {
+        page.annotations.sort(function (a, b) { return b.ts - a.ts; });
+        page.annotations.forEach(function (ann) {
+          lines.push('> ' + ann.quote);
+          if (ann.note) { lines.push(''); lines.push('**Note:** ' + ann.note); }
+          lines.push('');
+          var dateStr = formatDate(ann.ts);
+          if (ann.modified) dateStr += ' (edited ' + formatDate(ann.modified) + ')';
+          lines.push('*' + dateStr + '*');
+          lines.push('');
+        });
+      }
+
+      if (page.bookmarks.length) {
+        lines.push('### Bookmarks');
+        page.bookmarks.sort(function (a, b) { return b.ts - a.ts; });
+        page.bookmarks.forEach(function (bm) {
+          var text = bm.context ? '"' + bm.context + '"' : bm.scrollPct + '% through';
+          lines.push('- ' + text + ' (' + formatDate(bm.ts) + ')');
+        });
+        lines.push('');
+      }
+      lines.push('---');
+      lines.push('');
+    });
+    downloadFile('notes-export.md', lines.join('\n'), 'text/markdown');
+  }
+
+  // ── Print ──────────────────────────────────────────────────
+  function printNotes() {
+    window.print();
+  }
+
+  // ── Share ──────────────────────────────────────────────────
+  function shareNotes() {
+    var pages = scanStorage();
+    var keys = Object.keys(pages);
+    var text = 'My Notes & Highlights\n\n';
+    keys.forEach(function (id) {
+      var page = pages[id];
+      var meta = getPageMeta(page.slug, page.type);
+      text += meta.title + '\n';
+      page.annotations.forEach(function (ann) {
+        text += '  "' + ann.quote.slice(0, 60) + '..."';
+        if (ann.note) text += ' — ' + ann.note;
+        text += '\n';
+      });
+      text += '\n';
+    });
+
+    if (navigator.share) {
+      navigator.share({ title: 'My Notes & Highlights', text: text, url: window.location.href }).catch(function () {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(function () { alert('Copied to clipboard.'); });
+    }
   }
 
   // ── Import ─────────────────────────────────────────────────
