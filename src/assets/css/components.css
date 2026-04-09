@@ -93,7 +93,7 @@
 }
 
 /* ── Masthead responsive: hide action buttons on mobile + tablet (moved to drawer) ── */
-@media (max-width: 1024px) {
+@media (max-width: 1180px) {
   .masthead__actions {
     display: none;
   }
@@ -297,7 +297,7 @@
 }
 
 /* On mobile + tablet the drawer replaces the section nav */
-@media (max-width: 1024px) {
+@media (max-width: 1180px) {
   .site-nav { display: none; }
 }
 
