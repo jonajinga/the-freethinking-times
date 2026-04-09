@@ -820,12 +820,12 @@ a.dateline:hover { color: var(--color-accent); }
 
 /* ── Drawer action buttons (icon-only mobile quick-actions) ── */
 .nav-drawer__actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 2rem);
   justify-content: center;
-  align-items: center;
-  gap: var(--space-2);
+  justify-items: center;
+  gap: var(--space-3);
   padding: var(--space-4) 0;
-  margin: 0 auto;
 }
 
 .nav-drawer__action-btn {
