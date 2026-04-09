@@ -412,12 +412,6 @@
   display: none;
 }
 
-/* Larger variant for action buttons (e.g. Notes icon) */
-.article-action-btn--lg {
-  width: 2.5rem;
-  height: 2.5rem;
-}
-
 .article-action-btn {
   position: relative;
   display: inline-flex;
@@ -434,6 +428,11 @@
   appearance: none;
   -webkit-appearance: none;
   transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.article-action-btn svg {
+  width: 14px;
+  height: 14px;
 }
 
 .article-action-btn::after {
