@@ -199,7 +199,7 @@
     function updateNote(id, note) {
       var list = load();
       var ann  = list.find(function (a) { return a.id === id; });
-      if (ann) { ann.note = note; save(list); }
+      if (ann) { ann.note = note; ann.modified = Date.now(); save(list); }
     }
 
     function render(containerEl) {
@@ -275,13 +275,44 @@
       list.sort(function (a, b) { return b.ts - a.ts; }).forEach(function (ann) {
         var item = document.createElement('div');
         item.className = 'library-annotation-item';
+        item.style.cursor = 'pointer';
+
+        var dateStr = fmtDate(ann.ts);
+        var modStr = ann.modified ? ' (edited ' + fmtDate(ann.modified) + ')' : '';
+
         item.innerHTML =
           '<p class="library-annotation-item__quote">&ldquo;' + escHtml(ann.quote) + '&rdquo;</p>' +
           (ann.note ? '<p class="library-annotation-item__note">' + escHtml(ann.note) + '</p>' : '') +
+          '<p style="font-size:var(--text-xs);color:var(--color-ink-faint);margin:var(--space-1) 0 0;">' + dateStr + modStr + '</p>' +
           '<div class="library-annotation-item__actions">' +
+            (ann.note !== undefined ? '<button class="library-annotation-item__action" data-ann-edit="' + escHtml(ann.id) + '">Edit</button>' : '') +
             '<button class="library-annotation-item__action" data-ann-delete="' + escHtml(ann.id) + '">Delete</button>' +
           '</div>';
-        item.querySelector('[data-ann-delete]').addEventListener('click', function () {
+
+        // Click quote to scroll to highlight
+        item.querySelector('.library-annotation-item__quote').addEventListener('click', function () {
+          var mark = document.querySelector('.library-highlight[data-ann-id="' + ann.id + '"]');
+          if (mark) {
+            mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            mark.style.outline = '2px solid var(--color-link)';
+            setTimeout(function () { mark.style.outline = ''; }, 2000);
+          }
+        });
+
+        var editBtn = item.querySelector('[data-ann-edit]');
+        if (editBtn) {
+          editBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var newNote = prompt('Edit note:', ann.note || '');
+            if (newNote !== null) {
+              updateNote(ann.id, newNote);
+              renderFiltered(containerEl, filterFn, emptyMsg);
+            }
+          });
+        }
+
+        item.querySelector('[data-ann-delete]').addEventListener('click', function (e) {
+          e.stopPropagation();
           remove(ann.id);
           renderFiltered(containerEl, filterFn, emptyMsg);
         });
@@ -302,6 +333,12 @@
   }());
 
   // ─── Utility ──────────────────────────────────────────────
+  function fmtDate(ts) {
+    if (!ts) return '';
+    try { return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }); }
+    catch (e) { return ''; }
+  }
+
   function escHtml(str) {
     return String(str)
       .replace(/&/g, '&amp;')
