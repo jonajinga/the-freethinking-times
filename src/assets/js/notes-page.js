@@ -167,50 +167,34 @@
     var btnWrap = document.createElement('div');
     btnWrap.style.cssText = 'display:flex;gap:var(--space-2);align-items:center;';
 
-    var importBtn = document.createElement('button');
-    importBtn.className = 'reading-list-clear';
-    importBtn.type = 'button';
-    importBtn.textContent = 'Import';
-    importBtn.addEventListener('click', importNotes);
-    btnWrap.appendChild(importBtn);
+    function iconBtn(label, svg, handler) {
+      var b = document.createElement('button');
+      b.className = 'article-action-btn';
+      b.type = 'button';
+      b.setAttribute('aria-label', label);
+      b.title = label;
+      b.innerHTML = svg;
+      b.addEventListener('click', handler);
+      return b;
+    }
 
-    var exportJsonBtn = document.createElement('button');
-    exportJsonBtn.className = 'reading-list-clear';
-    exportJsonBtn.type = 'button';
-    exportJsonBtn.textContent = 'Export JSON';
-    exportJsonBtn.addEventListener('click', exportJSON);
+    var SVG = {
+      share: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>',
+      print: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>',
+      download: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+      upload: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>',
+      trash: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>'
+    };
 
-    var exportMdBtn = document.createElement('button');
-    exportMdBtn.className = 'reading-list-clear';
-    exportMdBtn.type = 'button';
-    exportMdBtn.textContent = 'Export Markdown';
-    exportMdBtn.addEventListener('click', exportMarkdown);
-
-    var printBtn = document.createElement('button');
-    printBtn.className = 'reading-list-clear';
-    printBtn.type = 'button';
-    printBtn.textContent = 'Print';
-    printBtn.addEventListener('click', printNotes);
-
-    var shareBtn = document.createElement('button');
-    shareBtn.className = 'reading-list-clear';
-    shareBtn.type = 'button';
-    shareBtn.textContent = 'Share';
-    shareBtn.addEventListener('click', shareNotes);
-
-    var clearBtn = document.createElement('button');
-    clearBtn.className = 'reading-list-clear';
-    clearBtn.type = 'button';
-    clearBtn.textContent = 'Clear all';
-    clearBtn.addEventListener('click', clearAll);
+    btnWrap.appendChild(iconBtn('Import', SVG.upload, importNotes));
 
     if (keys.length) {
       actions.appendChild(count);
-      btnWrap.appendChild(shareBtn);
-      btnWrap.appendChild(printBtn);
-      btnWrap.appendChild(exportMdBtn);
-      btnWrap.appendChild(exportJsonBtn);
-      btnWrap.appendChild(clearBtn);
+      btnWrap.appendChild(iconBtn('Share', SVG.share, shareNotes));
+      btnWrap.appendChild(iconBtn('Print', SVG.print, printNotes));
+      btnWrap.appendChild(iconBtn('Export Markdown', SVG.download, exportMarkdown));
+      btnWrap.appendChild(iconBtn('Export JSON', SVG.download, exportJSON));
+      btnWrap.appendChild(iconBtn('Clear all', SVG.trash, clearAll));
     }
     actions.appendChild(btnWrap);
     root.appendChild(actions);
@@ -248,20 +232,57 @@
       badge.style.cssText = 'font-family:var(--font-ui);font-size:var(--text-xs);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-ink-faint);margin-left:var(--space-2);';
       badge.textContent = page.type === 'library' ? 'Library' : 'Article';
 
-      var clearPageBtn = document.createElement('button');
-      clearPageBtn.style.cssText = 'background:none;border:none;font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);cursor:pointer;text-decoration:underline;';
-      clearPageBtn.textContent = 'Clear';
-      clearPageBtn.addEventListener('click', (function (s, t) {
+      var pageBtns = document.createElement('div');
+      pageBtns.style.cssText = 'display:flex;gap:var(--space-1);align-items:center;';
+
+      // Per-page share
+      pageBtns.appendChild(iconBtn('Share', SVG.share, (function (p) {
+        return function () {
+          var m = getPageMeta(p.slug, p.type);
+          var text = m.title + '\n\n';
+          p.annotations.forEach(function (a) {
+            text += '"' + a.quote.slice(0, 80) + '..."';
+            if (a.note) text += ' — ' + a.note;
+            text += '\n';
+          });
+          if (navigator.share) navigator.share({ title: m.title, text: text }).catch(function () {});
+          else if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () { alert('Copied.'); });
+        };
+      })(page)));
+
+      // Per-page export markdown
+      pageBtns.appendChild(iconBtn('Export', SVG.download, (function (p) {
+        return function () {
+          var m = getPageMeta(p.slug, p.type);
+          var lines = ['# ' + m.title, 'URL: ' + window.location.origin + m.url, ''];
+          p.annotations.forEach(function (a) {
+            lines.push('> ' + a.quote);
+            if (a.note) { lines.push(''); lines.push('**Note:** ' + a.note); }
+            lines.push('*' + formatDate(a.ts) + '*');
+            lines.push('');
+          });
+          if (p.bookmarks.length) {
+            lines.push('## Bookmarks');
+            p.bookmarks.forEach(function (b) {
+              lines.push('- ' + (b.context || b.scrollPct + '%') + ' (' + formatDate(b.ts) + ')');
+            });
+          }
+          downloadFile(p.slug + '-notes.md', lines.join('\n'), 'text/markdown');
+        };
+      })(page)));
+
+      // Per-page clear
+      pageBtns.appendChild(iconBtn('Clear', SVG.trash, (function (s, t) {
         return function () {
           if (confirm('Remove all notes and bookmarks for this page?')) clearPage(s, t);
         };
-      })(page.slug, page.type));
+      })(page.slug, page.type)));
 
       var titleWrap = document.createElement('div');
       titleWrap.appendChild(titleLink);
       titleWrap.appendChild(badge);
       header.appendChild(titleWrap);
-      header.appendChild(clearPageBtn);
+      header.appendChild(pageBtns);
       section.appendChild(header);
 
       // Annotations / highlights
