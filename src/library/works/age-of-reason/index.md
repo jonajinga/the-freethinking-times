@@ -4,6 +4,16 @@ title: The Age of Reason
 permalink: /library/age-of-reason/
 ---
 
+<div class="library-title-page" style="text-align:center;padding:var(--space-6) 0;margin-bottom:var(--space-6);border-bottom:1px solid var(--color-rule);">
+
+*"My own mind is my own church."*
+
+First published 1794 (Part One), 1795 (Part Two).
+
+Written in Paris during the French Revolution.
+
+</div>
+
 Thomas Paine began writing The Age of Reason in Paris in late 1793, while awaiting what he expected to be his execution. He had been arrested by Robespierre's Committee of Public Safety during the Terror — ironically, because he had opposed executing the king. He completed Part One the night before his arrest, entrusting the manuscript to an American friend as he was taken away. He completed Part Two in 1795, after ten months in Luxembourg Prison, during which he came close to dying of illness.
 
 The dramatic circumstances produced a text with unusual urgency. Paine knew he might be writing his last words and chose to write them about the subject he cared most about: the rational foundations of religious belief.
