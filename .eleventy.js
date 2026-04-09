@@ -367,17 +367,29 @@ module.exports = function (eleventyConfig) {
   });
 
   // Chapters grouped by workSlug — { [workSlug]: [chapter, ...] }
+  // Also includes lecture landing pages (index.md with parentWorkSlug) in their parent's list
   eleventyConfig.addCollection("libraryByWork", (collectionApi) => {
-    const chapters = collectionApi
-      .getFilteredByGlob("src/library/works/**/*.md")
+    const allMd = collectionApi.getFilteredByGlob("src/library/works/**/*.md");
+    const chapters = allMd
       .filter(item => !item.inputPath.endsWith('/index.md'))
       .sort((a, b) => (a.data.chapterNumber || 0) - (b.data.chapterNumber || 0));
+    const lecturePages = allMd
+      .filter(item => item.inputPath.endsWith('/index.md') && item.data.parentWorkSlug)
+      .sort((a, b) => (a.data.chapterNumber || 0) - (b.data.chapterNumber || 0));
+
     const byWork = {};
     chapters.forEach(ch => {
       const slug = ch.data.workSlug;
       if (!slug) return;
       if (!byWork[slug]) byWork[slug] = [];
       byWork[slug].push(ch);
+    });
+    // Add lecture landing pages to their parent work's chapter list
+    lecturePages.forEach(lp => {
+      const parentSlug = lp.data.parentWorkSlug;
+      if (!byWork[parentSlug]) byWork[parentSlug] = [];
+      byWork[parentSlug].push(lp);
+      byWork[parentSlug].sort((a, b) => (a.data.chapterNumber || 0) - (b.data.chapterNumber || 0));
     });
     return byWork;
   });

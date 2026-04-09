@@ -2,12 +2,14 @@
 layout: library-chapter
 title: "The Ghosts"
 chapterTitle: "The Ghosts"
-chapterNumber: 6
-chapterSlug: the-ghosts
-workSlug: works-of-ingersoll-v1
+chapterNumber: 2
+chapterSlug: the-ghosts-lecture
+workSlug: the-ghosts
 readingTimeMinutes: 55
-permalink: /library/works-of-ingersoll-v1/the-ghosts/
+permalink: /library/works-of-ingersoll-v1/the-ghosts/the-ghosts-lecture/
 ---
+
+THE GHOSTS,
 
 LET THEM COVER THEIR EYELESS SOCKETS WITH THEIR FLESHLESS HANDS AND FADE
 FOREVER FROM THE IMAGINATION OF MEN.
