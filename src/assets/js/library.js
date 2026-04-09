@@ -285,7 +285,7 @@
           (ann.note ? '<p class="library-annotation-item__note">' + escHtml(ann.note) + '</p>' : '') +
           '<p style="font-size:var(--text-xs);color:var(--color-ink-faint);margin:var(--space-1) 0 0;">' + dateStr + modStr + '</p>' +
           '<div class="library-annotation-item__actions">' +
-            (ann.note !== undefined ? '<button class="library-annotation-item__action" data-ann-edit="' + escHtml(ann.id) + '">Edit</button>' : '') +
+            (ann.note ? '<button class="library-annotation-item__action" data-ann-edit="' + escHtml(ann.id) + '">Edit</button>' : '') +
             '<button class="library-annotation-item__action" data-ann-delete="' + escHtml(ann.id) + '">Delete</button>' +
           '</div>';
 
