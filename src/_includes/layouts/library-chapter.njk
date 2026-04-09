@@ -234,14 +234,14 @@ layout: layouts/base.njk
 </aside>
 
 {# ── Annotation toolbar ── #}
-<div id="annotation-toolbar" class="annotation-toolbar" role="toolbar" aria-hidden="true" aria-label="Selection actions">
-  <button id="ann-highlight-btn" class="annotation-toolbar__btn" type="button">Highlight</button>
+<div id="annotation-toolbar" class="annotation-toolbar" role="toolbar" aria-label="Reader tools">
+  <button id="ann-highlight-btn" class="annotation-toolbar__btn annotation-toolbar__btn--needs-selection" type="button">Highlight</button>
   <div class="annotation-toolbar__divider" aria-hidden="true"></div>
-  <button id="ann-annotate-btn" class="annotation-toolbar__btn" type="button">Note</button>
+  <button id="ann-annotate-btn" class="annotation-toolbar__btn annotation-toolbar__btn--needs-selection" type="button">Note</button>
   <div class="annotation-toolbar__divider" aria-hidden="true"></div>
   <button id="ann-bookmark-btn" class="annotation-toolbar__btn" type="button">Bookmark</button>
   <div class="annotation-toolbar__divider" aria-hidden="true"></div>
-  <button id="ann-share-btn" class="annotation-toolbar__btn" type="button">Share</button>
+  <button id="ann-share-btn" class="annotation-toolbar__btn annotation-toolbar__btn--needs-selection" type="button">Share</button>
 </div>
 
 {% block scripts %}

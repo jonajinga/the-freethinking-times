@@ -910,7 +910,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 0;
@@ -922,8 +922,15 @@
   z-index: var(--z-overlay);
 }
 
-.annotation-toolbar[aria-hidden="false"] {
-  display: flex;
+/* Highlight and Note buttons dim when no text is selected */
+.annotation-toolbar__btn--needs-selection {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.annotation-toolbar__btn--needs-selection.is-active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .annotation-toolbar__btn {

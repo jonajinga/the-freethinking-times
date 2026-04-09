@@ -470,70 +470,59 @@
     }
 
     if (toolbar && bodyEl) {
-      function showToolbar() {
+      var selBtns = toolbar.querySelectorAll('.annotation-toolbar__btn--needs-selection');
+
+      function updateSelectionState() {
         if (_actionInProgress) return;
         var sel = window.getSelection();
-        if (!sel || sel.isCollapsed || !sel.rangeCount) {
-          hideToolbar();
-          return;
+        var hasSelection = sel && !sel.isCollapsed && sel.rangeCount > 0;
+        var inBody = false;
+
+        if (hasSelection) {
+          var range = sel.getRangeAt(0);
+          inBody = bodyEl.contains(range.commonAncestorContainer);
+          var text = sel.toString().trim();
+          if (inBody && text) {
+            lastRange = { text: text, range: range.cloneRange() };
+          } else {
+            hasSelection = false;
+          }
         }
-        var range = sel.getRangeAt(0);
-        if (!bodyEl.contains(range.commonAncestorContainer)) {
-          hideToolbar();
-          return;
+
+        if (!hasSelection || !inBody) {
+          lastRange = null;
         }
-        var text = sel.toString().trim();
-        if (!text) {
-          hideToolbar();
-          return;
-        }
-        lastRange = { text: text, range: range.cloneRange() };
-        toolbar.setAttribute('aria-hidden', 'false');
+
+        selBtns.forEach(function (btn) {
+          btn.classList.toggle('is-active', !!(hasSelection && inBody));
+        });
       }
 
       var _actionInProgress = false;
 
-      function hideToolbar() {
-        toolbar.setAttribute('aria-hidden', 'true');
+      function afterAction() {
         lastRange = null;
         _actionInProgress = true;
+        selBtns.forEach(function (btn) { btn.classList.remove('is-active'); });
+        window.getSelection().removeAllRanges();
         setTimeout(function () { _actionInProgress = false; }, 400);
       }
 
       document.addEventListener('selectionchange', function () {
-        clearTimeout(showToolbar._t);
-        showToolbar._t = setTimeout(function () {
-          var sel = window.getSelection();
-          if (sel && !sel.isCollapsed && sel.toString().trim()) {
-            showToolbar();
-          }
-        }, 200);
+        clearTimeout(updateSelectionState._t);
+        updateSelectionState._t = setTimeout(updateSelectionState, 200);
       });
 
       bodyEl.addEventListener('touchend', function () {
-        setTimeout(showToolbar, 250);
+        setTimeout(updateSelectionState, 250);
       });
-
-      document.addEventListener('mousedown', function (e) {
-        if (toolbar.getAttribute('aria-hidden') === 'false' &&
-            !toolbar.contains(e.target) && !bodyEl.contains(e.target)) {
-          hideToolbar();
-        }
-      });
-      document.addEventListener('touchstart', function (e) {
-        if (toolbar.getAttribute('aria-hidden') === 'false' &&
-            !toolbar.contains(e.target) && !bodyEl.contains(e.target)) {
-          hideToolbar();
-        }
-      }, { passive: true });
 
       if (highlightBtn) {
         highlightBtn.addEventListener('click', function () {
           if (!lastRange) return;
           var annId = Annotations.add(chapterSlug, lastRange.text, '');
           wrapSelectionInMark(annId, false);
-          hideToolbar();
-          window.getSelection().removeAllRanges();
+          afterAction();
         });
       }
 
@@ -543,8 +532,7 @@
           var note = prompt('Add a note (optional):') || '';
           var annId = Annotations.add(chapterSlug, lastRange.text, note);
           wrapSelectionInMark(annId, !!note);
-          hideToolbar();
-          window.getSelection().removeAllRanges();
+          afterAction();
         });
       }
 
@@ -562,9 +550,7 @@
               setTimeout(function () { shareBtn.textContent = orig; }, 1200);
             });
           }
-          toolbar.setAttribute('aria-hidden', 'true');
-          window.getSelection().removeAllRanges();
-          lastRange = null;
+          afterAction();
         });
       }
 
@@ -572,9 +558,7 @@
         toolbarBmBtn.addEventListener('click', function () {
           var pct = ReadingPosition.getScrollPct();
           Bookmarks.add(chapterTitle || chapterSlug, pct);
-          toolbar.setAttribute('aria-hidden', 'true');
-          window.getSelection().removeAllRanges();
-          lastRange = null;
+          afterAction();
           var orig = toolbarBmBtn.textContent;
           toolbarBmBtn.textContent = 'Saved!';
           setTimeout(function () { toolbarBmBtn.textContent = orig; }, 1200);
