@@ -70,10 +70,15 @@
       var raw = localStorage.getItem(metaKey);
       if (raw) return JSON.parse(raw);
     } catch (e) {}
-    // Fallback
+    // Fallback: capitalize slug words properly
+    var title = slug.replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    // Fix common small words
+    title = title.replace(/ Of /g, ' of ').replace(/ And /g, ' and ').replace(/ The /g, ' the ').replace(/ In /g, ' in ').replace(/ A /g, ' a ').replace(/ To /g, ' to ');
+    // Ensure first word is capitalized
+    title = title.charAt(0).toUpperCase() + title.slice(1);
     return {
       url: type === 'library' ? '/library/' + slug + '/' : '/',
-      title: slug.replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); })
+      title: title
     };
   }
 
@@ -211,11 +216,48 @@
       return getLatestTs(pages[b]) - getLatestTs(pages[a]);
     });
 
+    // Filter bar
+    var filterBar = document.createElement('div');
+    filterBar.style.cssText = 'display:flex;gap:var(--space-2);margin-bottom:var(--space-6);';
+    var filters = ['All', 'Highlights', 'Notes', 'Bookmarks'];
+    filters.forEach(function (f) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = f;
+      btn.className = 'search-filter-btn' + (f === 'All' ? ' is-active' : '');
+      btn.addEventListener('click', function () {
+        filterBar.querySelectorAll('.search-filter-btn').forEach(function (b) { b.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+        currentFilter = f;
+        applyFilter();
+      });
+      filterBar.appendChild(btn);
+    });
+    root.appendChild(filterBar);
+
+    var entriesContainer = document.createElement('div');
+    root.appendChild(entriesContainer);
+    var currentFilter = 'All';
+
+    function applyFilter() {
+      entriesContainer.querySelectorAll('[data-note-type]').forEach(function (el) {
+        if (currentFilter === 'All') { el.style.display = ''; return; }
+        var type = el.dataset.noteType;
+        el.style.display = (type === currentFilter.toLowerCase()) ? '' : 'none';
+      });
+      // Hide page sections that have no visible items
+      entriesContainer.querySelectorAll('[data-page-section]').forEach(function (sec) {
+        var visible = sec.querySelectorAll('[data-note-type]:not([style*="display: none"])');
+        sec.style.display = visible.length ? '' : 'none';
+      });
+    }
+
     // Render each page
     keys.forEach(function (id) {
       var page = pages[id];
       var section = document.createElement('div');
       section.style.cssText = 'margin-bottom:var(--space-10);padding-bottom:var(--space-8);border-bottom:1px solid var(--color-rule);';
+      section.setAttribute('data-page-section', page.slug);
 
       // Page header
       var header = document.createElement('div');
@@ -265,7 +307,9 @@
 
         page.annotations.sort(function (a, b) { return b.ts - a.ts; });
         page.annotations.forEach(function (ann) {
+          var noteType = ann.note ? 'notes' : 'highlights';
           var card = document.createElement('div');
+          card.setAttribute('data-note-type', noteType);
           card.style.cssText = 'padding:var(--space-3) var(--space-4);margin-bottom:var(--space-3);border-left:3px solid rgba(250,204,21,0.6);background:var(--color-bg-alt);border-radius:0 var(--radius-sm) var(--radius-sm) 0;';
 
           var quote = document.createElement('p');
@@ -323,6 +367,7 @@
         page.bookmarks.sort(function (a, b) { return b.ts - a.ts; });
         page.bookmarks.forEach(function (bm) {
           var card = document.createElement('div');
+          card.setAttribute('data-note-type', 'bookmarks');
           card.style.cssText = 'padding:var(--space-3) var(--space-4);margin-bottom:var(--space-3);border-left:3px solid var(--color-ink-faint);background:var(--color-bg-alt);border-radius:0 var(--radius-sm) var(--radius-sm) 0;';
 
           var text = document.createElement('p');
@@ -357,7 +402,7 @@
         });
       }
 
-      root.appendChild(section);
+      entriesContainer.appendChild(section);
     });
   }
 
@@ -455,8 +500,8 @@
 
     document.body.appendChild(panel);
     setTimeout(function () {
-      document.addEventListener('click', function closer(e) {
-        if (!panel.contains(e.target)) { panel.remove(); document.removeEventListener('click', closer); }
+      document.addEventListener('mousedown', function closer(e) {
+        if (!panel.contains(e.target)) { panel.remove(); document.removeEventListener('mousedown', closer); }
       });
     }, 10);
   }
@@ -584,12 +629,11 @@
 
     document.body.appendChild(panel);
 
-    // Close on click outside
-    setTimeout(function () {
-      document.addEventListener('click', function closer(e) {
-        if (!panel.contains(e.target)) { panel.remove(); document.removeEventListener('click', closer); }
-      });
-    }, 10);
+    // Close on click outside (use mousedown to avoid the opening click)
+    function closer(e) {
+      if (!panel.contains(e.target)) { panel.remove(); document.removeEventListener('mousedown', closer); }
+    }
+    setTimeout(function () { document.addEventListener('mousedown', closer); }, 50);
   }
 
   function shareNotes() {
