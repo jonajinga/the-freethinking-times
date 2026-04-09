@@ -290,7 +290,7 @@
         var scrollTarget = (bm.bodyOffset != null && bm.bodyOffset >= 0 && bodyEl)
           ? bodyAbsTop + bm.bodyOffset
           : Math.round((bm.scrollPct / 100) * (document.documentElement.scrollHeight - window.innerHeight));
-        window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+        window.scrollTo({ top: Math.max(0, scrollTarget - 60), behavior: 'smooth' });
         closePanel();
       }, renderBookmarkIndicators);
     }
@@ -506,10 +506,11 @@
         indicator.title = bm.context ? '\u201c' + bm.context.slice(0, 40) + '\u2026\u201d' : bm.scrollPct + '% through';
         indicator.style.top = topPx + 'px';
         indicator.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
-        // Compute scroll target at click time for accuracy
+        // Compute scroll target at click time, offset for fixed header
         indicator.addEventListener('click', function () {
           var bodyAbsTop = bodyEl.getBoundingClientRect().top + (window.scrollY || 0);
-          window.scrollTo({ top: bodyAbsTop + topPx, behavior: 'smooth' });
+          var headerOffset = 60; // approximate height of sticky reading header
+          window.scrollTo({ top: Math.max(0, bodyAbsTop + topPx - headerOffset), behavior: 'smooth' });
         });
         bodyEl.appendChild(indicator);
       });

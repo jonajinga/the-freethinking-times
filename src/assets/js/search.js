@@ -32,8 +32,22 @@
       searchLoaded = true;
     } catch (e) {
       results.innerHTML = `<p class="search-notice">
-        Search index not available. Run <code>npm run build</code> first to generate it.
+        Search is loading the index. If this persists, the search index may not have been generated during the last build.
       </p>`;
+      // Retry once after a short delay (index may still be generating)
+      setTimeout(async function () {
+        if (searchLoaded) return;
+        try {
+          pagefind = await import('/pagefind/pagefind.js');
+          await pagefind.options({ excerptLength: 20 });
+          searchLoaded = true;
+          results.innerHTML = '';
+        } catch (e2) {
+          results.innerHTML = `<p class="search-notice">
+            Search index not available. Run <code>npm run build</code> to generate it.
+          </p>`;
+        }
+      }, 2000);
     }
   }
 
