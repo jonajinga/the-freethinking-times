@@ -192,8 +192,7 @@
       actions.appendChild(count);
       btnWrap.appendChild(iconBtn('Share', SVG.share, shareNotes));
       btnWrap.appendChild(iconBtn('Print', SVG.print, printNotes));
-      btnWrap.appendChild(iconBtn('Export Markdown', SVG.download, exportMarkdown));
-      btnWrap.appendChild(iconBtn('Export JSON', SVG.download, exportJSON));
+      btnWrap.appendChild(iconBtn('Export', SVG.download, function () { showExportPanel(); }));
       btnWrap.appendChild(iconBtn('Clear all', SVG.trash, clearAll));
     }
     actions.appendChild(btnWrap);
@@ -237,38 +236,12 @@
 
       // Per-page share
       pageBtns.appendChild(iconBtn('Share', SVG.share, (function (p) {
-        return function () {
-          var m = getPageMeta(p.slug, p.type);
-          var text = m.title + '\n\n';
-          p.annotations.forEach(function (a) {
-            text += '"' + a.quote.slice(0, 80) + '..."';
-            if (a.note) text += ' — ' + a.note;
-            text += '\n';
-          });
-          if (navigator.share) navigator.share({ title: m.title, text: text }).catch(function () {});
-          else if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () { alert('Copied.'); });
-        };
+        return function () { sharePageNotes(p); };
       })(page)));
 
-      // Per-page export markdown
+      // Per-page export
       pageBtns.appendChild(iconBtn('Export', SVG.download, (function (p) {
-        return function () {
-          var m = getPageMeta(p.slug, p.type);
-          var lines = ['# ' + m.title, 'URL: ' + window.location.origin + m.url, ''];
-          p.annotations.forEach(function (a) {
-            lines.push('> ' + a.quote);
-            if (a.note) { lines.push(''); lines.push('**Note:** ' + a.note); }
-            lines.push('*' + formatDate(a.ts) + '*');
-            lines.push('');
-          });
-          if (p.bookmarks.length) {
-            lines.push('## Bookmarks');
-            p.bookmarks.forEach(function (b) {
-              lines.push('- ' + (b.context || b.scrollPct + '%') + ' (' + formatDate(b.ts) + ')');
-            });
-          }
-          downloadFile(p.slug + '-notes.md', lines.join('\n'), 'text/markdown');
-        };
+        return function () { showExportPanel(p); };
       })(page)));
 
       // Per-page clear
@@ -451,33 +424,185 @@
     downloadFile('notes-export.md', lines.join('\n'), 'text/markdown');
   }
 
+  // ── Export panel (dropdown with format options) ─────────────
+  function showExportPanel(singlePage) {
+    var old = document.getElementById('notes-export-panel');
+    if (old) old.remove();
+
+    var panel = document.createElement('div');
+    panel.id = 'notes-export-panel';
+    panel.style.cssText = 'position:fixed;bottom:3.5rem;left:50%;transform:translateX(-50%);z-index:var(--z-modal);min-width:180px;background:var(--color-bg-alt);border:1px solid var(--color-rule-heavy);border-radius:var(--radius-md);box-shadow:var(--shadow-md);padding:var(--space-2) 0;';
+
+    function addOption(label, handler) {
+      var btn = document.createElement('button');
+      btn.style.cssText = 'display:block;width:100%;padding:var(--space-2) var(--space-4);font-family:var(--font-ui);font-size:var(--text-sm);color:var(--color-ink);background:none;border:none;text-align:left;cursor:pointer;';
+      btn.textContent = label;
+      btn.addEventListener('click', function () { handler(); panel.remove(); });
+      btn.addEventListener('mouseover', function () { btn.style.background = 'var(--color-bg-inset)'; });
+      btn.addEventListener('mouseout', function () { btn.style.background = 'none'; });
+      panel.appendChild(btn);
+    }
+
+    if (singlePage) {
+      addOption('Plain text (.txt)', function () { exportPageAs(singlePage, 'txt'); });
+      addOption('Markdown (.md)', function () { exportPageAs(singlePage, 'md'); });
+      addOption('JSON (.json)', function () { exportPageAs(singlePage, 'json'); });
+    } else {
+      addOption('Plain text (.txt)', exportText);
+      addOption('Markdown (.md)', exportMarkdown);
+      addOption('JSON (.json)', exportJSON);
+    }
+
+    document.body.appendChild(panel);
+    setTimeout(function () {
+      document.addEventListener('click', function closer(e) {
+        if (!panel.contains(e.target)) { panel.remove(); document.removeEventListener('click', closer); }
+      });
+    }, 10);
+  }
+
+  function exportPageAs(page, format) {
+    var meta = getPageMeta(page.slug, page.type);
+    if (format === 'json') {
+      var data = { title: meta.title, url: meta.url, annotations: page.annotations, bookmarks: page.bookmarks };
+      downloadFile(page.slug + '-notes.json', JSON.stringify(data, null, 2), 'application/json');
+    } else {
+      var sep = format === 'md' ? '\n> ' : '\n  ';
+      var notePre = format === 'md' ? '**Note:** ' : 'Note: ';
+      var lines = [format === 'md' ? '# ' + meta.title : meta.title.toUpperCase()];
+      lines.push('URL: ' + window.location.origin + meta.url);
+      lines.push('');
+      page.annotations.forEach(function (a) {
+        lines.push(format === 'md' ? '> ' + a.quote : '"' + a.quote + '"');
+        if (a.note) { lines.push(''); lines.push(notePre + a.note); }
+        lines.push(formatDate(a.ts));
+        lines.push('');
+      });
+      if (page.bookmarks.length) {
+        lines.push(format === 'md' ? '## Bookmarks' : 'BOOKMARKS');
+        page.bookmarks.forEach(function (b) {
+          lines.push((format === 'md' ? '- ' : '  ') + (b.context || b.scrollPct + '%') + ' (' + formatDate(b.ts) + ')');
+        });
+      }
+      var ext = format === 'md' ? '.md' : '.txt';
+      var mime = format === 'md' ? 'text/markdown' : 'text/plain';
+      downloadFile(page.slug + '-notes' + ext, lines.join('\n'), mime);
+    }
+  }
+
+  // ── Export all as plain text ────────────────────────────────
+  function exportText() {
+    var pages = scanStorage();
+    var keys = Object.keys(pages);
+    var lines = ['NOTES & HIGHLIGHTS', '', ''];
+    keys.forEach(function (id) {
+      var page = pages[id];
+      var meta = getPageMeta(page.slug, page.type);
+      lines.push(meta.title.toUpperCase());
+      lines.push('URL: ' + window.location.origin + meta.url);
+      lines.push('');
+      page.annotations.forEach(function (a) {
+        lines.push('"' + a.quote + '"');
+        if (a.note) lines.push('Note: ' + a.note);
+        lines.push(formatDate(a.ts));
+        lines.push('');
+      });
+      if (page.bookmarks.length) {
+        lines.push('BOOKMARKS');
+        page.bookmarks.forEach(function (b) {
+          lines.push('  ' + (b.context || b.scrollPct + '%') + ' (' + formatDate(b.ts) + ')');
+        });
+        lines.push('');
+      }
+      lines.push('---');
+      lines.push('');
+    });
+    downloadFile('notes-export.txt', lines.join('\n'), 'text/plain');
+  }
+
   // ── Print ──────────────────────────────────────────────────
   function printNotes() {
     window.print();
   }
 
-  // ── Share ──────────────────────────────────────────────────
+  // ── Share (with social media panel) ─────────────────────────
+  function buildShareText(title, items) {
+    var text = title + '\n\n';
+    items.forEach(function (ann) {
+      text += '\u201c' + ann.quote.slice(0, 80) + '\u2026\u201d';
+      if (ann.note) text += ' \u2014 ' + ann.note;
+      text += '\n';
+    });
+    return text;
+  }
+
+  function showSharePanel(title, text, url) {
+    // Remove existing panel
+    var old = document.getElementById('notes-share-panel');
+    if (old) old.remove();
+
+    var enc = encodeURIComponent;
+    var panel = document.createElement('div');
+    panel.id = 'notes-share-panel';
+    panel.className = 'share-panel';
+    panel.removeAttribute('hidden');
+    panel.style.cssText = 'position:fixed;bottom:3.5rem;left:50%;transform:translateX(-50%);z-index:var(--z-modal);min-width:220px;background:var(--color-bg-alt);border:1px solid var(--color-rule-heavy);border-radius:var(--radius-md);box-shadow:var(--shadow-md);padding:var(--space-2) 0;';
+
+    var links = [
+      { label: 'X / Twitter', href: 'https://twitter.com/intent/tweet?text=' + enc(text.slice(0, 200)) + '&url=' + enc(url) },
+      { label: 'Facebook', href: 'https://www.facebook.com/sharer/sharer.php?u=' + enc(url) },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/sharing/share-offsite/?url=' + enc(url) },
+      { label: 'Reddit', href: 'https://www.reddit.com/submit?url=' + enc(url) + '&title=' + enc(title) },
+      { label: 'Email', href: 'mailto:?subject=' + enc(title) + '&body=' + enc(text.slice(0, 500) + '\n\n' + url) }
+    ];
+
+    links.forEach(function (l) {
+      var a = document.createElement('a');
+      a.className = 'share-panel__item';
+      a.href = l.href;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.textContent = l.label;
+      a.style.cssText = 'display:block;padding:var(--space-2) var(--space-4);font-family:var(--font-ui);font-size:var(--text-sm);color:var(--color-ink);text-decoration:none;';
+      panel.appendChild(a);
+    });
+
+    var hr = document.createElement('hr');
+    hr.style.cssText = 'border:none;border-top:1px solid var(--color-rule);margin:var(--space-1) 0;';
+    panel.appendChild(hr);
+
+    var copyBtn = document.createElement('button');
+    copyBtn.style.cssText = 'display:block;width:100%;padding:var(--space-2) var(--space-4);font-family:var(--font-ui);font-size:var(--text-sm);color:var(--color-ink);background:none;border:none;text-align:left;cursor:pointer;';
+    copyBtn.textContent = 'Copy link';
+    copyBtn.addEventListener('click', function () {
+      navigator.clipboard.writeText(url).then(function () {
+        copyBtn.textContent = 'Copied!';
+        setTimeout(function () { panel.remove(); }, 800);
+      });
+    });
+    panel.appendChild(copyBtn);
+
+    document.body.appendChild(panel);
+
+    // Close on click outside
+    setTimeout(function () {
+      document.addEventListener('click', function closer(e) {
+        if (!panel.contains(e.target)) { panel.remove(); document.removeEventListener('click', closer); }
+      });
+    }, 10);
+  }
+
   function shareNotes() {
     var pages = scanStorage();
     var keys = Object.keys(pages);
-    var text = 'My Notes & Highlights\n\n';
-    keys.forEach(function (id) {
-      var page = pages[id];
-      var meta = getPageMeta(page.slug, page.type);
-      text += meta.title + '\n';
-      page.annotations.forEach(function (ann) {
-        text += '  "' + ann.quote.slice(0, 60) + '..."';
-        if (ann.note) text += ' — ' + ann.note;
-        text += '\n';
-      });
-      text += '\n';
-    });
+    var text = buildShareText('My Notes & Highlights', [].concat.apply([], keys.map(function (k) { return pages[k].annotations; })));
+    showSharePanel('My Notes & Highlights', text, window.location.href);
+  }
 
-    if (navigator.share) {
-      navigator.share({ title: 'My Notes & Highlights', text: text, url: window.location.href }).catch(function () {});
-    } else if (navigator.clipboard) {
-      navigator.clipboard.writeText(text).then(function () { alert('Copied to clipboard.'); });
-    }
+  function sharePageNotes(page) {
+    var meta = getPageMeta(page.slug, page.type);
+    var text = buildShareText(meta.title + ' — Notes', page.annotations);
+    showSharePanel(meta.title, text, window.location.origin + meta.url);
   }
 
   // ── Import ─────────────────────────────────────────────────
