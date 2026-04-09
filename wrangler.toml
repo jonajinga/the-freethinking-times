@@ -1,7 +1,0 @@
-# Cloudflare Pages build configuration
-[pages.build]
-command = "npm run build"
-output_directory = "_site"
-
-[pages.build.environment]
-NODE_VERSION = "18"
