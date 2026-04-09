@@ -1,6 +1,7 @@
 const pluginRss = require("@11ty/eleventy-plugin-rss");
 const { DateTime } = require("luxon");
 const fs = require("fs");
+const { execSync } = require("child_process");
 
 module.exports = function (eleventyConfig) {
 
@@ -411,6 +412,17 @@ module.exports = function (eleventyConfig) {
   // ─── Global Data
   eleventyConfig.addGlobalData("currentYear", () => new Date().getFullYear());
   eleventyConfig.addGlobalData("buildTime", () => Date.now());
+
+  // ─── Pagefind search index (runs after build) ──────────────────────────────
+  eleventyConfig.on("eleventy.after", () => {
+    try {
+      execSync("npx pagefind --site _site --output-path _site/pagefind", {
+        stdio: "inherit",
+      });
+    } catch (e) {
+      console.warn("Pagefind indexing failed:", e.message);
+    }
+  });
 
   // ─── Build Config ────────────────────────────────────────────────────────────
   return {
