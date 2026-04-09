@@ -479,8 +479,12 @@
     // Restore saved highlights on load
     if (bodyEl) Annotations.restoreHighlights(bodyEl);
 
-    // Render bookmark indicators in the margin
-    renderBookmarkIndicators();
+    // Render bookmark indicators after layout is stable
+    if (document.readyState === 'complete') {
+      renderBookmarkIndicators();
+    } else {
+      window.addEventListener('load', renderBookmarkIndicators);
+    }
 
     function renderBookmarkIndicators() {
       document.querySelectorAll('.bookmark-indicator').forEach(function (el) { el.remove(); });
@@ -488,23 +492,17 @@
       var list = Bookmarks.loadAll();
       if (!list.length || !bodyEl) return;
 
-      var bodyRect = bodyEl.getBoundingClientRect();
-      var bodyAbsTop = bodyRect.top + (window.scrollY || 0);
-
       list.forEach(function (bm) {
-        // Use stored pixel offset from body top if available
         var topPx;
         if (bm.bodyOffset != null && bm.bodyOffset >= 0) {
           topPx = bm.bodyOffset;
         } else {
           // Legacy fallback: approximate from page scroll %
+          var bodyAbsTop = bodyEl.getBoundingClientRect().top + (window.scrollY || 0);
           var pageScrollHeight = document.documentElement.scrollHeight - window.innerHeight;
           var pageY = Math.round((bm.scrollPct / 100) * pageScrollHeight);
           topPx = Math.max(0, pageY - bodyAbsTop);
         }
-
-        // Scroll target for clicking
-        var scrollTarget = bodyAbsTop + topPx;
 
         var indicator = document.createElement('div');
         indicator.className = 'bookmark-indicator';
@@ -512,8 +510,10 @@
         indicator.title = bm.context ? '\u201c' + bm.context.slice(0, 40) + '\u2026\u201d' : bm.scrollPct + '% through';
         indicator.style.top = topPx + 'px';
         indicator.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
+        // Compute scroll target at click time for accuracy
         indicator.addEventListener('click', function () {
-          window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+          var bodyAbsTop = bodyEl.getBoundingClientRect().top + (window.scrollY || 0);
+          window.scrollTo({ top: bodyAbsTop + topPx, behavior: 'smooth' });
         });
         bodyEl.appendChild(indicator);
       });

@@ -27,15 +27,15 @@
 
 @media (max-width: 900px) {
   .bookmark-indicator {
-    left: 0;
-    width: 4px;
-    height: 2rem;
-    border-radius: 2px;
-    border: none;
-    background: rgba(250, 204, 21, 0.6);
+    left: -1rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    background: rgba(250, 204, 21, 0.3);
+    border-color: rgba(250, 204, 21, 0.5);
   }
   .bookmark-indicator svg {
-    display: none;
+    width: 8px;
+    height: 8px;
   }
 }
 
