@@ -104,6 +104,27 @@
   <script src="/assets/js/subscribe.js" defer></script>
   {% block scripts %}{% endblock %}
 
+  {# ── Data Export/Import ── #}
+  <script>
+  (function(){
+    var eb=document.getElementById('data-export-btn');
+    var ib=document.getElementById('data-import-btn');
+    if(eb)eb.addEventListener('click',function(){
+      var d={};for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k)d[k]=localStorage.getItem(k);}
+      var b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+      var u=URL.createObjectURL(b);var a=document.createElement('a');
+      a.href=u;a.download='tft-backup.json';a.click();URL.revokeObjectURL(u);
+    });
+    if(ib)ib.addEventListener('click',function(){
+      var i=document.createElement('input');i.type='file';i.accept='.json';
+      i.onchange=function(){var r=new FileReader();r.onload=function(){
+        try{var d=JSON.parse(r.result);Object.keys(d).forEach(function(k){localStorage.setItem(k,d[k]);});
+        alert('Imported '+Object.keys(d).length+' items.');}catch(e){alert('Invalid file.');}
+      };r.readAsText(i.files[0]);};i.click();
+    });
+  })();
+  </script>
+
   {# ── Service Worker Registration ── #}
   <script>
     if ('serviceWorker' in navigator) {
