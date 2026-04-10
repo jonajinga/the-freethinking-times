@@ -1,0 +1,37 @@
+---
+layout: base
+title: Events
+description: Upcoming freethought conferences, conventions, and meetups.
+permalink: /events/
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+
+  <header style="padding-bottom: var(--space-8); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);">
+    <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-2);">Events</h1>
+    <p style="color: var(--color-ink-muted); font-size: var(--text-md); font-style: italic;">
+      Upcoming conferences, conventions, and gatherings for freethinkers.
+    </p>
+  </header>
+
+  <div style="max-width: var(--max-width-prose);">
+    {% for event in events | sort(false, false, 'date') %}
+    <div style="padding: var(--space-5); border: 1px solid var(--color-rule); border-top: 3px solid var(--color-accent); margin-bottom: var(--space-4);">
+      <p style="font-family: var(--font-ui); font-size: var(--text-xs); color: var(--color-ink-faint); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 var(--space-2);">
+        {{ event.date | readableDate }} &middot; {{ event.location }}
+      </p>
+      <h2 style="font-family: var(--font-headline); font-size: var(--text-lg); font-weight: 700; margin: 0 0 var(--space-2); line-height: var(--leading-snug);">
+        <a href="{{ event.url }}" target="_blank" rel="noopener noreferrer" style="color: var(--color-ink); text-decoration: none;">{{ event.name }}</a>
+      </h2>
+      <p style="font-family: var(--font-body); font-size: var(--text-sm); color: var(--color-ink-muted); margin: 0; line-height: var(--leading-normal);">
+        {{ event.description }}
+      </p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <p style="font-size: var(--text-sm); color: var(--color-ink-faint); margin-top: var(--space-8);">
+    Know of an event? <a href="/contact/">Submit it</a>.
+  </p>
+
+</div>

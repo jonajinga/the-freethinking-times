@@ -2,151 +2,313 @@
   {
     "quote": "The destroyer of weeds, thistles and thorns is a benefactor, whether he soweth grain or not.",
     "author": "Robert G. Ingersoll",
-    "source": "The Gods (1872)"
+    "source": "The Gods (1872)",
+    "tags": [
+      "freethought",
+      "religion"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "My own mind is my own church.",
     "author": "Thomas Paine",
-    "source": "The Age of Reason (1794)"
+    "source": "The Age of Reason (1794)",
+    "tags": [
+      "liberty",
+      "religion",
+      "reason"
+    ],
+    "era": "18th Century"
   },
   {
     "quote": "If a man would follow, today, the teachings of the Old Testament, he would be a criminal. If he would follow strictly the teachings of the New, he would be insane.",
     "author": "Robert G. Ingersoll",
-    "source": "Some Mistakes of Moses (1879)"
+    "source": "Some Mistakes of Moses (1879)",
+    "tags": [
+      "freethought",
+      "religion"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "The clergy know, that I know, that they know, that they do not know.",
     "author": "Robert G. Ingersoll",
-    "source": "Works, Vol. 2 — epigraph"
+    "source": "Works, Vol. 2 — epigraph",
+    "tags": [
+      "freethought",
+      "religion"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "In all ages, hypocrites, called priests, have put crowns upon the heads of thieves, called kings.",
     "author": "Robert G. Ingersoll",
-    "source": "The Liberty of Man, Woman, and Child (1877)"
+    "source": "The Liberty of Man, Woman, and Child (1877)",
+    "tags": [
+      "freethought",
+      "religion"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "The hands that help are better far than lips that pray.",
     "author": "Robert G. Ingersoll",
-    "source": "attributed"
+    "source": "attributed",
+    "tags": [
+      "freethought",
+      "religion"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "If there be a God, I think he would like me to paint him as I see him, not as some book says he is.",
     "author": "Robert G. Ingersoll",
-    "source": "attributed"
+    "source": "attributed",
+    "tags": [
+      "freethought",
+      "religion",
+      "reason"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "Reason, observation, and experience — the Holy Trinity of Science.",
     "author": "Robert G. Ingersoll",
-    "source": "The Gods (1872)"
+    "source": "The Gods (1872)",
+    "tags": [
+      "freethought",
+      "religion",
+      "reason",
+      "science"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "The notion that faith in Christ is to be rewarded by an eternity of bliss, while a dependence upon reason, observation, and experience merits everlasting pain, is too absurd for refutation.",
     "author": "Robert G. Ingersoll",
-    "source": "The Gods (1872)"
+    "source": "The Gods (1872)",
+    "tags": [
+      "freethought",
+      "religion",
+      "reason"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "Over the vast plain of the unconscious the obedient lightning wrote the fiery epitaph of all rebellion.",
     "author": "Robert G. Ingersoll",
-    "source": "The Ghosts (1877)"
+    "source": "The Ghosts (1877)",
+    "tags": [
+      "freethought",
+      "religion"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "I would rather live and love where death is king than have eternal life where love is not.",
     "author": "Robert G. Ingersoll",
-    "source": "attributed"
+    "source": "attributed",
+    "tags": [
+      "freethought",
+      "religion",
+      "humanity"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "The liberty of man is not safe in the hands of any church.",
     "author": "Robert G. Ingersoll",
-    "source": "Individuality (1873)"
+    "source": "Individuality (1873)",
+    "tags": [
+      "freethought",
+      "religion",
+      "liberty"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "An honest God is the noblest work of man.",
     "author": "Robert G. Ingersoll",
-    "source": "The Gods (1872)"
+    "source": "The Gods (1872)",
+    "tags": [
+      "freethought",
+      "religion"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "Every cradle asks us 'Whence?' and every coffin 'Whither?' The poor barbarian, weeping above his dead, can answer these questions just as well as the robed priest of the most authentic creed.",
     "author": "Robert G. Ingersoll",
-    "source": "The Gods (1872)"
+    "source": "The Gods (1872)",
+    "tags": [
+      "freethought",
+      "religion"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "If we are honest — if we are courageous — we must follow reason wherever it leads.",
     "author": "Robert G. Ingersoll",
-    "source": "attributed"
+    "source": "attributed",
+    "tags": [
+      "freethought",
+      "religion",
+      "reason"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "To argue with a man who has renounced the use and authority of reason is like administering medicine to the dead.",
     "author": "Thomas Paine",
-    "source": "The Crisis (1776)"
+    "source": "The Crisis (1776)",
+    "tags": [
+      "liberty",
+      "religion",
+      "reason"
+    ],
+    "era": "18th Century"
   },
   {
     "quote": "These are the times that try men's souls.",
     "author": "Thomas Paine",
-    "source": "The American Crisis (1776)"
+    "source": "The American Crisis (1776)",
+    "tags": [
+      "liberty",
+      "religion"
+    ],
+    "era": "18th Century"
   },
   {
     "quote": "The world is my country, all mankind are my brethren, and to do good is my religion.",
     "author": "Thomas Paine",
-    "source": "Rights of Man (1791)"
+    "source": "Rights of Man (1791)",
+    "tags": [
+      "liberty",
+      "religion"
+    ],
+    "era": "18th Century"
   },
   {
     "quote": "I do not believe in the creed professed by the Jewish church, by the Roman church, by the Greek church, by the Turkish church, by the Protestant church, nor by any church that I know of.",
     "author": "Thomas Paine",
-    "source": "The Age of Reason (1794)"
+    "source": "The Age of Reason (1794)",
+    "tags": [
+      "liberty",
+      "religion"
+    ],
+    "era": "18th Century"
   },
   {
     "quote": "If I could not be free, I would not live at all.",
     "author": "John Stuart Mill",
-    "source": "On Liberty (1859)"
+    "source": "On Liberty (1859)",
+    "tags": [
+      "liberty",
+      "philosophy"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "Over himself, over his own body and mind, the individual is sovereign.",
     "author": "John Stuart Mill",
-    "source": "On Liberty (1859)"
+    "source": "On Liberty (1859)",
+    "tags": [
+      "liberty",
+      "philosophy",
+      "reason"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "The only freedom which deserves the name is that of pursuing our own good in our own way.",
     "author": "John Stuart Mill",
-    "source": "On Liberty (1859)"
+    "source": "On Liberty (1859)",
+    "tags": [
+      "liberty",
+      "philosophy"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "The peculiar evil of silencing the expression of an opinion is, that it is robbing the human race.",
     "author": "John Stuart Mill",
-    "source": "On Liberty (1859)"
+    "source": "On Liberty (1859)",
+    "tags": [
+      "liberty",
+      "philosophy"
+    ],
+    "era": "19th Century"
   },
   {
     "quote": "And if there were a God, I think it very unlikely that he would have such an uneasy vanity as to be offended by those who doubt his existence.",
     "author": "Bertrand Russell",
-    "source": "Why I Am Not a Christian (1927)"
+    "source": "Why I Am Not a Christian (1927)",
+    "tags": [
+      "philosophy",
+      "religion",
+      "reason"
+    ],
+    "era": "20th Century"
   },
   {
     "quote": "The whole problem with the world is that fools and fanatics are always so certain of themselves, and wiser people so full of doubts.",
     "author": "Bertrand Russell",
-    "source": "attributed"
+    "source": "attributed",
+    "tags": [
+      "philosophy",
+      "religion"
+    ],
+    "era": "20th Century"
   },
   {
     "quote": "A habit of basing convictions upon evidence, and of giving to them only that degree of certainty which the evidence warrants, would, if it became general, cure most of the ills from which the world suffers.",
     "author": "Bertrand Russell",
-    "source": "attributed"
+    "source": "attributed",
+    "tags": [
+      "philosophy",
+      "religion"
+    ],
+    "era": "20th Century"
   },
   {
     "quote": "Is God willing to prevent evil, but not able? Then he is not omnipotent. Is he able, but not willing? Then he is malevolent. Is he both able and willing? Then whence cometh evil? Is he neither able nor willing? Then why call him God?",
     "author": "Epicurus",
-    "source": "attributed (c. 300 BCE)"
+    "source": "attributed (c. 300 BCE)",
+    "tags": [
+      "philosophy",
+      "religion"
+    ],
+    "era": "Ancient"
   },
   {
     "quote": "Men will never be free until the last king is strangled with the entrails of the last priest.",
     "author": "Denis Diderot",
-    "source": "attributed"
+    "source": "attributed",
+    "tags": [
+      "philosophy",
+      "religion",
+      "liberty"
+    ],
+    "era": "18th Century"
   },
   {
     "quote": "Those who can make you believe absurdities can make you commit atrocities.",
     "author": "Voltaire",
-    "source": "Questions sur les miracles (1765)"
+    "source": "Questions sur les miracles (1765)",
+    "tags": [
+      "liberty",
+      "religion"
+    ],
+    "era": "18th Century"
   },
   {
     "quote": "It is far better to grasp the universe as it really is than to persist in delusion, however satisfying and reassuring.",
     "author": "Carl Sagan",
-    "source": "The Demon-Haunted World (1995)"
+    "source": "The Demon-Haunted World (1995)",
+    "tags": [
+      "science",
+      "perspective"
+    ],
+    "era": "20th Century"
   }
 ]

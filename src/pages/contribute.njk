@@ -1,0 +1,102 @@
+---
+layout: base
+title: Contribute
+description: Write for The Freethinking Times — submission guidelines, topics of interest, and how to pitch.
+permalink: /contribute/
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+  <div class="container--prose">
+
+    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Contribute</h1>
+      <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 60ch;">
+        We welcome contributions from writers who share our commitment to reason, evidence, and intellectual honesty.
+      </p>
+    </header>
+
+    <div class="article-body">
+
+      <h2>What we publish</h2>
+
+      <p>{{ site.title }} publishes original writing across seven sections:</p>
+
+      <ul>
+        {% for key, section in site.sections %}
+        {% if key !== "thought-experiments" and key !== "trials-of-thought" and key !== "glossary" and key !== "bookshelf" %}
+        <li><strong>{{ section.label }}</strong> — {{ section.description }}</li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+
+      <h2>Contributor tiers</h2>
+
+      <ul>
+        <li><strong>Guest Writer</strong> — One-off or occasional pieces. Full editorial support provided.</li>
+        <li><strong>Contributing Writer</strong> — Regular contributors with an established track record. Byline page and author RSS feed.</li>
+        <li><strong>Contributing Editor</strong> — Section-level editorial input. Helps shape coverage in their area of expertise.</li>
+      </ul>
+
+      <h2>What we look for</h2>
+
+      <ul>
+        <li>Clear, direct prose — no jargon, no academic obscurantism</li>
+        <li>Original thinking — not just summaries of existing debates</li>
+        <li>Evidence and sourcing — claims backed by references</li>
+        <li>Intellectual honesty — engage the strongest version of opposing arguments</li>
+        <li>Relevance to the freethought tradition — broadly construed</li>
+      </ul>
+
+      <h2>Topics of particular interest</h2>
+
+      <ul>
+        <li>Church-state separation cases and policy</li>
+        <li>History of freethought and secularism</li>
+        <li>Philosophy of religion and ethics</li>
+        <li>Science communication and scientific literacy</li>
+        <li>Religious influence on education, healthcare, and law</li>
+        <li>Profiles of freethinkers past and present</li>
+        <li>Book reviews and literary criticism</li>
+        <li>Personal deconversion narratives (if they illuminate broader themes)</li>
+      </ul>
+
+      <h2>How to pitch</h2>
+
+      <p>Email <a href="/contact/">{{ site.email }}</a> with:</p>
+
+      <ol>
+        <li><strong>Subject line:</strong> "Pitch: [Your Title]"</li>
+        <li><strong>A one-paragraph summary</strong> of what you want to write and why it matters now</li>
+        <li><strong>Your proposed section</strong> (News, Opinion, Analysis, etc.)</li>
+        <li><strong>Estimated word count</strong> (800-3000 words preferred)</li>
+        <li><strong>A brief bio</strong> (2-3 sentences about your background)</li>
+        <li><strong>1-2 writing samples</strong> (links to published work)</li>
+      </ol>
+
+      <p>We respond to all pitches within one week. If accepted, we provide editorial guidance and work with you through revisions.</p>
+
+      <h2>Style guide</h2>
+
+      <ul>
+        <li>Write in the first person when appropriate — this is a publication with a voice</li>
+        <li>Lead with the argument, not the background</li>
+        <li>Use short paragraphs and clear topic sentences</li>
+        <li>Avoid passive voice unless it serves clarity</li>
+        <li>Cite sources inline or in footnotes — we use tooltip footnotes, not endnotes</li>
+        <li>No clickbait headlines — say what the piece argues</li>
+        <li>No emoji in headings or body text</li>
+      </ul>
+
+      <h2>Rights and compensation</h2>
+
+      <p>{{ site.title }} is currently a volunteer-run publication. We do not pay for contributions at this time. Contributors retain copyright and grant us a non-exclusive license to publish. You may republish your work elsewhere after 30 days.</p>
+
+      <p>All published work includes a byline, author bio, and permanent author page on the site.</p>
+
+      <h2>Editorial standards</h2>
+
+      <p>All submissions are subject to our <a href="/ethics/">editorial ethics policy</a>. We fact-check claims, verify sources, and publish corrections promptly when errors are discovered. See our <a href="/corrections/">corrections log</a> for examples.</p>
+
+    </div>
+  </div>
+</div>

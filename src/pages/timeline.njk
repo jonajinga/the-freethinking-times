@@ -1,0 +1,58 @@
+---
+layout: base
+title: Freethought Timeline
+description: A chronological history of freethought, from Socrates to the New Atheism — 2,400 years of reason against orthodoxy.
+permalink: /timeline/
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+
+  <header style="padding-bottom: var(--space-8); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);">
+    <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-2);">Freethought Timeline</h1>
+    <p style="color: var(--color-ink-muted); font-size: var(--text-md); font-style: italic;">
+      2,400 years of reason against orthodoxy.
+    </p>
+  </header>
+
+  <div style="margin-bottom: var(--space-6);">
+    <select id="timeline-era-filter" aria-label="Filter by era" style="padding:var(--space-2) var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);border:1px solid var(--color-rule);border-radius:var(--radius-sm);background:var(--color-bg);color:var(--color-ink);">
+      <option value="">All eras</option>
+      {% set eraSet = [] %}
+      {% for e in timeline %}
+        {% if e.era not in eraSet %}{% set eraSet = eraSet.concat([e.era]) %}{% endif %}
+      {% endfor %}
+      {% for era in eraSet %}
+        <option value="{{ era }}">{{ era }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div id="timeline-list" data-pagefind-body style="max-width: var(--max-width-prose); position: relative; padding-left: var(--space-8);">
+    <div style="position: absolute; left: 14px; top: 0; bottom: 0; width: 2px; background: var(--color-rule);"></div>
+
+    {% for event in timeline | sort(false, false, 'year') %}
+    <div class="timeline-event" data-era="{{ event.era }}" style="position: relative; padding-bottom: var(--space-8);">
+      <div style="position: absolute; left: -26px; top: 4px; width: 10px; height: 10px; background: var(--color-accent); border-radius: 50%; border: 2px solid var(--color-bg);"></div>
+      <p style="font-family: var(--font-ui); font-size: var(--text-xs); font-weight: 700; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 var(--space-1);">
+        {% if event.year < 0 %}{{ event.year * -1 }} BCE{% else %}{{ event.year }}{% endif %}
+        <span style="color: var(--color-ink-faint); font-weight: 400;"> &middot; {{ event.era }}</span>
+      </p>
+      <h2 style="font-family: var(--font-headline); font-size: var(--text-md); font-weight: 700; margin: 0 0 var(--space-2); line-height: var(--leading-snug);">{{ event.title }}</h2>
+      <p style="font-family: var(--font-body); font-size: var(--text-sm); color: var(--color-ink-muted); margin: 0; line-height: var(--leading-normal);">{{ event.description }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+(function () {
+  var filter = document.getElementById('timeline-era-filter');
+  if (!filter) return;
+  filter.addEventListener('change', function () {
+    var era = this.value;
+    document.querySelectorAll('.timeline-event').forEach(function (el) {
+      el.style.display = (!era || el.dataset.era === era) ? '' : 'none';
+    });
+  });
+})();
+</script>

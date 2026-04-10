@@ -215,6 +215,16 @@ content:
     path: src/_data/videos.json
     type: file
 
+  - name: events
+    label: Events
+    path: src/_data/events.json
+    type: file
+
+  - name: timeline
+    label: Timeline
+    path: src/_data/timeline.json
+    type: file
+
   - name: feeds
     label: RSS Feeds
     path: src/_data/feeds.json
