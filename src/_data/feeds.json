@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Freedom From Religion Foundation",
+    "url": "https://ffrf.org/feeds/news.rss",
+    "category": "Organizations"
+  },
+  {
+    "name": "Center for Inquiry",
+    "url": "https://centerforinquiry.org/feed/",
+    "category": "Organizations"
+  },
+  {
+    "name": "The Humanist",
+    "url": "https://thehumanist.com/feed/",
+    "category": "Publications"
+  },
+  {
+    "name": "Skeptical Inquirer",
+    "url": "https://skepticalinquirer.org/feed/",
+    "category": "Publications"
+  },
+  {
+    "name": "OnlySky Media",
+    "url": "https://onlysky.media/feed/",
+    "category": "Publications"
+  },
+  {
+    "name": "New Humanist",
+    "url": "https://newhumanist.org.uk/feed",
+    "category": "Publications"
+  },
+  {
+    "name": "Internet Infidels",
+    "url": "https://infidels.org/feed/",
+    "category": "Archives"
+  }
+]

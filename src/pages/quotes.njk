@@ -1,0 +1,67 @@
+---
+layout: base
+title: Quotes
+description: A curated collection of freethought quotes — save, share, and print your favourites.
+permalink: /quotes/
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+
+  <header style="padding-bottom: var(--space-8); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);">
+    <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-2);">Quotes</h1>
+    <p style="color: var(--color-ink-muted); font-size: var(--text-md); font-style: italic;">
+      A curated collection of freethought quotes. Save your favourites to your reading list.
+    </p>
+  </header>
+
+  <div id="quotes-filter" style="margin-bottom: var(--space-6);">
+    <select id="quotes-author-filter" aria-label="Filter by author" style="padding: var(--space-2) var(--space-3); font-family: var(--font-ui); font-size: var(--text-sm); border: 1px solid var(--color-rule); border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-ink);">
+      <option value="">All authors</option>
+      {% set authorSet = [] %}
+      {% for q in quotes %}
+        {% if q.author not in authorSet %}
+          {% set authorSet = authorSet.concat([q.author]) %}
+        {% endif %}
+      {% endfor %}
+      {% for a in authorSet | sort %}
+        <option value="{{ a }}">{{ a }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div id="quotes-list">
+    {% for q in quotes %}
+    <blockquote class="quote-card" data-author="{{ q.author }}" style="margin: 0 0 var(--space-6); padding: var(--space-6); border-left: 4px solid var(--color-accent); background: var(--color-bg-alt); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
+      <p style="font-family: var(--font-body); font-size: var(--text-lg); line-height: var(--leading-loose); color: var(--color-ink); margin: 0 0 var(--space-4); font-style: italic;">
+        &ldquo;{{ q.quote }}&rdquo;
+      </p>
+      <footer style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
+        <cite style="font-family: var(--font-ui); font-size: var(--text-sm); color: var(--color-ink-muted); font-style: normal;">
+          <strong>{{ q.author }}</strong>{% if q.source %} — {{ q.source }}{% endif %}
+        </cite>
+        <div style="display: flex; gap: var(--space-1);">
+          <button class="article-action-btn" type="button" aria-label="Share quote" title="Share" onclick="var t=encodeURIComponent('\u201c{{ q.quote | replace("'", "\\'") | truncate(180, true, '...') }}\u201d \u2014 {{ q.author }}');if(navigator.share){navigator.share({text:decodeURIComponent(t)}).catch(function(){});}else if(navigator.clipboard){navigator.clipboard.writeText(decodeURIComponent(t)).then(function(){this.title='Copied!';}.bind(this));}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </button>
+          <button class="article-action-btn" type="button" aria-label="Copy quote" title="Copy" onclick="navigator.clipboard.writeText('\u201c{{ q.quote | replace("'", "\\'") }}\u201d \u2014 {{ q.author }}').then(function(){this.title='Copied!';}.bind(this));">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </button>
+        </div>
+      </footer>
+    </blockquote>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+(function () {
+  var filter = document.getElementById('quotes-author-filter');
+  if (!filter) return;
+  filter.addEventListener('change', function () {
+    var author = this.value;
+    document.querySelectorAll('.quote-card').forEach(function (card) {
+      card.style.display = (!author || card.dataset.author === author) ? '' : 'none';
+    });
+  });
+})();
+</script>

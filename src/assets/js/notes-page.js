@@ -216,7 +216,39 @@
       return getLatestTs(pages[b]) - getLatestTs(pages[a]);
     });
 
-    // Filter bar
+    // Search + filter controls
+    var controlsBar = document.createElement('div');
+    controlsBar.style.cssText = 'display:flex;flex-wrap:wrap;gap:var(--space-3);align-items:center;margin-bottom:var(--space-4);';
+
+    // Search input
+    var searchInput = document.createElement('input');
+    searchInput.type = 'search';
+    searchInput.placeholder = 'Search by title\u2026';
+    searchInput.setAttribute('aria-label', 'Filter by title');
+    searchInput.style.cssText = 'flex:1;min-width:160px;padding:var(--space-2) var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);border:1px solid var(--color-rule);border-radius:var(--radius-sm);background:var(--color-bg);color:var(--color-ink);';
+    searchInput.addEventListener('input', applyFilter);
+    controlsBar.appendChild(searchInput);
+
+    // Category dropdown
+    var catSelect = document.createElement('select');
+    catSelect.setAttribute('aria-label', 'Filter by category');
+    catSelect.style.cssText = 'padding:var(--space-2) var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);border:1px solid var(--color-rule);border-radius:var(--radius-sm);background:var(--color-bg);color:var(--color-ink);';
+    var catOpt = document.createElement('option');
+    catOpt.value = '';
+    catOpt.textContent = 'All sources';
+    catSelect.appendChild(catOpt);
+    ['article', 'library'].forEach(function (t) {
+      var o = document.createElement('option');
+      o.value = t;
+      o.textContent = t.charAt(0).toUpperCase() + t.slice(1) + 's';
+      catSelect.appendChild(o);
+    });
+    catSelect.addEventListener('change', applyFilter);
+    controlsBar.appendChild(catSelect);
+
+    root.appendChild(controlsBar);
+
+    // Type filter bar
     var filterBar = document.createElement('div');
     filterBar.style.cssText = 'display:flex;gap:var(--space-2);margin-bottom:var(--space-6);';
     var filters = ['All', 'Highlights', 'Notes', 'Bookmarks'];
@@ -240,15 +272,32 @@
     var currentFilter = 'All';
 
     function applyFilter() {
-      entriesContainer.querySelectorAll('[data-note-type]').forEach(function (el) {
-        if (currentFilter === 'All') { el.style.display = ''; return; }
-        var type = el.dataset.noteType;
-        el.style.display = (type === currentFilter.toLowerCase()) ? '' : 'none';
-      });
-      // Hide page sections that have no visible items
+      var query = searchInput.value.toLowerCase().trim();
+      var cat = catSelect.value;
+
       entriesContainer.querySelectorAll('[data-page-section]').forEach(function (sec) {
+        var slug = sec.dataset.pageSection;
+        var pageType = sec.dataset.pageType || '';
+        var titleEl = sec.querySelector('a');
+        var title = titleEl ? titleEl.textContent.toLowerCase() : slug;
+
+        // Category filter
+        if (cat && pageType !== cat) { sec.style.display = 'none'; return; }
+
+        // Title search
+        if (query && title.indexOf(query) === -1 && slug.indexOf(query) === -1) { sec.style.display = 'none'; return; }
+
+        sec.style.display = '';
+
+        // Type filter within visible sections
+        sec.querySelectorAll('[data-note-type]').forEach(function (el) {
+          if (currentFilter === 'All') { el.style.display = ''; return; }
+          el.style.display = (el.dataset.noteType === currentFilter.toLowerCase()) ? '' : 'none';
+        });
+
+        // Hide section if all items filtered out
         var visible = sec.querySelectorAll('[data-note-type]:not([style*="display: none"])');
-        sec.style.display = visible.length ? '' : 'none';
+        if (!visible.length && currentFilter !== 'All') sec.style.display = 'none';
       });
     }
 
@@ -258,6 +307,7 @@
       var section = document.createElement('div');
       section.style.cssText = 'margin-bottom:var(--space-10);padding-bottom:var(--space-8);border-bottom:1px solid var(--color-rule);';
       section.setAttribute('data-page-section', page.slug);
+      section.setAttribute('data-page-type', page.type);
 
       // Page header
       var header = document.createElement('div');
