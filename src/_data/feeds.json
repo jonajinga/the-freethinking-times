@@ -1,6 +1,6 @@
 [
   {
-    "name": "Freedom From Religion Foundation",
+    "name": "FFRF",
     "url": "https://ffrf.org/feeds/news.rss",
     "category": "Organizations"
   },
@@ -10,28 +10,28 @@
     "category": "Organizations"
   },
   {
+    "name": "American Humanist",
+    "url": "https://americanhumanist.org/feed/",
+    "category": "Organizations"
+  },
+  {
     "name": "The Humanist",
     "url": "https://thehumanist.com/feed/",
     "category": "Publications"
   },
   {
-    "name": "Skeptical Inquirer",
-    "url": "https://skepticalinquirer.org/feed/",
-    "category": "Publications"
-  },
-  {
-    "name": "OnlySky Media",
+    "name": "OnlySky",
     "url": "https://onlysky.media/feed/",
     "category": "Publications"
   },
   {
-    "name": "New Humanist",
-    "url": "https://newhumanist.org.uk/feed",
+    "name": "Friendly Atheist",
+    "url": "https://www.patheos.com/blogs/friendlyatheist/feed/",
     "category": "Publications"
   },
   {
-    "name": "Internet Infidels",
-    "url": "https://infidels.org/feed/",
-    "category": "Archives"
+    "name": "Pharyngula",
+    "url": "https://freethoughtblogs.com/pharyngula/feed/",
+    "category": "Publications"
   }
 ]

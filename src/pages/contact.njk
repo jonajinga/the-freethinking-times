@@ -1,0 +1,54 @@
+---
+layout: base
+title: Contact
+description: How to reach The Freethinking Times — tips, corrections, submissions, and general inquiries.
+permalink: /contact/
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+  <div class="container--prose">
+
+    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Contact</h1>
+      <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 60ch;">
+        We read every message. Here is how to reach us.
+      </p>
+    </header>
+
+    <div class="article-body">
+
+      <h2>General inquiries</h2>
+      <p>For questions, comments, or feedback:</p>
+      <p style="margin: var(--space-4) 0;">
+        <a href="mailto:{{ site.email }}" style="font-family: var(--font-ui); font-weight: 600; font-size: var(--text-md);">{{ site.email }}</a>
+      </p>
+
+      <h2>Suggest a correction</h2>
+      <p>If you have found an error in any article or library text, please email us at <a href="mailto:{{ site.email }}?subject=Correction">{{ site.email }}</a> with:</p>
+      <ul>
+        <li>The URL or title of the article</li>
+        <li>What the error is</li>
+        <li>What the correct information should be</li>
+      </ul>
+      <p>All corrections are published in our <a href="/corrections/">corrections log</a> and noted on the article itself.</p>
+
+      <h2>Submit a piece</h2>
+      <p>We accept submissions from outside contributors. See our <a href="/submit/">submissions page</a> for guidelines, topics of interest, and how to pitch.</p>
+
+      <h2>Newsletter</h2>
+      <p>Get new articles by email. Free, always. Unsubscribe at any time.</p>
+      <div style="max-width: 400px; margin: var(--space-4) 0;">
+        {% set subscribeVariant = "inline" %}
+        {% include "partials/subscribe.njk" %}
+      </div>
+
+      <h2>RSS</h2>
+      <p>Follow via your preferred feed reader:</p>
+      <p><a href="/feed.xml" style="font-family: var(--font-ui); font-weight: 600;">{{ site.url }}/feed.xml</a></p>
+
+      <h2>Support</h2>
+      <p>{{ site.title }} is independent and reader-supported. If this work matters to you, consider <a href="/support/">supporting us</a>.</p>
+
+    </div>
+  </div>
+</div>
