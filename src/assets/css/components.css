@@ -896,12 +896,23 @@ a.dateline:hover { color: var(--color-accent); }
   transform: translateX(-50%);
   width: min(680px, 96vw);
   max-height: 80vh;
+  max-height: 80dvh;
   background: var(--color-bg);
   border: 1px solid var(--color-rule-heavy);
   border-top: none;
   box-shadow: var(--shadow-md);
   z-index: var(--z-modal);
   flex-direction: column;
+}
+
+@media (max-width: 640px) {
+  .search-modal {
+    width: 100vw;
+    max-height: 100vh;
+    max-height: 100dvh;
+    border: none;
+    border-radius: 0;
+  }
 }
 
 .search-modal.is-open {
