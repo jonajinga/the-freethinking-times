@@ -148,31 +148,64 @@
       });
       input.click();
     });
-    actions.appendChild(importBtn);
+    function dlFile(name, content, type) {
+      var blob = new Blob([content], { type: type + ';charset=utf-8' });
+      var u = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = u; a.download = name;
+      document.body.appendChild(a); a.click();
+      document.body.removeChild(a); URL.revokeObjectURL(u);
+    }
 
     var exportBtn = rlIconBtn('Export', RL_SVG.download, function () {
+      var old = document.getElementById('rl-export-panel');
+      if (old) { old.remove(); return; }
+      var panel = document.createElement('div');
+      panel.id = 'rl-export-panel';
+      panel.style.cssText = 'position:fixed;bottom:3.5rem;left:50%;transform:translateX(-50%);z-index:300;min-width:180px;background:var(--color-bg-alt);border:1px solid var(--color-rule-heavy);border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,.15);padding:8px 0;';
       var items = load();
-      var blob = new Blob([JSON.stringify(items, null, 2)], { type: 'application/json;charset=utf-8' });
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = 'reading-list.json';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+
+      function opt(label, fn) {
+        var b = document.createElement('button');
+        b.style.cssText = 'display:block;width:100%;padding:6px 16px;font-family:var(--font-ui);font-size:14px;color:var(--color-ink);background:none;border:none;text-align:left;cursor:pointer;';
+        b.textContent = label;
+        b.onmouseover = function () { b.style.background = 'var(--color-bg-inset)'; };
+        b.onmouseout = function () { b.style.background = 'none'; };
+        b.addEventListener('click', function () { fn(); panel.remove(); });
+        panel.appendChild(b);
+      }
+
+      opt('Plain text (.txt)', function () {
+        var lines = items.map(function (i) { return i.title + '\n  ' + (i.section || '') + ' | ' + (i.url || '') + '\n'; });
+        dlFile('reading-list.txt', 'Reading List\n\n' + lines.join('\n'), 'text/plain');
+      });
+      opt('Markdown (.md)', function () {
+        var lines = items.map(function (i) { return '- [' + i.title + '](' + (i.url || '') + ')' + (i.section ? ' (' + i.section + ')' : ''); });
+        dlFile('reading-list.md', '# Reading List\n\n' + lines.join('\n'), 'text/markdown');
+      });
+      opt('JSON (.json)', function () {
+        dlFile('reading-list.json', JSON.stringify(items, null, 2), 'application/json');
+      });
+      opt('PDF (print)', function () { window.print(); });
+
+      document.body.appendChild(panel);
+      setTimeout(function () {
+        document.addEventListener('mousedown', function closer(e) {
+          if (!panel.contains(e.target)) { panel.remove(); document.removeEventListener('mousedown', closer); }
+        });
+      }, 100);
     });
-    actions.appendChild(exportBtn);
 
     var clearAll = rlIconBtn('Clear all', RL_SVG.trash, function () {
       if (confirm('Remove all saved articles?')) { save([]); render(); }
     });
-    var printBtn = rlIconBtn('Print', RL_SVG.print, function () { window.print(); });
 
     if (list.length) {
-      actions.appendChild(printBtn);
+      actions.appendChild(importBtn);
       actions.appendChild(exportBtn);
       actions.appendChild(clearAll);
+    } else {
+      actions.appendChild(importBtn);
     }
     root.appendChild(actions);
 

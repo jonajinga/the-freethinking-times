@@ -20,6 +20,15 @@ permalink: /reading-list/
 
 </div>
 
+<style>
+@media print {
+  button, input, select,
+  .article-action-btn,
+  .reading-list-clear,
+  .reading-list__remove { display: none !important; }
+}
+</style>
+
 {% block scripts %}
 <script src="/assets/js/reading-list.js" defer></script>
 {% endblock %}

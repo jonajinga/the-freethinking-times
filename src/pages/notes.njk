@@ -22,15 +22,16 @@ permalink: /notes/
 
 <style>
 @media print {
-  #notes-page-root button,
-  #notes-page-root input,
-  #notes-page-root select,
-  #notes-page-root a[style*="underline"],
+  button, input, select,
   .article-action-btn,
   .library-annotation-item__actions,
   .library-bookmark-item__delete,
   .search-filter-btn,
-  .reading-list-clear { display: none !important; }
+  .reading-list-clear,
+  [style*="gap"] > button,
+  [style*="gap"] > a { display: none !important; }
+
+  [data-page-section] a[style] { display: inline !important; }
 }
 </style>
 
