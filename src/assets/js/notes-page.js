@@ -237,7 +237,7 @@
     catOpt.value = '';
     catOpt.textContent = 'All sources';
     catSelect.appendChild(catOpt);
-    ['article', 'library'].forEach(function (t) {
+    ['article', 'library', 'quotes'].forEach(function (t) {
       var o = document.createElement('option');
       o.value = t;
       o.textContent = t.charAt(0).toUpperCase() + t.slice(1) + 's';
