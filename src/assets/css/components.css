@@ -257,14 +257,17 @@
 
 .nav-dropdown__footer:hover { color: var(--color-ink); }
 
-/* Quotes dropdown: single column, centered */
+/* Quotes dropdown: single column, centered on page */
 #dropdown-quotes {
   width: min(480px, 90vw);
   grid-template-columns: 1fr;
-  left: 50%;
+  position: fixed;
+  top: auto;
+  left: 58% !important;
   transform: translateX(-50%) translateY(-6px);
 }
 
+/* Override the show state transform for quotes specifically */
 .site-nav:has(#nav-quotes:hover) #dropdown-quotes,
 .site-nav:has(#nav-quotes:focus) #dropdown-quotes,
 #dropdown-quotes:hover,
@@ -1396,13 +1399,15 @@ a.dateline:hover { color: var(--color-accent); }
 .nav-drawer .gtranslate_wrapper select,
 .sidebar-widget .gtranslate_wrapper select {
   font-family: var(--font-ui) !important;
-  font-size: var(--text-xs) !important;
+  font-size: 7px !important;
   color: var(--color-ink-muted) !important;
   background: var(--color-bg) !important;
   border: 1px solid var(--color-rule) !important;
   border-radius: var(--radius-sm) !important;
-  padding: var(--space-1) var(--space-3) !important;
+  padding: var(--space-1) var(--space-2) !important;
   height: 1.75rem !important;
+  max-width: 130px !important;
+  width: 100% !important;
   cursor: pointer !important;
 }
 
