@@ -4,6 +4,12 @@ title: Why I Am Not a Christian
 permalink: /library/why-i-am-not-a-christian/
 ---
 
+<div class="library-title-page" style="text-align:center;padding:var(--space-6) 0;margin-bottom:var(--space-6);border-bottom:1px solid var(--color-rule);">
+
+A lecture delivered at the National Secular Society, Battersea Town Hall, London. March 6, 1927.
+
+</div>
+
 On March 6, 1927, Bertrand Russell delivered a lecture to the National Secular Society at Battersea Town Hall in London. The lecture was titled "Why I Am Not a Christian." It was later published as a pamphlet. Nearly a century later it remains the clearest short statement of secular humanism that exists in the English language.
 
 The lecture works by precision. Russell begins by defining his terms: what does it mean to be a Christian? He settles on two conditions — believing in God and believing that Christ was at minimum a morally admirable figure, if not divine. He then argues against both.

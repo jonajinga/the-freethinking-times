@@ -4,6 +4,14 @@ title: An Enquiry Concerning Human Understanding
 permalink: /library/enquiry-human-understanding/
 ---
 
+<div class="library-title-page" style="text-align:center;padding:var(--space-6) 0;margin-bottom:var(--space-6);border-bottom:1px solid var(--color-rule);">
+
+*"A wise man proportions his belief to the evidence."*
+
+First published 1748. London.
+
+</div>
+
 David Hume published An Enquiry Concerning Human Understanding in 1748, three years after the better-known Treatise of Human Nature had, in his own description, "fallen dead-born from the press." The Enquiry is a condensed and clarified version of the Treatise's epistemological arguments, written for a broader audience. It succeeded: the Enquiry was widely read in Hume's lifetime and established his reputation as the leading philosopher of the Scottish Enlightenment.
 
 The book's central project is an investigation of the limits of human knowledge. What can we actually know, and how? Hume's answer, worked out across twelve sections, is deeply unsettling. We cannot rationally justify most of what we believe.
