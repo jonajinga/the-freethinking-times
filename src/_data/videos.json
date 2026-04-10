@@ -1,0 +1,102 @@
+[
+  {
+    "title": "Robert Ingersoll: The Great Agnostic",
+    "url": "https://www.youtube.com/watch?v=JmVKJcO6E8I",
+    "embed": "https://www.youtube.com/embed/JmVKJcO6E8I",
+    "duration": "58:00",
+    "speaker": "Documentary",
+    "date": "2013",
+    "tags": ["Ingersoll", "Biography", "Freethought"],
+    "description": "Documentary exploring the life and legacy of Robert G. Ingersoll, America's most famous agnostic orator."
+  },
+  {
+    "title": "Christopher Hitchens — God Is Not Great",
+    "url": "https://www.youtube.com/watch?v=sD0B-X9LJjs",
+    "embed": "https://www.youtube.com/embed/sD0B-X9LJjs",
+    "duration": "1:16:00",
+    "speaker": "Christopher Hitchens",
+    "date": "2007",
+    "tags": ["Hitchens", "Religion", "Debate"],
+    "description": "Hitchens presents the arguments from his book God Is Not Great: How Religion Poisons Everything."
+  },
+  {
+    "title": "Bertrand Russell — Why I Am Not a Christian",
+    "url": "https://www.youtube.com/watch?v=HQJ3sqkdCRE",
+    "embed": "https://www.youtube.com/embed/HQJ3sqkdCRE",
+    "duration": "15:00",
+    "speaker": "Bertrand Russell",
+    "date": "1959",
+    "tags": ["Russell", "Philosophy", "Christianity"],
+    "description": "Rare interview footage of Bertrand Russell discussing his views on religion, God, and the afterlife."
+  },
+  {
+    "title": "Carl Sagan — Pale Blue Dot",
+    "url": "https://www.youtube.com/watch?v=wupToqz1e2g",
+    "embed": "https://www.youtube.com/embed/wupToqz1e2g",
+    "duration": "3:30",
+    "speaker": "Carl Sagan",
+    "date": "1994",
+    "tags": ["Sagan", "Science", "Perspective"],
+    "description": "Sagan's famous reflection on the Voyager 1 photograph of Earth from 6 billion kilometers away."
+  },
+  {
+    "title": "Daniel Dennett — Breaking the Spell",
+    "url": "https://www.youtube.com/watch?v=DTepA-WV_oE",
+    "embed": "https://www.youtube.com/embed/DTepA-WV_oE",
+    "duration": "1:05:00",
+    "speaker": "Daniel Dennett",
+    "date": "2006",
+    "tags": ["Dennett", "Philosophy", "Religion", "Science"],
+    "description": "Philosopher Daniel Dennett argues for studying religion as a natural phenomenon using the tools of science."
+  },
+  {
+    "title": "Sam Harris — The Moral Landscape",
+    "url": "https://www.youtube.com/watch?v=Hj9oB4zpHww",
+    "embed": "https://www.youtube.com/embed/Hj9oB4zpHww",
+    "duration": "1:12:00",
+    "speaker": "Sam Harris",
+    "date": "2010",
+    "tags": ["Harris", "Ethics", "Science", "Morality"],
+    "description": "Harris argues that science can determine human values and that morality should be approached empirically."
+  },
+  {
+    "title": "Richard Dawkins — The God Delusion",
+    "url": "https://www.youtube.com/watch?v=VxGMqKCcN6A",
+    "embed": "https://www.youtube.com/embed/VxGMqKCcN6A",
+    "duration": "47:00",
+    "speaker": "Richard Dawkins",
+    "date": "2006",
+    "tags": ["Dawkins", "Atheism", "Science", "Evolution"],
+    "description": "Dawkins presents the central arguments from The God Delusion at the Randolph-Macon Woman's College."
+  },
+  {
+    "title": "Matt Dillahunty — The Superiority of Secular Morality",
+    "url": "https://www.youtube.com/watch?v=cq2C7fyVTA4",
+    "embed": "https://www.youtube.com/embed/cq2C7fyVTA4",
+    "duration": "25:00",
+    "speaker": "Matt Dillahunty",
+    "date": "2012",
+    "tags": ["Dillahunty", "Ethics", "Secular Humanism"],
+    "description": "A concise case for why secular morality is superior to religious morality."
+  },
+  {
+    "title": "Julia Sweeney — Letting Go of God",
+    "url": "https://www.youtube.com/watch?v=KiU5ht5W_lk",
+    "embed": "https://www.youtube.com/embed/KiU5ht5W_lk",
+    "duration": "2:08:00",
+    "speaker": "Julia Sweeney",
+    "date": "2008",
+    "tags": ["Sweeney", "Personal Story", "Deconversion"],
+    "description": "Comedian Julia Sweeney's one-woman show about her journey from Catholicism to atheism."
+  },
+  {
+    "title": "Thomas Paine and the Promise of America",
+    "url": "https://www.youtube.com/watch?v=I3h9Z09UYFM",
+    "embed": "https://www.youtube.com/embed/I3h9Z09UYFM",
+    "duration": "58:00",
+    "speaker": "Harvey Kaye",
+    "date": "2005",
+    "tags": ["Paine", "History", "Democracy"],
+    "description": "Historian Harvey Kaye discusses Thomas Paine's radical democratic vision and its relevance today."
+  }
+]

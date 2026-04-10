@@ -210,6 +210,11 @@ content:
     path: src/_data/authors.json
     type: file
 
+  - name: videos
+    label: Videos
+    path: src/_data/videos.json
+    type: file
+
   - name: feeds
     label: RSS Feeds
     path: src/_data/feeds.json
