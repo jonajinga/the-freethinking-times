@@ -492,10 +492,12 @@
       addOption('Plain text (.txt)', function () { exportPageAs(singlePage, 'txt'); });
       addOption('Markdown (.md)', function () { exportPageAs(singlePage, 'md'); });
       addOption('JSON (.json)', function () { exportPageAs(singlePage, 'json'); });
+      addOption('PDF (print)', function () { window.print(); });
     } else {
       addOption('Plain text (.txt)', exportText);
       addOption('Markdown (.md)', exportMarkdown);
       addOption('JSON (.json)', exportJSON);
+      addOption('PDF (print)', function () { window.print(); });
     }
 
     document.body.appendChild(panel);
@@ -589,11 +591,9 @@
     var enc = encodeURIComponent;
     var panel = document.createElement('div');
     panel.id = 'notes-share-panel';
-    panel.className = 'share-panel';
-    panel.removeAttribute('hidden');
-    panel.style.cssText = 'position:fixed;bottom:3.5rem;left:50%;transform:translateX(-50%);z-index:var(--z-modal);min-width:220px;background:var(--color-bg-alt);border:1px solid var(--color-rule-heavy);border-radius:var(--radius-md);box-shadow:var(--shadow-md);padding:var(--space-2) 0;';
+    panel.style.cssText = 'position:fixed;bottom:3.5rem;left:50%;transform:translateX(-50%);z-index:300;min-width:220px;background:var(--color-bg-alt);border:1px solid var(--color-rule-heavy);border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,.15);padding:8px 0;';
 
-    var links = [
+    var items = [
       { label: 'X / Twitter', href: 'https://twitter.com/intent/tweet?text=' + enc(text.slice(0, 200)) + '&url=' + enc(url) },
       { label: 'Facebook', href: 'https://www.facebook.com/sharer/sharer.php?u=' + enc(url) },
       { label: 'LinkedIn', href: 'https://www.linkedin.com/sharing/share-offsite/?url=' + enc(url) },
@@ -601,24 +601,28 @@
       { label: 'Email', href: 'mailto:?subject=' + enc(title) + '&body=' + enc(text.slice(0, 500) + '\n\n' + url) }
     ];
 
-    links.forEach(function (l) {
+    items.forEach(function (l) {
       var a = document.createElement('a');
-      a.className = 'share-panel__item';
       a.href = l.href;
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
       a.textContent = l.label;
-      a.style.cssText = 'display:block;padding:var(--space-2) var(--space-4);font-family:var(--font-ui);font-size:var(--text-sm);color:var(--color-ink);text-decoration:none;';
+      a.style.cssText = 'display:block;padding:6px 16px;font-family:var(--font-ui);font-size:14px;color:var(--color-ink);text-decoration:none;cursor:pointer;';
+      a.onmouseover = function () { a.style.background = 'var(--color-bg-inset)'; };
+      a.onmouseout = function () { a.style.background = 'none'; };
+      a.addEventListener('click', function () { setTimeout(function () { panel.remove(); }, 100); });
       panel.appendChild(a);
     });
 
     var hr = document.createElement('hr');
-    hr.style.cssText = 'border:none;border-top:1px solid var(--color-rule);margin:var(--space-1) 0;';
+    hr.style.cssText = 'border:none;border-top:1px solid var(--color-rule);margin:4px 0;';
     panel.appendChild(hr);
 
     var copyBtn = document.createElement('button');
-    copyBtn.style.cssText = 'display:block;width:100%;padding:var(--space-2) var(--space-4);font-family:var(--font-ui);font-size:var(--text-sm);color:var(--color-ink);background:none;border:none;text-align:left;cursor:pointer;';
+    copyBtn.style.cssText = 'display:block;width:100%;padding:6px 16px;font-family:var(--font-ui);font-size:14px;color:var(--color-ink);background:none;border:none;text-align:left;cursor:pointer;';
     copyBtn.textContent = 'Copy link';
+    copyBtn.onmouseover = function () { copyBtn.style.background = 'var(--color-bg-inset)'; };
+    copyBtn.onmouseout = function () { copyBtn.style.background = 'none'; };
     copyBtn.addEventListener('click', function () {
       navigator.clipboard.writeText(url).then(function () {
         copyBtn.textContent = 'Copied!';
@@ -629,11 +633,10 @@
 
     document.body.appendChild(panel);
 
-    // Close on click outside (use mousedown to avoid the opening click)
     function closer(e) {
       if (!panel.contains(e.target)) { panel.remove(); document.removeEventListener('mousedown', closer); }
     }
-    setTimeout(function () { document.addEventListener('mousedown', closer); }, 50);
+    setTimeout(function () { document.addEventListener('mousedown', closer); }, 100);
   }
 
   function shareNotes() {
