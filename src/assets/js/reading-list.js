@@ -78,6 +78,24 @@
     var list = load();
     root.innerHTML = '';
 
+    // Search input
+    var searchRow = document.createElement('div');
+    searchRow.style.cssText = 'display:flex;gap:var(--space-3);margin-bottom:var(--space-4);flex-wrap:wrap;align-items:center;';
+    var searchInput = document.createElement('input');
+    searchInput.type = 'search';
+    searchInput.placeholder = 'Filter by title\u2026';
+    searchInput.setAttribute('aria-label', 'Filter reading list');
+    searchInput.style.cssText = 'flex:1;min-width:160px;padding:var(--space-2) var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);border:1px solid var(--color-rule);border-radius:var(--radius-sm);background:var(--color-bg);color:var(--color-ink);';
+    searchInput.addEventListener('input', function () {
+      var q = this.value.toLowerCase();
+      root.querySelectorAll('.reading-list__item').forEach(function (item) {
+        var title = item.querySelector('.reading-list__title');
+        item.style.display = (!q || (title && title.textContent.toLowerCase().indexOf(q) !== -1)) ? '' : 'none';
+      });
+    });
+    searchRow.appendChild(searchInput);
+    root.appendChild(searchRow);
+
     var actions = document.createElement('div');
     actions.style.cssText = 'display:flex;justify-content:flex-end;gap:var(--space-2);margin-bottom:var(--space-4);';
 
@@ -143,7 +161,14 @@
     clearAll.addEventListener('click', function () {
       if (confirm('Remove all saved articles?')) { save([]); render(); }
     });
+    var printBtn = document.createElement('button');
+    printBtn.className = 'reading-list-clear';
+    printBtn.type = 'button';
+    printBtn.textContent = 'Print';
+    printBtn.addEventListener('click', function () { window.print(); });
+
     if (list.length) {
+      actions.appendChild(printBtn);
       actions.appendChild(exportBtn);
       actions.appendChild(clearAll);
     }
