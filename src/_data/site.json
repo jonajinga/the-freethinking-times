@@ -34,6 +34,7 @@
     { "label": "Letters",        "url": "/letters/",           "key": "letters",      "collection": "letters" },
     { "label": "Library",        "url": "/library/",           "key": "library",  "type": "library" },
     { "label": "Projects",       "url": "/projects/",          "key": "projects",     "type": "projects" },
+    { "label": "Quotes",         "url": "/quotes/",            "key": "quotes" },
     { "label": "Games",          "url": "/games/",             "key": "games",        "type": "games" }
   ],
   "social": {

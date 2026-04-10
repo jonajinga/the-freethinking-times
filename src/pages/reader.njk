@@ -10,15 +10,9 @@ permalink: /reader/
   <header style="padding-bottom: var(--space-8); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);">
     <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-2);">RSS Reader</h1>
     <p style="color: var(--color-ink-muted); font-size: var(--text-md); font-style: italic;">
-      Follow freethought publications. Add your own feeds. Everything stays in your browser.
+      Follow freethought publications. Feeds are updated at each site build.
     </p>
   </header>
-
-  {# Add feed form #}
-  <div style="display: flex; gap: var(--space-2); margin-bottom: var(--space-6); flex-wrap: wrap;">
-    <input type="url" id="feed-url-input" placeholder="Paste an RSS feed URL\u2026" aria-label="RSS feed URL" style="flex: 1; min-width: 200px; padding: var(--space-2) var(--space-3); font-family: var(--font-ui); font-size: var(--text-sm); border: 1px solid var(--color-rule); border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-ink);">
-    <button type="button" id="feed-add-btn" style="padding: var(--space-2) var(--space-4); font-family: var(--font-ui); font-size: var(--text-sm); font-weight: 600; background: var(--color-ink); color: var(--color-bg); border: none; border-radius: var(--radius-sm); cursor: pointer;">Add Feed</button>
-  </div>
 
   {# Feed tabs #}
   <div id="feed-tabs" style="display: flex; gap: var(--space-2); margin-bottom: var(--space-6); flex-wrap: wrap; overflow-x: auto;">
@@ -28,225 +22,54 @@ permalink: /reader/
     {% endfor %}
   </div>
 
-  {# Feed entries #}
+  {# Feed entries — pre-rendered from build-time data #}
   <div id="feed-entries">
-    <p style="color: var(--color-ink-faint); font-style: italic;">Loading feeds&hellip;</p>
+    {% set allItems = [] %}
+    {% for feed in feeds %}
+      {% set items = feedCache[feed.url] %}
+      {% if items %}
+        {% for item in items %}
+          {% set allItems = (allItems.push({title: item.title, link: item.link, description: item.description, date: item.date, feedName: item.feedName, feedUrl: feed.url}), allItems) %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+
+    {% if allItems.length %}
+      {% for item in allItems | sort(true, false, 'date') %}
+      <div data-feed-url="{{ item.feedUrl }}" style="padding:var(--space-4);border-bottom:1px solid var(--color-rule);">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-3);margin-bottom:var(--space-1);">
+          <a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;color:var(--color-ink);text-decoration:none;line-height:var(--leading-snug);">{{ item.title }}</a>
+          {% if item.date %}
+          <time style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);white-space:nowrap;">{{ item.date | readableDate }}</time>
+          {% endif %}
+        </div>
+        {% if item.description %}
+        <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0 0 var(--space-1);line-height:var(--leading-normal);">{{ item.description | truncate(200) }}</p>
+        {% endif %}
+        <span style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);">{{ item.feedName }}</span>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p style="color:var(--color-ink-faint);font-style:italic;padding:var(--space-8) 0;">No feed articles available. Feeds will populate on the next site build.</p>
+    {% endif %}
   </div>
 
 </div>
 
-{% block scripts %}
 <script>
 (function () {
-  'use strict';
-
-  var _p = window.__PREFIX || 'tft';
-  // Try multiple CORS proxies in order of reliability
-  var PROXIES = [
-    'https://api.allorigins.win/raw?url=',
-    'https://corsproxy.io/?',
-    'https://api.codetabs.com/v1/proxy?quest='
-  ];
-  var CACHE_TTL = 15 * 60 * 1000; // 15 min
-
-  // Preloaded feeds from data file
-  var preloaded = {{ feeds | dump | safe }};
-
-  // User-added feeds from localStorage
-  function getUserFeeds() {
-    try { return JSON.parse(localStorage.getItem(_p + '-rss-feeds') || '[]'); }
-    catch (e) { return []; }
-  }
-  function saveUserFeeds(list) {
-    try { localStorage.setItem(_p + '-rss-feeds', JSON.stringify(list)); } catch (e) {}
-  }
-
-  function allFeeds() {
-    return preloaded.concat(getUserFeeds());
-  }
-
-  // DOM refs
-  var entriesEl = document.getElementById('feed-entries');
   var tabsEl = document.getElementById('feed-tabs');
-  var addBtn = document.getElementById('feed-add-btn');
-  var urlInput = document.getElementById('feed-url-input');
+  if (!tabsEl) return;
 
-  // Add feed
-  if (addBtn) {
-    addBtn.addEventListener('click', function () {
-      var url = (urlInput.value || '').trim();
-      if (!url) return;
-      var feeds = getUserFeeds();
-      if (feeds.some(function (f) { return f.url === url; }) || preloaded.some(function (f) { return f.url === url; })) {
-        alert('This feed is already added.');
-        return;
-      }
-      var name = prompt('Name for this feed:', url.replace(/https?:\/\//, '').split('/')[0]);
-      if (!name) return;
-      feeds.push({ name: name, url: url, category: 'Custom', userAdded: true });
-      saveUserFeeds(feeds);
-      urlInput.value = '';
-      rebuildTabs();
-      loadAllFeeds();
+  tabsEl.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-feed]');
+    if (!btn) return;
+    tabsEl.querySelectorAll('.search-filter-btn').forEach(function (b) { b.classList.remove('is-active'); });
+    btn.classList.add('is-active');
+    var filter = btn.dataset.feed;
+    document.querySelectorAll('#feed-entries [data-feed-url]').forEach(function (el) {
+      el.style.display = (filter === 'all' || el.dataset.feedUrl === filter) ? '' : 'none';
     });
-  }
-
-  // Tab switching
-  var activeFilter = 'all';
-  if (tabsEl) {
-    tabsEl.addEventListener('click', function (e) {
-      var btn = e.target.closest('[data-feed]');
-      if (!btn) return;
-      tabsEl.querySelectorAll('.search-filter-btn').forEach(function (b) { b.classList.remove('is-active'); });
-      btn.classList.add('is-active');
-      activeFilter = btn.dataset.feed;
-      filterEntries();
-    });
-  }
-
-  function rebuildTabs() {
-    if (!tabsEl) return;
-    // Keep "All" button, remove rest, re-add
-    var allBtn = tabsEl.querySelector('[data-feed="all"]');
-    tabsEl.innerHTML = '';
-    tabsEl.appendChild(allBtn);
-    allFeeds().forEach(function (f) {
-      var btn = document.createElement('button');
-      btn.className = 'search-filter-btn';
-      btn.dataset.feed = f.url;
-      btn.type = 'button';
-      btn.textContent = f.name;
-      if (f.userAdded) {
-        var del = document.createElement('span');
-        del.textContent = ' \u00d7';
-        del.style.cssText = 'cursor:pointer;color:var(--color-accent);margin-left:4px;';
-        del.addEventListener('click', function (e) {
-          e.stopPropagation();
-          var feeds = getUserFeeds().filter(function (uf) { return uf.url !== f.url; });
-          saveUserFeeds(feeds);
-          rebuildTabs();
-          loadAllFeeds();
-        });
-        btn.appendChild(del);
-      }
-      tabsEl.appendChild(btn);
-    });
-  }
-
-  function filterEntries() {
-    if (!entriesEl) return;
-    entriesEl.querySelectorAll('[data-feed-url]').forEach(function (el) {
-      el.style.display = (activeFilter === 'all' || el.dataset.feedUrl === activeFilter) ? '' : 'none';
-    });
-  }
-
-  // Parse RSS/Atom XML
-  function parseRSS(xml, feedUrl, feedName) {
-    var items = [];
-    var entries = xml.querySelectorAll('item, entry');
-    entries.forEach(function (entry) {
-      var title = (entry.querySelector('title') || {}).textContent || '';
-      var link = '';
-      var linkEl = entry.querySelector('link');
-      if (linkEl) link = linkEl.getAttribute('href') || linkEl.textContent || '';
-      var desc = (entry.querySelector('description, summary, content') || {}).textContent || '';
-      var dateEl = entry.querySelector('pubDate, published, updated');
-      var date = dateEl ? new Date(dateEl.textContent) : null;
-
-      // Strip HTML from description
-      var tmp = document.createElement('div');
-      tmp.innerHTML = desc;
-      desc = (tmp.textContent || '').slice(0, 200);
-
-      items.push({
-        title: title,
-        link: link,
-        description: desc,
-        date: date,
-        feedUrl: feedUrl,
-        feedName: feedName
-      });
-    });
-    return items;
-  }
-
-  // Fetch a single feed
-  function fetchFeed(feed) {
-    // Check cache
-    var cacheKey = _p + '-rss-cache-' + feed.url;
-    try {
-      var cached = JSON.parse(sessionStorage.getItem(cacheKey));
-      if (cached && Date.now() - cached.ts < CACHE_TTL) {
-        return Promise.resolve(cached.items);
-      }
-    } catch (e) {}
-
-    function tryProxy(index) {
-      if (index >= PROXIES.length) return Promise.resolve([]);
-      return fetch(PROXIES[index] + encodeURIComponent(feed.url))
-        .then(function (r) {
-          if (!r.ok) throw new Error('HTTP ' + r.status);
-          return r.text();
-        })
-        .then(function (text) {
-          if (!text || text.indexOf('<') === -1) throw new Error('Not XML');
-          var parser = new DOMParser();
-          var xml = parser.parseFromString(text, 'text/xml');
-          if (xml.querySelector('parsererror')) throw new Error('Parse error');
-          var items = parseRSS(xml, feed.url, feed.name);
-          if (!items.length) throw new Error('No items');
-          try { sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), items: items })); } catch (e) {}
-          return items;
-        })
-        .catch(function () { return tryProxy(index + 1); });
-    }
-    return tryProxy(0);
-  }
-
-  // Load all feeds
-  function loadAllFeeds() {
-    if (!entriesEl) return;
-    entriesEl.innerHTML = '<p style="color:var(--color-ink-faint);font-style:italic;">Loading feeds\u2026</p>';
-
-    var feedList = allFeeds();
-    Promise.all(feedList.map(fetchFeed)).then(function (results) {
-      var allItems = [].concat.apply([], results);
-      allItems.sort(function (a, b) {
-        if (!a.date) return 1;
-        if (!b.date) return -1;
-        return b.date - a.date;
-      });
-
-      entriesEl.innerHTML = '';
-      if (!allItems.length) {
-        entriesEl.innerHTML = '<p style="color:var(--color-ink-faint);font-style:italic;">No articles found. Feeds may be loading or unavailable.</p>';
-        return;
-      }
-
-      allItems.slice(0, 100).forEach(function (item) {
-        var card = document.createElement('div');
-        card.dataset.feedUrl = item.feedUrl;
-        card.style.cssText = 'padding:var(--space-4);border-bottom:1px solid var(--color-rule);';
-
-        var dateStr = item.date ? item.date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '';
-
-        card.innerHTML =
-          '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-3);margin-bottom:var(--space-1);">' +
-            '<a href="' + item.link + '" target="_blank" rel="noopener noreferrer" style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;color:var(--color-ink);text-decoration:none;line-height:var(--leading-snug);">' + item.title + '</a>' +
-            '<time style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);white-space:nowrap;">' + dateStr + '</time>' +
-          '</div>' +
-          '<p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0 0 var(--space-1);line-height:var(--leading-normal);">' + item.description + '</p>' +
-          '<span style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);">' + item.feedName + '</span>';
-
-        entriesEl.appendChild(card);
-      });
-
-      filterEntries();
-    });
-  }
-
-  rebuildTabs();
-  loadAllFeeds();
+  });
 })();
 </script>
-{% endblock %}
