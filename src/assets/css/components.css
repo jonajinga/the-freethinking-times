@@ -840,6 +840,30 @@ a.dateline:hover { color: var(--color-accent); }
   height: 14px;
 }
 
+/* Match subscribe input + button height to GTranslate select */
+.nav-drawer .subscribe-form__input {
+  height: 1.75rem !important;
+  font-size: var(--text-xs) !important;
+  padding: var(--space-1) var(--space-2) !important;
+}
+
+.nav-drawer .subscribe-form__btn {
+  height: 1.75rem !important;
+  font-size: var(--text-xs) !important;
+  padding: var(--space-1) var(--space-3) !important;
+}
+
+/* Match main icon grid buttons to import/export size */
+.nav-drawer .nav-drawer__actions .nav-drawer__action-btn {
+  width: 30px;
+  height: 30px;
+}
+
+.nav-drawer .nav-drawer__actions .nav-drawer__action-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
 /* ── Search Overlay ─────────────────────────────────────────── */
 .search-overlay:not(.is-open) {
   display: none;
