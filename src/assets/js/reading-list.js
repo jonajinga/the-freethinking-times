@@ -118,7 +118,6 @@
     };
 
     var importBtn = rlIconBtn('Import', RL_SVG.upload, function () {
-    importBtn.addEventListener('click', function () {
       var input = document.createElement('input');
       input.type = 'file';
       input.accept = '.json';
