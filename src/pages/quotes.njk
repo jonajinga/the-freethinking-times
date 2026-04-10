@@ -33,16 +33,16 @@ permalink: /quotes/
     <span data-pagefind-meta="section">Quotes</span>
     <span data-pagefind-filter="section">Quotes</span>
   </div>
-  <style>.quote-card { scroll-margin-top: 5rem; }</style>
+  <style>.quote-card { scroll-margin-top: 8rem; }</style>
   <div id="quotes-list" data-pagefind-body style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-4);">
     {% for q in quotes %}
-    <blockquote class="quote-card" data-author="{{ q.author }}" id="q{{ loop.index }}" style="margin:0;padding:var(--space-5) var(--space-5) var(--space-4);border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);background:var(--color-bg-alt);border-radius:var(--radius-sm);display:flex;flex-direction:column;justify-content:space-between;font-style:normal;color:var(--color-ink);box-shadow:0 1px 4px rgba(0,0,0,0.06);">
-      <p style="font-family:var(--font-body);font-size:var(--text-sm);line-height:var(--leading-loose);color:var(--color-ink);margin:0 0 var(--space-4);">
+    <blockquote class="quote-card" data-author="{{ q.author }}" id="q{{ loop.index }}" style="margin:0;padding:var(--space-4);background:var(--color-bg-alt);border-radius:var(--radius-sm);display:flex;flex-direction:column;justify-content:space-between;font-style:normal;color:var(--color-ink);">
+      <p style="font-family:var(--font-body);font-size:var(--text-sm);line-height:var(--leading-loose);color:var(--color-ink);margin:0 0 var(--space-3);">
         &ldquo;{{ q.quote }}&rdquo;
       </p>
-      <div style="border-top:1px solid var(--color-rule);padding-top:var(--space-3);">
-        <cite style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-muted);font-style:normal;display:block;margin-bottom:var(--space-2);">
-          <strong style="color:var(--color-ink);">{{ q.author }}</strong>{% if q.source %}<br><span style="color:var(--color-ink-faint);">{{ q.source }}</span>{% endif %}
+      <div>
+        <cite style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);font-style:normal;display:block;margin-bottom:var(--space-2);">
+          {{ q.author }}{% if q.source %} &mdash; {{ q.source }}{% endif %}
         </cite>
         <div class="quote-actions" style="display:flex;gap:var(--space-1);">
           <button class="article-action-btn quote-save-btn" type="button" aria-label="Save to reading list" title="Save" data-index="{{ loop.index }}">
