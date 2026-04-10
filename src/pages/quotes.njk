@@ -78,6 +78,13 @@ permalink: /quotes/
     return text + (author ? ' \u2014 ' + author : '');
   }
 
+  function flashBtn(btn, msg) {
+    var svg = btn.innerHTML;
+    btn.textContent = msg;
+    btn.style.cssText += 'color:#C0392B;font-size:10px;font-family:var(--font-ui);';
+    setTimeout(function () { btn.innerHTML = svg; btn.style.color = ''; btn.style.fontSize = ''; }, 1500);
+  }
+
   // Save to reading list
   document.querySelectorAll('.quote-save-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -86,7 +93,7 @@ permalink: /quotes/
       var card = btn.closest('.quote-card');
       var url = '/quotes/#' + card.id;
       if (list.some(function (i) { return i.url === url; })) {
-        btn.title = 'Already saved';
+        flashBtn(btn, 'Saved');
         return;
       }
       list.unshift({
@@ -97,8 +104,7 @@ permalink: /quotes/
         mins: ''
       });
       localStorage.setItem(k, JSON.stringify(list));
-      btn.title = 'Saved!';
-      btn.style.color = 'var(--color-accent)';
+      flashBtn(btn, 'Saved!');
     });
   });
 
@@ -107,26 +113,69 @@ permalink: /quotes/
     btn.addEventListener('click', function () {
       var text = getQuoteText(btn);
       navigator.clipboard.writeText(text).then(function () {
-        btn.title = 'Copied!';
-        btn.style.color = 'var(--color-accent)';
-        setTimeout(function () { btn.title = 'Copy'; btn.style.color = ''; }, 1500);
+        flashBtn(btn, 'Copied!');
       });
     });
   });
 
-  // Share
+  // Share — social share panel
   document.querySelectorAll('.quote-share-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var text = getQuoteText(btn);
-      if (navigator.share) {
-        navigator.share({ text: text }).catch(function () {});
-      } else {
-        navigator.clipboard.writeText(text).then(function () {
-          btn.title = 'Copied!';
-          btn.style.color = 'var(--color-accent)';
-          setTimeout(function () { btn.title = 'Share'; btn.style.color = ''; }, 1500);
+      var enc = encodeURIComponent;
+      var url = window.location.href;
+
+      // Remove existing panel
+      var old = document.getElementById('quote-share-panel');
+      if (old) old.remove();
+
+      var panel = document.createElement('div');
+      panel.id = 'quote-share-panel';
+      panel.style.cssText = 'position:fixed;bottom:3.5rem;left:50%;transform:translateX(-50%);z-index:300;min-width:220px;background:var(--color-bg-alt);border:1px solid var(--color-rule-heavy);border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,.15);padding:8px 0;';
+
+      var items = [
+        { label: 'X / Twitter', href: 'https://twitter.com/intent/tweet?text=' + enc(text.slice(0, 240)) },
+        { label: 'Facebook', href: 'https://www.facebook.com/sharer/sharer.php?u=' + enc(url) + '&quote=' + enc(text.slice(0, 200)) },
+        { label: 'LinkedIn', href: 'https://www.linkedin.com/sharing/share-offsite/?url=' + enc(url) },
+        { label: 'Reddit', href: 'https://www.reddit.com/submit?url=' + enc(url) + '&title=' + enc(text.slice(0, 100)) },
+        { label: 'Email', href: 'mailto:?subject=' + enc('A quote worth sharing') + '&body=' + enc(text + '\n\n' + url) },
+        { label: 'Copy text', action: 'copy' }
+      ];
+
+      items.forEach(function (item) {
+        if (item.action === 'copy') {
+          var b = document.createElement('button');
+          b.style.cssText = 'display:block;width:100%;padding:6px 16px;font-family:var(--font-ui);font-size:14px;color:var(--color-ink);background:none;border:none;text-align:left;cursor:pointer;';
+          b.textContent = item.label;
+          b.onmouseover = function () { b.style.background = 'var(--color-bg-inset)'; };
+          b.onmouseout = function () { b.style.background = 'none'; };
+          b.addEventListener('click', function () {
+            navigator.clipboard.writeText(text).then(function () {
+              b.textContent = 'Copied!';
+              setTimeout(function () { panel.remove(); }, 800);
+            });
+          });
+          panel.appendChild(b);
+        } else {
+          var a = document.createElement('a');
+          a.href = item.href;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.textContent = item.label;
+          a.style.cssText = 'display:block;padding:6px 16px;font-family:var(--font-ui);font-size:14px;color:var(--color-ink);text-decoration:none;cursor:pointer;';
+          a.onmouseover = function () { a.style.background = 'var(--color-bg-inset)'; };
+          a.onmouseout = function () { a.style.background = 'none'; };
+          a.addEventListener('click', function () { setTimeout(function () { panel.remove(); }, 100); });
+          panel.appendChild(a);
+        }
+      });
+
+      document.body.appendChild(panel);
+      setTimeout(function () {
+        document.addEventListener('mousedown', function closer(e) {
+          if (!panel.contains(e.target)) { panel.remove(); document.removeEventListener('mousedown', closer); }
         });
-      }
+      }, 100);
     });
   });
 })();
