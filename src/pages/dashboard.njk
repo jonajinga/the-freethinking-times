@@ -1,0 +1,127 @@
+---
+layout: base
+title: Editorial Dashboard
+description: Content status overview for The Freethinking Times editorial team.
+permalink: /dashboard/
+eleventyExcludeFromCollections: true
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+
+  <header style="padding-bottom: var(--space-8); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);">
+    <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-2);">Editorial Dashboard</h1>
+    <p style="color: var(--color-ink-muted); font-size: var(--text-md);">
+      Content overview across all sections.
+    </p>
+  </header>
+
+  <div class="container--prose">
+    <div class="article-body">
+
+      <h2>Content Summary</h2>
+
+      <table style="width:100%;font-size:var(--text-sm);border-collapse:collapse;margin:var(--space-6) 0;">
+        <thead>
+          <tr style="border-bottom:2px solid var(--color-ink);text-align:left;">
+            <th style="padding:var(--space-2);">Section</th>
+            <th style="padding:var(--space-2);text-align:right;">Articles</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for key, section in site.sections %}
+          {% if collections[key] %}
+          <tr style="border-bottom:1px solid var(--color-rule);">
+            <td style="padding:var(--space-2);"><a href="/{{ key }}/">{{ section.label }}</a></td>
+            <td style="padding:var(--space-2);text-align:right;">{{ collections[key].length }}</td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+          <tr style="border-bottom:2px solid var(--color-ink);font-weight:700;">
+            <td style="padding:var(--space-2);">Total</td>
+            <td style="padding:var(--space-2);text-align:right;">{{ collections.allContent.length }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Library</h2>
+
+      <table style="width:100%;font-size:var(--text-sm);border-collapse:collapse;margin:var(--space-6) 0;">
+        <thead>
+          <tr style="border-bottom:2px solid var(--color-ink);text-align:left;">
+            <th style="padding:var(--space-2);">Metric</th>
+            <th style="padding:var(--space-2);text-align:right;">Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--color-rule);">
+            <td style="padding:var(--space-2);">Works</td>
+            <td style="padding:var(--space-2);text-align:right;">{{ library.works | length }}</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-rule);">
+            <td style="padding:var(--space-2);">Chapters</td>
+            <td style="padding:var(--space-2);text-align:right;">{{ collections.libraryChapters.length }}</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-rule);">
+            <td style="padding:var(--space-2);">Authors</td>
+            <td style="padding:var(--space-2);text-align:right;">{{ library.authors | length }}</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-rule);">
+            <td style="padding:var(--space-2);">Subjects</td>
+            <td style="padding:var(--space-2);text-align:right;">{{ library.subjects | length }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Projects</h2>
+
+      <table style="width:100%;font-size:var(--text-sm);border-collapse:collapse;margin:var(--space-6) 0;">
+        <thead>
+          <tr style="border-bottom:2px solid var(--color-ink);text-align:left;">
+            <th style="padding:var(--space-2);">Project</th>
+            <th style="padding:var(--space-2);text-align:right;">Entries</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--color-rule);">
+            <td style="padding:var(--space-2);"><a href="/glossary/">Glossary</a></td>
+            <td style="padding:var(--space-2);text-align:right;">{{ collections.glossary.length }}</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-rule);">
+            <td style="padding:var(--space-2);"><a href="/bookshelf/">Bookshelf</a></td>
+            <td style="padding:var(--space-2);text-align:right;">{{ collections.bookshelf.length }}</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-rule);">
+            <td style="padding:var(--space-2);"><a href="/thought-experiments/">Thought Experiments</a></td>
+            <td style="padding:var(--space-2);text-align:right;">{{ collections["thought-experiments"].length }}</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-rule);">
+            <td style="padding:var(--space-2);"><a href="/trials/">Trials of Thought</a></td>
+            <td style="padding:var(--space-2);text-align:right;">{{ collections["trials-of-thought"].length }}</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-rule);">
+            <td style="padding:var(--space-2);"><a href="/quotes/">Quotes</a></td>
+            <td style="padding:var(--space-2);text-align:right;">{{ quotes | length }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Recent Articles</h2>
+
+      <ul>
+        {% for article in collections.allContent | limit(10) %}
+        <li>
+          <a href="{{ article.url }}">{{ article.data.title }}</a>
+          <span style="color:var(--color-ink-faint);font-size:var(--text-xs);">
+            {{ article.data.section }} &middot; {{ article.date | readableDate }}
+          </span>
+        </li>
+        {% endfor %}
+      </ul>
+
+      <h2>Manage Content</h2>
+
+      <p>Use <a href="https://app.pagescms.org" target="_blank" rel="noopener noreferrer">Pages CMS</a> to add and edit content without touching code. Sign in with your GitHub account to get started.</p>
+
+    </div>
+  </div>
+</div>

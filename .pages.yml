@@ -1,0 +1,238 @@
+# Pages CMS Configuration
+# https://pagescms.org/docs/configuration/
+
+media:
+  input: src/assets/img
+  output: /assets/img
+
+content:
+  # ── Articles ──────────────────────────────────────────────
+  - name: news
+    label: News
+    path: src/content/news
+    type: collection
+    filename: "{fields.title|slugify}.md"
+    fields:
+      - { name: layout, type: string, default: article, hidden: true }
+      - { name: title, type: string, required: true }
+      - { name: description, type: string, required: true }
+      - { name: section, type: string, default: News, hidden: true }
+      - { name: author, type: string, default: jon-ajinga }
+      - { name: authorName, type: string, default: "Jon Ajinga" }
+      - { name: date, type: date, required: true }
+      - { name: tags, type: string, list: true }
+      - { name: featured, type: boolean, default: false }
+      - { name: draft, type: boolean, default: true }
+      - { name: status, type: select, options: [draft, review, published], default: draft }
+      - { name: image, type: image }
+      - { name: imageAlt, type: string }
+      - { name: body, type: rich-text }
+
+  - name: opinion
+    label: Opinion
+    path: src/content/opinion
+    type: collection
+    filename: "{fields.title|slugify}.md"
+    fields:
+      - { name: layout, type: string, default: article, hidden: true }
+      - { name: title, type: string, required: true }
+      - { name: description, type: string, required: true }
+      - { name: section, type: string, default: Opinion, hidden: true }
+      - { name: author, type: string, default: jon-ajinga }
+      - { name: authorName, type: string, default: "Jon Ajinga" }
+      - { name: date, type: date, required: true }
+      - { name: tags, type: string, list: true }
+      - { name: featured, type: boolean, default: false }
+      - { name: draft, type: boolean, default: true }
+      - { name: status, type: select, options: [draft, review, published], default: draft }
+      - { name: body, type: rich-text }
+
+  - name: analysis
+    label: Analysis
+    path: src/content/analysis
+    type: collection
+    filename: "{fields.title|slugify}.md"
+    fields:
+      - { name: layout, type: string, default: article, hidden: true }
+      - { name: title, type: string, required: true }
+      - { name: description, type: string, required: true }
+      - { name: section, type: string, default: Analysis, hidden: true }
+      - { name: author, type: string, default: jon-ajinga }
+      - { name: authorName, type: string, default: "Jon Ajinga" }
+      - { name: date, type: date, required: true }
+      - { name: tags, type: string, list: true }
+      - { name: featured, type: boolean, default: false }
+      - { name: draft, type: boolean, default: true }
+      - { name: status, type: select, options: [draft, review, published], default: draft }
+      - { name: body, type: rich-text }
+
+  - name: arts-culture
+    label: Arts & Culture
+    path: src/content/arts-culture
+    type: collection
+    filename: "{fields.title|slugify}.md"
+    fields:
+      - { name: layout, type: string, default: article, hidden: true }
+      - { name: title, type: string, required: true }
+      - { name: description, type: string, required: true }
+      - { name: section, type: string, default: "Arts & Culture", hidden: true }
+      - { name: author, type: string, default: jon-ajinga }
+      - { name: authorName, type: string, default: "Jon Ajinga" }
+      - { name: date, type: date, required: true }
+      - { name: tags, type: string, list: true }
+      - { name: featured, type: boolean, default: false }
+      - { name: draft, type: boolean, default: true }
+      - { name: status, type: select, options: [draft, review, published], default: draft }
+      - { name: body, type: rich-text }
+
+  - name: science-technology
+    label: Science & Tech
+    path: src/content/science-technology
+    type: collection
+    filename: "{fields.title|slugify}.md"
+    fields:
+      - { name: layout, type: string, default: article, hidden: true }
+      - { name: title, type: string, required: true }
+      - { name: description, type: string, required: true }
+      - { name: section, type: string, default: "Science & Technology", hidden: true }
+      - { name: author, type: string, default: jon-ajinga }
+      - { name: authorName, type: string, default: "Jon Ajinga" }
+      - { name: date, type: date, required: true }
+      - { name: tags, type: string, list: true }
+      - { name: featured, type: boolean, default: false }
+      - { name: draft, type: boolean, default: true }
+      - { name: status, type: select, options: [draft, review, published], default: draft }
+      - { name: body, type: rich-text }
+
+  - name: history
+    label: History
+    path: src/content/history
+    type: collection
+    filename: "{fields.title|slugify}.md"
+    fields:
+      - { name: layout, type: string, default: article, hidden: true }
+      - { name: title, type: string, required: true }
+      - { name: description, type: string, required: true }
+      - { name: section, type: string, default: History, hidden: true }
+      - { name: author, type: string, default: jon-ajinga }
+      - { name: authorName, type: string, default: "Jon Ajinga" }
+      - { name: date, type: date, required: true }
+      - { name: tags, type: string, list: true }
+      - { name: featured, type: boolean, default: false }
+      - { name: draft, type: boolean, default: true }
+      - { name: status, type: select, options: [draft, review, published], default: draft }
+      - { name: body, type: rich-text }
+
+  - name: letters
+    label: Letters
+    path: src/content/letters
+    type: collection
+    filename: "{fields.title|slugify}.md"
+    fields:
+      - { name: layout, type: string, default: article, hidden: true }
+      - { name: title, type: string, required: true }
+      - { name: description, type: string, required: true }
+      - { name: section, type: string, default: Letters, hidden: true }
+      - { name: author, type: string, default: jon-ajinga }
+      - { name: authorName, type: string, default: "Jon Ajinga" }
+      - { name: date, type: date, required: true }
+      - { name: tags, type: string, list: true }
+      - { name: featured, type: boolean, default: false }
+      - { name: draft, type: boolean, default: true }
+      - { name: status, type: select, options: [draft, review, published], default: draft }
+      - { name: body, type: rich-text }
+
+  # ── Projects ──────────────────────────────────────────────
+  - name: glossary
+    label: Glossary
+    path: src/glossary
+    type: collection
+    filename: "{fields.title|slugify}.md"
+    fields:
+      - { name: layout, type: string, default: glossary-term, hidden: true }
+      - { name: title, type: string, required: true }
+      - { name: description, type: string }
+      - { name: body, type: rich-text }
+
+  - name: bookshelf
+    label: Bookshelf
+    path: src/bookshelf
+    type: collection
+    filename: "{fields.title|slugify}.md"
+    fields:
+      - { name: layout, type: string, default: book-entry, hidden: true }
+      - { name: title, type: string, required: true }
+      - { name: bookAuthor, type: string }
+      - { name: category, type: string }
+      - { name: difficulty, type: select, options: [Accessible, Intermediate, Advanced] }
+      - { name: description, type: string }
+      - { name: body, type: rich-text }
+
+  - name: thought-experiments
+    label: Thought Experiments
+    path: src/thought-experiments
+    type: collection
+    filename: "{fields.title|slugify}.md"
+    fields:
+      - { name: layout, type: string, default: article, hidden: true }
+      - { name: title, type: string, required: true }
+      - { name: description, type: string }
+      - { name: body, type: rich-text }
+
+  - name: trials
+    label: Trials of Thought
+    path: src/trials
+    type: collection
+    filename: "{fields.title|slugify}.md"
+    fields:
+      - { name: layout, type: string, default: article, hidden: true }
+      - { name: title, type: string, required: true }
+      - { name: year, type: number }
+      - { name: description, type: string }
+      - { name: body, type: rich-text }
+
+  # ── Data Files ────────────────────────────────────────────
+  - name: quotes
+    label: Quotes
+    path: src/_data/quotes.json
+    type: file
+    fields:
+      - name: quotes
+        type: object
+        list: true
+        fields:
+          - { name: quote, type: string, required: true }
+          - { name: author, type: string, required: true }
+          - { name: source, type: string }
+
+  - name: authors
+    label: Authors
+    path: src/_data/authors.json
+    type: file
+
+  - name: feeds
+    label: RSS Feeds
+    path: src/_data/feeds.json
+    type: file
+
+  - name: changelog
+    label: Changelog
+    path: src/_data/changelog.json
+    type: file
+
+  - name: site-config
+    label: Site Configuration
+    path: src/_data/site.json
+    type: file
+
+  # ── Static Pages ──────────────────────────────────────────
+  - name: pages
+    label: Pages
+    path: src/pages
+    type: collection
+    fields:
+      - { name: layout, type: string, default: base }
+      - { name: title, type: string, required: true }
+      - { name: description, type: string }
+      - { name: permalink, type: string }
+      - { name: body, type: rich-text }
