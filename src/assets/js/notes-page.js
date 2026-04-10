@@ -336,8 +336,21 @@
         return function () { showExportPanel(p); };
       })(page)));
 
-      // Per-page print
-      pageBtns.appendChild(iconBtn('Print', SVG.print, function () { window.print(); }));
+      // Per-page print — hide all other sections, print, restore
+      pageBtns.appendChild(iconBtn('Print', SVG.print, (function (sec) {
+        return function () {
+          var allSections = entriesContainer.querySelectorAll('[data-page-section]');
+          var hidden = [];
+          allSections.forEach(function (s) {
+            if (s !== sec) { hidden.push({ el: s, d: s.style.display }); s.style.display = 'none'; }
+          });
+          // Also hide global actions and filters
+          var toHide = [actions, controlsBar, filterBar].filter(Boolean);
+          toHide.forEach(function (el) { hidden.push({ el: el, d: el.style.display }); el.style.display = 'none'; });
+          window.print();
+          hidden.forEach(function (h) { h.el.style.display = h.d; });
+        };
+      })(section)));
 
       // Per-page clear
       pageBtns.appendChild(iconBtn('Clear', SVG.trash, (function (s, t) {
