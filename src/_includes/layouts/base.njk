@@ -45,12 +45,29 @@
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#1a1a1a">
 
-  {# ── Fonts (Bunny Fonts — privacy-friendly Google Fonts alternative) ── #}
-  <link rel="preconnect" href="https://fonts.bunny.net">
+  {# ── Resource Hints ── #}
+  <link rel="dns-prefetch" href="https://fonts.bunny.net">
+  <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+
+  {# ── Fonts ── #}
   <link rel="stylesheet" href="{{ site.fontsUrl }}" crossorigin>
 
   {# ── Styles ── #}
   <link rel="stylesheet" href="/assets/css/main.css">
+
+  {# ── BreadcrumbList structured data ── #}
+  {% if page.url != "/" %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/" },
+      { "@type": "ListItem", "position": 2, "name": "{% if title %}{{ title }}{% else %}Page{% endif %}", "item": "{{ site.url }}{{ page.url }}" }
+    ]
+  }
+  </script>
+  {% endif %}
 
   {# ── Site prefix for localStorage keys ── #}
   <script>window.__PREFIX='{{ site.storagePrefix }}';</script>
@@ -74,6 +91,7 @@
 </head>
 
 <body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
   <div class="site-wrapper">
 
     {# ── Breaking Banner (conditional) ── #}

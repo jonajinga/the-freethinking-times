@@ -5,6 +5,26 @@ description: A curated collection of freethought quotes — save, share, and pri
 permalink: /quotes/
 ---
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Freethought Quotes",
+  "numberOfItems": {{ quotes | length }},
+  "itemListElement": [
+    {% for q in quotes | limit(10) %}
+    {% if not loop.first %},{% endif %}
+    {
+      "@type": "Quotation",
+      "text": {{ q.quote | dump | safe }},
+      "spokenByCharacter": { "@type": "Person", "name": "{{ q.author }}" }
+      {% if q.source %},"isPartOf": { "@type": "CreativeWork", "name": "{{ q.source }}" }{% endif %}
+    }
+    {% endfor %}
+  ]
+}
+</script>
+
 <div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
 
   <header style="padding-bottom: var(--space-8); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);">
