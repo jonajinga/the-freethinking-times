@@ -70,6 +70,28 @@
   color: var(--color-ink);
 }
 
+/* Mobile search button — visible only when masthead actions are hidden */
+.masthead__search-mobile {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-ink-muted);
+  cursor: pointer;
+  padding: var(--space-2);
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+}
+
+.masthead__search-mobile:hover { color: var(--color-ink); }
+
+@media (max-width: 640px) {
+  .masthead__search-mobile {
+    display: flex;
+    align-items: center;
+  }
+}
+
 /* ── Masthead responsive: hide action buttons on mobile + tablet (moved to drawer) ── */
 @media (max-width: 1180px) {
   .masthead__actions {

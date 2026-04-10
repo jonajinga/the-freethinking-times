@@ -20,6 +20,14 @@
       <a href="/" class="masthead__title notranslate" aria-label="{{ site.title }} — Home">
         {{ site.title }}
       </a>
+      <button
+        class="masthead__search-mobile"
+        type="button"
+        aria-label="Search"
+        title="Search"
+        onclick="var m=document.getElementById('search-modal'),o=document.getElementById('search-overlay');if(m){m.classList.add('is-open');m.setAttribute('aria-hidden','false');o&&o.classList.add('is-open');document.body.style.overflow='hidden';var i=document.getElementById('search-input');i&&i.focus();}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
       <div class="masthead__actions">
 
         {# Search — primary discovery #}
