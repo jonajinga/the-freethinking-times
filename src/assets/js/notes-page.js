@@ -237,10 +237,10 @@
     catOpt.value = '';
     catOpt.textContent = 'All sources';
     catSelect.appendChild(catOpt);
-    ['article', 'library', 'quotes'].forEach(function (t) {
+    [['article', 'Articles'], ['library', 'Library'], ['quotes', 'Quotes']].forEach(function (pair) {
       var o = document.createElement('option');
-      o.value = t;
-      o.textContent = t.charAt(0).toUpperCase() + t.slice(1) + 's';
+      o.value = pair[0];
+      o.textContent = pair[1];
       catSelect.appendChild(o);
     });
     catSelect.addEventListener('change', applyFilter);

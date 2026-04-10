@@ -99,10 +99,25 @@
     var actions = document.createElement('div');
     actions.style.cssText = 'display:flex;justify-content:flex-end;gap:var(--space-2);margin-bottom:var(--space-4);';
 
-    var importBtn = document.createElement('button');
-    importBtn.className = 'reading-list-clear';
-    importBtn.type = 'button';
-    importBtn.textContent = 'Import';
+    function rlIconBtn(label, svg, handler) {
+      var b = document.createElement('button');
+      b.className = 'article-action-btn';
+      b.type = 'button';
+      b.setAttribute('aria-label', label);
+      b.title = label;
+      b.innerHTML = svg;
+      b.addEventListener('click', handler);
+      return b;
+    }
+
+    var RL_SVG = {
+      upload: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>',
+      download: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+      print: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>',
+      trash: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>'
+    };
+
+    var importBtn = rlIconBtn('Import', RL_SVG.upload, function () {
     importBtn.addEventListener('click', function () {
       var input = document.createElement('input');
       input.type = 'file';
@@ -136,11 +151,7 @@
     });
     actions.appendChild(importBtn);
 
-    var exportBtn = document.createElement('button');
-    exportBtn.className = 'reading-list-clear';
-    exportBtn.type = 'button';
-    exportBtn.textContent = 'Export';
-    exportBtn.addEventListener('click', function () {
+    var exportBtn = rlIconBtn('Export', RL_SVG.download, function () {
       var items = load();
       var blob = new Blob([JSON.stringify(items, null, 2)], { type: 'application/json;charset=utf-8' });
       var url = URL.createObjectURL(blob);
@@ -154,18 +165,10 @@
     });
     actions.appendChild(exportBtn);
 
-    var clearAll = document.createElement('button');
-    clearAll.className = 'reading-list-clear';
-    clearAll.type = 'button';
-    clearAll.textContent = 'Clear all';
-    clearAll.addEventListener('click', function () {
+    var clearAll = rlIconBtn('Clear all', RL_SVG.trash, function () {
       if (confirm('Remove all saved articles?')) { save([]); render(); }
     });
-    var printBtn = document.createElement('button');
-    printBtn.className = 'reading-list-clear';
-    printBtn.type = 'button';
-    printBtn.textContent = 'Print';
-    printBtn.addEventListener('click', function () { window.print(); });
+    var printBtn = rlIconBtn('Print', RL_SVG.print, function () { window.print(); });
 
     if (list.length) {
       actions.appendChild(printBtn);
