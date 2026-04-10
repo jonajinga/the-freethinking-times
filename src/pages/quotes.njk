@@ -78,42 +78,53 @@ permalink: /quotes/
     return text + (author ? ' \u2014 ' + author : '');
   }
 
-  function flashBtn(btn, msg) {
-    var svg = btn.innerHTML;
-    btn.textContent = msg;
-    btn.style.cssText += 'color:#C0392B;font-size:10px;font-family:var(--font-ui);';
-    setTimeout(function () { btn.innerHTML = svg; btn.style.color = ''; btn.style.fontSize = ''; }, 1500);
+  var checkSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+  function flashCheck(btn) {
+    var orig = btn.innerHTML;
+    btn.innerHTML = checkSvg;
+    setTimeout(function () { btn.innerHTML = orig; }, 1200);
   }
 
-  // Save to reading list
+  // Save to reading list (toggle like article bookmark)
   document.querySelectorAll('.quote-save-btn').forEach(function (btn) {
+    var card = btn.closest('.quote-card');
+    var url = '/quotes/#' + card.id;
+    var k = _p + '-reading-list';
+
+    // Check if already saved on load
+    var list = JSON.parse(localStorage.getItem(k) || '[]');
+    if (list.some(function (i) { return i.url === url; })) {
+      btn.querySelector('svg').style.fill = 'currentColor';
+    }
+
     btn.addEventListener('click', function () {
-      var k = _p + '-reading-list';
       var list = JSON.parse(localStorage.getItem(k) || '[]');
-      var card = btn.closest('.quote-card');
-      var url = '/quotes/#' + card.id;
-      if (list.some(function (i) { return i.url === url; })) {
-        flashBtn(btn, 'Saved');
-        return;
+      var saved = list.some(function (i) { return i.url === url; });
+      if (saved) {
+        list = list.filter(function (i) { return i.url !== url; });
+        localStorage.setItem(k, JSON.stringify(list));
+        btn.querySelector('svg').style.fill = 'none';
+      } else {
+        list.unshift({
+          url: url,
+          title: card.querySelector('p').textContent.slice(0, 60) + '...',
+          section: 'Quotes',
+          date: '',
+          mins: ''
+        });
+        localStorage.setItem(k, JSON.stringify(list));
+        btn.querySelector('svg').style.fill = 'currentColor';
       }
-      list.unshift({
-        url: url,
-        title: card.querySelector('p').textContent.slice(0, 60) + '...',
-        section: 'Quotes',
-        date: '',
-        mins: ''
-      });
-      localStorage.setItem(k, JSON.stringify(list));
-      flashBtn(btn, 'Saved!');
     });
   });
 
-  // Copy
+  // Copy — show checkmark briefly
   document.querySelectorAll('.quote-copy-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var text = getQuoteText(btn);
       navigator.clipboard.writeText(text).then(function () {
-        flashBtn(btn, 'Copied!');
+        flashCheck(btn);
       });
     });
   });

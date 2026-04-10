@@ -20,6 +20,18 @@ permalink: /notes/
 
 </div>
 
+<style>
+@media print {
+  .article-action-btn,
+  .library-annotation-item__actions,
+  .library-bookmark-item__delete,
+  .search-filter-btn,
+  .reading-list-clear,
+  #quotes-author-filter,
+  #notes-page-root > div:first-child { display: none !important; }
+}
+</style>
+
 {% block scripts %}
 <script src="/assets/js/notes-page.js" defer></script>
 {% endblock %}

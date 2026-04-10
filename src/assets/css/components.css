@@ -702,12 +702,11 @@ a.dateline:hover { color: var(--color-accent); }
 }
 
 .nav-drawer__label {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
+  font-family: var(--font-masthead);
+  font-size: var(--text-sm);
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-ink-faint);
+  color: var(--color-ink);
+  padding-left: var(--space-2);
 }
 
 .nav-drawer__close {
