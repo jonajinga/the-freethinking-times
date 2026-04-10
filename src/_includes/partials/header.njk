@@ -139,7 +139,7 @@
         <ul class="site-nav__list" role="list">
           {% for item in site.nav %}
           {% set sectionItems = collections[item.collection] if item.collection %}
-          {% set hasDropdown = item.type == "projects" or item.type == "games" or item.type == "library" or (sectionItems and sectionItems.length) %}
+          {% set hasDropdown = item.type == "projects" or item.type == "games" or item.type == "library" or item.type == "quotes" or (sectionItems and sectionItems.length) %}
           <li class="site-nav__item{% if hasDropdown %} site-nav__item--has-dropdown{% endif %}">
             <a
               class="site-nav__link"
@@ -156,7 +156,7 @@
       {# ── Nav Dropdowns — siblings of .site-nav__inner so they escape overflow:hidden ── #}
       {% for item in site.nav %}
       {% set sectionItems = collections[item.collection] if item.collection %}
-      {% set hasDropdown = item.type == "projects" or item.type == "games" or item.type == "library" or (sectionItems and sectionItems.length) %}
+      {% set hasDropdown = item.type == "projects" or item.type == "games" or item.type == "library" or item.type == "quotes" or (sectionItems and sectionItems.length) %}
       {% if hasDropdown %}
       <div class="nav-dropdown" id="dropdown-{{ item.key }}" aria-label="{{ item.label }}">
         {% if item.type == "library" %}
@@ -193,6 +193,14 @@
           </a>
           {% endfor %}
           <a href="/games/" class="nav-dropdown__footer">View all games →</a>
+        {% elif item.type == "quotes" %}
+          {% for q in quotes | limit(4) %}
+          <a href="/quotes/#q{{ loop.index }}" class="nav-dropdown__item">
+            <span class="nav-dropdown__desc">&ldquo;{{ q.quote | truncate(50, true, '...') }}&rdquo;</span>
+            <span class="nav-dropdown__title">{{ q.author }}</span>
+          </a>
+          {% endfor %}
+          <a href="/quotes/" class="nav-dropdown__footer">View all quotes →</a>
         {% else %}
           {% for article in sectionItems | limit(4) %}
           <a href="{{ article.url }}" class="nav-dropdown__item">
@@ -338,25 +346,29 @@
 
   {# ── Bottom sections (all use sidebar-widget + subscribe-block--sidebar style) ── #}
 
-  <div class="sidebar-widget subscribe-block--sidebar" style="margin:var(--space-4) var(--space-5);">
-    <p class="sidebar-widget__title"><a href="/language/" style="color:var(--color-link);text-decoration:underline;text-underline-offset:2px;">Language</a></p>
-    <div class="gtranslate_wrapper"></div>
-  </div>
-
   <div style="margin:0 var(--space-5);">
     {% set subscribeVariant = "sidebar" %}
     {% include "partials/subscribe.njk" %}
   </div>
 
   <div class="sidebar-widget subscribe-block--sidebar" style="margin:var(--space-4) var(--space-5);">
-    <p class="sidebar-widget__title"><a href="/your-data/" style="color:var(--color-link);text-decoration:underline;text-underline-offset:2px;">Your Data</a></p>
-    <div style="display:flex;gap:var(--space-2);">
-      <button class="nav-drawer__action-btn" type="button" id="data-export-btn" aria-label="Export all data" title="Export">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      </button>
-      <button class="nav-drawer__action-btn" type="button" id="data-import-btn" aria-label="Import data" title="Import">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      </button>
+    <div style="display:flex;gap:var(--space-4);align-items:flex-start;">
+      <div style="flex:1;">
+        <p class="sidebar-widget__title"><a href="/language/" style="color:var(--color-link);text-decoration:underline;text-underline-offset:2px;">Language</a></p>
+        <div class="gtranslate_wrapper" style="max-width:140px;"></div>
+      </div>
+      <div style="width:2px;background:var(--color-accent);align-self:stretch;flex-shrink:0;border-radius:1px;"></div>
+      <div style="flex:1;">
+        <p class="sidebar-widget__title"><a href="/your-data/" style="color:var(--color-link);text-decoration:underline;text-underline-offset:2px;">Your Data</a></p>
+        <div style="display:flex;gap:var(--space-2);">
+          <button class="nav-drawer__action-btn" type="button" id="data-export-btn" aria-label="Export all data" title="Export">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </button>
+          <button class="nav-drawer__action-btn" type="button" id="data-import-btn" aria-label="Import data" title="Import">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -73,7 +73,7 @@
 /* Mobile search button — visible only when masthead actions are hidden */
 .masthead__search-mobile {
   display: none;
-  background: none;
+  background: transparent;
   border: none;
   color: var(--color-ink-muted);
   cursor: pointer;
@@ -81,6 +81,9 @@
   grid-column: 3;
   grid-row: 1;
   justify-self: end;
+  -webkit-appearance: none;
+  appearance: none;
+  line-height: 1;
 }
 
 .masthead__search-mobile:hover { color: var(--color-ink); }
@@ -196,6 +199,8 @@
 .site-nav:has(#nav-projects:focus)    #dropdown-projects,
 .site-nav:has(#nav-games:hover)       #dropdown-games,
 .site-nav:has(#nav-games:focus)       #dropdown-games,
+.site-nav:has(#nav-quotes:hover)     #dropdown-quotes,
+.site-nav:has(#nav-quotes:focus)     #dropdown-quotes,
 .nav-dropdown:hover,
 .nav-dropdown:focus-within {
   opacity: 1;
@@ -251,6 +256,14 @@
 }
 
 .nav-dropdown__footer:hover { color: var(--color-ink); }
+
+/* Quotes dropdown: narrower, single column, right-aligned */
+#dropdown-quotes {
+  width: 320px;
+  grid-template-columns: 1fr;
+  right: 0;
+  left: auto;
+}
 
 /* Hide on mobile — drawer handles navigation there */
 @media (max-width: 768px) {

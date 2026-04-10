@@ -65,6 +65,18 @@ permalink: /quotes/
 (function () {
   var _p = window.__PREFIX || 'tft';
 
+  // Scroll to hash on load (for reading list links)
+  if (window.location.hash) {
+    var target = document.querySelector(window.location.hash);
+    if (target) {
+      setTimeout(function () {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        target.style.outline = '2px solid var(--color-accent)';
+        setTimeout(function () { target.style.outline = ''; }, 2000);
+      }, 300);
+    }
+  }
+
   // Filter
   var filter = document.getElementById('quotes-author-filter');
   if (filter) {
@@ -111,9 +123,12 @@ permalink: /quotes/
         localStorage.setItem(k, JSON.stringify(list));
         btn.querySelector('svg').style.fill = 'none';
       } else {
+        var quoteText = card.querySelector('p').textContent;
+        var citeEl = card.querySelector('cite');
+        var citeText = citeEl ? citeEl.textContent.trim() : '';
         list.unshift({
           url: url,
-          title: card.querySelector('p').textContent.slice(0, 60) + '...',
+          title: quoteText + ' — ' + citeText,
           section: 'Quotes',
           date: '',
           mins: ''
