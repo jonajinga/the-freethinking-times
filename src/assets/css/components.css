@@ -810,18 +810,34 @@ a.dateline:hover { color: var(--color-accent); }
 }
 
 /* ── GTranslate in nav drawer ──────────────────────────────── */
+/* Old drawer classes no longer used */
+.nav-drawer__translate,
 .nav-drawer__newsletter {
-  padding: var(--space-4) var(--space-5);
-  border-top: 1px solid var(--color-rule);
-  margin-top: var(--space-2);
+  display: none;
 }
 
-.nav-drawer__translate {
-  padding: var(--space-6) var(--space-5) var(--space-4);
-  display: flex;
-  justify-content: center;
-  border-top: 1px solid var(--color-rule);
-  margin-top: var(--space-2);
+/* Reduce sizes for drawer bottom sections */
+.nav-drawer .sidebar-widget {
+  padding: var(--space-3);
+}
+
+.nav-drawer .sidebar-widget__title {
+  font-size: 0.6rem;
+  padding-bottom: var(--space-2);
+}
+
+.nav-drawer .sidebar-widget .subscribe-block__body {
+  font-size: var(--text-xs);
+}
+
+.nav-drawer .sidebar-widget .nav-drawer__action-btn {
+  width: 30px;
+  height: 30px;
+}
+
+.nav-drawer .sidebar-widget .nav-drawer__action-btn svg {
+  width: 14px;
+  height: 14px;
 }
 
 /* ── Search Overlay ─────────────────────────────────────────── */
@@ -1272,11 +1288,12 @@ a.dateline:hover { color: var(--color-accent); }
 }
 
 /* ── GTranslate dropdown widget — match drawer action button style ── */
-.nav-drawer__translate .gtranslate_wrapper a {
+.nav-drawer .gtranslate_wrapper a,
+.sidebar-widget .gtranslate_wrapper a {
   font-family: var(--font-ui) !important;
   font-size: var(--text-xs) !important;
   color: var(--color-ink-muted) !important;
-  background: var(--color-bg-alt) !important;
+  background: var(--color-bg) !important;
   border: 1px solid var(--color-rule) !important;
   border-radius: var(--radius-sm) !important;
   padding: var(--space-1) var(--space-3) !important;
@@ -1289,16 +1306,18 @@ a.dateline:hover { color: var(--color-accent); }
   line-height: 1 !important;
 }
 
-.nav-drawer__translate .gtranslate_wrapper a:hover {
+.nav-drawer .gtranslate_wrapper a:hover,
+.sidebar-widget .gtranslate_wrapper a:hover {
   color: var(--color-ink) !important;
   border-color: var(--color-ink) !important;
 }
 
-.nav-drawer__translate .gtranslate_wrapper select {
+.nav-drawer .gtranslate_wrapper select,
+.sidebar-widget .gtranslate_wrapper select {
   font-family: var(--font-ui) !important;
   font-size: var(--text-xs) !important;
   color: var(--color-ink-muted) !important;
-  background: var(--color-bg-alt) !important;
+  background: var(--color-bg) !important;
   border: 1px solid var(--color-rule) !important;
   border-radius: var(--radius-sm) !important;
   padding: var(--space-1) var(--space-3) !important;
@@ -1306,7 +1325,8 @@ a.dateline:hover { color: var(--color-accent); }
   cursor: pointer !important;
 }
 
-.nav-drawer__translate .gtranslate_wrapper img {
+.nav-drawer .gtranslate_wrapper img,
+.sidebar-widget .gtranslate_wrapper img {
   width: 14px !important;
   height: 14px !important;
 }
