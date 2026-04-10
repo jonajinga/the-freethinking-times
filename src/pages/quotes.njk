@@ -36,14 +36,13 @@ permalink: /quotes/
   <style>.quote-card { scroll-margin-top: 8rem; }</style>
   <div id="quotes-list" data-pagefind-body style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-4);">
     {% for q in quotes %}
-    <blockquote class="quote-card" data-author="{{ q.author }}" id="q{{ loop.index }}" style="margin:0;padding:var(--space-4);background:var(--color-bg-alt);border-radius:var(--radius-sm);display:flex;flex-direction:column;justify-content:space-between;font-style:normal;color:var(--color-ink);">
-      <p style="font-family:var(--font-body);font-size:var(--text-sm);line-height:var(--leading-loose);color:var(--color-ink);margin:0 0 var(--space-3);">
+    <blockquote class="quote-card" data-author="{{ q.author }}" id="q{{ loop.index }}" style="margin:0;padding:var(--space-6);border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);display:flex;flex-direction:column;justify-content:space-between;font-style:normal;color:var(--color-ink);gap:var(--space-3);">
+      <p style="font-family:var(--font-body);font-size:var(--text-sm);line-height:var(--leading-loose);color:var(--color-ink);margin:0;">
         &ldquo;{{ q.quote }}&rdquo;
       </p>
       <div>
-        <cite style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);font-style:normal;display:block;margin-bottom:var(--space-2);">
-          {{ q.author }}{% if q.source %} &mdash; {{ q.source }}{% endif %}
-        </cite>
+        <p style="font-family:var(--font-headline);font-size:var(--text-sm);font-weight:700;color:var(--color-ink);margin:0;">{{ q.author }}</p>
+        {% if q.source %}<p style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);margin:0;">{{ q.source }}</p>{% endif %}
         <div class="quote-actions" style="display:flex;gap:var(--space-1);">
           <button class="article-action-btn quote-save-btn" type="button" aria-label="Save to reading list" title="Save" data-index="{{ loop.index }}">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
