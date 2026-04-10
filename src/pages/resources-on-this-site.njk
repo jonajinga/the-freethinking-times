@@ -1,0 +1,84 @@
+---
+layout: base
+title: "On This Site — Resources"
+description: Everything The Freethinking Times offers — library, quotes, videos, timeline, projects, games, and reader tools.
+permalink: /resources/on-this-site/
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+
+  <nav style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);margin-bottom:var(--space-4);">
+    <a href="/resources/" style="color:var(--color-link);">Resources</a> &rarr; On This Site
+  </nav>
+
+  <header style="padding-bottom: var(--space-8); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);">
+    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3rem); margin-bottom: var(--space-2);">On This Site</h1>
+    <p style="color: var(--color-ink-muted); font-size: var(--text-md);">
+      Everything {{ site.title }} makes available to readers — all free, all without accounts.
+    </p>
+  </header>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-4);">
+
+    <a href="/library/" style="border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);padding:var(--space-5);text-decoration:none;display:flex;flex-direction:column;gap:var(--space-2);">
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;color:var(--color-ink);margin:0;">Public Domain Library</h2>
+      <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">{{ library.works | length }} works by {{ library.authors | length }} authors — fully readable online with annotations, highlights, and bookmarks.</p>
+    </a>
+
+    <a href="/quotes/" style="border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);padding:var(--space-5);text-decoration:none;display:flex;flex-direction:column;gap:var(--space-2);">
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;color:var(--color-ink);margin:0;">Quotes</h2>
+      <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">{{ quotes | length }} curated freethought quotes — save, share, copy, filter by author, topic, or era.</p>
+    </a>
+
+    <a href="/videos/" style="border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);padding:var(--space-5);text-decoration:none;display:flex;flex-direction:column;gap:var(--space-2);">
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;color:var(--color-ink);margin:0;">Video Library</h2>
+      <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">{{ videos | length }} curated lectures, debates, and documentaries from the freethought tradition.</p>
+    </a>
+
+    <a href="/timeline/" style="border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);padding:var(--space-5);text-decoration:none;display:flex;flex-direction:column;gap:var(--space-2);">
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;color:var(--color-ink);margin:0;">Freethought Timeline</h2>
+      <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">{{ timeline | length }} milestone events spanning 2,400 years — from Socrates to the New Atheism.</p>
+    </a>
+
+    <a href="/glossary/" style="border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);padding:var(--space-5);text-decoration:none;display:flex;flex-direction:column;gap:var(--space-2);">
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;color:var(--color-ink);margin:0;">Freethought Glossary</h2>
+      <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">{{ collections.glossary.length }} philosophical terms with definitions, etymology, and key figures.</p>
+    </a>
+
+    <a href="/bookshelf/" style="border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);padding:var(--space-5);text-decoration:none;display:flex;flex-direction:column;gap:var(--space-2);">
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;color:var(--color-ink);margin:0;">Freethinker's Bookshelf</h2>
+      <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">{{ collections.bookshelf.length }} annotated book recommendations with category, difficulty, and reading guidance.</p>
+    </a>
+
+    <a href="/thought-experiments/" style="border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);padding:var(--space-5);text-decoration:none;display:flex;flex-direction:column;gap:var(--space-2);">
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;color:var(--color-ink);margin:0;">Thought Experiments</h2>
+      <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">{{ collections["thought-experiments"].length }} classic thought experiments examined — what they prove and what they don't.</p>
+    </a>
+
+    <a href="/trials/" style="border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);padding:var(--space-5);text-decoration:none;display:flex;flex-direction:column;gap:var(--space-2);">
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;color:var(--color-ink);margin:0;">Trials of Thought</h2>
+      <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">{{ collections["trials-of-thought"].length }} landmark trials where ideas were the defendant — Socrates to Rushdie.</p>
+    </a>
+
+    <a href="/games/" style="border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);padding:var(--space-5);text-decoration:none;display:flex;flex-direction:column;gap:var(--space-2);">
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;color:var(--color-ink);margin:0;">Games</h2>
+      <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">{{ games | length }} interactive games — trivia, puzzles, and word games.</p>
+    </a>
+
+    <a href="/reader/" style="border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);padding:var(--space-5);text-decoration:none;display:flex;flex-direction:column;gap:var(--space-2);">
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;color:var(--color-ink);margin:0;">RSS Reader</h2>
+      <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">Follow freethought publications right here — feeds updated at each site build.</p>
+    </a>
+
+    <a href="/notes/" style="border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);padding:var(--space-5);text-decoration:none;display:flex;flex-direction:column;gap:var(--space-2);">
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;color:var(--color-ink);margin:0;">Notes & Highlights</h2>
+      <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">All your highlights, notes, and bookmarks across the site — export, import, print, share.</p>
+    </a>
+
+    <a href="/reading-list/" style="border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);padding:var(--space-5);text-decoration:none;display:flex;flex-direction:column;gap:var(--space-2);">
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;color:var(--color-ink);margin:0;">Reading List</h2>
+      <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">Save articles for later — stored in your browser, no account required.</p>
+    </a>
+
+  </div>
+</div>

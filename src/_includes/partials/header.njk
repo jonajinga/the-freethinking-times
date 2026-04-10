@@ -282,39 +282,74 @@
     <button class="nav-drawer__close" id="nav-drawer-close" type="button" aria-label="Close navigation menu" onclick="var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-drawer-overlay');d.classList.remove('is-open');o.classList.remove('is-open');d.setAttribute('aria-hidden','true');document.getElementById('nav-drawer-toggle').setAttribute('aria-expanded','false');document.body.style.overflow='';">✕</button>
   </div>
 
+  {# ── Sections (editorial content) ── #}
+  <p class="nav-drawer__section-label">Sections</p>
   <ul class="nav-drawer__list" role="list">
     {% for item in site.nav %}
+    {% if item.collection %}
     <li>
-      <a
-        class="nav-drawer__link"
-        href="{{ item.url }}"
-        {% if page.url == item.url %}aria-current="page"{% endif %}>
+      <a class="nav-drawer__link" href="{{ item.url }}" {% if page.url == item.url %}aria-current="page"{% endif %}>
         {{ item.label }}
       </a>
     </li>
+    {% endif %}
     {% endfor %}
   </ul>
 
   <div class="nav-drawer__divider"></div>
 
+  {# ── Explore (content collections & projects) ── #}
+  <p class="nav-drawer__section-label">Explore</p>
   <ul class="nav-drawer__list" role="list">
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/about/">About</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/masthead/">Masthead</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/ethics/">Ethics Policy</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/submit/">Submit a Piece</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/start-here/">Start Here</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/archives/">Archives</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/editions/">Editions</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/timeline/">Timeline</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/community/">Community</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/events/">Events</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/contribute/">Contribute</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/corrections/">Corrections</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/resources/">Freethought Resources</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/reader/">RSS Reader</a></li>
+    <li><a class="nav-drawer__link" href="/library/" {% if page.url == "/library/" %}aria-current="page"{% endif %}>Library</a></li>
+    <li><a class="nav-drawer__link" href="/quotes/" {% if page.url == "/quotes/" %}aria-current="page"{% endif %}>Quotes</a></li>
+    <li><a class="nav-drawer__link" href="/videos/" {% if page.url == "/videos/" %}aria-current="page"{% endif %}>Videos</a></li>
+    <li><a class="nav-drawer__link" href="/timeline/" {% if page.url == "/timeline/" %}aria-current="page"{% endif %}>Timeline</a></li>
+    <li><a class="nav-drawer__link" href="/projects/" {% if page.url == "/projects/" %}aria-current="page"{% endif %}>Projects</a></li>
+    <li><a class="nav-drawer__link" href="/games/" {% if page.url == "/games/" %}aria-current="page"{% endif %}>Games</a></li>
+    <li><a class="nav-drawer__link" href="/glossary/" {% if page.url == "/glossary/" %}aria-current="page"{% endif %}>Glossary</a></li>
+    <li><a class="nav-drawer__link" href="/bookshelf/" {% if page.url == "/bookshelf/" %}aria-current="page"{% endif %}>Bookshelf</a></li>
+    <li><a class="nav-drawer__link" href="/thought-experiments/" {% if page.url == "/thought-experiments/" %}aria-current="page"{% endif %}>Thought Experiments</a></li>
+    <li><a class="nav-drawer__link" href="/trials/" {% if page.url == "/trials/" %}aria-current="page"{% endif %}>Trials of Thought</a></li>
   </ul>
 
-  {# ── Quick actions (icons only, duplicated from masthead for mobile) ── #}
+  <div class="nav-drawer__divider"></div>
+
+  {# ── Community & Events ── #}
+  <p class="nav-drawer__section-label">Community & Events</p>
+  <ul class="nav-drawer__list" role="list">
+    <li><a class="nav-drawer__link" href="/community/" {% if page.url == "/community/" %}aria-current="page"{% endif %}>Community</a></li>
+    <li><a class="nav-drawer__link" href="/events/" {% if page.url == "/events/" %}aria-current="page"{% endif %}>Events Calendar</a></li>
+    <li><a class="nav-drawer__link" href="/contribute/" {% if page.url == "/contribute/" %}aria-current="page"{% endif %}>Contribute</a></li>
+    <li><a class="nav-drawer__link" href="/submit/" {% if page.url == "/submit/" %}aria-current="page"{% endif %}>Submit a Piece</a></li>
+  </ul>
+
+  <div class="nav-drawer__divider"></div>
+
+  {# ── Resources & Tools ── #}
+  <p class="nav-drawer__section-label">Resources & Tools</p>
+  <ul class="nav-drawer__list" role="list">
+    <li><a class="nav-drawer__link" href="/resources/" {% if page.url == "/resources/" %}aria-current="page"{% endif %}>Freethought Resources</a></li>
+    <li><a class="nav-drawer__link" href="/reader/" {% if page.url == "/reader/" %}aria-current="page"{% endif %}>RSS Reader</a></li>
+    <li><a class="nav-drawer__link" href="/start-here/" {% if page.url == "/start-here/" %}aria-current="page"{% endif %}>Start Here</a></li>
+    <li><a class="nav-drawer__link" href="/notes/" {% if page.url == "/notes/" %}aria-current="page"{% endif %}>Notes & Highlights</a></li>
+    <li><a class="nav-drawer__link" href="/reading-list/" {% if page.url == "/reading-list/" %}aria-current="page"{% endif %}>Reading List</a></li>
+  </ul>
+
+  <div class="nav-drawer__divider"></div>
+
+  {# ── About & Policies ── #}
+  <p class="nav-drawer__section-label">About</p>
+  <ul class="nav-drawer__list" role="list">
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/about/">About Us</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/masthead/">Masthead</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/ethics/">Ethics Policy</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/archives/">Archives</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/editions/">Editions</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/corrections/">Corrections</a></li>
+  </ul>
+
+  {# ── Quick actions (icons) ── #}
   <div class="nav-drawer__actions">
     <button class="nav-drawer__action-btn js-only" type="button" aria-label="Search" title="Search" onclick="var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-drawer-overlay');d.classList.remove('is-open');o.classList.remove('is-open');d.setAttribute('aria-hidden','true');document.body.style.overflow='';var m=document.getElementById('search-modal'),so=document.getElementById('search-overlay');if(m){m.classList.add('is-open');m.setAttribute('aria-hidden','false');so&&so.classList.add('is-open');document.body.style.overflow='hidden';var i=document.getElementById('search-input');i&&i.focus();}">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -342,7 +377,7 @@
     </a>
   </div>
 
-  {# ── Bottom sections (all use sidebar-widget + subscribe-block--sidebar style) ── #}
+  {# ── Bottom sections ── #}
 
   <div style="margin:0 var(--space-5);">
     {% set subscribeVariant = "sidebar" %}

@@ -161,7 +161,7 @@
   position: absolute;
   top: 100%;
   left: 0;        /* overridden by JS to centre under the trigger */
-  width: 560px;
+  width: min(560px, 90vw);
   background: var(--color-bg);
   border: 1px solid var(--color-rule);
   border-top: 3px solid var(--color-ink);
@@ -408,6 +408,15 @@
   flex-shrink: 0;
 }
 
+@media (max-width: 480px) {
+  .article-card--horizontal { flex-direction: column; }
+  .article-card--horizontal .article-card__image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+}
+
 /* ── Dateline ───────────────────────────────────────────────── */
 .dateline {
   font-family: var(--font-ui);
@@ -522,14 +531,27 @@ a.dateline:hover { color: var(--color-accent); }
   color: var(--color-ink-muted);
 }
 
+.site-footer__heading {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-ink-faint);
+  margin-bottom: var(--space-3);
+}
+
 .site-footer__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-8);
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-6);
   margin-bottom: var(--space-8);
 }
 
-@media (max-width: 700px) {
+@media (max-width: 900px) {
+  .site-footer__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 600px) {
   .site-footer__grid { grid-template-columns: 1fr 1fr; }
 }
 
@@ -725,7 +747,7 @@ a.dateline:hover { color: var(--color-accent); }
   top: 0;
   height: 100vh;
   height: 100dvh;
-  width: 280px;
+  width: min(280px, 85vw);
   background: var(--color-bg);
   border-right: 1px solid var(--color-rule);
   z-index: var(--z-modal);
@@ -823,18 +845,29 @@ a.dateline:hover { color: var(--color-accent); }
   margin: 0 var(--space-5);
 }
 
+.nav-drawer__section-label {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-ink-faint);
+  padding: var(--space-3) var(--space-5) var(--space-1);
+  margin: 0;
+}
+
 /* ── Drawer action buttons (icon-only mobile quick-actions) ── */
 .nav-drawer__actions {
   display: grid;
-  grid-template-columns: repeat(4, 36px);
-  gap: 10px;
+  grid-template-columns: repeat(4, 44px);
+  gap: 8px;
   justify-content: center;
   padding: var(--space-4) 0;
 }
 
 .nav-drawer__action-btn {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   color: var(--color-ink-muted);
@@ -870,7 +903,7 @@ a.dateline:hover { color: var(--color-accent); }
 }
 
 .nav-drawer .sidebar-widget__title {
-  font-size: 0.6rem;
+  font-size: var(--text-xs);
   padding-bottom: var(--space-2);
 }
 

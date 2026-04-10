@@ -26,7 +26,7 @@ module.exports = function (eleventyConfig) {
         const cssDir = require("path").dirname(inputPath);
         const order = [
           "tokens.css", "base.css", "layout.css", "components.css",
-          "article.css", "projects.css", "library.css"
+          "article.css", "projects.css", "library.css", "calendar.css"
         ];
         let output = "";
         for (const file of order) {
