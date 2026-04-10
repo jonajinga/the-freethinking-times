@@ -161,21 +161,15 @@
       <div class="nav-dropdown" id="dropdown-{{ item.key }}" aria-label="{{ item.label }}">
         {% if item.type == "library" %}
           {% for w in library.works %}
-            {% if w.featured %}
+            {% if w.featured and not w.parentWork %}
               <a href="/library/{{ w.slug }}/" class="nav-dropdown__item">
                 <span class="nav-dropdown__title">{{ w.title }}</span>
                 {% if w.description %}<span class="nav-dropdown__desc">{{ w.description }}</span>{% endif %}
               </a>
             {% endif %}
           {% endfor %}
-          <a href="/library/subjects/" class="nav-dropdown__item">
-            <span class="nav-dropdown__title">Browse by Subject</span>
-            <span class="nav-dropdown__desc">Explore the catalogue by philosophical and historical theme.</span>
-          </a>
-          <a href="/library/authors/" class="nav-dropdown__item">
-            <span class="nav-dropdown__title">Browse by Author</span>
-            <span class="nav-dropdown__desc">Full biographies and collected works for each author.</span>
-          </a>
+          <a href="/library/subjects/" class="nav-dropdown__footer">Browse by Subject</a>
+          <a href="/library/authors/" class="nav-dropdown__footer">Browse by Author</a>
           <a href="/library/" class="nav-dropdown__footer">View full library →</a>
         {% elif item.type == "projects" %}
           {% for project in projects.index %}
@@ -194,9 +188,9 @@
           {% endfor %}
           <a href="/games/" class="nav-dropdown__footer">View all games →</a>
         {% elif item.type == "quotes" %}
-          {% for q in quotes | limit(4) %}
+          {% for q in quotes | limit(3) %}
           <a href="/quotes/#q{{ loop.index }}" class="nav-dropdown__item">
-            <span class="nav-dropdown__desc">&ldquo;{{ q.quote | truncate(50, true, '...') }}&rdquo;</span>
+            <span class="nav-dropdown__desc">&ldquo;{{ q.quote }}&rdquo;</span>
             <span class="nav-dropdown__title">{{ q.author }}</span>
           </a>
           {% endfor %}
@@ -355,7 +349,7 @@
     <div style="display:flex;gap:0;align-items:stretch;">
       <div style="flex:1;min-width:0;padding-right:var(--space-3);">
         <p class="sidebar-widget__title"><a href="/language/" style="color:var(--color-link);text-decoration:underline;text-underline-offset:2px;">Language</a></p>
-        <div class="gtranslate_wrapper" style="max-width:100px;"></div>
+        <div class="gtranslate_wrapper" style="max-width:90px;"></div>
       </div>
       <div style="width:2px;background:var(--color-accent);flex-shrink:0;border-radius:1px;"></div>
       <div style="flex:1;min-width:0;padding-left:var(--space-3);">

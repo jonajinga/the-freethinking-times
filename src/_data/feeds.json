@@ -1,15 +1,5 @@
 [
   {
-    "name": "FFRF",
-    "url": "https://ffrf.org/feeds/news.rss",
-    "category": "Organizations"
-  },
-  {
-    "name": "Center for Inquiry",
-    "url": "https://centerforinquiry.org/feed/",
-    "category": "Organizations"
-  },
-  {
     "name": "American Humanist",
     "url": "https://americanhumanist.org/feed/",
     "category": "Organizations"
@@ -17,11 +7,6 @@
   {
     "name": "The Humanist",
     "url": "https://thehumanist.com/feed/",
-    "category": "Publications"
-  },
-  {
-    "name": "Friendly Atheist",
-    "url": "https://www.patheos.com/blogs/friendlyatheist/feed/",
     "category": "Publications"
   },
   {

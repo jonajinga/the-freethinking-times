@@ -257,12 +257,19 @@
 
 .nav-dropdown__footer:hover { color: var(--color-ink); }
 
-/* Quotes dropdown: narrower, single column, right-aligned */
+/* Quotes dropdown: single column, centered */
 #dropdown-quotes {
-  width: 320px;
+  width: min(480px, 90vw);
   grid-template-columns: 1fr;
-  right: 0;
-  left: auto;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+}
+
+.site-nav:has(#nav-quotes:hover) #dropdown-quotes,
+.site-nav:has(#nav-quotes:focus) #dropdown-quotes,
+#dropdown-quotes:hover,
+#dropdown-quotes:focus-within {
+  transform: translateX(-50%) translateY(0);
 }
 
 /* Hide on mobile — drawer handles navigation there */
