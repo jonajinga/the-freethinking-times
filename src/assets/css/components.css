@@ -679,11 +679,13 @@ a.dateline:hover { color: var(--color-accent); }
   left: 0;
   top: 0;
   height: 100vh;
+  height: 100dvh;
   width: 280px;
   background: var(--color-bg);
   border-right: 1px solid var(--color-rule);
   z-index: var(--z-modal);
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   transform: translateX(-100%);
   transition: transform var(--transition-normal);
   visibility: hidden;
