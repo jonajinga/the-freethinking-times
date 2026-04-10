@@ -9,8 +9,39 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss);
 
   // ─── Passthrough Copies ─────────────────────────────────────────────────────
-  eleventyConfig.addPassthroughCopy("src/assets");
+  // Copy assets but exclude CSS (concatenated at build time below)
+  eleventyConfig.addPassthroughCopy({ "src/assets/js": "assets/js" });
+  eleventyConfig.addPassthroughCopy({ "src/assets/favicon.svg": "assets/favicon.svg" });
+  eleventyConfig.addPassthroughCopy({ "src/assets/img": "assets/img" });
   eleventyConfig.addPassthroughCopy({ "src/humans.txt": "humans.txt" });
+
+  // ─── CSS Concatenation (no @import waterfall) ──────────────────────────────
+  eleventyConfig.addTemplateFormats("css");
+  eleventyConfig.addExtension("css", {
+    outputFileExtension: "css",
+    compile: function (inputContent, inputPath) {
+      // Only process the entry point; skip partials
+      if (!inputPath.endsWith("main.css")) return;
+      return function () {
+        const cssDir = require("path").dirname(inputPath);
+        const order = [
+          "tokens.css", "base.css", "layout.css", "components.css",
+          "article.css", "projects.css", "library.css"
+        ];
+        let output = "";
+        for (const file of order) {
+          try {
+            output += fs.readFileSync(require("path").join(cssDir, file), "utf8") + "\n";
+          } catch (e) {
+            console.warn("CSS file not found:", file);
+          }
+        }
+        // Append main.css content (print styles etc.) minus the @import lines
+        output += inputContent.replace(/@import\s+['"][^'"]+['"];?\s*/g, "");
+        return output;
+      };
+    },
+  });
   // robots.txt is now a Nunjucks template (robots.njk)
   eleventyConfig.addPassthroughCopy({ "src/_redirects": "_redirects" });
 

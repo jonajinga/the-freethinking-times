@@ -352,13 +352,13 @@
   </div>
 
   <div class="sidebar-widget subscribe-block--sidebar" style="margin:var(--space-4) var(--space-5);">
-    <div style="display:flex;gap:var(--space-4);align-items:flex-start;">
-      <div style="flex:1;">
+    <div style="display:flex;gap:0;align-items:stretch;">
+      <div style="flex:1;min-width:0;padding-right:var(--space-3);">
         <p class="sidebar-widget__title"><a href="/language/" style="color:var(--color-link);text-decoration:underline;text-underline-offset:2px;">Language</a></p>
-        <div class="gtranslate_wrapper" style="max-width:140px;"></div>
+        <div class="gtranslate_wrapper" style="max-width:100px;"></div>
       </div>
-      <div style="width:2px;background:var(--color-accent);align-self:stretch;flex-shrink:0;border-radius:1px;"></div>
-      <div style="flex:1;">
+      <div style="width:2px;background:var(--color-accent);flex-shrink:0;border-radius:1px;"></div>
+      <div style="flex:1;min-width:0;padding-left:var(--space-3);">
         <p class="sidebar-widget__title"><a href="/your-data/" style="color:var(--color-link);text-decoration:underline;text-underline-offset:2px;">Your Data</a></p>
         <div style="display:flex;gap:var(--space-2);">
           <button class="nav-drawer__action-btn" type="button" id="data-export-btn" aria-label="Export all data" title="Export">
