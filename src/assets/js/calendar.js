@@ -125,9 +125,9 @@
   }
 
   /* ── Filtering ─────────────────────────────────────────────── */
-  function filterEvents(events) {
+  function filteredExpanded() {
     var today = dk(new Date());
-    return events.filter(function (e) {
+    return expanded.filter(function (e) {
       if (state.filterType && e.type !== state.filterType) return false;
       if (state.filterRegion && e.region !== state.filterRegion) return false;
       var end = e.endDate || e.date;
@@ -138,7 +138,7 @@
   }
 
   function eventsForDate(d) {
-    return expanded.filter(function (e) { return eventOnDate(e, d); });
+    return filteredExpanded().filter(function (e) { return eventOnDate(e, d); });
   }
 
   /* ── URL Hash State ────────────────────────────────────────── */
@@ -177,12 +177,19 @@
     if (!root) return;
     var html = renderToolbar();
     var view = isMobile() && state.view === 'week' ? 'list' : state.view;
+
+    var hasSidebar = (view === 'day' || view === 'list') && !isMobile();
+    if (hasSidebar) html += '<div class="cal-layout">';
+
     switch (view) {
       case 'month': html += renderMonth(); break;
       case 'week':  html += renderWeek(); break;
       case 'day':   html += renderDay(); break;
       case 'list':  html += renderList(); break;
     }
+
+    if (hasSidebar) html += renderSidebar() + '</div>';
+
     html += renderLegend();
     root.innerHTML = html;
     bind();
@@ -222,9 +229,9 @@
 
     return '<div class="cal-toolbar">' +
       '<div class="cal-toolbar__nav">' +
-        '<button class="cal-nav-btn" data-nav="prev" aria-label="Previous">&#8249;</button>' +
-        '<button class="cal-nav-btn" data-nav="today" aria-label="Today">Today</button>' +
-        '<button class="cal-nav-btn" data-nav="next" aria-label="Next">&#8250;</button>' +
+        '<button class="cal-nav-btn cal-nav-btn--arrow" data-nav="prev" aria-label="Previous"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>' +
+        '<button class="cal-nav-btn" data-nav="today">Today</button>' +
+        '<button class="cal-nav-btn cal-nav-btn--arrow" data-nav="next" aria-label="Next"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>' +
       '</div>' +
       '<div class="cal-toolbar__title">' + title + '</div>' +
       '<div class="cal-toolbar__right">' +
@@ -335,7 +342,7 @@
 
   /* ── List View ─────────────────────────────────────────────── */
   function renderList() {
-    var events = filterEvents(expanded);
+    var events = filteredExpanded();
     events.sort(function (a, b) { return state.showPast ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date); });
     var html = '<div class="cal-list">';
     if (!events.length) html += '<p class="cal-empty">' + (state.showPast ? 'No past events match your filters.' : 'No upcoming events match your filters.') + '</p>';
@@ -355,6 +362,89 @@
       '<p class="cal-card__dek">' + esc(e.description) + '</p>' +
       '<div class="cal-card__meta">' + esc(e.location) + (e.region ? ' &middot; ' + esc(e.region) : '') + '</div>' +
     '</article>';
+  }
+
+  /* ── Sidebar ────────────────────────────────────────────────── */
+  function renderSidebar() {
+    var today = dk(new Date());
+
+    // Next Up — next 5 upcoming events
+    var upcoming = expanded.filter(function (e) {
+      var end = e.endDate || e.date;
+      return end >= today;
+    });
+    upcoming.sort(function (a, b) { return a.date.localeCompare(b.date); });
+    var nextUp = upcoming.slice(0, 5);
+
+    var nextHtml = '<div class="cal-sidebar__section">' +
+      '<p class="cal-sidebar__heading">Next Up</p>';
+    if (!nextUp.length) {
+      nextHtml += '<p class="cal-sidebar__empty">No upcoming events.</p>';
+    } else {
+      nextUp.forEach(function (e) {
+        nextHtml += '<div class="cal-sidebar__item" data-evt-id="' + e.id + '">' +
+          '<span class="cal-dot cal-dot--' + (e.type || '') + '" style="flex-shrink:0;margin-top:4px"></span>' +
+          '<div>' +
+            '<span class="cal-sidebar__name">' + esc(e.name) + '</span>' +
+            '<span class="cal-sidebar__date">' + fmtDate(e.date) + '</span>' +
+          '</div>' +
+        '</div>';
+      });
+    }
+    nextHtml += '</div>';
+
+    // This Month — event counts by type
+    var y = state.date.getFullYear(), m = state.date.getMonth();
+    var monthStart = dk(new Date(y, m, 1));
+    var monthEnd = dk(new Date(y, m + 1, 0));
+    var monthEvts = expanded.filter(function (e) {
+      return e.date >= monthStart && e.date <= monthEnd;
+    });
+    var typeCounts = {};
+    monthEvts.forEach(function (e) {
+      var t = e.type || 'other';
+      typeCounts[t] = (typeCounts[t] || 0) + 1;
+    });
+
+    var monthHtml = '<div class="cal-sidebar__section">' +
+      '<p class="cal-sidebar__heading">This Month</p>' +
+      '<p class="cal-sidebar__stat">' + monthEvts.length + ' event' + (monthEvts.length !== 1 ? 's' : '') + '</p>';
+    Object.keys(typeCounts).forEach(function (t) {
+      monthHtml += '<div class="cal-sidebar__type-row">' +
+        '<span class="cal-dot cal-dot--' + t + '"></span> ' +
+        typeName(t) + ': ' + typeCounts[t] +
+      '</div>';
+    });
+    monthHtml += '</div>';
+
+    // Organizations — recurring event sources
+    var orgMap = {};
+    expanded.forEach(function (e) {
+      if (e._recurring) {
+        if (!orgMap[e.name]) orgMap[e.name] = { type: e.type, count: 0 };
+        orgMap[e.name].count++;
+      }
+    });
+    // Also add one-time orgs from rawEvents
+    rawEvents.forEach(function (e) {
+      if (!e.recurrence && !orgMap[e.name]) {
+        orgMap[e.name] = { type: e.type, count: 1 };
+      }
+    });
+
+    var orgNames = Object.keys(orgMap).sort();
+    var orgHtml = '<div class="cal-sidebar__section">' +
+      '<p class="cal-sidebar__heading">Organizations</p>';
+    orgNames.forEach(function (name) {
+      var o = orgMap[name];
+      orgHtml += '<div class="cal-sidebar__org">' +
+        '<span class="cal-dot cal-dot--' + (o.type || '') + '"></span> ' +
+        esc(name) +
+      '</div>';
+    });
+    orgHtml += '</div>';
+
+    return '<aside class="cal-sidebar">' + nextHtml + monthHtml + orgHtml + '</aside>';
   }
 
   /* ── Legend ────────────────────────────────────────────────── */
