@@ -1,396 +1,302 @@
 /* ============================================================
-   THE FREETHINKING TIMES — Interactive Events Calendar
-   Month / Week / Day / List views with filtering and popups
+   THE FREETHINKING TIMES — Events Calendar
+   Editorial-style calendar with recurrence, keyboard nav,
+   hash state, and responsive views.
    ============================================================ */
 (function () {
   'use strict';
 
-  const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const MONTHS = [
+  /* ── Constants ─────────────────────────────────────────────── */
+  var DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var DAYS_SHORT = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  var MONTHS = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
+  var TYPE_COLORS = {
+    conference: 'opinion', convention: 'accent', meetup: 'science',
+    online: 'arts-culture', observance: 'history'
+  };
+  var MAX_DOTS = 4;
 
-  let allEvents = [];
-  let currentView = 'month';
-  let currentDate = new Date();
-  let filterType = '';
-  let filterRegion = '';
-  let showPast = false;
-
-  /* ── Init ──────────────────────────────────────────────────── */
-  function init() {
-    const container = document.getElementById('cal-root');
-    if (!container) return;
-
-    const dataEl = document.getElementById('cal-data');
-    if (dataEl) {
-      try {
-        allEvents = JSON.parse(dataEl.textContent);
-      } catch (e) {
-        allEvents = [];
-      }
-    }
-
-    // Detect mobile — default to list view
-    if (window.innerWidth <= 768) {
-      currentView = 'list';
-    }
-
-    render();
-  }
+  /* ── State ─────────────────────────────────────────────────── */
+  var rawEvents = [];
+  var expanded = [];
+  var state = { view: 'month', date: new Date(), filterType: '', filterRegion: '', showPast: false };
+  var isMobile = function () { return window.innerWidth <= 768; };
 
   /* ── Helpers ───────────────────────────────────────────────── */
-  function fmtDate(dateStr) {
-    const d = new Date(dateStr + 'T00:00:00');
-    return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+  function dk(d) {
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
   }
-
-  function fmtDateShort(dateStr) {
-    const d = new Date(dateStr + 'T00:00:00');
-    return (d.getMonth() + 1) + '/' + d.getDate();
-  }
-
-  function dateKey(d) {
-    return d.getFullYear() + '-' +
-      String(d.getMonth() + 1).padStart(2, '0') + '-' +
-      String(d.getDate()).padStart(2, '0');
-  }
-
-  function isToday(d) {
-    const t = new Date();
-    return d.getFullYear() === t.getFullYear() &&
-           d.getMonth() === t.getMonth() &&
-           d.getDate() === t.getDate();
-  }
-
-  function sameDay(a, b) {
-    return a.getFullYear() === b.getFullYear() &&
-           a.getMonth() === b.getMonth() &&
-           a.getDate() === b.getDate();
-  }
-
-  function startOfWeek(d) {
-    const r = new Date(d);
-    r.setDate(r.getDate() - r.getDay());
-    return r;
-  }
+  function pd(s) { return new Date(s + 'T00:00:00'); }
+  function fmtDate(s) { var d = pd(s); return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear(); }
+  function fmtRange(e) { var s = fmtDate(e.date); if (e.endDate && e.endDate !== e.date) s += ' — ' + fmtDate(e.endDate); return s; }
+  function isToday(d) { var t = new Date(); return d.getFullYear() === t.getFullYear() && d.getMonth() === t.getMonth() && d.getDate() === t.getDate(); }
+  function startOfWeek(d) { var r = new Date(d); r.setDate(r.getDate() - r.getDay()); return r; }
+  function typeName(t) { return t ? t.charAt(0).toUpperCase() + t.slice(1) : ''; }
+  function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
 
   function eventOnDate(evt, d) {
-    const key = dateKey(d);
+    var key = dk(d);
     if (evt.date === key) return true;
-    if (evt.endDate) {
-      return evt.date <= key && key <= evt.endDate;
-    }
+    if (evt.endDate) return evt.date <= key && key <= evt.endDate;
     return false;
   }
 
-  function filteredEvents() {
-    const today = dateKey(new Date());
-    return allEvents.filter(function (e) {
-      if (filterType && e.type !== filterType) return false;
-      if (filterRegion && e.region !== filterRegion) return false;
-      if (!showPast && e.date < today && (!e.endDate || e.endDate < today)) return false;
-      if (showPast && (e.date >= today || (e.endDate && e.endDate >= today))) return false;
+  /* ── Recurrence Engine ─────────────────────────────────────── */
+  function nthWeekday(year, month, week, day) {
+    // week: 1-5 (5 = last), day: 0=Sun..6=Sat
+    var first = new Date(year, month, 1);
+    var firstDay = first.getDay();
+    var offset = (day - firstDay + 7) % 7;
+    var d = 1 + offset + (week - 1) * 7;
+    if (week === 5) {
+      // "last" — find the last occurrence
+      var last = new Date(year, month + 1, 0).getDate();
+      d = 1 + offset + 3 * 7; // start from 4th occurrence
+      if (d + 7 <= last) d += 7; // if 5th fits, use it
+    }
+    var result = new Date(year, month, d);
+    if (result.getMonth() !== month) return null; // overflowed
+    return result;
+  }
+
+  function expandRecurrences(events) {
+    var today = new Date();
+    var rangeStart = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    var rangeEnd = new Date(today.getFullYear() + 1, today.getMonth() + 1, 0);
+    var out = [];
+
+    for (var i = 0; i < events.length; i++) {
+      var e = events[i];
+      if (!e.recurrence) {
+        out.push(Object.assign({}, e, { id: 'evt-' + i + '-' + e.date, _src: i }));
+        continue;
+      }
+
+      var duration = 0;
+      if (e.endDate) duration = (pd(e.endDate) - pd(e.date)) / 86400000;
+
+      if (e.recurrence === 'weekly') {
+        var wd = e.recurrenceDay != null ? e.recurrenceDay : pd(e.date).getDay();
+        var cur = new Date(rangeStart);
+        cur.setDate(cur.getDate() + ((wd - cur.getDay() + 7) % 7));
+        while (cur <= rangeEnd) {
+          var key = dk(cur);
+          var endKey = duration ? dk(new Date(cur.getTime() + duration * 86400000)) : null;
+          out.push(Object.assign({}, e, { date: key, endDate: endKey, id: 'evt-' + i + '-' + key, _src: i, _recurring: true }));
+          cur.setDate(cur.getDate() + 7);
+        }
+      } else if (e.recurrence === 'monthly') {
+        var mw = e.recurrenceWeek || 1;
+        var md = e.recurrenceDay != null ? e.recurrenceDay : 0;
+        for (var m = new Date(rangeStart); m <= rangeEnd; m.setMonth(m.getMonth() + 1)) {
+          var dt = nthWeekday(m.getFullYear(), m.getMonth(), mw, md);
+          if (dt && dt >= rangeStart && dt <= rangeEnd) {
+            var mk = dk(dt);
+            var mek = duration ? dk(new Date(dt.getTime() + duration * 86400000)) : null;
+            out.push(Object.assign({}, e, { date: mk, endDate: mek, id: 'evt-' + i + '-' + mk, _src: i, _recurring: true }));
+          }
+        }
+      } else if (e.recurrence === 'annual') {
+        for (var y = rangeStart.getFullYear(); y <= rangeEnd.getFullYear(); y++) {
+          var ad;
+          if (e.recurrenceMonth && e.recurrenceDay && !e.recurrenceWeek) {
+            ad = new Date(y, e.recurrenceMonth - 1, e.recurrenceDay);
+          } else if (e.recurrenceMonth && e.recurrenceWeek != null && e.recurrenceDay != null) {
+            ad = nthWeekday(y, e.recurrenceMonth - 1, e.recurrenceWeek, e.recurrenceDay);
+          } else {
+            // No detail fields — only show the original date
+            if (pd(e.date).getFullYear() === y) {
+              out.push(Object.assign({}, e, { id: 'evt-' + i + '-' + e.date, _src: i }));
+            }
+            continue;
+          }
+          if (ad && ad >= rangeStart && ad <= rangeEnd) {
+            var ak = dk(ad);
+            var aek = duration ? dk(new Date(ad.getTime() + duration * 86400000)) : null;
+            out.push(Object.assign({}, e, { date: ak, endDate: aek, id: 'evt-' + i + '-' + ak, _src: i, _recurring: true }));
+          }
+        }
+      }
+    }
+    return out;
+  }
+
+  /* ── Filtering ─────────────────────────────────────────────── */
+  function filterEvents(events) {
+    var today = dk(new Date());
+    return events.filter(function (e) {
+      if (state.filterType && e.type !== state.filterType) return false;
+      if (state.filterRegion && e.region !== state.filterRegion) return false;
+      var end = e.endDate || e.date;
+      if (!state.showPast && end < today) return false;
+      if (state.showPast && end >= today) return false;
       return true;
     });
   }
 
   function eventsForDate(d) {
-    return filteredEvents().filter(function (e) { return eventOnDate(e, d); });
+    return expanded.filter(function (e) { return eventOnDate(e, d); });
   }
 
-  function typeName(t) {
-    return t ? t.charAt(0).toUpperCase() + t.slice(1) : '';
-  }
-
-  function dateRange(evt) {
-    var s = fmtDate(evt.date);
-    if (evt.endDate && evt.endDate !== evt.date) {
-      s += ' — ' + fmtDate(evt.endDate);
+  /* ── URL Hash State ────────────────────────────────────────── */
+  function readHash() {
+    var h = location.hash.slice(1);
+    if (!h) return;
+    var params = {};
+    h.split('&').forEach(function (p) { var kv = p.split('='); if (kv.length === 2) params[kv[0]] = decodeURIComponent(kv[1]); });
+    if (params.view && /^(month|week|day|list)$/.test(params.view)) state.view = params.view;
+    if (params.date) {
+      var parts = params.date.split('-');
+      if (parts.length >= 2) state.date = new Date(+parts[0], +parts[1] - 1, parts[2] ? +parts[2] : 1);
     }
-    return s;
+    if (params.type) state.filterType = params.type;
+    if (params.region) state.filterRegion = params.region;
+    if (params.past === '1') state.showPast = true;
   }
 
-  /* ── Popup ─────────────────────────────────────────────────── */
-  function showPopup(evt) {
-    // Remove any existing popup
-    closePopup();
-
-    var overlay = document.createElement('div');
-    overlay.className = 'cal-popup-overlay';
-    overlay.onclick = function (e) { if (e.target === overlay) closePopup(); };
-
-    var popup = document.createElement('div');
-    popup.className = 'cal-popup';
-    if (evt.type) {
-      popup.style.borderTopColor = getComputedStyle(document.documentElement)
-        .getPropertyValue('--color-' + typeColor(evt.type)).trim() || '';
-    }
-
-    popup.innerHTML =
-      '<button class="cal-popup__close" onclick="document.querySelector(\'.cal-popup-overlay\').remove()" aria-label="Close">&times;</button>' +
-      '<p class="cal-popup__type cal-popup__type--' + (evt.type || '') + '">' + typeName(evt.type) + '</p>' +
-      '<h2 class="cal-popup__name">' + esc(evt.name) + '</h2>' +
-      '<p class="cal-popup__detail"><strong>Date:</strong> ' + dateRange(evt) + '</p>' +
-      '<p class="cal-popup__detail"><strong>Location:</strong> ' + esc(evt.location) + '</p>' +
-      (evt.region ? '<p class="cal-popup__detail"><strong>Region:</strong> ' + esc(evt.region) + '</p>' : '') +
-      '<p class="cal-popup__desc">' + esc(evt.description) + '</p>' +
-      (evt.url && evt.url !== '#' ? '<a class="cal-popup__link" href="' + esc(evt.url) + '" target="_blank" rel="noopener noreferrer">Visit website &rarr;</a>' : '');
-
-    overlay.appendChild(popup);
-    document.body.appendChild(overlay);
-
-    // Close on Escape
-    document.addEventListener('keydown', escHandler);
+  function writeHash(push) {
+    var d = state.date;
+    var dateStr = state.view === 'month' || state.view === 'list'
+      ? d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')
+      : dk(d);
+    var parts = ['view=' + state.view, 'date=' + dateStr];
+    if (state.filterType) parts.push('type=' + encodeURIComponent(state.filterType));
+    if (state.filterRegion) parts.push('region=' + encodeURIComponent(state.filterRegion));
+    if (state.showPast) parts.push('past=1');
+    var hash = '#' + parts.join('&');
+    if (push) history.pushState(null, '', hash);
+    else history.replaceState(null, '', hash);
   }
 
-  function closePopup() {
-    var existing = document.querySelector('.cal-popup-overlay');
-    if (existing) existing.remove();
-    document.removeEventListener('keydown', escHandler);
-  }
-
-  function escHandler(e) {
-    if (e.key === 'Escape') closePopup();
-  }
-
-  function typeColor(type) {
-    var map = {
-      conference: 'opinion',
-      convention: 'accent',
-      meetup: 'science',
-      online: 'arts-culture',
-      observance: 'history'
-    };
-    return map[type] || 'accent';
-  }
-
-  function esc(str) {
-    var div = document.createElement('div');
-    div.textContent = str || '';
-    return div.innerHTML;
-  }
-
-  /* ── Render ────────────────────────────────────────────────── */
+  /* ── Render Dispatcher ─────────────────────────────────────── */
   function render() {
-    var container = document.getElementById('cal-root');
-    if (!container) return;
-
-    var html = renderControls();
-
-    switch (currentView) {
+    var root = document.getElementById('cal-root');
+    if (!root) return;
+    var html = renderToolbar();
+    var view = isMobile() && state.view === 'week' ? 'list' : state.view;
+    switch (view) {
       case 'month': html += renderMonth(); break;
       case 'week':  html += renderWeek(); break;
       case 'day':   html += renderDay(); break;
       case 'list':  html += renderList(); break;
     }
-
     html += renderLegend();
-    container.innerHTML = html;
-    bindControls();
+    root.innerHTML = html;
+    bind();
+    writeHash(false);
   }
 
-  /* ── Controls ──────────────────────────────────────────────── */
-  function renderControls() {
-    var viewBtns = ['month', 'week', 'day', 'list'].map(function (v) {
-      return '<button class="cal-controls__btn' + (currentView === v ? ' cal-controls__btn--active' : '') +
-        '" data-view="' + v + '">' + v.charAt(0).toUpperCase() + v.slice(1) + '</button>';
-    }).join('');
-
+  /* ── Toolbar ───────────────────────────────────────────────── */
+  function renderToolbar() {
     var title = '';
-    if (currentView === 'month') {
-      title = MONTHS[currentDate.getMonth()] + ' ' + currentDate.getFullYear();
-    } else if (currentView === 'week') {
-      var ws = startOfWeek(currentDate);
-      var we = new Date(ws);
-      we.setDate(we.getDate() + 6);
-      title = fmtDateShort(dateKey(ws)) + ' — ' + fmtDateShort(dateKey(we)) + ', ' + we.getFullYear();
-    } else if (currentView === 'day') {
-      title = fmtDate(dateKey(currentDate));
-    } else {
-      title = showPast ? 'Past Events' : 'Upcoming Events';
-    }
+    if (state.view === 'month') title = MONTHS[state.date.getMonth()] + ' ' + state.date.getFullYear();
+    else if (state.view === 'week') {
+      var ws = startOfWeek(state.date), we = new Date(ws); we.setDate(we.getDate() + 6);
+      title = MONTHS[ws.getMonth()] + ' ' + ws.getDate() + ' — ' + we.getDate() + ', ' + we.getFullYear();
+    } else if (state.view === 'day') title = fmtDate(dk(state.date));
+    else title = state.showPast ? 'Past Events' : 'Upcoming Events';
 
-    // Build type options from data
-    var types = [];
-    allEvents.forEach(function (e) {
-      if (e.type && types.indexOf(e.type) === -1) types.push(e.type);
-    });
-    var typeOpts = '<option value="">All Types</option>' + types.map(function (t) {
-      return '<option value="' + t + '"' + (filterType === t ? ' selected' : '') + '>' + typeName(t) + '</option>';
+    var views = ['month', 'week', 'day', 'list'];
+    if (isMobile()) views = ['month', 'day', 'list'];
+    var viewBtns = views.map(function (v) {
+      return '<button class="cal-seg__btn' + (state.view === v ? ' cal-seg__btn--active' : '') + '" data-view="' + v + '">' + typeName(v) + '</button>';
     }).join('');
 
-    // Build region options
-    var regions = [];
-    allEvents.forEach(function (e) {
+    var types = [], regions = [];
+    rawEvents.forEach(function (e) {
+      if (e.type && types.indexOf(e.type) === -1) types.push(e.type);
       if (e.region && regions.indexOf(e.region) === -1) regions.push(e.region);
     });
     regions.sort();
-    var regionOpts = '<option value="">All Regions</option>' + regions.map(function (r) {
-      return '<option value="' + r + '"' + (filterRegion === r ? ' selected' : '') + '>' + r + '</option>';
+
+    var typeOpts = '<option value="">All Types</option>' + types.map(function (t) {
+      return '<option value="' + t + '"' + (state.filterType === t ? ' selected' : '') + '>' + typeName(t) + '</option>';
     }).join('');
 
-    return '<div class="cal-controls">' +
-      '<div class="cal-controls__nav">' +
-        '<button class="cal-controls__btn" data-nav="prev">&laquo; Prev</button>' +
-        '<button class="cal-controls__btn" data-nav="today">Today</button>' +
-        '<button class="cal-controls__btn" data-nav="next">Next &raquo;</button>' +
+    var regionOpts = '<option value="">All Regions</option>' + regions.map(function (r) {
+      return '<option value="' + r + '"' + (state.filterRegion === r ? ' selected' : '') + '>' + r + '</option>';
+    }).join('');
+
+    return '<div class="cal-toolbar">' +
+      '<div class="cal-toolbar__nav">' +
+        '<button class="cal-nav-btn" data-nav="prev" aria-label="Previous">&#8249;</button>' +
+        '<button class="cal-nav-btn" data-nav="today" aria-label="Today">Today</button>' +
+        '<button class="cal-nav-btn" data-nav="next" aria-label="Next">&#8250;</button>' +
       '</div>' +
-      '<div class="cal-controls__title">' + title + '</div>' +
-      '<div class="cal-controls__views">' + viewBtns + '</div>' +
-      '<div class="cal-controls__filters">' +
-        '<select class="cal-controls__select" id="cal-filter-type">' + typeOpts + '</select>' +
-        '<select class="cal-controls__select" id="cal-filter-region">' + regionOpts + '</select>' +
-        '<div class="cal-controls__toggle">' +
-          '<button class="cal-controls__btn' + (!showPast ? ' cal-controls__btn--active' : '') + '" data-time="upcoming">Upcoming</button>' +
-          '<button class="cal-controls__btn' + (showPast ? ' cal-controls__btn--active' : '') + '" data-time="past">Past</button>' +
+      '<div class="cal-toolbar__title">' + title + '</div>' +
+      '<div class="cal-toolbar__right">' +
+        '<div class="cal-seg">' + viewBtns + '</div>' +
+        '<select class="cal-toolbar__select" data-filter="type" aria-label="Filter by type">' + typeOpts + '</select>' +
+        '<select class="cal-toolbar__select" data-filter="region" aria-label="Filter by region">' + regionOpts + '</select>' +
+        '<div class="cal-seg">' +
+          '<button class="cal-seg__btn' + (!state.showPast ? ' cal-seg__btn--active' : '') + '" data-time="upcoming">Upcoming</button>' +
+          '<button class="cal-seg__btn' + (state.showPast ? ' cal-seg__btn--active' : '') + '" data-time="past">Past</button>' +
         '</div>' +
       '</div>' +
     '</div>';
   }
 
-  function bindControls() {
-    var container = document.getElementById('cal-root');
-
-    // View buttons
-    container.querySelectorAll('[data-view]').forEach(function (btn) {
-      btn.onclick = function () {
-        currentView = btn.dataset.view;
-        // On mobile, force list if month/week selected
-        if (window.innerWidth <= 768 && (currentView === 'month' || currentView === 'week')) {
-          currentView = 'list';
-        }
-        render();
-      };
-    });
-
-    // Nav buttons
-    container.querySelectorAll('[data-nav]').forEach(function (btn) {
-      btn.onclick = function () {
-        if (btn.dataset.nav === 'today') {
-          currentDate = new Date();
-        } else if (btn.dataset.nav === 'prev') {
-          navigate(-1);
-        } else {
-          navigate(1);
-        }
-        render();
-      };
-    });
-
-    // Time toggle
-    container.querySelectorAll('[data-time]').forEach(function (btn) {
-      btn.onclick = function () {
-        showPast = btn.dataset.time === 'past';
-        render();
-      };
-    });
-
-    // Filters
-    var typeSelect = document.getElementById('cal-filter-type');
-    if (typeSelect) {
-      typeSelect.onchange = function () {
-        filterType = typeSelect.value;
-        render();
-      };
-    }
-
-    var regionSelect = document.getElementById('cal-filter-region');
-    if (regionSelect) {
-      regionSelect.onchange = function () {
-        filterRegion = regionSelect.value;
-        render();
-      };
-    }
-
-    // Event clicks (list/day view)
-    container.querySelectorAll('[data-evt-idx]').forEach(function (el) {
-      el.onclick = function () {
-        var idx = parseInt(el.dataset.evtIdx, 10);
-        if (allEvents[idx]) showPopup(allEvents[idx]);
-      };
-    });
-
-    // Day cell clicks (month view)
-    container.querySelectorAll('[data-day-key]').forEach(function (el) {
-      el.onclick = function (e) {
-        // If clicking an event label, show popup instead
-        if (e.target.dataset.evtIdx !== undefined) {
-          var idx = parseInt(e.target.dataset.evtIdx, 10);
-          if (allEvents[idx]) showPopup(allEvents[idx]);
-          return;
-        }
-        var parts = el.dataset.dayKey.split('-');
-        currentDate = new Date(+parts[0], +parts[1] - 1, +parts[2]);
-        currentView = 'day';
-        render();
-      };
-    });
-  }
-
-  function navigate(dir) {
-    if (currentView === 'month') {
-      currentDate.setMonth(currentDate.getMonth() + dir);
-    } else if (currentView === 'week') {
-      currentDate.setDate(currentDate.getDate() + dir * 7);
-    } else if (currentView === 'day') {
-      currentDate.setDate(currentDate.getDate() + dir);
-    } else {
-      // List view — navigate months
-      currentDate.setMonth(currentDate.getMonth() + dir);
-    }
-  }
-
   /* ── Month View ────────────────────────────────────────────── */
   function renderMonth() {
-    var year = currentDate.getFullYear();
-    var month = currentDate.getMonth();
-    var firstDay = new Date(year, month, 1).getDay();
-    var daysInMonth = new Date(year, month + 1, 0).getDate();
-    var prevMonthDays = new Date(year, month, 0).getDate();
+    var y = state.date.getFullYear(), m = state.date.getMonth();
+    var firstDay = new Date(y, m, 1).getDay();
+    var daysInMonth = new Date(y, m + 1, 0).getDate();
+    var prevDays = new Date(y, m, 0).getDate();
+    var mobile = isMobile();
+    var headers = mobile ? DAYS_SHORT : DAYS;
 
-    var html = '<div class="cal-month">';
+    var html = '<div class="cal-grid" role="grid" aria-label="' + MONTHS[m] + ' ' + y + '">';
 
     // Headers
-    for (var i = 0; i < 7; i++) {
-      html += '<div class="cal-month__header">' + DAYS[i] + '</div>';
-    }
+    html += '<div role="row" style="display:contents">';
+    for (var h = 0; h < 7; h++) html += '<div class="cal-grid__header" role="columnheader">' + headers[h] + '</div>';
+    html += '</div>';
 
     // Previous month fill
     for (var p = firstDay - 1; p >= 0; p--) {
-      var pDay = prevMonthDays - p;
-      var pDate = new Date(year, month - 1, pDay);
-      html += '<div class="cal-month__day cal-month__day--outside">' +
-        '<span class="cal-month__num">' + pDay + '</span>' +
-        '</div>';
+      html += '<div class="cal-grid__cell cal-grid__cell--outside" role="gridcell"><span class="cal-grid__num">' + (prevDays - p) + '</span></div>';
     }
 
-    // Current month days
+    // Current month
     for (var d = 1; d <= daysInMonth; d++) {
-      var thisDate = new Date(year, month, d);
-      var key = dateKey(thisDate);
-      var todayCls = isToday(thisDate) ? ' cal-month__day--today' : '';
-      var dayEvents = eventsForDate(thisDate);
+      var thisDate = new Date(y, m, d);
+      var key = dk(thisDate);
+      var dayEvts = eventsForDate(thisDate);
+      var todayCls = isToday(thisDate) ? ' cal-grid__num--today' : '';
+      var hasCls = dayEvts.length ? ' cal-grid__cell--has-events' : '';
 
-      html += '<div class="cal-month__day' + todayCls + '" data-day-key="' + key + '">';
-      html += '<span class="cal-month__num">' + d + '</span>';
+      html += '<div class="cal-grid__cell' + hasCls + '" data-date="' + key + '" role="gridcell" tabindex="-1">';
+      html += '<span class="cal-grid__num' + todayCls + '">' + d + '</span>';
 
-      dayEvents.forEach(function (evt) {
-        var idx = allEvents.indexOf(evt);
-        html += '<div class="cal-month__evt-label cal-month__evt-label--' + (evt.type || '') + '" data-evt-idx="' + idx + '" title="' + esc(evt.name) + '">' + esc(evt.name) + '</div>';
-      });
+      if (dayEvts.length) {
+        html += '<div class="cal-dots">';
+        var shown = Math.min(dayEvts.length, MAX_DOTS);
+        for (var di = 0; di < shown; di++) {
+          html += '<span class="cal-dot cal-dot--' + (dayEvts[di].type || '') + '"></span>';
+        }
+        if (dayEvts.length > MAX_DOTS) html += '<span class="cal-dots__more">+' + (dayEvts.length - MAX_DOTS) + '</span>';
+        html += '</div>';
 
+        // Tooltip (desktop only)
+        if (!mobile) {
+          html += '<div class="cal-tip">';
+          dayEvts.forEach(function (evt) {
+            html += '<div class="cal-tip__item cal-tip__item--' + (evt.type || '') + '" data-evt-id="' + evt.id + '">' + esc(evt.name) + '</div>';
+          });
+          html += '</div>';
+        }
+      }
       html += '</div>';
     }
 
     // Next month fill
-    var totalCells = firstDay + daysInMonth;
-    var remaining = (7 - (totalCells % 7)) % 7;
+    var total = firstDay + daysInMonth;
+    var remaining = (7 - total % 7) % 7;
     for (var n = 1; n <= remaining; n++) {
-      html += '<div class="cal-month__day cal-month__day--outside">' +
-        '<span class="cal-month__num">' + n + '</span>' +
-        '</div>';
+      html += '<div class="cal-grid__cell cal-grid__cell--outside" role="gridcell"><span class="cal-grid__num">' + n + '</span></div>';
     }
 
     html += '</div>';
@@ -399,80 +305,56 @@
 
   /* ── Week View ─────────────────────────────────────────────── */
   function renderWeek() {
-    var ws = startOfWeek(currentDate);
+    var ws = startOfWeek(state.date);
     var html = '<div class="cal-week">';
-
     for (var i = 0; i < 7; i++) {
-      var d = new Date(ws);
-      d.setDate(d.getDate() + i);
+      var d = new Date(ws); d.setDate(d.getDate() + i);
       var dayEvts = eventsForDate(d);
-
-      html += '<div class="cal-week__day">';
-      html += '<div class="cal-week__day-header">' + DAYS[i] + '<span>' + d.getDate() + '</span></div>';
-
+      html += '<div class="cal-week__col">';
+      html += '<div class="cal-week__day-hd">' + DAYS[i] + '</div>';
+      html += '<div class="cal-week__day-num">' + d.getDate() + '</div>';
       dayEvts.forEach(function (evt) {
-        var idx = allEvents.indexOf(evt);
-        html += '<div class="cal-week__evt cal-week__evt--' + (evt.type || '') + '" data-evt-idx="' + idx + '">' +
-          esc(evt.name) + '</div>';
+        html += '<div class="cal-week__chip cal-week__chip--' + (evt.type || '') + '" data-evt-id="' + evt.id + '">' + esc(evt.name) + '</div>';
       });
-
       html += '</div>';
     }
-
     html += '</div>';
     return html;
   }
 
   /* ── Day View ──────────────────────────────────────────────── */
   function renderDay() {
-    var dayEvts = eventsForDate(currentDate);
-    var html = '<div class="cal-day">';
-    html += '<div class="cal-day__header">' + fmtDate(dateKey(currentDate)) + '</div>';
-
-    if (dayEvts.length === 0) {
-      html += '<p class="cal-day__empty">No events on this date.</p>';
-    } else {
-      dayEvts.forEach(function (evt) {
-        html += renderEventCard(evt);
-      });
-    }
-
+    var dayEvts = eventsForDate(state.date);
+    var html = '<div class="cal-list">';
+    html += '<div class="cal-day-hd">' + fmtDate(dk(state.date)) + '</div>';
+    if (!dayEvts.length) html += '<p class="cal-empty">No events on this date.</p>';
+    else dayEvts.forEach(function (e) { html += renderCard(e); });
     html += '</div>';
     return html;
   }
 
   /* ── List View ─────────────────────────────────────────────── */
   function renderList() {
-    var events = filteredEvents();
-    events.sort(function (a, b) {
-      if (showPast) return b.date.localeCompare(a.date);
-      return a.date.localeCompare(b.date);
-    });
-
+    var events = filterEvents(expanded);
+    events.sort(function (a, b) { return state.showPast ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date); });
     var html = '<div class="cal-list">';
-
-    if (events.length === 0) {
-      html += '<p class="cal-day__empty">' + (showPast ? 'No past events match your filters.' : 'No upcoming events match your filters.') + '</p>';
-    } else {
-      events.forEach(function (evt) {
-        html += renderEventCard(evt);
-      });
-    }
-
+    if (!events.length) html += '<p class="cal-empty">' + (state.showPast ? 'No past events match your filters.' : 'No upcoming events match your filters.') + '</p>';
+    else events.forEach(function (e) { html += renderCard(e); });
     html += '</div>';
     return html;
   }
 
-  /* ── Event Card (shared) ───────────────────────────────────── */
-  function renderEventCard(evt) {
-    var idx = allEvents.indexOf(evt);
-    return '<div class="cal-event cal-event--' + (evt.type || '') + '" data-evt-idx="' + idx + '">' +
-      '<p class="cal-event__meta">' + dateRange(evt) + ' &middot; ' + esc(evt.location) +
-        '<span class="cal-event__badge cal-event__badge--' + (evt.type || '') + '">' + typeName(evt.type) + '</span>' +
-      '</p>' +
-      '<h3 class="cal-event__name">' + esc(evt.name) + '</h3>' +
-      '<p class="cal-event__desc">' + esc(evt.description) + '</p>' +
-    '</div>';
+  /* ── Event Card ────────────────────────────────────────────── */
+  function renderCard(e) {
+    return '<article class="cal-card cal-card--' + (e.type || '') + '" data-evt-id="' + e.id + '">' +
+      '<div class="cal-card__kicker">' +
+        '<span class="cal-card__type cal-card__type--' + (e.type || '') + '">' + typeName(e.type) + '</span>' +
+        ' &middot; ' + fmtRange(e) +
+      '</div>' +
+      '<h3 class="cal-card__headline">' + esc(e.name) + '</h3>' +
+      '<p class="cal-card__dek">' + esc(e.description) + '</p>' +
+      '<div class="cal-card__meta">' + esc(e.location) + (e.region ? ' &middot; ' + esc(e.region) : '') + '</div>' +
+    '</article>';
   }
 
   /* ── Legend ────────────────────────────────────────────────── */
@@ -484,21 +366,203 @@
       { type: 'online', label: 'Online' },
       { type: 'observance', label: 'Observance' }
     ];
-
     return '<div class="cal-legend">' +
       types.map(function (t) {
-        return '<div class="cal-legend__item">' +
-          '<span class="cal-legend__dot cal-legend__dot--' + t.type + '"></span>' +
-          t.label +
-        '</div>';
+        return '<div class="cal-legend__item"><span class="cal-legend__dot cal-legend__dot--' + t.type + '"></span>' + t.label + '</div>';
       }).join('') +
     '</div>';
   }
 
-  /* ── Start ─────────────────────────────────────────────────── */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+  /* ── Detail Panel ──────────────────────────────────────────── */
+  function findEvent(id) {
+    for (var i = 0; i < expanded.length; i++) { if (expanded[i].id === id) return expanded[i]; }
+    return null;
   }
+
+  function openDetail(id) {
+    var evt = findEvent(id);
+    if (!evt) return;
+    closeDetail();
+
+    var backdrop = document.createElement('div');
+    backdrop.className = 'cal-detail-backdrop cal-detail-backdrop--open';
+    backdrop.onclick = closeDetail;
+
+    var panel = document.createElement('div');
+    panel.className = 'cal-detail';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-label', evt.name);
+
+    panel.innerHTML =
+      '<button class="cal-detail__close" aria-label="Close" onclick="document.querySelector(\'.cal-detail-backdrop\').click()">&#10005;</button>' +
+      '<p class="cal-detail__type cal-detail__type--' + (evt.type || '') + '">' + typeName(evt.type) + '</p>' +
+      '<h2 class="cal-detail__name">' + esc(evt.name) + '</h2>' +
+      '<p class="cal-detail__row"><strong>Date:</strong> ' + fmtRange(evt) + '</p>' +
+      '<p class="cal-detail__row"><strong>Location:</strong> ' + esc(evt.location) + '</p>' +
+      (evt.region ? '<p class="cal-detail__row"><strong>Region:</strong> ' + esc(evt.region) + '</p>' : '') +
+      '<p class="cal-detail__desc">' + esc(evt.description) + '</p>' +
+      (evt.url && evt.url !== '#' ? '<a class="cal-detail__link" href="' + esc(evt.url) + '" target="_blank" rel="noopener noreferrer">Visit website &rarr;</a>' : '') +
+      (evt._recurring ? '<p class="cal-detail__recurrence">This event repeats ' + (evt.recurrence || '') + 'ly.</p>' : '');
+
+    document.body.appendChild(backdrop);
+    document.body.appendChild(panel);
+    document.body.style.overflow = 'hidden';
+
+    // Trigger transition
+    requestAnimationFrame(function () { panel.classList.add('cal-detail--open'); });
+
+    // Escape to close
+    document.addEventListener('keydown', detailEsc);
+  }
+
+  function closeDetail() {
+    var bd = document.querySelector('.cal-detail-backdrop');
+    var p = document.querySelector('.cal-detail');
+    if (bd) bd.remove();
+    if (p) p.remove();
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', detailEsc);
+  }
+
+  function detailEsc(e) { if (e.key === 'Escape') closeDetail(); }
+
+  /* ── Navigation ────────────────────────────────────────────── */
+  function navigate(dir) {
+    if (state.view === 'month') state.date.setMonth(state.date.getMonth() + dir);
+    else if (state.view === 'week') state.date.setDate(state.date.getDate() + dir * 7);
+    else if (state.view === 'day') state.date.setDate(state.date.getDate() + dir);
+    else state.date.setMonth(state.date.getMonth() + dir);
+  }
+
+  /* ── Event Binding (delegation) ────────────────────────────── */
+  function bind() {
+    var root = document.getElementById('cal-root');
+    if (!root) return;
+
+    root.onclick = function (e) {
+      var el = e.target;
+
+      // Event detail trigger
+      var evtEl = el.closest('[data-evt-id]');
+      if (evtEl) { openDetail(evtEl.dataset.evtId); return; }
+
+      // Day cell click (month view) — open day view
+      var cell = el.closest('[data-date]');
+      if (cell && !el.closest('.cal-tip')) {
+        var parts = cell.dataset.date.split('-');
+        state.date = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+        state.view = 'day';
+        writeHash(true);
+        render();
+        return;
+      }
+
+      // Nav buttons
+      var nav = el.closest('[data-nav]');
+      if (nav) {
+        if (nav.dataset.nav === 'today') state.date = new Date();
+        else if (nav.dataset.nav === 'prev') navigate(-1);
+        else navigate(1);
+        render();
+        return;
+      }
+
+      // View buttons
+      var view = el.closest('[data-view]');
+      if (view) {
+        state.view = view.dataset.view;
+        if (isMobile() && state.view === 'week') state.view = 'list';
+        writeHash(true);
+        render();
+        return;
+      }
+
+      // Time toggle
+      var time = el.closest('[data-time]');
+      if (time) {
+        state.showPast = time.dataset.time === 'past';
+        render();
+        return;
+      }
+    };
+
+    // Filter selects
+    root.querySelectorAll('[data-filter]').forEach(function (sel) {
+      sel.onchange = function () {
+        if (sel.dataset.filter === 'type') state.filterType = sel.value;
+        else state.filterRegion = sel.value;
+        render();
+      };
+    });
+
+    // Keyboard navigation
+    root.onkeydown = function (e) {
+      if (state.view !== 'month') return;
+      var key = e.key;
+      var moved = false;
+
+      if (key === 'ArrowLeft') { state.date.setDate(state.date.getDate() - 1); moved = true; }
+      else if (key === 'ArrowRight') { state.date.setDate(state.date.getDate() + 1); moved = true; }
+      else if (key === 'ArrowUp') { state.date.setDate(state.date.getDate() - 7); moved = true; }
+      else if (key === 'ArrowDown') { state.date.setDate(state.date.getDate() + 7); moved = true; }
+      else if (key === 'PageUp') { state.date.setMonth(state.date.getMonth() - 1); moved = true; }
+      else if (key === 'PageDown') { state.date.setMonth(state.date.getMonth() + 1); moved = true; }
+      else if (key === 'Enter' || key === ' ') {
+        var evts = eventsForDate(state.date);
+        if (evts.length === 1) openDetail(evts[0].id);
+        else if (evts.length > 1) { state.view = 'day'; writeHash(true); render(); }
+        e.preventDefault();
+        return;
+      }
+
+      if (moved) {
+        e.preventDefault();
+        render();
+        // Restore focus to the current date cell
+        var cell = document.querySelector('[data-date="' + dk(state.date) + '"]');
+        if (cell) cell.focus();
+      }
+    };
+  }
+
+  /* ── Touch/Swipe ───────────────────────────────────────────── */
+  function initSwipe() {
+    var root = document.getElementById('cal-root');
+    if (!root) return;
+    var startX = 0, startY = 0;
+    root.addEventListener('touchstart', function (e) {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+    root.addEventListener('touchend', function (e) {
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = e.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) > 50 && Math.abs(dy) < 30 && state.view === 'month') {
+        if (dx < 0) navigate(1); else navigate(-1);
+        render();
+      }
+    }, { passive: true });
+  }
+
+  /* ── Popstate ──────────────────────────────────────────────── */
+  window.addEventListener('popstate', function () {
+    readHash();
+    render();
+  });
+
+  /* ── Init ──────────────────────────────────────────────────── */
+  function init() {
+    var dataEl = document.getElementById('cal-data');
+    if (!dataEl) return;
+    try { rawEvents = JSON.parse(dataEl.textContent); } catch (e) { rawEvents = []; }
+
+    expanded = expandRecurrences(rawEvents);
+    readHash();
+    if (isMobile() && state.view === 'week') state.view = 'month';
+    render();
+    initSwipe();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 })();

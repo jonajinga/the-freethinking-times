@@ -5,19 +5,17 @@ description: Freethought conferences, conventions, meetups, and observances — 
 permalink: /events/
 ---
 
-<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+<div class="cal-page container">
 
-  <header style="padding-bottom: var(--space-8); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);">
-    <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-2);">Events</h1>
-    <p style="color: var(--color-ink-muted); font-size: var(--text-md); font-style: italic;">
-      Conferences, conventions, meetups, and observances for freethinkers worldwide.
-    </p>
+  <header class="cal-page__header">
+    <h1 class="cal-page__title">Events</h1>
+    <p class="cal-page__dek">Conferences, conventions, meetups, and observances for freethinkers worldwide.</p>
   </header>
 
   <script type="application/json" id="cal-data">{{ events | dump | safe }}</script>
-  <div id="cal-root"></div>
+  <div id="cal-root" role="application" aria-label="Events calendar" tabindex="-1"></div>
 
-  <p style="font-size: var(--text-sm); color: var(--color-ink-faint); margin-top: var(--space-8);">
+  <p class="cal-page__footer">
     Know of an event? <a href="/events/submit/">Submit it</a>.
   </p>
 
