@@ -706,6 +706,7 @@ a.dateline:hover { color: var(--color-accent); }
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  transition: opacity 0.4s ease;
 }
 
 .quote-bar__link {

@@ -373,12 +373,23 @@
 (function(){
   var quotes={{ quotes | dump | safe }};
   if(!quotes||!quotes.length)return;
-  var day=Math.floor(Date.now()/86400000);
-  var q=quotes[day%quotes.length];
+  var idx=Math.floor(Date.now()/86400000)%quotes.length;
   var t=document.getElementById('quote-bar-text');
   var a=document.getElementById('quote-bar-author');
-  if(t)t.textContent='\u201c'+q.quote+'\u201d';
-  if(a)a.textContent='\u2014 '+q.author;
+  var bar=document.getElementById('quote-bar');
+  if(!t||!a)return;
+  function show(i){
+    idx=((i%quotes.length)+quotes.length)%quotes.length;
+    var q=quotes[idx];
+    bar.style.opacity='0';
+    setTimeout(function(){
+      t.textContent='\u201c'+q.quote+'\u201d';
+      a.textContent='\u2014 '+q.author;
+      bar.style.opacity='1';
+    },400);
+  }
+  show(idx);
+  setInterval(function(){show(idx+1);},10000);
 })();
 </script>
 
