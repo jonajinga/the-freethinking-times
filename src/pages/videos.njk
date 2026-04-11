@@ -7,8 +7,8 @@ permalink: /videos/
 
 <div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
 
-  <header style="padding-bottom: var(--space-8); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);">
-    <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-2);">Video Library</h1>
+  <header style="padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-10);">
+    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Videos</h1>
     <p style="color: var(--color-ink-muted); font-size: var(--text-md); font-style: italic;">
       Curated lectures, debates, and documentaries from the freethought tradition.
     </p>
@@ -47,7 +47,7 @@ permalink: /videos/
   <div id="video-list" data-pagefind-body style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--space-6);">
     {% for v in videos %}
     <div class="video-card" data-speaker="{{ v.speaker }}" data-tags="{{ v.tags | join(',') }}" style="border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);display:flex;flex-direction:column;">
-      <div style="position:relative;padding-bottom:56.25%;background:#000;">
+      <div style="position:relative;padding-bottom:56.25%;background:var(--color-ink);">
         <iframe
           src="{{ v.embed }}"
           title="{{ v.title }}"
