@@ -81,38 +81,88 @@
           </svg>
         </a>
 
-        {# Language #}
-        {% if site.gtranslate %}
-        <div class="masthead__lang-wrap">
+        {# Display settings — global (includes language, theme, font, spacing) #}
+        <div class="masthead__settings-wrap" style="position:relative;">
           <button
             class="masthead__icon-btn js-only"
+            id="global-settings-btn"
             type="button"
-            aria-label="Change language"
-            title="Change language"
-            onclick="var p=this.nextElementSibling;p.hidden=!p.hidden;">
+            aria-label="Display settings"
+            title="Display settings"
+            onclick="var p=document.getElementById('global-settings-panel');p.hidden=!p.hidden;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
+              <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
+              <line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
             </svg>
           </button>
-          <div class="masthead__lang-dropdown" hidden>
-            <div class="gtranslate_wrapper"></div>
+          <div id="global-settings-panel" class="global-settings-panel" hidden>
+            <p style="font-family:var(--font-headline);font-size:var(--text-sm);font-weight:700;color:var(--color-ink);margin:0 0 var(--space-4);">Display Settings</p>
+            <div class="rs-group">
+              <label class="rs-label" for="gs-font-size">Text size</label>
+              <div class="rs-size-row">
+                <span class="rs-size-a rs-small" aria-hidden="true">A</span>
+                <input type="range" class="rs-slider" id="gs-font-size" min="14" max="24" step="1" value="16" aria-label="Font size">
+                <span class="rs-size-a rs-large" aria-hidden="true">A</span>
+              </div>
+            </div>
+            <div class="rs-group">
+              <label class="rs-label" for="gs-font-select">Font</label>
+              <select id="gs-font-select" class="rs-select">
+                <option value="default">Default</option>
+                <option value="sans">Sans-serif</option>
+                <option value="georgia">Georgia</option>
+                <option value="system">System</option>
+                <option value="mono">Monospace</option>
+              </select>
+            </div>
+            <div class="rs-group">
+              <p class="rs-label">Line spacing</p>
+              <div class="rs-btngroup" role="group">
+                <button class="rs-btn" data-gs-spacing="tight" type="button">Tight</button>
+                <button class="rs-btn is-active" data-gs-spacing="normal" type="button">Normal</button>
+                <button class="rs-btn" data-gs-spacing="relaxed" type="button">Relaxed</button>
+              </div>
+            </div>
+            <div class="rs-group">
+              <p class="rs-label">Word spacing</p>
+              <div class="rs-btngroup" role="group">
+                <button class="rs-btn is-active" data-gs-wordspace="normal" type="button">Normal</button>
+                <button class="rs-btn" data-gs-wordspace="wide" type="button">Wide</button>
+                <button class="rs-btn" data-gs-wordspace="wider" type="button">Wider</button>
+              </div>
+            </div>
+            <div class="rs-group">
+              <p class="rs-label">Background</p>
+              <div class="rs-btngroup" role="group">
+                <button class="rs-btn is-active" data-gs-bg="default" type="button">Default</button>
+                <button class="rs-btn" data-gs-bg="sepia" type="button" style="background:#f4ecd8;color:#5b4636;">Sepia</button>
+                <button class="rs-btn" data-gs-bg="cream" type="button" style="background:#fefcf0;color:#333;">Cream</button>
+              </div>
+            </div>
+            {% if site.gtranslate %}
+            <div class="rs-group">
+              <p class="rs-label">Language</p>
+              <div class="gtranslate_wrapper"></div>
+            </div>
+            {% endif %}
+            <div class="rs-group">
+              <p class="rs-label">Theme</p>
+              <div class="rs-btngroup" role="group">
+                <button class="rs-btn" data-gs-theme="light" type="button" onclick="document.documentElement.setAttribute('data-theme','light');localStorage.setItem('tft-theme','light');">Light</button>
+                <button class="rs-btn" data-gs-theme="dark" type="button" onclick="document.documentElement.setAttribute('data-theme','dark');localStorage.setItem('tft-theme','dark');">Dark</button>
+                <button class="rs-btn is-active" data-gs-theme="auto" type="button" onclick="document.documentElement.removeAttribute('data-theme');localStorage.removeItem('tft-theme');">Auto</button>
+              </div>
+            </div>
+            <button type="button" style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);background:none;border:none;cursor:pointer;padding:var(--space-1) 0;" onclick="if(window.__resetGlobalSettings)window.__resetGlobalSettings();">Reset to defaults</button>
           </div>
         </div>
-        {% endif %}
 
-        {# Dark mode — set-and-forget preference #}
-        <button
-          class="masthead__icon-btn js-only"
-          id="theme-toggle"
-          aria-label="Toggle dark mode"
-          type="button"
-          title="Toggle dark mode">
-          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </svg>
+        {# Dark mode toggle (hidden, triggered by display settings panel and drawer) #}
+        <button class="masthead__icon-btn js-only" id="theme-toggle" aria-label="Toggle dark mode" type="button" title="Toggle dark mode" hidden>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
         </button>
 
       </div>
@@ -413,20 +463,14 @@
     <li><a class="nav-drawer__link nav-drawer__link--small" href="/support/">Support</a></li>
   </ul>
 
-  {# ── Language selector (above toolbar, hidden until toggled) ── #}
-  {% if site.gtranslate %}
-  <div class="gtranslate_wrapper nav-drawer__lang" hidden></div>
-  {% endif %}
-
   {# ── Bottom toolbar ── #}
   <div class="nav-drawer__toolbar">
     <a href="/notes/" title="Notes"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></a>
     <a href="/reading-list/" title="Reading list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></a>
     <a href="/random/" title="Surprise me"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg></a>
-    <button type="button" title="Dark mode" class="js-only" onclick="var t=document.getElementById('theme-toggle');if(t)t.click();"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
-    {% if site.gtranslate %}
-    <button type="button" title="Language" class="js-only" onclick="var w=document.querySelector('.nav-drawer .nav-drawer__lang');if(w){w.hidden=!w.hidden;}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></button>
-    {% endif %}
+    <button type="button" title="Display settings" class="js-only" onclick="var p=document.getElementById('global-settings-panel');if(p)p.hidden=!p.hidden;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+    </button>
   </div>
 
 </nav>

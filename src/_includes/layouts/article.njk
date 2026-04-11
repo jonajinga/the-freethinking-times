@@ -260,11 +260,67 @@ layout: layouts/base.njk
                 </div>
               </div>
               <div class="rs-group">
-                <p class="rs-label" id="rs-font-label">Font</p>
-                <div class="rs-btngroup" role="group" aria-labelledby="rs-font-label">
-                  <button class="rs-btn is-active" data-rs-font="serif" type="button">Serif</button>
-                  <button class="rs-btn" data-rs-font="sans" type="button">Sans</button>
-                  <button class="rs-btn" data-rs-font="dyslexic" type="button">OpenDyslexic</button>
+                <label class="rs-label" for="rs-font-select">Font</label>
+                <select id="rs-font-select" class="rs-select">
+                  <option value="serif">Serif (Source Serif)</option>
+                  <option value="sans">Sans-serif (DM Sans)</option>
+                  <option value="georgia">Georgia</option>
+                  <option value="system">System default</option>
+                  <option value="mono">Monospace</option>
+                </select>
+              </div>
+              <div class="rs-group">
+                <p class="rs-label" id="rs-spacing-label">Line spacing</p>
+                <div class="rs-btngroup" role="group" aria-labelledby="rs-spacing-label">
+                  <button class="rs-btn" data-rs-spacing="tight" type="button">Tight</button>
+                  <button class="rs-btn is-active" data-rs-spacing="normal" type="button">Normal</button>
+                  <button class="rs-btn" data-rs-spacing="relaxed" type="button">Relaxed</button>
+                  <button class="rs-btn" data-rs-spacing="loose" type="button">Loose</button>
+                </div>
+              </div>
+              <div class="rs-group">
+                <p class="rs-label" id="rs-width-label">Text width</p>
+                <div class="rs-btngroup" role="group" aria-labelledby="rs-width-label">
+                  <button class="rs-btn" data-rs-width="narrow" type="button">Narrow</button>
+                  <button class="rs-btn is-active" data-rs-width="normal" type="button">Normal</button>
+                  <button class="rs-btn" data-rs-width="wide" type="button">Wide</button>
+                </div>
+              </div>
+              <div class="rs-group">
+                <p class="rs-label" id="rs-word-spacing-label">Word spacing</p>
+                <div class="rs-btngroup" role="group" aria-labelledby="rs-word-spacing-label">
+                  <button class="rs-btn is-active" data-rs-wordspace="normal" type="button">Normal</button>
+                  <button class="rs-btn" data-rs-wordspace="wide" type="button">Wide</button>
+                  <button class="rs-btn" data-rs-wordspace="wider" type="button">Wider</button>
+                </div>
+              </div>
+              <div class="rs-group">
+                <p class="rs-label" id="rs-bg-label">Background</p>
+                <div class="rs-btngroup" role="group" aria-labelledby="rs-bg-label">
+                  <button class="rs-btn is-active" data-rs-bg="default" type="button">Default</button>
+                  <button class="rs-btn" data-rs-bg="sepia" type="button" style="background:#f4ecd8;color:#5b4636;">Sepia</button>
+                  <button class="rs-btn" data-rs-bg="cream" type="button" style="background:#fefcf0;color:#333;">Cream</button>
+                  <button class="rs-btn" data-rs-bg="dark" type="button" style="background:#1a1a1a;color:#e0e0e0;">Dark</button>
+                </div>
+              </div>
+              <div class="rs-group rs-toggles">
+                <label class="rs-toggle">
+                  <input type="checkbox" id="rs-ruler" class="rs-toggle__input">
+                  <span class="rs-toggle__label">Reading ruler</span>
+                </label>
+                <label class="rs-toggle">
+                  <input type="checkbox" id="rs-para-nums" class="rs-toggle__input">
+                  <span class="rs-toggle__label">Paragraph numbers</span>
+                </label>
+              </div>
+              <div class="rs-group" id="rs-autoscroll-group">
+                <label class="rs-toggle">
+                  <input type="checkbox" id="rs-autoscroll" class="rs-toggle__input">
+                  <span class="rs-toggle__label">Auto-scroll</span>
+                </label>
+                <div id="rs-autoscroll-speed" hidden style="margin-top:var(--space-2);">
+                  <input type="range" class="rs-slider" id="rs-scroll-speed" min="1" max="10" step="1" value="3" aria-label="Scroll speed">
+                  <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--color-ink-faint);"><span>Slow</span><span>Fast</span></div>
                 </div>
               </div>
             </div>
