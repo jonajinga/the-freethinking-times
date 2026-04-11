@@ -24,7 +24,11 @@ layout: base
 
       <header class="glossary-header">
         <span class="section-badge section-badge--glossary">Glossary</span>
-        <h1>{{ title }}</h1>
+        <h1>{{ title }}
+          <button class="glossary-pronounce js-only" type="button" aria-label="Hear pronunciation of {{ title }}" title="Hear pronunciation" onclick="if('speechSynthesis' in window){var u=new SpeechSynthesisUtterance('{{ title }}');u.rate=0.85;speechSynthesis.speak(u);}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          </button>
+        </h1>
         {% if etymology %}
         <p class="glossary-etymology">{{ etymology }}</p>
         {% endif %}

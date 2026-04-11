@@ -178,7 +178,7 @@
     var html = renderToolbar();
     var view = isMobile() && state.view === 'week' ? 'list' : state.view;
 
-    var hasSidebar = (view === 'day' || view === 'list') && !isMobile();
+    var hasSidebar = !isMobile();
     if (hasSidebar) html += '<div class="cal-layout">';
 
     switch (view) {

@@ -347,6 +347,7 @@
 
 /* ── Day & List Views ──────────────────────────────────────── */
 .cal-list { max-width: var(--max-width-prose); }
+.cal-layout .cal-list { max-width: none; }
 
 .cal-day-hd {
   font-family: var(--font-headline);
@@ -438,8 +439,8 @@
 /* ── Sidebar Layout ────────────────────────────────────────── */
 .cal-layout {
   display: grid;
-  grid-template-columns: 1fr 260px;
-  gap: var(--space-8);
+  grid-template-columns: minmax(0, 1fr) 240px;
+  gap: var(--space-6);
   align-items: start;
 }
 

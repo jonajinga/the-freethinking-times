@@ -173,4 +173,59 @@
     return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
 
+  // ── Voice Search (Web Speech API) ──────────────────────────────
+  const voiceBtn = document.getElementById('voice-search-btn');
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (voiceBtn && SpeechRecognition) {
+    voiceBtn.hidden = false;
+    let listening = false;
+    let recognition = null;
+
+    voiceBtn.addEventListener('click', function () {
+      if (listening) {
+        recognition.stop();
+        return;
+      }
+
+      recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
+
+      recognition.onstart = function () {
+        listening = true;
+        voiceBtn.classList.add('is-listening');
+        voiceBtn.setAttribute('aria-label', 'Stop voice search');
+        input.placeholder = 'Listening…';
+      };
+
+      recognition.onresult = function (event) {
+        const transcript = event.results[0][0].transcript;
+        input.value = transcript;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      };
+
+      recognition.onend = function () {
+        listening = false;
+        voiceBtn.classList.remove('is-listening');
+        voiceBtn.setAttribute('aria-label', 'Search by voice');
+        input.placeholder = 'Search articles, topics, authors…';
+      };
+
+      recognition.onerror = function (e) {
+        listening = false;
+        voiceBtn.classList.remove('is-listening');
+        input.placeholder = 'Search articles, topics, authors…';
+        if (e.error === 'not-allowed') {
+          voiceBtn.hidden = true;
+        }
+      };
+
+      // Open search if not already open
+      if (!modal.classList.contains('is-open')) openSearch();
+      recognition.start();
+    });
+  }
+
 })();

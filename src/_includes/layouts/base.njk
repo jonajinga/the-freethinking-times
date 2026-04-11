@@ -122,9 +122,10 @@
   <script src="/assets/js/subscribe.js" defer></script>
   {% block scripts %}{% endblock %}
 
-  {# ── hCaptcha for Web3Forms (only loads on pages with forms) ── #}
+  {# ── hCaptcha + dictation for Web3Forms pages ── #}
   {% if site.forms and site.forms.accessKey %}
   <script src="https://web3forms.com/client/script.js" async defer></script>
+  <script src="/assets/js/dictation.js" defer></script>
   <script>
   document.addEventListener('DOMContentLoaded',function(){
     document.querySelectorAll('.w3f').forEach(function(f){
