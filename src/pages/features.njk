@@ -22,7 +22,8 @@ permalink: /features/
         <li><strong>Dark / light mode</strong> — toggle in the masthead; respects system preference on first visit; preference saved to <code>localStorage</code></li>
         <li><strong>Reading progress bar</strong> — fixed at the top of article and library pages; stops at the end of the body text</li>
         <li><strong>Focus mode</strong> — hides the site masthead for distraction-free reading; persisted in <code>localStorage</code>; available on articles and library texts</li>
-        <li><strong>Reading settings</strong> — font size slider (14–24 px) and typeface choice (Serif / Sans / OpenDyslexic); preferences saved to <code>localStorage</code></li>
+        <li><strong>Global display settings</strong> — masthead panel with 27 font choices (system serif, sans, mono, plus Bunny web fonts loaded on demand), font size, line spacing, word spacing, and unified theme selector (Auto / Light / Sepia / Cream / Dark); preferences saved to <code>localStorage</code></li>
+        <li><strong>Article reading settings</strong> — per-article panel with 27 fonts, line spacing (tight/normal/relaxed/loose), text width (narrow/normal/wide), word spacing, background presets, reading ruler (constrained to article width), paragraph numbers, auto-scroll with speed control, and reset to defaults</li>
         <li><strong>Read aloud</strong> — Web Speech API text-to-speech with play/pause/stop, speed presets (0.75×–2×), and voice selector</li>
         <li><strong>Table of contents</strong> — auto-generated from h2/h3 headings on article pages with scroll-spy highlighting; floating within-chapter TOC on library pages (≥1200 px screens)</li>
         <li><strong>Heading anchor links</strong> — link icon appears on hover for every h2/h3 for deep-linking to any section</li>
@@ -56,6 +57,7 @@ permalink: /features/
         <li><strong>Library homepage</strong> at <a href="/library/">/library/</a> — featured works grid and full catalogue with subject and era filters</li>
         <li><strong>Work landing pages</strong> — introduction, chapter list, reading progress indicators, and Continue Reading detection</li>
         <li><strong>Chapter reader</strong> — all eight article reader tools available on library reading pages; word count, reading time, back-to-top, and reading percentage also included</li>
+        <li><strong>Library reading settings</strong> — identical to article settings: 27 fonts, line spacing, text width, word spacing, background presets, reading ruler, paragraph numbers, auto-scroll</li>
         <li><strong>Reading panel</strong> — slide-out panel with Contents (chapter list), Bookmarks, and Notes tabs</li>
         <li><strong>Annotation toolbar</strong> — highlight and annotate selected text; highlights and notes persist in <code>localStorage</code></li>
         <li><strong>Reading position</strong> — scroll position saved per chapter to <code>localStorage</code>; restored on return (30-day expiry)</li>
@@ -130,11 +132,10 @@ permalink: /features/
 
       <h2>Translation & accessibility</h2>
       <ul>
-        <li><strong>GTranslate widget</strong> — nine languages (English, French, Italian, Spanish, German, Portuguese, Arabic, Chinese, Japanese); floating selector</li>
+        <li><strong>GTranslate widget</strong> — nine languages (English, French, Italian, Spanish, German, Portuguese, Arabic, Chinese, Japanese); accessible from the global display settings panel</li>
         <li><strong>Voice search</strong> — microphone button in the search modal; speak to search with real-time transcription (Chrome, Edge, Safari)</li>
         <li><strong>Form dictation</strong> — "Dictate" button on tip line, letter, and feedback form textareas; speak to type with continuous recognition</li>
         <li><strong>Skip-to-main link</strong> — first element in the page for keyboard and screen reader navigation</li>
-        <li><strong>OpenDyslexic font</strong> — available via the reading settings panel; loaded on demand</li>
         <li><strong>ARIA labels</strong> on all icon-only buttons; <code>aria-expanded</code> on all interactive toggles; ARIA grid semantics on calendar</li>
         <li><strong>Keyboard navigation</strong> — arrow keys navigate the events calendar grid; Enter to view events; Escape closes panels</li>
       </ul>
@@ -179,6 +180,8 @@ permalink: /features/
       <h2>Quotes, media & resources</h2>
       <ul>
         <li><strong>Quotes</strong> at <a href="/quotes/">/quotes/</a> — curated freethought quotes filterable by author, topic, and era, with save/share/copy</li>
+        <li><strong>Daily quote bar</strong> — rotating quote in the masthead header, cycling every 10 seconds with fade transitions</li>
+        <li><strong>Quotes Showcase</strong> at <a href="/quotes/showcase/">/quotes/showcase/</a> — full-screen screensaver-style display cycling through all quotes with crossfade transitions, auto-advance, shuffle, keyboard navigation, and pause/play</li>
         <li><strong>Video Library</strong> at <a href="/videos/">/videos/</a> — curated lectures, debates, and documentaries with speaker and topic filters</li>
         <li><strong>Freethought Timeline</strong> at <a href="/timeline/">/timeline/</a> — 2,400 years of freethought history from Socrates to the New Atheism</li>
         <li><strong>Resources hub</strong> at <a href="/resources/">/resources/</a> — hub page linking to 5 sub-pages: education, legal rights, personal support, media & tools, and on-this-site guide</li>
@@ -202,7 +205,7 @@ permalink: /features/
         <li><strong>Editorial Dashboard</strong> at <a href="/dashboard/">/dashboard/</a> — content counts and status overview</li>
       </ul>
 
-      <p><em>Last updated: 13 April 2026</em></p>
+      <p><em>Last updated: 11 April 2026</em></p>
 
     </div>
   </div>

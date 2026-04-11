@@ -97,96 +97,98 @@
               <line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
             </svg>
           </button>
-          <div id="global-settings-panel" class="global-settings-panel" hidden>
-            <p style="font-family:var(--font-headline);font-size:var(--text-sm);font-weight:700;color:var(--color-ink);margin:0 0 var(--space-4);">Display Settings</p>
-            <div class="rs-group">
-              <label class="rs-label" for="gs-font-size">Text size</label>
-              <div class="rs-size-row">
-                <span class="rs-size-a rs-small" aria-hidden="true">A</span>
-                <input type="range" class="rs-slider" id="gs-font-size" min="14" max="24" step="1" value="16" aria-label="Font size">
-                <span class="rs-size-a rs-large" aria-hidden="true">A</span>
-              </div>
-            </div>
-            <div class="rs-group">
-              <label class="rs-label" for="gs-font-select">Font</label>
-              <select id="gs-font-select" class="rs-select">
-                <optgroup label="Site fonts">
-                  <option value="default">Source Serif (default)</option>
-                  <option value="sans">DM Sans</option>
-                  <option value="lora">Lora</option>
-                  <option value="playfair">Playfair Display</option>
-                </optgroup>
-                <optgroup label="Serif">
-                  <option value="georgia">Georgia</option>
-                  <option value="palatino">Palatino</option>
-                  <option value="times">Times New Roman</option>
-                  <option value="garamond">Garamond</option>
-                  <option value="bookman">Bookman Old Style</option>
-                </optgroup>
-                <optgroup label="Sans-serif">
-                  <option value="system">System default</option>
-                  <option value="arial">Arial / Helvetica</option>
-                  <option value="verdana">Verdana</option>
-                  <option value="trebuchet">Trebuchet MS</option>
-                  <option value="tahoma">Tahoma</option>
-                  <option value="century">Century Gothic</option>
-                </optgroup>
-                <optgroup label="Monospace">
-                  <option value="mono">SF Mono / Consolas</option>
-                  <option value="courier">Courier New</option>
-                  <option value="lucida">Lucida Console</option>
-                </optgroup>
-                <optgroup label="Web fonts (loaded on demand)">
-                  <option value="inter">Inter</option>
-                  <option value="merriweather">Merriweather</option>
-                  <option value="roboto">Roboto</option>
-                  <option value="opensans">Open Sans</option>
-                  <option value="baskerville">Libre Baskerville</option>
-                  <option value="crimson">Crimson Pro</option>
-                  <option value="ibmplex">IBM Plex Serif</option>
-                  <option value="literata">Literata</option>
-                  <option value="atkinson">Atkinson Hyperlegible</option>
-                </optgroup>
-              </select>
-            </div>
-            <div class="rs-group">
-              <p class="rs-label">Line spacing</p>
-              <div class="rs-btngroup" role="group">
-                <button class="rs-btn" data-gs-spacing="tight" type="button">Tight</button>
-                <button class="rs-btn is-active" data-gs-spacing="normal" type="button">Normal</button>
-                <button class="rs-btn" data-gs-spacing="relaxed" type="button">Relaxed</button>
-              </div>
-            </div>
-            <div class="rs-group">
-              <p class="rs-label">Word spacing</p>
-              <div class="rs-btngroup" role="group">
-                <button class="rs-btn is-active" data-gs-wordspace="normal" type="button">Normal</button>
-                <button class="rs-btn" data-gs-wordspace="wide" type="button">Wide</button>
-                <button class="rs-btn" data-gs-wordspace="wider" type="button">Wider</button>
-              </div>
-            </div>
-            <div class="rs-group">
-              <p class="rs-label">Theme</p>
-              <div class="rs-btngroup" role="group" id="gs-theme-group">
-                <button class="rs-btn is-active" data-gs-theme="auto" type="button">Auto</button>
-                <button class="rs-btn" data-gs-theme="light" type="button">Light</button>
-                <button class="rs-btn" data-gs-theme="sepia" type="button">Sepia</button>
-                <button class="rs-btn" data-gs-theme="cream" type="button">Cream</button>
-                <button class="rs-btn" data-gs-theme="dark" type="button">Dark</button>
-              </div>
-            </div>
-            {% if site.gtranslate %}
-            <div class="rs-group">
-              <p class="rs-label">Language</p>
-              <div class="gtranslate_wrapper"></div>
-            </div>
-            {% endif %}
-            <button type="button" style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);background:none;border:none;cursor:pointer;padding:var(--space-1) 0;" onclick="if(window.__resetGlobalSettings)window.__resetGlobalSettings();">Reset to defaults</button>
-          </div>
         </div>
 
 
       </div>
+    </div>
+
+    {# Global settings panel — outside masthead__actions so it's accessible on mobile via drawer button #}
+    <div id="global-settings-panel" class="global-settings-panel" hidden>
+      <p style="font-family:var(--font-headline);font-size:var(--text-sm);font-weight:700;color:var(--color-ink);margin:0 0 var(--space-4);">Display Settings</p>
+      <div class="rs-group">
+        <label class="rs-label" for="gs-font-size">Text size</label>
+        <div class="rs-size-row">
+          <span class="rs-size-a rs-small" aria-hidden="true">A</span>
+          <input type="range" class="rs-slider" id="gs-font-size" min="14" max="24" step="1" value="16" aria-label="Font size">
+          <span class="rs-size-a rs-large" aria-hidden="true">A</span>
+        </div>
+      </div>
+      <div class="rs-group">
+        <label class="rs-label" for="gs-font-select">Font</label>
+        <select id="gs-font-select" class="rs-select">
+          <optgroup label="Site fonts">
+            <option value="default">Source Serif (default)</option>
+            <option value="sans">DM Sans</option>
+            <option value="lora">Lora</option>
+            <option value="playfair">Playfair Display</option>
+          </optgroup>
+          <optgroup label="Serif">
+            <option value="georgia">Georgia</option>
+            <option value="palatino">Palatino</option>
+            <option value="times">Times New Roman</option>
+            <option value="garamond">Garamond</option>
+            <option value="bookman">Bookman Old Style</option>
+          </optgroup>
+          <optgroup label="Sans-serif">
+            <option value="system">System default</option>
+            <option value="arial">Arial / Helvetica</option>
+            <option value="verdana">Verdana</option>
+            <option value="trebuchet">Trebuchet MS</option>
+            <option value="tahoma">Tahoma</option>
+            <option value="century">Century Gothic</option>
+          </optgroup>
+          <optgroup label="Monospace">
+            <option value="mono">SF Mono / Consolas</option>
+            <option value="courier">Courier New</option>
+            <option value="lucida">Lucida Console</option>
+          </optgroup>
+          <optgroup label="Web fonts (loaded on demand)">
+            <option value="inter">Inter</option>
+            <option value="merriweather">Merriweather</option>
+            <option value="roboto">Roboto</option>
+            <option value="opensans">Open Sans</option>
+            <option value="baskerville">Libre Baskerville</option>
+            <option value="crimson">Crimson Pro</option>
+            <option value="ibmplex">IBM Plex Serif</option>
+            <option value="literata">Literata</option>
+            <option value="atkinson">Atkinson Hyperlegible</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="rs-group">
+        <p class="rs-label">Line spacing</p>
+        <div class="rs-btngroup" role="group">
+          <button class="rs-btn" data-gs-spacing="tight" type="button">Tight</button>
+          <button class="rs-btn is-active" data-gs-spacing="normal" type="button">Normal</button>
+          <button class="rs-btn" data-gs-spacing="relaxed" type="button">Relaxed</button>
+        </div>
+      </div>
+      <div class="rs-group">
+        <p class="rs-label">Word spacing</p>
+        <div class="rs-btngroup" role="group">
+          <button class="rs-btn is-active" data-gs-wordspace="normal" type="button">Normal</button>
+          <button class="rs-btn" data-gs-wordspace="wide" type="button">Wide</button>
+          <button class="rs-btn" data-gs-wordspace="wider" type="button">Wider</button>
+        </div>
+      </div>
+      <div class="rs-group">
+        <p class="rs-label">Theme</p>
+        <div class="rs-btngroup" role="group" id="gs-theme-group">
+          <button class="rs-btn is-active" data-gs-theme="auto" type="button">Auto</button>
+          <button class="rs-btn" data-gs-theme="light" type="button">Light</button>
+          <button class="rs-btn" data-gs-theme="sepia" type="button">Sepia</button>
+          <button class="rs-btn" data-gs-theme="cream" type="button">Cream</button>
+          <button class="rs-btn" data-gs-theme="dark" type="button">Dark</button>
+        </div>
+      </div>
+      {% if site.gtranslate %}
+      <div class="rs-group">
+        <p class="rs-label">Language</p>
+        <div class="gtranslate_wrapper"></div>
+      </div>
+      {% endif %}
+      <button type="button" style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);background:none;border:none;cursor:pointer;padding:var(--space-1) 0;" onclick="if(window.__resetGlobalSettings)window.__resetGlobalSettings();">Reset to defaults</button>
     </div>
 
     {# ── Section Nav ── #}
@@ -373,7 +375,9 @@
 (function(){
   var quotes={{ quotes | dump | safe }};
   if(!quotes||!quotes.length)return;
-  var idx=Math.floor(Date.now()/86400000)%quotes.length;
+  // Shuffle quotes randomly on every page load
+  for(var i=quotes.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=quotes[i];quotes[i]=quotes[j];quotes[j]=tmp;}
+  var idx=0;
   var t=document.getElementById('quote-bar-text');
   var a=document.getElementById('quote-bar-author');
   var bar=document.getElementById('quote-bar');
@@ -388,7 +392,7 @@
       bar.style.opacity='1';
     },400);
   }
-  show(idx);
+  show(0);
   setInterval(function(){show(idx+1);},10000);
 })();
 </script>
