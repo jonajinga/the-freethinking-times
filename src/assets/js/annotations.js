@@ -146,11 +146,23 @@
         var item = document.createElement('div');
         item.className = 'library-annotation-item';
         item.innerHTML =
-          '<p class="library-annotation-item__quote">&ldquo;' + escHtml(ann.quote) + '&rdquo;</p>' +
+          '<p class="library-annotation-item__quote" style="cursor:pointer;" title="Click to scroll to highlight">&ldquo;' + escHtml(ann.quote) + '&rdquo;</p>' +
           (ann.note ? '<p class="library-annotation-item__note">' + escHtml(ann.note) + '</p>' : '') +
           '<div class="library-annotation-item__actions">' +
             '<button class="library-annotation-item__action" data-ann-delete="' + escHtml(ann.id) + '">Delete</button>' +
           '</div>';
+        // Click quote text to scroll to highlight in article
+        item.querySelector('.library-annotation-item__quote').addEventListener('click', function () {
+          var mark = document.querySelector('.library-highlight[data-ann-id="' + ann.id + '"]');
+          if (mark) {
+            var top = mark.getBoundingClientRect().top + window.scrollY - 100;
+            window.scrollTo({ top: top, behavior: 'smooth' });
+            mark.style.transition = 'background 0.3s';
+            mark.style.background = 'var(--color-accent)';
+            mark.style.color = '#fff';
+            setTimeout(function () { mark.style.background = ''; mark.style.color = ''; }, 1500);
+          }
+        });
         item.querySelector('[data-ann-delete]').addEventListener('click', function () {
           remove(ann.id);
           render(containerEl);
