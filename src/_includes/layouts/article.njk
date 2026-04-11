@@ -424,15 +424,6 @@ layout: layouts/base.njk
       <footer class="article-footer">
 
 
-        {# Author bio #}
-        {% if author and authors[author] %}
-        {% set authorData = authors[author] %}
-        <div class="author-bio">
-          <p class="author-bio__name">{{ authorData.name }}</p>
-          <p class="author-bio__text">{{ authorData.bio }}</p>
-        </div>
-        {% endif %}
-
         {# Corrections log #}
         {% if corrections and corrections.length %}
         <div class="corrections-log">
