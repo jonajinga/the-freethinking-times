@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ site.language }}" data-theme="light">
+<html lang="{{ site.language }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,6 +54,9 @@
 
   {# ── Styles ── #}
   <link rel="stylesheet" href="/assets/css/main.css">
+
+  {# ── Theme (must be in head to prevent flash) ── #}
+  <script src="/assets/js/theme.js"></script>
 
   {# ── BreadcrumbList structured data ── #}
   {% if page.url != "/" %}
@@ -115,7 +118,6 @@
   </div>{# /.site-wrapper #}
 
   {# ── Scripts ── #}
-  <script src="/assets/js/theme.js"></script>
   <script src="/assets/js/drawer.js" defer></script>
   <script src="/assets/js/smart-header.js" defer></script>
   <script src="/assets/js/search.js" defer></script>

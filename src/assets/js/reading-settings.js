@@ -227,6 +227,30 @@
     }
   });
 
+  // ─── Reset ────────────────────────────────────────────────
+  window.__resetReadingSettings = function () {
+    Object.keys(K).forEach(function (k) { try { localStorage.removeItem(K[k]); } catch (e) {} });
+    prefs.fontSize = 18; prefs.font = 'serif'; prefs.spacing = 'normal';
+    prefs.width = 'normal'; prefs.wordspace = 'normal'; prefs.bg = 'default';
+    prefs.ruler = false; prefs.paraNums = false; prefs.autoscroll = false; prefs.scrollSpeed = 3;
+    body.style.fontSize = ''; body.style.lineHeight = ''; body.style.wordSpacing = '';
+    body.removeAttribute('data-rs-font'); body.removeAttribute('data-rs-width');
+    body.classList.remove('rs-para-numbers');
+    applyRuler(false);
+    applyAutoscroll(false);
+    var s = document.getElementById('rs-font-size'); if (s) s.value = 18;
+    var f = document.getElementById('rs-font-select'); if (f) f.value = 'serif';
+    var sc = document.getElementById('rs-scroll-speed'); if (sc) sc.value = 3;
+    // Reset all button group active states
+    panel.querySelectorAll('.rs-btn').forEach(function (b) {
+      var keys = Object.keys(b.dataset);
+      var isDefault = keys.some(function (k) {
+        return b.dataset[k] === 'normal' || b.dataset[k] === 'default' || b.dataset[k] === 'serif';
+      });
+      b.classList.toggle('is-active', isDefault);
+    });
+  };
+
   // ─── Panel toggle ─────────────────────────────────────────
   btn.addEventListener('click', function () {
     var open = this.getAttribute('aria-expanded') === 'true';

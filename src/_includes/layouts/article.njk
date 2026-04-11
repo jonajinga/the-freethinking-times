@@ -323,6 +323,7 @@ layout: layouts/base.njk
                   <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--color-ink-faint);"><span>Slow</span><span>Fast</span></div>
                 </div>
               </div>
+              <button type="button" style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);background:none;border:none;cursor:pointer;padding:var(--space-1) 0;" onclick="if(window.__resetReadingSettings)window.__resetReadingSettings();">Reset to defaults</button>
             </div>
           </div>
 
@@ -680,7 +681,7 @@ layout: layouts/base.njk
     <button class="library-panel__tab"
             role="tab"
             aria-selected="true"
-            data-target="article-panel-contents">Contents</button>
+            data-target="article-panel-contents">TOC</button>
     <button class="library-panel__tab"
             role="tab"
             aria-selected="false"
@@ -692,7 +693,7 @@ layout: layouts/base.njk
     <button class="library-panel__tab"
             role="tab"
             aria-selected="false"
-            data-target="article-panel-bookmarks">Bookmarks</button>
+            data-target="article-panel-bookmarks">Marks</button>
     <button class="library-panel__tab"
             role="tab"
             aria-selected="false"
