@@ -28,6 +28,10 @@ permalink: /timeline/
   </div>
 
   <div id="timeline-list" data-pagefind-body style="max-width: var(--max-width-prose); position: relative; padding-left: var(--space-8);">
+    <div aria-hidden="true" style="display:none">
+      <span data-pagefind-meta="section">Timeline</span>
+      <span data-pagefind-filter="section">Timeline</span>
+    </div>
     <div style="position: absolute; left: 14px; top: 0; bottom: 0; width: 2px; background: var(--color-rule);"></div>
 
     {% for event in timeline | sort(false, false, 'year') %}

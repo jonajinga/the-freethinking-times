@@ -99,11 +99,14 @@
     try {
       const opts = {};
       if (activeSection) opts.filters = { section: activeSection };
-      const search = await pagefind.search(query.trim() || '', opts);
+      const search = await pagefind.search(query.trim() || null, opts);
       const data   = await Promise.all(search.results.slice(0, 8).map(r => r.data()));
 
       if (data.length === 0) {
-        results.innerHTML = `<p class="search-notice">No results for <strong>${escapeHtml(query)}</strong>.</p>`;
+        const msg = query.trim()
+          ? `No results for <strong>${escapeHtml(query)}</strong>.`
+          : `No results in <strong>${escapeHtml(activeSection)}</strong>.`;
+        results.innerHTML = `<p class="search-notice">${msg}</p>`;
         return;
       }
 
