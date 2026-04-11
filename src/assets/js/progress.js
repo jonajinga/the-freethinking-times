@@ -627,7 +627,7 @@
       var fnHeader = document.createElement('div');
       fnHeader.className = 'article-footnotes__header';
       fnHeader.innerHTML = '<span class="article-footnotes__title">Footnotes</span>' +
-        '<button class="article-footnotes__toggle" type="button" id="fn-toggle">Hide</button>';
+        '<button class="article-footnotes__toggle" type="button" id="fn-toggle">Hide footnotes</button>';
       articleFnEl.appendChild(fnHeader);
 
       var fnBody = document.createElement('div');
@@ -639,7 +639,7 @@
         var body = document.getElementById('fn-body');
         var hidden = body.hidden;
         body.hidden = !hidden;
-        this.textContent = hidden ? 'Hide' : 'Show';
+        this.textContent = hidden ? 'Hide footnotes' : 'Show footnotes';
       });
     }
 
