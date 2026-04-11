@@ -1127,8 +1127,8 @@
   padding: var(--space-4);
 }
 
-.comments-section iframe {
-  max-height: 300px;
+#cusdis_thread iframe {
+  height: 350px !important;
 }
 
 [data-theme="dark"] .comments-section {

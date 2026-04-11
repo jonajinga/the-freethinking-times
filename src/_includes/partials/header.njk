@@ -407,6 +407,11 @@
     <li><a class="nav-drawer__link nav-drawer__link--small" href="/support/">Support</a></li>
   </ul>
 
+  {# ── Language selector (above toolbar, hidden until toggled) ── #}
+  {% if site.gtranslate %}
+  <div class="gtranslate_wrapper nav-drawer__lang" hidden></div>
+  {% endif %}
+
   {# ── Bottom toolbar ── #}
   <div class="nav-drawer__toolbar">
     <a href="/notes/" title="Notes"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></a>
@@ -414,11 +419,8 @@
     <a href="/random/" title="Surprise me"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg></a>
     <button type="button" title="Dark mode" class="js-only" onclick="var t=document.getElementById('theme-toggle');if(t)t.click();"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
     {% if site.gtranslate %}
-    <button type="button" title="Language" class="js-only" onclick="var w=document.querySelector('.nav-drawer .gtranslate_wrapper');if(w){w.hidden=!w.hidden;}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></button>
+    <button type="button" title="Language" class="js-only" onclick="var w=document.querySelector('.nav-drawer .nav-drawer__lang');if(w){w.hidden=!w.hidden;}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></button>
     {% endif %}
   </div>
-  {% if site.gtranslate %}
-  <div class="gtranslate_wrapper nav-drawer__lang" hidden></div>
-  {% endif %}
 
 </nav>
