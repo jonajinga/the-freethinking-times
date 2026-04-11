@@ -477,27 +477,6 @@ layout: layouts/base.njk
       </aside>
       {% endif %}
 
-      {# Related articles — sorted by shared tags, falls back to same section #}
-      {% set relatedArticles = collections.allContent | relatedByTags(tags, page.url, 3) %}
-      {% if relatedArticles.length == 0 and section %}
-        {% set relatedArticles = collections.allContent | where("section", section) | limit(4) %}
-      {% endif %}
-      {% if relatedArticles.length > 0 %}
-      <aside class="related-articles">
-        <p class="related-articles__title">Related reading</p>
-        <ul class="related-articles__list">
-          {% for item in relatedArticles %}
-          {% if item.url != page.url %}
-          <li>
-            {% set article = item %}
-            {% set size = "xs" %}
-            {% include "partials/article-card.njk" %}
-          </li>
-          {% endif %}
-          {% endfor %}
-        </ul>
-      </aside>
-      {% endif %}
 
       {# Comments #}
       {% if site.comments and site.comments.appId %}
@@ -579,6 +558,10 @@ layout: layouts/base.njk
             role="tab"
             aria-selected="false"
             data-target="article-panel-bookmarks">Bookmarks</button>
+    <button class="library-panel__tab"
+            role="tab"
+            aria-selected="false"
+            data-target="article-panel-related">Related</button>
   </div>
 
   <div class="library-panel__body">
@@ -588,6 +571,26 @@ layout: layouts/base.njk
     <div id="article-panel-highlights" class="library-panel__section" aria-hidden="true"></div>
     <div id="article-panel-notes" class="library-panel__section" aria-hidden="true"></div>
     <div id="article-panel-bookmarks" class="library-panel__section" aria-hidden="true"></div>
+    <div id="article-panel-related" class="library-panel__section" aria-hidden="true">
+      {% set relatedArticles = collections.allContent | relatedByTags(tags, page.url, 3) %}
+      {% if relatedArticles.length == 0 and section %}
+        {% set relatedArticles = collections.allContent | where("section", section) | limit(4) %}
+      {% endif %}
+      {% if relatedArticles.length > 0 %}
+      <ul style="list-style:none;padding:0;margin:0;">
+        {% for item in relatedArticles %}
+        {% if item.url != page.url %}
+        <li style="padding:var(--space-3) 0;border-bottom:1px solid var(--color-rule);">
+          <a href="{{ item.url }}" style="font-family:var(--font-headline);font-size:var(--text-sm);font-weight:600;color:var(--color-ink);text-decoration:none;display:block;line-height:var(--leading-snug);">{{ item.data.title }}</a>
+          {% if item.data.section %}<span style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);">{{ item.data.section }}</span>{% endif %}
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p style="font-size:var(--text-xs);color:var(--color-ink-faint);font-style:italic;">No related articles found.</p>
+      {% endif %}
+    </div>
   </div>
 </aside>
 
