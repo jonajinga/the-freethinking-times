@@ -391,9 +391,9 @@
     if (panelClose) panelClose.addEventListener('click', closePanel);
     if (panelOverlay) panelOverlay.addEventListener('click', closePanel);
 
-    // Auto-open on first visit, remember preference
+    // Auto-open on first visit (desktop only), remember preference
     var panelPref = localStorage.getItem(PANEL_KEY);
-    if (panelPref !== 'closed') {
+    if (panelPref !== 'closed' && window.innerWidth > 768) {
       openPanel();
     }
 

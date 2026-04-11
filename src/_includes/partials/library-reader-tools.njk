@@ -124,13 +124,102 @@
         </div>
       </div>
       <div class="rs-group">
-        <p class="rs-label" id="rs-font-label">Font</p>
-        <div class="rs-btngroup" role="group" aria-labelledby="rs-font-label">
-          <button class="rs-btn is-active" data-rs-font="serif" type="button">Serif</button>
-          <button class="rs-btn" data-rs-font="sans" type="button">Sans</button>
-          <button class="rs-btn" data-rs-font="dyslexic" type="button">OpenDyslexic</button>
+        <label class="rs-label" for="rs-font-select">Font</label>
+        <select id="rs-font-select" class="rs-select">
+          <optgroup label="Site fonts">
+            <option value="serif">Source Serif (default)</option>
+            <option value="sans">DM Sans</option>
+            <option value="lora">Lora</option>
+            <option value="playfair">Playfair Display</option>
+          </optgroup>
+          <optgroup label="Serif">
+            <option value="georgia">Georgia</option>
+            <option value="palatino">Palatino</option>
+            <option value="times">Times New Roman</option>
+            <option value="garamond">Garamond</option>
+            <option value="bookman">Bookman Old Style</option>
+          </optgroup>
+          <optgroup label="Sans-serif">
+            <option value="system">System default</option>
+            <option value="arial">Arial / Helvetica</option>
+            <option value="verdana">Verdana</option>
+            <option value="trebuchet">Trebuchet MS</option>
+            <option value="tahoma">Tahoma</option>
+            <option value="century">Century Gothic</option>
+          </optgroup>
+          <optgroup label="Monospace">
+            <option value="mono">SF Mono / Consolas</option>
+            <option value="courier">Courier New</option>
+            <option value="lucida">Lucida Console</option>
+          </optgroup>
+          <optgroup label="Web fonts (loaded on demand)">
+            <option value="inter">Inter</option>
+            <option value="merriweather">Merriweather</option>
+            <option value="roboto">Roboto</option>
+            <option value="opensans">Open Sans</option>
+            <option value="baskerville">Libre Baskerville</option>
+            <option value="crimson">Crimson Pro</option>
+            <option value="ibmplex">IBM Plex Serif</option>
+            <option value="literata">Literata</option>
+            <option value="atkinson">Atkinson Hyperlegible</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="rs-group">
+        <p class="rs-label" id="rs-spacing-label">Line spacing</p>
+        <div class="rs-btngroup" role="group" aria-labelledby="rs-spacing-label">
+          <button class="rs-btn" data-rs-spacing="tight" type="button">Tight</button>
+          <button class="rs-btn is-active" data-rs-spacing="normal" type="button">Normal</button>
+          <button class="rs-btn" data-rs-spacing="relaxed" type="button">Relaxed</button>
+          <button class="rs-btn" data-rs-spacing="loose" type="button">Loose</button>
         </div>
       </div>
+      <div class="rs-group">
+        <p class="rs-label" id="rs-width-label">Text width</p>
+        <div class="rs-btngroup" role="group" aria-labelledby="rs-width-label">
+          <button class="rs-btn" data-rs-width="narrow" type="button">Narrow</button>
+          <button class="rs-btn is-active" data-rs-width="normal" type="button">Normal</button>
+          <button class="rs-btn" data-rs-width="wide" type="button">Wide</button>
+        </div>
+      </div>
+      <div class="rs-group">
+        <p class="rs-label" id="rs-word-spacing-label">Word spacing</p>
+        <div class="rs-btngroup" role="group" aria-labelledby="rs-word-spacing-label">
+          <button class="rs-btn is-active" data-rs-wordspace="normal" type="button">Normal</button>
+          <button class="rs-btn" data-rs-wordspace="wide" type="button">Wide</button>
+          <button class="rs-btn" data-rs-wordspace="wider" type="button">Wider</button>
+        </div>
+      </div>
+      <div class="rs-group">
+        <p class="rs-label" id="rs-bg-label">Background</p>
+        <div class="rs-btngroup" role="group" aria-labelledby="rs-bg-label">
+          <button class="rs-btn is-active" data-rs-bg="default" type="button">Default</button>
+          <button class="rs-btn" data-rs-bg="sepia" type="button" style="background:#f4ecd8;color:#5b4636;">Sepia</button>
+          <button class="rs-btn" data-rs-bg="cream" type="button" style="background:#fefcf0;color:#333;">Cream</button>
+          <button class="rs-btn" data-rs-bg="dark" type="button" style="background:#1a1a1a;color:#e0e0e0;">Dark</button>
+        </div>
+      </div>
+      <div class="rs-group rs-toggles">
+        <label class="rs-toggle">
+          <input type="checkbox" id="rs-ruler" class="rs-toggle__input">
+          <span class="rs-toggle__label">Reading ruler</span>
+        </label>
+        <label class="rs-toggle">
+          <input type="checkbox" id="rs-para-nums" class="rs-toggle__input">
+          <span class="rs-toggle__label">Paragraph numbers</span>
+        </label>
+      </div>
+      <div class="rs-group" id="rs-autoscroll-group">
+        <label class="rs-toggle">
+          <input type="checkbox" id="rs-autoscroll" class="rs-toggle__input">
+          <span class="rs-toggle__label">Auto-scroll</span>
+        </label>
+        <div id="rs-autoscroll-speed" hidden style="margin-top:var(--space-2);">
+          <input type="range" class="rs-slider" id="rs-scroll-speed" min="1" max="10" step="1" value="3" aria-label="Scroll speed">
+          <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--color-ink-faint);"><span>Slow</span><span>Fast</span></div>
+        </div>
+      </div>
+      <button type="button" style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);background:none;border:none;cursor:pointer;padding:var(--space-1) 0;" onclick="if(window.__resetReadingSettings)window.__resetReadingSettings();">Reset to defaults</button>
     </div>
   </div>
 

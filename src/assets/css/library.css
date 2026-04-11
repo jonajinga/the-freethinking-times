@@ -1375,7 +1375,8 @@ html.is-library-reading[data-focus-mode="on"] .masthead {
   .library-panel-toggle,
   .library-chapter-nav,
   .annotation-toolbar,
-  .library-reading-progress {
+  .library-reading-progress,
+  .reading-settings-wrap {
     display: none !important;
   }
 

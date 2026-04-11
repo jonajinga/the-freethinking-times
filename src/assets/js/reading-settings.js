@@ -37,11 +37,35 @@
     try { localStorage.setItem(K[key], val); } catch (e) {}
   }
 
+  // ─── On-demand web font loading via Bunny Fonts ────────────
+  var webFonts = {
+    inter: 'inter:wght@400;600;700',
+    merriweather: 'merriweather:wght@400;700',
+    roboto: 'roboto:wght@400;700',
+    opensans: 'open-sans:wght@400;600;700',
+    baskerville: 'libre-baskerville:wght@400;700',
+    crimson: 'crimson-pro:wght@400;600;700',
+    ibmplex: 'ibm-plex-serif:wght@400;600;700',
+    literata: 'literata:wght@400;600;700',
+    atkinson: 'atkinson-hyperlegible:wght@400;700'
+  };
+  var loadedFonts = {};
+
+  function loadWebFont(key) {
+    if (loadedFonts[key] || !webFonts[key]) return;
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.bunny.net/css?family=' + webFonts[key] + '&display=swap';
+    document.head.appendChild(link);
+    loadedFonts[key] = true;
+  }
+
   // ─── Apply functions ──────────────────────────────────────
   function applyFontSize(px) { body.style.fontSize = px + 'px'; }
 
   function applyFont(f) {
     body.setAttribute('data-rs-font', f);
+    if (webFonts[f]) loadWebFont(f);
     var sel = document.getElementById('rs-font-select');
     if (sel) sel.value = f;
   }
@@ -76,14 +100,24 @@
       ruler.id = 'rs-reading-ruler';
       ruler.className = 'rs-ruler-line';
       document.body.appendChild(ruler);
+      positionRulerWidth();
       document.addEventListener('mousemove', moveRuler);
+      window.addEventListener('resize', positionRulerWidth);
     } else if (!on && existing) {
       existing.remove();
       document.removeEventListener('mousemove', moveRuler);
+      window.removeEventListener('resize', positionRulerWidth);
     }
     var cb = document.getElementById('rs-ruler');
     if (cb) cb.checked = on;
-    // Don't persist ruler — it's session-only for the current page
+  }
+
+  function positionRulerWidth() {
+    var ruler = document.getElementById('rs-reading-ruler');
+    if (!ruler) return;
+    var rect = body.getBoundingClientRect();
+    ruler.style.left = rect.left + 'px';
+    ruler.style.width = rect.width + 'px';
   }
 
   function moveRuler(e) {

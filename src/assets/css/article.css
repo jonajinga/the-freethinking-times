@@ -540,6 +540,21 @@
   display: none;
 }
 
+@media (max-width: 480px) {
+  .article-header__actions,
+  .library-reader-actions {
+    gap: var(--space-1);
+  }
+  .article-action-btn {
+    width: 1.625rem;
+    height: 1.625rem;
+  }
+  .article-action-btn svg {
+    width: 11px;
+    height: 11px;
+  }
+}
+
 .article-action-btn {
   position: relative;
   display: inline-flex;
@@ -2808,8 +2823,8 @@
 }
 
 .rs-btn.is-active {
-  background: var(--color-ink);
-  color: var(--color-bg);
+  background: var(--color-ink) !important;
+  color: var(--color-bg) !important;
 }
 
 /* ── Reading settings select ── */
@@ -2831,11 +2846,37 @@
 
 /* ── Article body — reading preference overrides ── */
 
-/* Font */
+/* Font — site fonts */
 .article-body[data-rs-font="sans"] { font-family: var(--font-ui); }
+.article-body[data-rs-font="lora"] { font-family: 'Lora', Georgia, serif; }
+.article-body[data-rs-font="playfair"] { font-family: 'Playfair Display', Georgia, serif; }
+/* Font — system serif */
 .article-body[data-rs-font="georgia"] { font-family: Georgia, 'Times New Roman', serif; }
+.article-body[data-rs-font="palatino"] { font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif; }
+.article-body[data-rs-font="times"] { font-family: 'Times New Roman', Times, serif; }
+.article-body[data-rs-font="garamond"] { font-family: Garamond, 'EB Garamond', Georgia, serif; }
+.article-body[data-rs-font="bookman"] { font-family: 'Bookman Old Style', Georgia, serif; }
+/* Font — system sans */
 .article-body[data-rs-font="system"] { font-family: system-ui, -apple-system, sans-serif; }
-.article-body[data-rs-font="mono"] { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.95em; }
+.article-body[data-rs-font="arial"] { font-family: Arial, Helvetica, sans-serif; }
+.article-body[data-rs-font="verdana"] { font-family: Verdana, Geneva, sans-serif; }
+.article-body[data-rs-font="trebuchet"] { font-family: 'Trebuchet MS', Helvetica, sans-serif; }
+.article-body[data-rs-font="tahoma"] { font-family: Tahoma, Geneva, sans-serif; }
+.article-body[data-rs-font="century"] { font-family: 'Century Gothic', 'Apple Gothic', sans-serif; }
+/* Font — system mono */
+.article-body[data-rs-font="mono"] { font-family: 'SF Mono', 'Fira Code', Consolas, monospace; font-size: 0.95em; }
+.article-body[data-rs-font="courier"] { font-family: 'Courier New', Courier, monospace; font-size: 0.95em; }
+.article-body[data-rs-font="lucida"] { font-family: 'Lucida Console', Monaco, monospace; font-size: 0.95em; }
+/* Font — web fonts (loaded on demand via Bunny Fonts) */
+.article-body[data-rs-font="inter"] { font-family: 'Inter', system-ui, sans-serif; }
+.article-body[data-rs-font="merriweather"] { font-family: 'Merriweather', Georgia, serif; }
+.article-body[data-rs-font="roboto"] { font-family: 'Roboto', system-ui, sans-serif; }
+.article-body[data-rs-font="opensans"] { font-family: 'Open Sans', system-ui, sans-serif; }
+.article-body[data-rs-font="baskerville"] { font-family: 'Libre Baskerville', Georgia, serif; }
+.article-body[data-rs-font="crimson"] { font-family: 'Crimson Pro', Georgia, serif; }
+.article-body[data-rs-font="ibmplex"] { font-family: 'IBM Plex Serif', Georgia, serif; }
+.article-body[data-rs-font="literata"] { font-family: 'Literata', Georgia, serif; }
+.article-body[data-rs-font="atkinson"] { font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; }
 
 /* Width */
 .article-body[data-rs-width="narrow"] { max-width: 560px; }
@@ -2849,8 +2890,6 @@
 /* Reading ruler */
 .rs-ruler-line {
   position: fixed;
-  left: 0;
-  right: 0;
   height: 2px;
   background: var(--color-accent);
   opacity: 0.5;

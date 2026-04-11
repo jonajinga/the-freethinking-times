@@ -694,6 +694,55 @@ a.dateline:hover { color: var(--color-accent); }
   text-decoration: underline;
 }
 
+/* ── Quote Bar ──────────────────────────────────────────────── */
+.quote-bar {
+  background: var(--color-bg-alt);
+  border-bottom: 1px solid var(--color-rule);
+  padding: var(--space-2) var(--gutter);
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.quote-bar__link {
+  color: var(--color-ink-muted);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quote-bar__link:hover {
+  color: var(--color-ink);
+}
+
+.quote-bar__text {
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quote-bar__author {
+  font-style: normal;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .quote-bar {
+    font-size: var(--text-xs);
+    padding: var(--space-1) var(--space-3);
+  }
+}
+
 /* ── Footer Subscribe Strip ─────────────────────────────────── */
 .footer-subscribe-strip {
   display: grid;

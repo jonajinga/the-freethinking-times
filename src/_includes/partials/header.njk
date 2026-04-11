@@ -362,6 +362,26 @@
   </div>{# /.container #}
 </header>
 
+{# ── Daily Quote Bar ── #}
+<div class="quote-bar" id="quote-bar" data-pagefind-ignore>
+  <a class="quote-bar__link" href="/quotes/showcase/" title="View quotes showcase">
+    <span class="quote-bar__text" id="quote-bar-text"></span>
+    <span class="quote-bar__author" id="quote-bar-author"></span>
+  </a>
+</div>
+<script>
+(function(){
+  var quotes={{ quotes | dump | safe }};
+  if(!quotes||!quotes.length)return;
+  var day=Math.floor(Date.now()/86400000);
+  var q=quotes[day%quotes.length];
+  var t=document.getElementById('quote-bar-text');
+  var a=document.getElementById('quote-bar-author');
+  if(t)t.textContent='\u201c'+q.quote+'\u201d';
+  if(a)a.textContent='\u2014 '+q.author;
+})();
+</script>
+
 {# ── Search Modal ── (lives outside header for z-index stacking) #}
 <div class="search-overlay js-only" id="search-overlay" aria-hidden="true" onclick="var m=document.getElementById('search-modal'),o=this;m.classList.remove('is-open');m.setAttribute('aria-hidden','true');o.classList.remove('is-open');document.body.style.overflow='';document.getElementById('search-input').value='';document.getElementById('search-results').innerHTML='';"></div>
 
