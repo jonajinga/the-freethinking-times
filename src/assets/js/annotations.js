@@ -145,13 +145,18 @@
       list.sort(function (a, b) { return b.ts - a.ts; }).forEach(function (ann) {
         var item = document.createElement('div');
         item.className = 'library-annotation-item';
+        item.className = 'library-annotation-item';
+        item.dataset.annId = ann.id;
         item.innerHTML =
           '<p class="library-annotation-item__quote" style="cursor:pointer;" title="Click to scroll to highlight">&ldquo;' + escHtml(ann.quote) + '&rdquo;</p>' +
           (ann.note ? '<p class="library-annotation-item__note">' + escHtml(ann.note) + '</p>' : '') +
+          '<div class="library-annotation-item__meta">' + fmtDate(ann.ts) + '</div>' +
           '<div class="library-annotation-item__actions">' +
+            '<button class="library-annotation-item__action" data-ann-copy title="Copy text">Copy</button>' +
+            '<button class="library-annotation-item__action" data-ann-share title="Share">Share</button>' +
             '<button class="library-annotation-item__action" data-ann-delete="' + escHtml(ann.id) + '">Delete</button>' +
           '</div>';
-        // Click quote text to scroll to highlight in article
+        // Click quote to scroll to highlight in article
         item.querySelector('.library-annotation-item__quote').addEventListener('click', function () {
           var mark = document.querySelector('.library-highlight[data-ann-id="' + ann.id + '"]');
           if (mark) {
@@ -163,6 +168,27 @@
             setTimeout(function () { mark.style.background = ''; mark.style.color = ''; }, 1500);
           }
         });
+        // Copy
+        item.querySelector('[data-ann-copy]').addEventListener('click', function () {
+          var text = '"' + ann.quote + '"' + (ann.note ? '\n\nNote: ' + ann.note : '');
+          navigator.clipboard.writeText(text).then(function () {
+            item.querySelector('[data-ann-copy]').textContent = 'Copied!';
+            setTimeout(function () { item.querySelector('[data-ann-copy]').textContent = 'Copy'; }, 1500);
+          });
+        });
+        // Share
+        item.querySelector('[data-ann-share]').addEventListener('click', function () {
+          var text = '"' + ann.quote + '"' + (ann.note ? ' — Note: ' + ann.note : '') + '\n\nFrom: ' + pageTitle + '\n' + location.origin + pageUrl;
+          if (navigator.share) {
+            navigator.share({ text: text }).catch(function () {});
+          } else {
+            navigator.clipboard.writeText(text).then(function () {
+              item.querySelector('[data-ann-share]').textContent = 'Link copied!';
+              setTimeout(function () { item.querySelector('[data-ann-share]').textContent = 'Share'; }, 1500);
+            });
+          }
+        });
+        // Delete
         item.querySelector('[data-ann-delete]').addEventListener('click', function () {
           remove(ann.id);
           render(containerEl);
@@ -200,6 +226,25 @@
           mark.className = 'library-highlight' + (hasNote ? ' library-highlight--note' : '');
           mark.dataset.annId = annId;
           mark.textContent = text;
+          mark.style.cursor = 'pointer';
+          mark.title = 'Click to view in reader panel';
+          mark.addEventListener('click', function () {
+            // Open panel and scroll to this annotation
+            if (window.__openReaderPanel) window.__openReaderPanel();
+            setTimeout(function () {
+              // Switch to highlights tab
+              var hlTab = document.querySelector('[data-target="article-panel-highlights"]');
+              if (hlTab) hlTab.click();
+              // Find the matching item in the panel
+              var panelItem = document.querySelector('.library-annotation-item[data-ann-id="' + annId + '"]');
+              if (panelItem) {
+                panelItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                panelItem.style.transition = 'background 0.3s';
+                panelItem.style.background = 'var(--color-bg-inset)';
+                setTimeout(function () { panelItem.style.background = ''; }, 1500);
+              }
+            }, 150);
+          });
           var after = document.createTextNode(node.nodeValue.slice(idx + text.length));
           var parent = node.parentNode;
           parent.insertBefore(before, node);
@@ -278,7 +323,7 @@
       renderFiltered(containerEl, function (a) { return !!a.note; }, 'No notes yet. Select text and click Note to add one.');
     }
 
-    return { add: add, remove: remove, render: render, renderHighlights: renderHighlights, renderNotes: renderNotes, restoreHighlights: restoreHighlights };
+    return { add: add, remove: remove, load: load, render: render, renderHighlights: renderHighlights, renderNotes: renderNotes, restoreHighlights: restoreHighlights };
   }());
 
   // ─── Init ─────────────────────────────────────────────────
@@ -363,8 +408,92 @@
       }, renderBookmarkIndicators);
     }
 
-    // Expose globally so save operations can trigger refresh
+    // Expose globally
     window.__refreshReaderPanel = refreshPanelContents;
+    window.__openReaderPanel = openPanel;
+
+    // Export notes in multiple formats
+    window.__exportPanelNotes = function (fmt) {
+      var all = Annotations.load ? Annotations.load() : [];
+      var bms = Bookmarks.loadAll ? Bookmarks.loadAll() : [];
+      var highlights = all.filter(function (a) { return !a.note; });
+      var notes = all.filter(function (a) { return !!a.note; });
+
+      if (fmt === 'json') {
+        var data = { title: pageTitle, url: pageUrl, exported: new Date().toISOString(), highlights: highlights, notes: notes, bookmarks: bms };
+        var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        dl(blob, 'notes-' + pageSlug + '.json');
+      } else {
+        // txt or md (same format)
+        var lines = ['# Notes & Highlights', '', pageTitle, pageUrl, '', '---'];
+        if (highlights.length) {
+          lines.push('', '## Highlights', '');
+          highlights.forEach(function (a, i) { lines.push((i+1) + '. "' + a.quote + '"', '   ' + fmtDate(a.ts), ''); });
+        }
+        if (notes.length) {
+          lines.push('## Notes', '');
+          notes.forEach(function (a, i) { lines.push((i+1) + '. "' + a.quote + '"', '   Note: ' + a.note, '   ' + fmtDate(a.ts), ''); });
+        }
+        if (bms.length) {
+          lines.push('## Bookmarks', '');
+          bms.forEach(function (b, i) { lines.push((i+1) + '. ' + (b.context || 'Position ' + Math.round(b.scrollPct) + '%'), '   ' + fmtDate(b.ts), ''); });
+        }
+        var ext = fmt === 'md' ? '.md' : '.txt';
+        var blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+        dl(blob, 'notes-' + pageSlug + ext);
+      }
+    };
+
+    function dl(blob, name) {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    // Print — highlights and notes separated
+    window.__printPanelNotes = function () {
+      var all = Annotations.load ? Annotations.load() : [];
+      var bms = Bookmarks.loadAll ? Bookmarks.loadAll() : [];
+      var highlights = all.filter(function (a) { return !a.note; });
+      var notes = all.filter(function (a) { return !!a.note; });
+      var w = window.open('', '_blank');
+      var html = '<html><head><title>Notes — ' + pageTitle + '</title><style>body{font-family:Georgia,serif;max-width:600px;margin:2rem auto;color:#1a1a1a;}h1{font-size:1.4rem;}h2{font-size:1.1rem;margin-top:2rem;border-bottom:2px solid #000;padding-bottom:0.3rem;}blockquote{border-left:3px solid #c0392b;padding-left:1rem;margin:0.75rem 0;font-style:italic;}.note{color:#333;font-size:0.9rem;margin:0.25rem 0 0.75rem 1rem;}.date{color:#888;font-size:0.8rem;margin:0.2rem 0 0.75rem;}</style></head><body>';
+      html += '<p style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#888;margin:0 0 0.5rem;">The Freethinking Times</p>';
+      html += '<h1>' + pageTitle + '</h1>';
+      html += '<p style="color:#888;font-size:0.85rem;margin-bottom:1.5rem;">' + location.origin + pageUrl + '</p>';
+
+      if (highlights.length) {
+        html += '<h2>Highlights</h2>';
+        highlights.forEach(function (a) {
+          html += '<blockquote>&ldquo;' + a.quote + '&rdquo;</blockquote>';
+          html += '<p class="date">' + fmtDate(a.ts) + '</p>';
+        });
+      }
+
+      if (notes.length) {
+        html += '<h2>Notes</h2>';
+        notes.forEach(function (a) {
+          html += '<blockquote>&ldquo;' + a.quote + '&rdquo;</blockquote>';
+          html += '<p class="note">' + a.note + '</p>';
+          html += '<p class="date">' + fmtDate(a.ts) + '</p>';
+        });
+      }
+
+      if (bms.length) {
+        html += '<h2>Bookmarks</h2>';
+        bms.forEach(function (b) {
+          html += '<p>' + (b.context || 'Position ' + Math.round(b.scrollPct) + '%') + '</p>';
+          html += '<p class="date">' + fmtDate(b.ts) + '</p>';
+        });
+      }
+
+      html += '</body></html>';
+      w.document.write(html);
+      w.document.close();
+      w.print();
+    };
 
     // ── Body element (used by toolbar + bookmark indicators) ──
     var bodyEl = document.querySelector('.article-body');

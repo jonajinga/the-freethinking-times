@@ -84,9 +84,47 @@ layout: layouts/base.njk
     {% endfor %}
   </section>
 
-  {# ─── Explore banner ──────────────────────────────────────── #}
-  <div class="front-explore">
-    <p class="front-explore__text">Beyond the articles: <a href="/library/">Library</a> · <a href="/quotes/">Quotes</a> · <a href="/videos/">Videos</a> · <a href="/timeline/">Timeline</a> · <a href="/events/">Events</a> · <a href="/more/">More</a></p>
-  </div>
+  {# ─── Explore section ──────────────────────────────────────── #}
+  <section class="front-explore" aria-label="Explore more">
+    <p class="front-explore__heading">Beyond the articles</p>
+    <div class="front-explore__grid">
+      <a href="/library/" class="front-explore__card">
+        <strong>Public Domain Library</strong>
+        <span>Full texts from the freethought tradition</span>
+      </a>
+      <a href="/quotes/" class="front-explore__card">
+        <strong>Quotes</strong>
+        <span>Curated freethought quotes</span>
+      </a>
+      <a href="/videos/" class="front-explore__card">
+        <strong>Videos</strong>
+        <span>Lectures, debates, and documentaries</span>
+      </a>
+      <a href="/timeline/" class="front-explore__card">
+        <strong>Timeline</strong>
+        <span>2,400 years of freethought history</span>
+      </a>
+      <a href="/events/" class="front-explore__card">
+        <strong>Events</strong>
+        <span>Conferences, meetups, and observances</span>
+      </a>
+      <a href="/glossary/" class="front-explore__card">
+        <strong>Glossary</strong>
+        <span>Philosophical terms and definitions</span>
+      </a>
+      <a href="/resources/" class="front-explore__card">
+        <strong>Resources</strong>
+        <span>Education, legal, support, and tools</span>
+      </a>
+      <a href="/community/" class="front-explore__card">
+        <strong>Community</strong>
+        <span>Organizations and groups worldwide</span>
+      </a>
+      <a href="/more/" class="front-explore__card">
+        <strong>More</strong>
+        <span>Projects, games, bookshelf, and more</span>
+      </a>
+    </div>
+  </section>
 
 </div>{# /.container #}

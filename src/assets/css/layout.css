@@ -172,27 +172,55 @@
   color: var(--color-ink-faint);
 }
 
-/* Explore banner */
+/* Explore section */
 .front-explore {
-  padding: var(--space-6) 0;
+  padding: var(--space-8) 0;
   border-top: 1px solid var(--color-rule);
-  text-align: center;
 }
 
-.front-explore__text {
+.front-explore__heading {
   font-family: var(--font-ui);
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--color-ink-faint);
-  margin: 0;
+  margin: 0 0 var(--space-4);
 }
 
-.front-explore__text a {
-  color: var(--color-link);
+.front-explore__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-3);
+}
+
+.front-explore__card {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-4);
+  border: 1px solid var(--color-rule);
   text-decoration: none;
-  font-weight: 600;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
 }
 
-.front-explore__text a:hover { text-decoration: underline; }
+.front-explore__card:hover {
+  border-color: var(--color-ink);
+  background: var(--color-bg-alt);
+}
+
+.front-explore__card strong {
+  font-family: var(--font-headline);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.front-explore__card span {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-ink-faint);
+}
 
 /* ── Section Index Layout ───────────────────────────────────── */
 .section-index {
