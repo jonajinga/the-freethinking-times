@@ -615,10 +615,13 @@ layout: layouts/base.njk
       <div class="article-comments">
         <div class="article-comments__header">
           <span class="article-comments__title">Comments</span>
-          <button type="button" class="article-comments__toggle" id="comments-toggle"
-            onclick="var el=document.getElementById('comments-body');el.hidden=!el.hidden;this.textContent=el.hidden?'Show comments':'Hide comments';">
-            Show comments
-          </button>
+          <div style="display:flex;align-items:center;gap:var(--space-3);">
+            <a href="/community-guidelines/" style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);text-decoration:none;" onmouseover="this.style.color='var(--color-link)'" onmouseout="this.style.color='var(--color-ink-faint)'">Community guidelines</a>
+            <button type="button" class="article-comments__toggle" id="comments-toggle"
+              onclick="var el=document.getElementById('comments-body');el.hidden=!el.hidden;this.textContent=el.hidden?'Show comments':'Hide comments';">
+              Show comments
+            </button>
+          </div>
         </div>
         <div id="comments-body" hidden>
           <div id="cusdis_thread"
