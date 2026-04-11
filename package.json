@@ -11,13 +11,15 @@
   },
   "dependencies": {
     "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-fetch": "^5.1.2",
     "@11ty/eleventy-plugin-rss": "^2.0.2",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
     "luxon": "^3.7.2",
     "markdown-it": "^14.1.1",
     "markdown-it-anchor": "^9.2.0",
     "pagefind": "^1.4.0",
-    "rss-parser": "^3.13.0"
+    "rss-parser": "^3.13.0",
+    "trystero": "^0.23.0"
   },
   "devDependencies": {
     "eleventy-plugin-broken-links": "^2.2.1"

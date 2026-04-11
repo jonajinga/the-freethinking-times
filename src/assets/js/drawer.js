@@ -50,9 +50,11 @@
   var nav = document.querySelector('.site-nav');
   if (!nav) return;
 
-  var keys = ['news', 'opinion', 'analysis', 'arts-culture', 'science-tech', 'history', 'letters', 'library', 'projects', 'games'];
+  var keys = ['news', 'opinion', 'analysis', 'arts-culture', 'science-tech', 'history', 'letters', 'library', 'projects', 'games', 'more'];
 
   function positionDropdown(trigger, dropdown) {
+    // Skip positioning for quotes (uses fixed centering)
+    if (dropdown.id === 'dropdown-quotes') return;
     var navRect     = nav.getBoundingClientRect();
     var triggerRect = trigger.getBoundingClientRect();
     var dropW       = dropdown.offsetWidth;

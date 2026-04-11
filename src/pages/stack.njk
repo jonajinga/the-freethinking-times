@@ -1,0 +1,86 @@
+---
+layout: base
+title: "How This Site Is Built"
+description: The tools and services behind The Freethinking Times — what we use, why we chose it, and what it means for you.
+permalink: /stack/
+---
+
+<div class="container" style="padding-top: var(--space-12); padding-bottom: var(--space-20);">
+  <div class="container--prose">
+
+    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">How This Site Is Built</h1>
+      <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 60ch;">
+        We built this site to be fast, private, and independent. Here is what powers it.
+      </p>
+    </header>
+
+    <div class="article-body">
+
+      <h2>Our approach</h2>
+
+      <p>Every page on this site is pre-built before you visit it. There is no server generating pages on the fly, no database to query, and no loading spinner while content renders in your browser. When you click a link, you get a finished page immediately. This makes the site fast, reliable, and cheap to run — which means we do not need advertising revenue to keep it online.</p>
+
+      <h2>Pages and content</h2>
+
+      <p>Articles are written as plain text files with simple formatting. A tool called <strong>Eleventy</strong> takes those files and turns them into the web pages you see. The entire site — all 300+ pages — builds in about six seconds. We publish by pushing a button, and the new version is live within a minute.</p>
+
+      <h2>Design</h2>
+
+      <p>The look and feel is built with standard web styles — no design framework or theme. Every colour, font size, and spacing value is defined once and reused everywhere, so the site looks consistent whether you are reading an article, browsing the library, or filling out a form. The typefaces (Playfair Display, Lora, Source Serif 4, and DM Sans) are served by <strong>Bunny Fonts</strong>, a privacy-friendly alternative to Google Fonts that does not track visitors.</p>
+
+      <h2>Interactive features</h2>
+
+      <p>All interactive features — search, text-to-speech, voice search, annotations, the events calendar, reading settings, and form dictation — are written in plain browser code with no external framework. They load only when needed and work offline once cached. Total size across all features: about 200 KB, smaller than most single images.</p>
+
+      <h2>Search</h2>
+
+      <p>Search is powered by <strong>Pagefind</strong>, which builds a search index alongside the site. When you search, your query is matched against a small index file already on the page — no request is sent to a search engine or third-party service.</p>
+
+      <h2>Hosting</h2>
+
+      <p>The site is hosted on <strong>Cloudflare Pages</strong>, which serves pages from data centres around the world. This means the site loads fast regardless of where you are. Cloudflare also provides protection against attacks and automatically encrypts all connections.</p>
+
+      <h2>Forms</h2>
+
+      <p>Contact forms, submissions, tips, and feedback are handled by <strong>Web3Forms</strong>. When you submit a form, your message is delivered to our email inbox. Nothing is stored in a database. Spam is filtered by <strong>hCaptcha</strong>, a privacy-respecting alternative to Google's reCAPTCHA.</p>
+
+      <h2>Newsletter</h2>
+
+      <p>The newsletter is managed by <strong>Buttondown</strong>. We have disabled open tracking and click tracking — we do not know whether you opened a particular email or clicked a particular link. You can unsubscribe at any time from any email.</p>
+
+      <h2>Analytics</h2>
+
+      <p>We use <strong>Umami</strong>, a privacy-first analytics tool. It tells us how many people visit the site and which pages are popular, but it does not use cookies, does not collect personal information, and cannot identify individual visitors. Our analytics dashboard is <a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer">public</a> — you can see exactly what we see.</p>
+
+      <h2>Comments</h2>
+
+      <p><strong>Cusdis</strong> provides the comment system. You do not need an account to leave a comment. Comments are moderated before they appear.</p>
+
+      <h2>Translation</h2>
+
+      <p><strong>GTranslate</strong> provides machine translation into nine languages via a small widget. Translation is performed by Google Translate.</p>
+
+      <h2>Voice features</h2>
+
+      <p>The read-aloud, voice search, and dictation features all use your browser's built-in speech capabilities. No audio is recorded or sent to us. Depending on your browser, speech processing may happen on your device or through your browser maker's servers (Apple, Google, or Microsoft).</p>
+
+      <h2>Reading room</h2>
+
+      <p>The reading room uses <strong>Trystero</strong> to connect readers on the same page directly to each other — no server in between. Your browser talks to other browsers using a technology called WebRTC. We cannot see who is in a reading room or what they share. When everyone leaves, the room disappears.</p>
+
+      <h2>Offline support</h2>
+
+      <p>The site can work without an internet connection. Once you have visited a page, it is cached in your browser and available offline. On mobile, you can install the site as an app from your browser's menu.</p>
+
+      <h2>Content management</h2>
+
+      <p>Editors use <strong>Pages CMS</strong>, a browser-based tool that reads and writes directly to the site's source files. There is no separate database or content management server.</p>
+
+      <h2>Source code</h2>
+
+      <p>The full source code is open and free to use under the MIT licence. Anyone can fork it and build their own publication. See <a href="/open-source/">open source</a> for details.</p>
+
+    </div>
+  </div>
+</div>

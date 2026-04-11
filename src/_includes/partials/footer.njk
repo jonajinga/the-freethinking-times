@@ -101,9 +101,7 @@
           <li><a href="/masthead/">Masthead</a></li>
           <li><a href="/ethics/">Editorial Ethics</a></li>
           <li><a href="/editorial/">Editorial Handbook</a></li>
-          <li><a href="/features/">Features</a></li>
           <li><a href="/contributors/">Contributors</a></li>
-          <li><a href="/corrections/">Corrections</a></li>
           <li><a href="/documents/">Document Library</a></li>
         </ul>
         <div style="margin-top: var(--space-4);">
@@ -111,6 +109,22 @@
             Support Us →
           </a>
         </div>
+      </div>
+
+      {# Column 7: Transparency #}
+      <div>
+        <p class="site-footer__heading">Transparency</p>
+        <ul class="site-footer__nav">
+          <li><a href="/features/">Features</a></li>
+          <li><a href="/stack/">How It's Built</a></li>
+          <li><a href="/changelog/">Changelog</a></li>
+          <li><a href="/corrections/">Corrections</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
+          <li><a href="/open-source/">Open Source</a></li>
+          {% if site.analytics and site.analytics.dashboardUrl %}<li><a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer">Public Analytics</a></li>{% endif %}
+          <li><a href="/sitemap.xml">Sitemap</a></li>
+          <li><a href="/feed.xml">RSS</a></li>
+        </ul>
       </div>
 
     </div>
@@ -121,14 +135,6 @@
         &copy; {{ site.founded }}–{{ currentYear }} {{ site.title }}.
         Content is the property of its respective authors.
       </p>
-      <div style="display: flex; gap: var(--space-3); flex-wrap: wrap; justify-content: center;">
-        <a href="/privacy/" style="font-size: var(--text-xs); color: var(--color-ink-faint); text-decoration: none;">Privacy</a>
-        {% if site.analytics and site.analytics.dashboardUrl %}<a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer" style="font-size: var(--text-xs); color: var(--color-ink-faint); text-decoration: none;">Analytics</a>{% endif %}
-        <a href="/corrections/" style="font-size: var(--text-xs); color: var(--color-ink-faint); text-decoration: none;">Corrections</a>
-        <a href="/changelog/" style="font-size: var(--text-xs); color: var(--color-ink-faint); text-decoration: none;">Changelog</a>
-        <a href="/sitemap.xml" style="font-size: var(--text-xs); color: var(--color-ink-faint); text-decoration: none;">Sitemap</a>
-        <a href="/feed.xml" style="font-size: var(--text-xs); color: var(--color-ink-faint); text-decoration: none;">RSS</a>
-      </div>
     </div>
 
   </div>{# /.container #}
