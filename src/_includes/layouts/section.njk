@@ -15,6 +15,11 @@ layout: layouts/base.njk
       {{ description }}
     </p>
     {% endif %}
+    {% if sectionSlug == "letters" %}
+    <p style="font-family: var(--font-ui); font-size: var(--text-sm); margin-top: var(--space-4);">
+      Have something to say? <a href="/letters/submit/" style="color: var(--color-link); font-weight: 600;">Write a letter</a> or email <a href="mailto:{{ site.email }}" style="color: var(--color-link);">{{ site.email }}</a>
+    </p>
+    {% endif %}
   </header>
 
   <div class="section-grid">

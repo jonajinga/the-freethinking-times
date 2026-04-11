@@ -1,0 +1,77 @@
+---
+layout: base
+title: "Submit a Tip"
+description: Share a news tip with The Freethinking Times. Anonymous submissions welcome.
+permalink: /tips/
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+  <div class="container--prose">
+
+    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+      <nav style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);margin-bottom:var(--space-4);">
+        <a href="/contact/" style="color:var(--color-link);">Contact</a> &rarr; Tip Line
+      </nav>
+      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3rem); margin-bottom: var(--space-4);">Tip Line</h1>
+      <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 60ch;">
+        Have information we should know about? You can remain anonymous.
+      </p>
+    </header>
+
+    <div class="article-body">
+
+      <p>We are interested in tips related to: religious institutions and their public influence, church-state violations, suppression of scientific information, censorship of secular voices, and abuses of power conducted under religious authority.</p>
+
+      <p>You do not need to provide your name or email. If you do, we will not publish your identity without your explicit consent. You can also email tips to <a href="mailto:{{ site.email }}">{{ site.email }}</a>.</p>
+
+      <form action="https://api.web3forms.com/submit" method="POST" class="w3f" style="margin: var(--space-6) 0;">
+        <input type="hidden" name="access_key" value="{{ site.forms.accessKey }}">
+        <input type="hidden" name="subject" value="Anonymous tip — {{ site.title }}">
+        <input type="hidden" name="redirect" value="{{ site.url }}/thank-you/">
+        <input type="hidden" name="from_name" value="{{ site.title }} Tip Line">
+        <input type="checkbox" name="botcheck" class="visually-hidden" style="display:none" tabindex="-1" autocomplete="off">
+
+        <div class="w3f__group">
+          <label class="w3f__label" for="tip-topic">What is this about?</label>
+          <select class="w3f__select" name="topic" id="tip-topic">
+            <option value="Church-state violation">Church-state violation</option>
+            <option value="Institutional misconduct">Institutional misconduct</option>
+            <option value="Censorship">Censorship or suppression</option>
+            <option value="Science denial">Science denial in policy</option>
+            <option value="Discrimination">Religious discrimination</option>
+            <option value="Story lead">General story lead</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="w3f__group">
+          <label class="w3f__label" for="tip-message">Your tip <span class="w3f__required">*</span></label>
+          <span class="w3f__hint" id="tip-msg-hint">Be as specific as you can. Who, what, where, when. Names, dates, and documents help us investigate.</span>
+          <textarea class="w3f__textarea" name="message" id="tip-message" rows="8" required aria-required="true" aria-describedby="tip-msg-hint" maxlength="5000"></textarea>
+        </div>
+
+        <div class="w3f__group">
+          <label class="w3f__label" for="tip-sources">Supporting links or references <span class="w3f__optional">(optional)</span></label>
+          <span class="w3f__hint" id="tip-sources-hint">Links to public records, news articles, social media posts, or other evidence</span>
+          <textarea class="w3f__textarea" name="sources" id="tip-sources" rows="3" aria-describedby="tip-sources-hint" maxlength="2000"></textarea>
+        </div>
+
+        <div class="w3f__row">
+          <div class="w3f__group">
+            <label class="w3f__label" for="tip-name">Your name <span class="w3f__optional">(optional)</span></label>
+            <input class="w3f__input" type="text" name="name" id="tip-name" autocomplete="off">
+          </div>
+          <div class="w3f__group">
+            <label class="w3f__label" for="tip-email">Email <span class="w3f__optional">(optional — only if you want us to follow up)</span></label>
+            <input class="w3f__input" type="email" name="email" id="tip-email" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="h-captcha" data-captcha="true"></div>
+        <button type="submit" class="w3f__submit">Send Tip</button>
+        <p class="w3f__privacy">Tips are sent directly to our editorial inbox. We do not log IP addresses or track submissions. Your identity will never be published without your explicit written consent.</p>
+      </form>
+
+    </div>
+  </div>
+</div>

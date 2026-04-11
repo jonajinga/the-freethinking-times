@@ -122,6 +122,21 @@
   <script src="/assets/js/subscribe.js" defer></script>
   {% block scripts %}{% endblock %}
 
+  {# ── hCaptcha for Web3Forms (only loads on pages with forms) ── #}
+  {% if site.forms and site.forms.accessKey %}
+  <script src="https://web3forms.com/client/script.js" async defer></script>
+  <script>
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('.w3f').forEach(function(f){
+      f.addEventListener('submit',function(){
+        var btn=f.querySelector('.w3f__submit');
+        if(btn){btn.disabled=true;btn.textContent='Submitting\u2026';}
+      });
+    });
+  });
+  </script>
+  {% endif %}
+
   {# ── Data Export/Import ── #}
   <script>
   (function(){

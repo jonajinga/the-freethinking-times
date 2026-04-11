@@ -25,32 +25,70 @@ permalink: /submit/
 
       <h2>How to Pitch</h2>
 
-      <p>Send a pitch — not a completed draft — to <a href="mailto:{{ site.email }}">{{ site.email }}</a> with "Pitch:" at the start of the subject line.</p>
+      <p>Use the form below or email <a href="mailto:{{ site.email }}">{{ site.email }}</a> with "Pitch:" at the start of the subject line. A pitch should be under 400 words.</p>
 
-      <p>A pitch should include:</p>
-      <ul>
-        <li>What the piece is about, in two or three sentences</li>
-        <li>Why it matters and why now</li>
-        <li>What evidence or reporting you have, or plan to gather</li>
-        <li>Your estimated word count and proposed section</li>
-        <li>One or two examples of your published work, if any</li>
-      </ul>
+      <form action="https://api.web3forms.com/submit" method="POST" class="w3f" style="margin: var(--space-6) 0 var(--space-10);">
+        <input type="hidden" name="access_key" value="{{ site.forms.accessKey }}">
+        <input type="hidden" name="subject" value="Pitch submission — {{ site.title }}">
+        <input type="hidden" name="redirect" value="{{ site.url }}/thank-you/">
+        <input type="hidden" name="from_name" value="{{ site.title }} Pitch Form">
+        <input type="checkbox" name="botcheck" class="visually-hidden" style="display:none" tabindex="-1" autocomplete="off">
 
-      <p>Pitches longer than four hundred words will not be read. We will respond to pitches that interest us within two weeks. If you have not heard from us in two weeks, we are passing.</p>
+        <div class="w3f__row">
+          <div class="w3f__group">
+            <label class="w3f__label" for="pitch-name">Your name <span class="w3f__required">*</span></label>
+            <input class="w3f__input" type="text" name="name" id="pitch-name" required aria-required="true" autocomplete="name">
+          </div>
+          <div class="w3f__group">
+            <label class="w3f__label" for="pitch-email">Email <span class="w3f__required">*</span></label>
+            <input class="w3f__input" type="email" name="email" id="pitch-email" required aria-required="true" autocomplete="email">
+          </div>
+        </div>
 
-      <h2>If We Commission Your Piece</h2>
+        <div class="w3f__group">
+          <label class="w3f__label" for="pitch-section">Proposed section</label>
+          <select class="w3f__select" name="section" id="pitch-section">
+            <option value="News">News</option>
+            <option value="Opinion">Opinion</option>
+            <option value="Analysis">Analysis</option>
+            <option value="Arts & Culture">Arts & Culture</option>
+            <option value="Science & Technology">Science & Technology</option>
+            <option value="History">History</option>
+            <option value="Letters">Letters to the Editor</option>
+          </select>
+        </div>
+
+        <div class="w3f__group">
+          <label class="w3f__label" for="pitch-headline">Proposed headline <span class="w3f__required">*</span></label>
+          <input class="w3f__input" type="text" name="headline" id="pitch-headline" required aria-required="true">
+        </div>
+
+        <div class="w3f__group">
+          <label class="w3f__label" for="pitch-body">Your pitch <span class="w3f__required">*</span></label>
+          <span class="w3f__hint" id="pitch-body-hint">What is the piece about? Why does it matter? What evidence will you use? Estimated word count? (Under 400 words)</span>
+          <textarea class="w3f__textarea" name="pitch" id="pitch-body" rows="8" required aria-required="true" aria-describedby="pitch-body-hint" maxlength="3000"></textarea>
+        </div>
+
+        <div class="w3f__group">
+          <label class="w3f__label" for="pitch-clips">Published work <span class="w3f__optional">(optional)</span></label>
+          <span class="w3f__hint" id="pitch-clips-hint">Link to one or two examples of your published writing</span>
+          <input class="w3f__input" type="url" name="clips" id="pitch-clips" placeholder="https://" inputmode="url" aria-describedby="pitch-clips-hint">
+        </div>
+
+        <div class="h-captcha" data-captcha="true"></div>
+        <button type="submit" class="w3f__submit">Submit Pitch</button>
+        <p class="w3f__privacy">We respond to pitches that interest us within two weeks. If you have not heard from us by then, we are passing.</p>
+      </form>
+
+      <h2>If We Accept Your Piece</h2>
 
       <p>We will agree on scope, angle, length, and deadline before you write. We edit actively — expect substantive editorial engagement, not copyediting only. We will not publish a piece without the writer's agreement to the final version.</p>
 
-      <p>We purchase first publication rights. Copyright remains with the author. We ask for a thirty-day exclusive before the piece appears elsewhere in substantially similar form.</p>
+      <p>Copyright remains with the author. We ask for a thirty-day exclusive before the piece appears elsewhere in substantially similar form.</p>
 
-      <h2>What We Pay</h2>
+      <h2>Compensation</h2>
 
-      <p>We are a new publication building toward sustainability. We will be transparent about our payment rates as our financial situation allows. We will not ask writers to work for exposure.</p>
-
-      <h2>Letters to the Editor</h2>
-
-      <p>Letters responding to published work: <a href="mailto:{{ site.email }}">{{ site.email }}</a>. Include your name, city, and a brief statement of your relevant background if applicable. Letters may be edited for length and clarity. We publish a selection, not all submissions.</p>
+      <p>{{ site.title }} is an independent, self-funded publication with no revenue. We cannot offer payment at this time. Contributors retain full copyright and are free to republish their work after the exclusivity window. We are transparent about this because we believe writers deserve honesty, not euphemism.</p>
 
     </div>
   </div>

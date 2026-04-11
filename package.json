@@ -18,5 +18,8 @@
     "markdown-it-anchor": "^9.2.0",
     "pagefind": "^1.4.0",
     "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "eleventy-plugin-broken-links": "^2.2.1"
   }
 }

@@ -1,0 +1,39 @@
+---
+layout: base
+title: "Thank You"
+description: Your message has been received.
+permalink: /thank-you/
+eleventyExcludeFromCollections: true
+---
+
+<div class="container" style="padding-top: var(--space-16); padding-bottom: var(--space-20);">
+  <div class="container--prose" style="margin: 0 auto; text-align: center;">
+
+    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3rem); margin-bottom: var(--space-4);">Message Received</h1>
+
+    <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 50ch; margin: 0 auto var(--space-6);">
+      Thank you for writing. We read every message and will respond if a reply is needed.
+    </p>
+
+    <p style="font-family: var(--font-ui); font-size: var(--text-sm); color: var(--color-ink-faint); max-width: 50ch; margin: 0 auto var(--space-10);">
+      If you included an email address and your message requires a response, expect to hear from us within a few business days.
+    </p>
+
+    <div style="border-top: 1px solid var(--color-rule); padding-top: var(--space-8); max-width: 400px; margin: 0 auto var(--space-10);">
+      <p style="font-family: var(--font-ui); font-size: var(--text-sm); font-weight: 600; color: var(--color-ink); margin-bottom: var(--space-3);">While you're here</p>
+      {% set subscribeVariant = "inline" %}
+      {% include "partials/subscribe.njk" %}
+    </div>
+
+    <div style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap; font-family: var(--font-ui); font-size: var(--text-sm);">
+      <a href="/" style="color: var(--color-link); text-decoration: none; font-weight: 600;">Home</a>
+      <span style="color: var(--color-rule);">&middot;</span>
+      <a href="/start-here/" style="color: var(--color-link); text-decoration: none; font-weight: 600;">Start Here</a>
+      <span style="color: var(--color-rule);">&middot;</span>
+      <a href="/library/" style="color: var(--color-link); text-decoration: none; font-weight: 600;">Library</a>
+      <span style="color: var(--color-rule);">&middot;</span>
+      <a href="/quotes/" style="color: var(--color-link); text-decoration: none; font-weight: 600;">Quotes</a>
+    </div>
+
+  </div>
+</div>
