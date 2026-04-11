@@ -131,7 +131,14 @@ layout: layouts/base.njk
           {% endif %}
           <span class="article-header__word-count">{{ content | wordCount }} words</span>
           <span class="article-header__reading-time">{{ content | readingTime }}</span>
+          <span class="article-header__listen-time">Listen: ~{{ (content | readingMins * 1.3) | round }}m</span>
         </div>
+
+        {% if tags %}
+        <div class="article-header__topics">
+          {% for tag in tags %}{% if tag != "post" %}<a href="/topics/{{ tag | slugify }}/" class="article-header__tag">{{ tag }}</a>{% endif %}{% endfor %}
+        </div>
+        {% endif %}
 
         <div class="article-header__actions">
 
@@ -305,6 +312,13 @@ layout: layouts/base.njk
             <span class="btn-label">Cite</span>
           </button>
 
+          {# 8. Suggest a correction #}
+          <a class="article-action-btn" href="/corrections/report/" aria-label="Suggest a correction">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <span class="btn-label">Correct</span>
+          </a>
 
         </div>
 
@@ -409,19 +423,6 @@ layout: layouts/base.njk
       {# Article footer #}
       <footer class="article-footer">
 
-        {# Tags #}
-        {% if tags %}
-        <div class="article-footer__tags">
-          <p class="article-footer__tags-label">Topics</p>
-          <ul class="tag-list">
-            {% for tag in tags %}
-            {% if tag != "post" %}
-            <li class="tag-list__item"><a href="/topics/{{ tag | slugify }}/">{{ tag }}</a></li>
-            {% endif %}
-            {% endfor %}
-          </ul>
-        </div>
-        {% endif %}
 
         {# Author bio #}
         {% if author and authors[author] %}
@@ -444,12 +445,6 @@ layout: layouts/base.njk
           {% endfor %}
         </div>
         {% endif %}
-
-        <div class="suggest-correction">
-          <a href="/corrections/report/" class="suggest-correction__link">
-            Suggest a correction
-          </a>
-        </div>
 
       </footer>
 
