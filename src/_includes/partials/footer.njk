@@ -1,10 +1,11 @@
 <footer class="site-footer" role="contentinfo" data-pagefind-ignore>
   <div class="container">
 
-    {# ── Subscribe strip ── #}
-    <div class="footer-subscribe-strip">
+    {# ── Footer grid ── #}
+    <div class="site-footer__grid">
 
-      <div>
+      {# Column 0: Branding #}
+      <div class="site-footer__brand">
         <p style="font-family: var(--font-masthead); font-size: clamp(1rem, 3vw, var(--text-xl)); color: var(--color-ink); margin-bottom: var(--space-2); display: flex; align-items: center; gap: 0.5rem; white-space: nowrap;">
           <img src="/assets/favicon.svg" alt="" aria-hidden="true" width="24" height="24">{{ site.title }}
         </p>
@@ -15,16 +16,6 @@
           Founded {{ site.founded }}. Independent. Accountable to no one but the truth.
         </p>
       </div>
-
-      <div>
-        {% set subscribeVariant = "footer" %}
-        {% include "partials/subscribe.njk" %}
-      </div>
-
-    </div>
-
-    {# ── Footer grid — 5 columns ── #}
-    <div class="site-footer__grid">
 
       {# Column 1: Sections (editorial only) #}
       <div>
@@ -125,6 +116,13 @@
           <li><a href="/sitemap.xml">Sitemap</a></li>
           <li><a href="/feed.xml">RSS</a></li>
         </ul>
+      </div>
+
+      {# Column 8: Subscribe #}
+      <div>
+        <p class="site-footer__heading">Subscribe</p>
+        {% set subscribeVariant = "footer" %}
+        {% include "partials/subscribe.njk" %}
       </div>
 
     </div>

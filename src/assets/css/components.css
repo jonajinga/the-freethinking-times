@@ -175,7 +175,7 @@
   visibility: hidden;
   transform: translateY(-6px);
   pointer-events: none;
-  transition: opacity 0.15s ease, visibility 0.15s ease, transform 0.15s ease;
+  transition: opacity 0.15s ease 0.15s, visibility 0.15s ease 0.15s, transform 0.15s ease 0.15s;
 }
 
 /* Show each dropdown only on its own trigger — one rule per nav item */
@@ -209,6 +209,7 @@
   visibility: visible;
   transform: translateY(0);
   pointer-events: auto;
+  transition-delay: 0s;
 }
 
 .nav-dropdown__item {
@@ -612,17 +613,23 @@ a.dateline:hover { color: var(--color-accent); }
 
 .site-footer__grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: var(--space-6);
+  grid-template-columns: 2fr repeat(7, 1fr) 1.5fr;
+  gap: var(--space-4);
   margin-bottom: var(--space-8);
 }
 
-@media (max-width: 1100px) {
+.site-footer__brand {
+  padding-right: var(--space-4);
+}
+
+@media (max-width: 1200px) {
   .site-footer__grid { grid-template-columns: repeat(4, 1fr); }
+  .site-footer__brand { grid-column: span 2; }
 }
 
 @media (max-width: 700px) {
   .site-footer__grid { grid-template-columns: repeat(2, 1fr); }
+  .site-footer__brand { grid-column: span 2; }
 }
 
 @media (max-width: 600px) {

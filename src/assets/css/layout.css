@@ -171,23 +171,11 @@
 }
 
 .article-layout__inner {
-  display: grid;
-  grid-template-columns: 1fr 260px;
-  gap: var(--space-12);
-  align-items: start;
+  max-width: var(--max-width-prose);
+  margin-inline: auto;
 }
 
 .article-layout__body { }
-
-.article-layout__aside {
-  position: sticky;
-  top: var(--space-6);
-}
-
-@media (max-width: 960px) {
-  .article-layout__inner { grid-template-columns: 1fr; }
-  .article-layout__aside { position: static; }
-}
 
 /* ── Sidebar Widgets ────────────────────────────────────────── */
 .sidebar-widget {

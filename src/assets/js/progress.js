@@ -338,11 +338,10 @@
 
   /* ── Table of contents ────────────────────────────────────── */
   var articleBody = document.querySelector('.article-body');
-  var tocWidget   = document.getElementById('toc-widget');
   var tocNav      = document.getElementById('toc-nav');
   var tocMasthead = document.querySelector('.masthead');
 
-  if (articleBody && tocWidget && tocNav) {
+  if (articleBody && tocNav) {
     var headings = Array.prototype.slice.call(
       articleBody.querySelectorAll('h2, h3')
     );
@@ -381,7 +380,7 @@
       });
 
       tocNav.appendChild(ul);
-      tocWidget.hidden = false;
+      // TOC populated in reader panel
 
       // Scroll spy with IntersectionObserver
       var tocLinks = Array.prototype.slice.call(tocNav.querySelectorAll('.toc-list__link'));
