@@ -100,7 +100,9 @@
       const opts = {};
       if (activeSection) opts.filters = { section: activeSection };
       const search = await pagefind.search(query.trim() || null, opts);
-      const data   = await Promise.all(search.results.slice(0, 8).map(r => r.data()));
+      const totalCount = search.results.length;
+      const pageSize = 5;
+      const data = await Promise.all(search.results.slice(0, pageSize).map(r => r.data()));
 
       if (data.length === 0) {
         const msg = query.trim()
@@ -110,13 +112,51 @@
         return;
       }
 
-      results.innerHTML = data.map(item => `
+      let html = data.map(item => `
         <a class="search-result" href="${item.url}">
           <span class="search-result__meta">${item.meta?.section || ''}</span>
           <span class="search-result__title">${item.meta?.title || 'Untitled'}</span>
           <span class="search-result__excerpt">${item.excerpt}</span>
         </a>
       `).join('');
+
+      // Show more button if there are additional results
+      if (totalCount > pageSize) {
+        html += `<div class="search-more">
+          <button class="search-more__btn" type="button" id="search-show-more" data-shown="${pageSize}" data-total="${totalCount}">
+            Show more (${totalCount - pageSize} remaining)
+          </button>
+          <a class="search-more__link" href="/search/?q=${encodeURIComponent(query.trim())}${activeSection ? '&section=' + encodeURIComponent(activeSection) : ''}">
+            View all on search page →
+          </a>
+        </div>`;
+      }
+
+      results.innerHTML = html;
+
+      // Bind show more button
+      const moreBtn = document.getElementById('search-show-more');
+      if (moreBtn) {
+        moreBtn.addEventListener('click', async function () {
+          const shown = parseInt(moreBtn.dataset.shown, 10);
+          const nextBatch = await Promise.all(search.results.slice(shown, shown + pageSize).map(r => r.data()));
+          const newShown = shown + nextBatch.length;
+          const moreHtml = nextBatch.map(item => `
+            <a class="search-result" href="${item.url}">
+              <span class="search-result__meta">${item.meta?.section || ''}</span>
+              <span class="search-result__title">${item.meta?.title || 'Untitled'}</span>
+              <span class="search-result__excerpt">${item.excerpt}</span>
+            </a>
+          `).join('');
+          moreBtn.parentElement.insertAdjacentHTML('beforebegin', moreHtml);
+          moreBtn.dataset.shown = newShown;
+          if (newShown >= totalCount) {
+            moreBtn.parentElement.remove();
+          } else {
+            moreBtn.textContent = `Show more (${totalCount - newShown} remaining)`;
+          }
+        });
+      }
     } catch (e) {
       results.innerHTML = '<p class="search-notice">Search error. Please try again.</p>';
     }

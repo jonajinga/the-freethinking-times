@@ -20,6 +20,7 @@ permalink: /timeline/{{ event.title | slugify }}/
 
     <article data-pagefind-body>
       <div aria-hidden="true" style="display:none">
+        <span data-pagefind-meta="title">{% if event.year < 0 %}{{ event.year * -1 }} BCE{% else %}{{ event.year }}{% endif %} — {{ event.title }}</span>
         <span data-pagefind-meta="section">Timeline</span>
         <span data-pagefind-filter="section">Timeline</span>
         <span data-pagefind-filter="era">{{ event.era }}</span>

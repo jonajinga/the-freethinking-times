@@ -20,6 +20,7 @@ permalink: /quotes/{{ q | quoteSlug }}/
 
     <article data-pagefind-body>
       <div aria-hidden="true" style="display:none">
+        <span data-pagefind-meta="title">{{ q.author }} — &ldquo;{{ q.quote | truncate(80, true, "...") }}&rdquo;</span>
         <span data-pagefind-meta="section">Quotes</span>
         <span data-pagefind-filter="section">Quotes</span>
         <span data-pagefind-meta="author">{{ q.author }}</span>
