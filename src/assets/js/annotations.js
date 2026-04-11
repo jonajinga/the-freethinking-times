@@ -229,13 +229,13 @@
           mark.style.cursor = 'pointer';
           mark.title = 'Click to view in reader panel';
           mark.addEventListener('click', function () {
-            // Open panel and scroll to this annotation
             if (window.__openReaderPanel) window.__openReaderPanel();
             setTimeout(function () {
-              // Switch to highlights tab
-              var hlTab = document.querySelector('[data-target="article-panel-highlights"]');
-              if (hlTab) hlTab.click();
-              // Find the matching item in the panel
+              // Switch to the right tab (notes or highlights)
+              var targetTab = hasNote ? 'article-panel-notes' : 'article-panel-highlights';
+              var tab = document.querySelector('[data-target="' + targetTab + '"]');
+              if (tab) tab.click();
+              // Find the matching item
               var panelItem = document.querySelector('.library-annotation-item[data-ann-id="' + annId + '"]');
               if (panelItem) {
                 panelItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
@@ -268,6 +268,7 @@
       list.sort(function (a, b) { return b.ts - a.ts; }).forEach(function (ann) {
         var item = document.createElement('div');
         item.className = 'library-annotation-item';
+        item.dataset.annId = ann.id;
         item.style.cursor = 'pointer';
 
         var dateStr = fmtDate(ann.ts);
@@ -278,6 +279,8 @@
           (ann.note ? '<p class="library-annotation-item__note">' + escHtml(ann.note) + '</p>' : '') +
           '<p style="font-size:var(--text-xs);color:var(--color-ink-faint);margin:var(--space-1) 0 0;">' + dateStr + modStr + '</p>' +
           '<div class="library-annotation-item__actions">' +
+            '<button class="library-annotation-item__action" data-ann-copy>Copy</button>' +
+            '<button class="library-annotation-item__action" data-ann-share>Share</button>' +
             (ann.note ? '<button class="library-annotation-item__action" data-ann-edit="' + escHtml(ann.id) + '">Edit</button>' : '') +
             '<button class="library-annotation-item__action" data-ann-delete="' + escHtml(ann.id) + '">Delete</button>' +
           '</div>';
@@ -289,6 +292,29 @@
             mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
             mark.style.outline = '2px solid var(--color-link)';
             setTimeout(function () { mark.style.outline = ''; }, 2000);
+          }
+        });
+
+        // Copy
+        item.querySelector('[data-ann-copy]').addEventListener('click', function (e) {
+          e.stopPropagation();
+          var text = '"' + ann.quote + '"' + (ann.note ? '\nNote: ' + ann.note : '');
+          navigator.clipboard.writeText(text).then(function () {
+            e.target.textContent = 'Copied!';
+            setTimeout(function () { e.target.textContent = 'Copy'; }, 1500);
+          });
+        });
+        // Share
+        item.querySelector('[data-ann-share]').addEventListener('click', function (e) {
+          e.stopPropagation();
+          var text = '"' + ann.quote + '"' + (ann.note ? ' — Note: ' + ann.note : '') + '\n\nFrom: ' + pageTitle + '\n' + location.origin + pageUrl;
+          if (navigator.share) {
+            navigator.share({ text: text }).catch(function () {});
+          } else {
+            navigator.clipboard.writeText(text).then(function () {
+              e.target.textContent = 'Copied!';
+              setTimeout(function () { e.target.textContent = 'Share'; }, 1500);
+            });
           }
         });
 
