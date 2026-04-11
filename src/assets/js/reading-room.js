@@ -87,7 +87,7 @@ if (btn && panel) {
     }
 
     // Load Trystero only when user clicks Join
-    import('https://cdn.jsdelivr.net/npm/trystero@0.23.0/dist/torrent.mjs').then(function (mod) {
+    import('/assets/js/trystero-torrent.bundle.mjs').then(function (mod) {
       joinRoomFn = mod.joinRoom;
       joinRoomNow();
     }).catch(function (e) {
