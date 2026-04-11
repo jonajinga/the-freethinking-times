@@ -651,8 +651,14 @@
       if (annotateBtn) {
         annotateBtn.addEventListener('click', function () {
           if (!lastRange) return;
+          // Save range before prompt clears selection
+          var savedText = lastRange.text;
+          var savedRange = lastRange.range ? lastRange.range.cloneRange() : null;
+          var savedHeading = getNearestHeading();
           var note = prompt('Add a note (optional):') || '';
-          var annId = Annotations.add(lastRange.text, note, getNearestHeading());
+          // Restore lastRange for wrapSelectionInMark
+          lastRange = { text: savedText, range: savedRange };
+          var annId = Annotations.add(savedText, note, savedHeading);
           wrapSelectionInMark(annId, !!note);
           afterAction();
         });
