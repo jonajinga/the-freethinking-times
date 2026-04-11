@@ -143,6 +143,12 @@ module.exports = function (eleventyConfig) {
     return (str || '').toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
   });
 
+  eleventyConfig.addFilter("quoteSlug", (q) => {
+    const author = (q.author || "unknown").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    const words = (q.quote || "").split(/\s+/).slice(0, 6).join(" ").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    return author + "-" + words;
+  });
+
   eleventyConfig.addFilter("limit", (arr, limit) => arr.slice(0, limit));
 
   eleventyConfig.addFilter("urlencode", (str) => encodeURIComponent(str || ""));

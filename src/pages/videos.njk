@@ -39,12 +39,7 @@ permalink: /videos/
     </select>
   </div>
 
-  <div aria-hidden="true" style="display:none">
-    <span data-pagefind-meta="section">Videos</span>
-    <span data-pagefind-filter="section">Videos</span>
-  </div>
-
-  <div id="video-list" data-pagefind-body style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--space-6);">
+  <div id="video-list" data-pagefind-ignore style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--space-6);">
     {% for v in videos %}
     <div class="video-card" data-speaker="{{ v.speaker }}" data-tags="{{ v.tags | join(',') }}" style="border:1px solid var(--color-rule);border-top:3px solid var(--color-accent);display:flex;flex-direction:column;">
       <div style="position:relative;padding-bottom:56.25%;background:var(--color-ink);">
@@ -57,7 +52,7 @@ permalink: /videos/
       </div>
       <div style="padding:var(--space-4);flex:1;display:flex;flex-direction:column;gap:var(--space-2);">
         <h2 style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;margin:0;line-height:var(--leading-snug);">
-          <a href="{{ v.url }}" target="_blank" rel="noopener noreferrer" style="color:var(--color-ink);text-decoration:none;">{{ v.title }}</a>
+          <a href="/videos/{{ v.title | slugify }}/" style="color:var(--color-ink);text-decoration:none;">{{ v.title }}</a>
         </h2>
         <p style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);margin:0;">
           {{ v.speaker }} &middot; {{ v.date }} &middot; {{ v.duration }}

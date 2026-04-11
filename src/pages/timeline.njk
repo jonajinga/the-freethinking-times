@@ -27,11 +27,7 @@ permalink: /timeline/
     </select>
   </div>
 
-  <div id="timeline-list" data-pagefind-body style="max-width: var(--max-width-prose); position: relative; padding-left: var(--space-8);">
-    <div aria-hidden="true" style="display:none">
-      <span data-pagefind-meta="section">Timeline</span>
-      <span data-pagefind-filter="section">Timeline</span>
-    </div>
+  <div id="timeline-list" data-pagefind-ignore style="max-width: var(--max-width-prose); position: relative; padding-left: var(--space-8);">
     <div style="position: absolute; left: 14px; top: 0; bottom: 0; width: 2px; background: var(--color-rule);"></div>
 
     {% for event in timeline | sort(false, false, 'year') %}
@@ -41,7 +37,7 @@ permalink: /timeline/
         {% if event.year < 0 %}{{ event.year * -1 }} BCE{% else %}{{ event.year }}{% endif %}
         <span style="color: var(--color-ink-faint); font-weight: 400;"> &middot; {{ event.era }}</span>
       </p>
-      <h2 style="font-family: var(--font-headline); font-size: var(--text-md); font-weight: 700; margin: 0 0 var(--space-2); line-height: var(--leading-snug);">{{ event.title }}</h2>
+      <h2 style="font-family: var(--font-headline); font-size: var(--text-md); font-weight: 700; margin: 0 0 var(--space-2); line-height: var(--leading-snug);"><a href="/timeline/{{ event.title | slugify }}/" style="color:var(--color-ink);text-decoration:none;">{{ event.title }}</a></h2>
       <p style="font-family: var(--font-body); font-size: var(--text-sm); color: var(--color-ink-muted); margin: 0; line-height: var(--leading-normal);">{{ event.description }}</p>
     </div>
     {% endfor %}
