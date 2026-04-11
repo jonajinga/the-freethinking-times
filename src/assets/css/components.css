@@ -116,7 +116,7 @@
   position: absolute;
   top: calc(100% + var(--space-2));
   right: 0;
-  background: var(--color-bg);
+  background: var(--color-bg-alt);
   border: 1px solid var(--color-rule);
   box-shadow: var(--shadow-md);
   padding: var(--space-3);
@@ -130,6 +130,14 @@
   width: 100% !important;
   max-width: none !important;
   height: auto !important;
+  background: var(--color-bg-alt) !important;
+  color: var(--color-ink) !important;
+  border: 1px solid var(--color-rule) !important;
+}
+
+.masthead__lang-dropdown .gtranslate_wrapper select option {
+  background: var(--color-bg) !important;
+  color: var(--color-ink) !important;
 }
 
 /* ── Navigation ─────────────────────────────────────────────── */
@@ -1367,9 +1375,22 @@ a.dateline:hover { color: var(--color-accent); }
   margin-bottom: var(--space-3);
 }
 
-.subscribe-block--sidebar .subscribe-block__heading,
-.subscribe-block--footer .subscribe-block__heading {
+.subscribe-block--sidebar .subscribe-block__heading {
   font-size: var(--text-md);
+}
+
+.site-footer__brand .subscribe-block__heading {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-ink-faint);
+}
+
+.site-footer__brand .subscribe-block__body {
+  font-size: var(--text-xs);
+  margin-bottom: var(--space-3);
 }
 
 .subscribe-block__body {
