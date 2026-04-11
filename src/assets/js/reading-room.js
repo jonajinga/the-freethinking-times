@@ -14,8 +14,8 @@ if (btn && panel) {
   var peers = {};
   var myName = localStorage.getItem('tft-room-name') || '';
   var joined = false;
-  var trysteroLoaded = false;
   var joinRoomFn = null;
+  var loadError = false;
 
   function esc(s) {
     var d = document.createElement('div');
@@ -26,18 +26,20 @@ if (btn && panel) {
   function updatePanel() {
     var peerList = Object.values(peers);
     var count = peerList.length;
-    var countText = count === 0 ? 'Just you' : count + ' other' + (count !== 1 ? 's' : '') + ' reading';
 
     var html = '<div class="rr__header">' +
-      '<span class="rr__count">' + countText + '</span>' +
+      '<span class="rr__count">' + (joined ? (count === 0 ? 'Just you' : count + ' other' + (count !== 1 ? 's' : '') + ' reading') : 'Reading Room') + '</span>' +
       '<button class="rr__close" type="button" aria-label="Close">&#10005;</button>' +
       '</div>';
 
-    if (!joined) {
+    if (loadError) {
+      html += '<p class="rr__empty">Could not connect. Try refreshing the page.</p>';
+    } else if (!joined) {
       html += '<div class="rr__join">' +
         '<input class="rr__name-input" type="text" id="rr-name" placeholder="Your name (optional)" value="' + esc(myName) + '" maxlength="30">' +
-        '<button class="rr__join-btn" type="button" id="rr-join-btn">' + (trysteroLoaded ? 'Join Room' : 'Loading...') + '</button>' +
-        '</div>';
+        '<button class="rr__join-btn" type="button" id="rr-join-btn">Join Room</button>' +
+        '</div>' +
+        '<p class="rr__empty">See who else is reading this page. Peer-to-peer — no server, no tracking.</p>';
     } else {
       if (peerList.length) {
         html += '<ul class="rr__peers">';
@@ -64,7 +66,9 @@ if (btn && panel) {
         var nameInput = document.getElementById('rr-name');
         myName = nameInput ? nameInput.value.trim() : '';
         if (myName) localStorage.setItem('tft-room-name', myName);
-        joinRoomNow();
+        joinBtn.textContent = 'Connecting...';
+        joinBtn.disabled = true;
+        loadAndJoin();
       };
     }
 
@@ -76,6 +80,23 @@ if (btn && panel) {
     btn.dataset.count = joined ? (count + 1) : '';
   }
 
+  function loadAndJoin() {
+    if (joinRoomFn) {
+      joinRoomNow();
+      return;
+    }
+
+    // Load Trystero only when user clicks Join
+    import('https://esm.sh/trystero/torrent?bundle').then(function (mod) {
+      joinRoomFn = mod.joinRoom;
+      joinRoomNow();
+    }).catch(function (e) {
+      console.warn('Reading room: failed to load', e);
+      loadError = true;
+      updatePanel();
+    });
+  }
+
   function joinRoomNow() {
     if (room || !joinRoomFn) return;
 
@@ -83,6 +104,8 @@ if (btn && panel) {
       room = joinRoomFn({ appId: APP_ID }, roomId);
     } catch (e) {
       console.warn('Reading room: could not join', e);
+      loadError = true;
+      updatePanel();
       return;
     }
 
@@ -128,15 +151,5 @@ if (btn && panel) {
     if (isHidden) updatePanel();
   };
 
-  // Load Trystero lazily on first panel open
-  import('https://esm.sh/trystero/torrent').then(function (mod) {
-    joinRoomFn = mod.joinRoom;
-    trysteroLoaded = true;
-    if (!panel.hidden) updatePanel();
-  }).catch(function (e) {
-    console.warn('Reading room: failed to load Trystero', e);
-  });
-
-  updatePanel();
   panel.hidden = true;
 }
