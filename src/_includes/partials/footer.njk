@@ -15,9 +15,8 @@
         <p style="font-size: var(--text-xs); color: var(--color-ink-faint); margin-bottom: var(--space-4);">
           Founded {{ site.founded }}. Independent. Accountable to no one but the truth.
         </p>
-        <a href="/support/" class="btn btn--accent" style="font-size: var(--text-xs);">
-          Support Us →
-        </a>
+        {% set subscribeVariant = "footer" %}
+        {% include "partials/subscribe.njk" %}
       </div>
 
       {# Column 1: Sections (editorial only) #}
@@ -114,13 +113,6 @@
           <li><a href="/sitemap.xml">Sitemap</a></li>
           <li><a href="/feed.xml">RSS</a></li>
         </ul>
-      </div>
-
-      {# Column 8: Subscribe #}
-      <div>
-        <p class="site-footer__heading">Subscribe</p>
-        {% set subscribeVariant = "footer" %}
-        {% include "partials/subscribe.njk" %}
       </div>
 
     </div>

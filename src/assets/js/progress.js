@@ -159,10 +159,14 @@
         if (!voices.length) return; // not ready yet — wait for onvoiceschanged
         if (!voiceSelect) return;
 
-        // Filter to English voices, sorted by name
+        // Filter to English voices, prefer network over offline
         var list = voices.filter(function (v) { return v.lang.startsWith('en'); });
         if (!list.length) list = voices;
-        list.sort(function (a, b) { return a.name.localeCompare(b.name); });
+        list.sort(function (a, b) {
+          // Network voices first, then alphabetical
+          if (a.localService !== b.localService) return a.localService ? 1 : -1;
+          return a.name.localeCompare(b.name);
+        });
 
         if (list.length <= 1) {
           voiceSelect.hidden = true;
@@ -234,24 +238,42 @@
         b.classList.toggle('is-active', parseFloat(b.dataset.rate) === ttsRate);
       });
 
-      /* — Main button: start / emergency stop — */
+      /* — Main button: show controls (first click) / stop (while speaking) — */
       ttsBtn.addEventListener('click', function () {
         if (ttsSpeaking) { stopTts(); return; }
+        if (ttsControls) {
+          ttsControls.hidden = !ttsControls.hidden;
+        }
+      });
+
+      function startTts() {
         var body = document.querySelector('.article-body');
         if (!body) return;
         ttsText = body.innerText;
-        window.speechSynthesis.speak(buildUtterance(ttsText));
-        ttsSpeaking = true;
-        if (ttsControls) ttsControls.hidden = false;
-        ttsBtn.setAttribute('aria-label', 'Stop reading');
-        ttsBtn.classList.add('is-speaking');
-      });
+        // Cancel any pending speech first (fixes Chrome silent bug)
+        window.speechSynthesis.cancel();
+        // Small delay after cancel to let Chrome reset
+        setTimeout(function () {
+          window.speechSynthesis.speak(buildUtterance(ttsText));
+          ttsSpeaking = true;
+          ttsBtn.setAttribute('aria-label', 'Stop reading');
+          ttsBtn.classList.add('is-speaking');
+        }, 50);
+      }
 
-      /* — Pause / Resume — */
+      /* — Play / Pause / Resume — */
       if (ttsPauseBtn) {
+        // Show play icon initially (not speaking yet)
+        ttsPauseBtn.setAttribute('aria-label', 'Play');
+        ttsPauseBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+
         ttsPauseBtn.addEventListener('click', function () {
-          if (!ttsSpeaking) return;
-          if (ttsPaused) {
+          if (!ttsSpeaking) {
+            // Start playing
+            startTts();
+            ttsPauseBtn.setAttribute('aria-label', 'Pause');
+            ttsPauseBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+          } else if (ttsPaused) {
             window.speechSynthesis.resume();
             ttsPaused = false;
             ttsPauseBtn.setAttribute('aria-label', 'Pause');
@@ -269,6 +291,11 @@
       if (ttsStopBtn) {
         ttsStopBtn.addEventListener('click', stopTts);
       }
+
+      /* — Stop on navigate away — */
+      window.addEventListener('beforeunload', function () {
+        if (ttsSpeaking) window.speechSynthesis.cancel();
+      });
 
       /* — Speed — */
       speedBtns.forEach(function (btn) {

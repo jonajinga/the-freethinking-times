@@ -129,16 +129,16 @@ layout: layouts/base.njk
           {% if location %}
           <span class="dateline">{{ location }}</span>
           {% endif %}
-          <span class="article-header__word-count">{{ content | wordCount }} words</span>
-          <span class="article-header__reading-time">{{ content | readingTime }}</span>
-          <span class="article-header__listen-time">Listen: ~{{ (content | readingMins * 1.3) | round }}m</span>
         </div>
 
-        {% if tags %}
-        <div class="article-header__topics">
-          {% for tag in tags %}{% if tag != "post" %}<a href="/topics/{{ tag | slugify }}/" class="article-header__tag">{{ tag }}</a>{% endif %}{% endfor %}
+        <div class="article-header__meta-row">
+          <span>{{ content | wordCount }} words</span>
+          <span>{{ content | readingTime }}</span>
+          <span>Listen ~{{ (content | readingMins * 1.3) | round }}m</span>
+          {% if tags %}
+          <span class="article-header__meta-tags">{% for tag in tags %}{% if tag != "post" %}<a href="/topics/{{ tag | slugify }}/">{{ tag }}</a>{% endif %}{% endfor %}</span>
+          {% endif %}
         </div>
-        {% endif %}
 
         <div class="article-header__actions">
 

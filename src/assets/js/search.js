@@ -99,7 +99,7 @@
     try {
       const opts = {};
       if (activeSection) opts.filters = { section: activeSection };
-      const search = await pagefind.search(query.trim() || null, opts);
+      const search = await pagefind.search(query.trim() || '', opts);
       const data   = await Promise.all(search.results.slice(0, 8).map(r => r.data()));
 
       if (data.length === 0) {

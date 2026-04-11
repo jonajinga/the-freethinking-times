@@ -347,93 +347,59 @@
     <button class="nav-drawer__close" id="nav-drawer-close" type="button" aria-label="Close navigation menu" onclick="var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-drawer-overlay');d.classList.remove('is-open');o.classList.remove('is-open');d.setAttribute('aria-hidden','true');document.getElementById('nav-drawer-toggle').setAttribute('aria-expanded','false');document.body.style.overflow='';">✕</button>
   </div>
 
-  {# ── Quick actions (right below title) ── #}
-  <div class="nav-drawer__actions">
-    <a class="nav-drawer__action-btn" href="/notes/" aria-label="Notes & highlights" title="Notes & highlights">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-    </a>
-    <a class="nav-drawer__action-btn" href="/reading-list/" aria-label="Reading list" title="Reading list">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-    </a>
-    <a class="nav-drawer__action-btn" href="/random/" aria-label="Surprise me" title="Surprise me">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
-    </a>
-    <button class="nav-drawer__action-btn js-only" type="button" aria-label="Toggle dark mode" title="Toggle dark mode" onclick="var t=document.getElementById('theme-toggle');if(t)t.click();">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-    </button>
-    {% if site.gtranslate %}
-    <a class="nav-drawer__action-btn" href="/language/" aria-label="Language" title="Language">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-    </a>
-    {% endif %}
-  </div>
-
-  <div class="nav-drawer__divider"></div>
-
-  {# ── Sections (editorial content) ── #}
-  <p class="nav-drawer__section-label">Sections</p>
+  {# ── Primary nav (editorial sections) ── #}
   <ul class="nav-drawer__list" role="list">
     {% for item in site.nav %}
     {% if item.collection %}
-    <li>
-      <a class="nav-drawer__link" href="{{ item.url }}" {% if page.url == item.url %}aria-current="page"{% endif %}>
-        {{ item.label }}
-      </a>
-    </li>
+    <li><a class="nav-drawer__link nav-drawer__link--primary" href="{{ item.url }}" {% if page.url == item.url %}aria-current="page"{% endif %}>{{ item.label }}</a></li>
     {% endif %}
     {% endfor %}
   </ul>
 
   <div class="nav-drawer__divider"></div>
 
-  {# ── Explore (content collections & projects) ── #}
-  <p class="nav-drawer__section-label">Explore</p>
+  {# ── Explore ── #}
   <ul class="nav-drawer__list" role="list">
-    <li><a class="nav-drawer__link" href="/library/" {% if page.url == "/library/" %}aria-current="page"{% endif %}>Public Domain Library</a></li>
-    <li><a class="nav-drawer__link" href="/quotes/" {% if page.url == "/quotes/" %}aria-current="page"{% endif %}>Quotes</a></li>
-    <li><a class="nav-drawer__link" href="/videos/" {% if page.url == "/videos/" %}aria-current="page"{% endif %}>Videos</a></li>
-    <li><a class="nav-drawer__link" href="/timeline/" {% if page.url == "/timeline/" %}aria-current="page"{% endif %}>Timeline</a></li>
-    <li><a class="nav-drawer__link" href="/projects/" {% if page.url == "/projects/" %}aria-current="page"{% endif %}>Projects</a></li>
-    <li><a class="nav-drawer__link" href="/games/" {% if page.url == "/games/" %}aria-current="page"{% endif %}>Games</a></li>
+    <li><a class="nav-drawer__link" href="/library/">Library</a></li>
+    <li><a class="nav-drawer__link" href="/quotes/">Quotes</a></li>
+    <li><a class="nav-drawer__link" href="/videos/">Videos</a></li>
+    <li><a class="nav-drawer__link" href="/timeline/">Timeline</a></li>
+    <li><a class="nav-drawer__link" href="/projects/">Projects</a></li>
+    <li><a class="nav-drawer__link" href="/games/">Games</a></li>
   </ul>
 
   <div class="nav-drawer__divider"></div>
 
-  {# ── Community & Events ── #}
-  <p class="nav-drawer__section-label">Community & Events</p>
+  {# ── Community & more ── #}
   <ul class="nav-drawer__list" role="list">
-    <li><a class="nav-drawer__link" href="/community/" {% if page.url == "/community/" %}aria-current="page"{% endif %}>Community</a></li>
-    <li><a class="nav-drawer__link" href="/events/" {% if page.url == "/events/" %}aria-current="page"{% endif %}>Events Calendar</a></li>
-    <li><a class="nav-drawer__link" href="/contribute/" {% if page.url == "/contribute/" %}aria-current="page"{% endif %}>Contribute</a></li>
-    <li><a class="nav-drawer__link" href="/submit/" {% if page.url == "/submit/" %}aria-current="page"{% endif %}>Submit a Piece</a></li>
-    <li><a class="nav-drawer__link" href="/tips/" {% if page.url == "/tips/" %}aria-current="page"{% endif %}>Tip Line</a></li>
-    <li><a class="nav-drawer__link" href="/feedback/" {% if page.url == "/feedback/" %}aria-current="page"{% endif %}>Feedback</a></li>
+    <li><a class="nav-drawer__link" href="/community/">Community</a></li>
+    <li><a class="nav-drawer__link" href="/events/">Events</a></li>
+    <li><a class="nav-drawer__link" href="/resources/">Resources</a></li>
+    <li><a class="nav-drawer__link" href="/contribute/">Contribute</a></li>
+    <li><a class="nav-drawer__link" href="/more/">More</a></li>
   </ul>
 
   <div class="nav-drawer__divider"></div>
 
-  {# ── Resources & Tools ── #}
-  <p class="nav-drawer__section-label">Resources & Tools</p>
+  {# ── Footer links ── #}
   <ul class="nav-drawer__list" role="list">
-    <li><a class="nav-drawer__link" href="/resources/" {% if page.url == "/resources/" %}aria-current="page"{% endif %}>Freethought Resources</a></li>
-    <li><a class="nav-drawer__link" href="/reader/" {% if page.url == "/reader/" %}aria-current="page"{% endif %}>RSS Reader</a></li>
-    <li><a class="nav-drawer__link" href="/start-here/" {% if page.url == "/start-here/" %}aria-current="page"{% endif %}>Start Here</a></li>
-    <li><a class="nav-drawer__link" href="/notes/" {% if page.url == "/notes/" %}aria-current="page"{% endif %}>Notes & Highlights</a></li>
-    <li><a class="nav-drawer__link" href="/reading-list/" {% if page.url == "/reading-list/" %}aria-current="page"{% endif %}>Reading List</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/about/">About</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/contact/">Contact</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/support/">Support</a></li>
   </ul>
 
-  <div class="nav-drawer__divider"></div>
-
-  {# ── About & Policies ── #}
-  <p class="nav-drawer__section-label">About</p>
-  <ul class="nav-drawer__list" role="list">
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/about/">About Us</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/masthead/">Masthead</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/ethics/">Ethics Policy</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/archives/">Archives</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/editions/">Editions</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--secondary" href="/corrections/">Corrections</a></li>
-  </ul>
-
+  {# ── Bottom toolbar ── #}
+  <div class="nav-drawer__toolbar">
+    <a href="/notes/" title="Notes"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></a>
+    <a href="/reading-list/" title="Reading list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></a>
+    <a href="/random/" title="Surprise me"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg></a>
+    <button type="button" title="Dark mode" class="js-only" onclick="var t=document.getElementById('theme-toggle');if(t)t.click();"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+    {% if site.gtranslate %}
+    <button type="button" title="Language" class="js-only" onclick="var w=document.querySelector('.nav-drawer .gtranslate_wrapper');if(w){w.hidden=!w.hidden;}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></button>
+    {% endif %}
+  </div>
+  {% if site.gtranslate %}
+  <div class="gtranslate_wrapper" hidden style="padding:var(--space-2) var(--space-5);"></div>
+  {% endif %}
 
 </nav>
