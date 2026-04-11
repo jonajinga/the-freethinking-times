@@ -81,6 +81,25 @@
           </svg>
         </a>
 
+        {# Language #}
+        {% if site.gtranslate %}
+        <div class="masthead__lang-wrap">
+          <button
+            class="masthead__icon-btn js-only"
+            type="button"
+            aria-label="Change language"
+            title="Change language"
+            onclick="var p=this.nextElementSibling;p.hidden=!p.hidden;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </button>
+          <div class="masthead__lang-dropdown" hidden>
+            <div class="gtranslate_wrapper"></div>
+          </div>
+        </div>
+        {% endif %}
+
         {# Dark mode — set-and-forget preference #}
         <button
           class="masthead__icon-btn js-only"
@@ -399,7 +418,7 @@
     {% endif %}
   </div>
   {% if site.gtranslate %}
-  <div class="gtranslate_wrapper" hidden style="padding:var(--space-2) var(--space-5);"></div>
+  <div class="gtranslate_wrapper nav-drawer__lang" hidden></div>
   {% endif %}
 
 </nav>

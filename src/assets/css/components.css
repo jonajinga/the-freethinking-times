@@ -107,6 +107,31 @@
 [data-theme="dark"] .icon-sun { display: block; }
 [data-theme="dark"] .icon-moon { display: none; }
 
+/* ── Masthead language dropdown ─────────────────────────────── */
+.masthead__lang-wrap {
+  position: relative;
+}
+
+.masthead__lang-dropdown {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  background: var(--color-bg);
+  border: 1px solid var(--color-rule);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-3);
+  z-index: var(--z-overlay);
+  min-width: 180px;
+}
+
+.masthead__lang-dropdown .gtranslate_wrapper select {
+  font-size: var(--text-sm) !important;
+  padding: var(--space-2) var(--space-3) !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+}
+
 /* ── Navigation ─────────────────────────────────────────────── */
 .site-nav {
   position: relative;
@@ -622,6 +647,10 @@ a.dateline:hover { color: var(--color-accent); }
   padding-right: var(--space-4);
 }
 
+.site-footer__brand .subscribe-block--footer .subscribe-form {
+  max-width: 280px;
+}
+
 @media (max-width: 1200px) {
   .site-footer__grid { grid-template-columns: repeat(4, 1fr); }
   .site-footer__brand { grid-column: span 2; }
@@ -860,11 +889,29 @@ a.dateline:hover { color: var(--color-accent); }
 
 .nav-drawer__label {
   font-family: var(--font-masthead);
-  font-size: var(--text-sm);
+  font-size: var(--text-md);
   font-weight: 700;
   color: var(--color-ink);
   flex: 1;
   text-align: center;
+}
+
+.nav-drawer__lang {
+  padding: var(--space-3) var(--space-6);
+  text-align: center;
+}
+
+.nav-drawer__lang select {
+  width: 100%;
+  font-size: var(--text-md) !important;
+  padding: var(--space-3) var(--space-4) !important;
+  max-width: none !important;
+  height: 48px;
+}
+
+.nav-drawer__lang a,
+.nav-drawer__lang option {
+  font-size: var(--text-md) !important;
 }
 
 .nav-drawer__close {
@@ -1549,16 +1596,21 @@ a.dateline:hover { color: var(--color-accent); }
 .nav-drawer .gtranslate_wrapper select,
 .sidebar-widget .gtranslate_wrapper select {
   font-family: var(--font-ui) !important;
-  font-size: 7px !important;
-  color: var(--color-ink-muted) !important;
+  font-size: var(--text-sm) !important;
+  color: var(--color-ink) !important;
   background: var(--color-bg) !important;
   border: 1px solid var(--color-rule) !important;
   border-radius: var(--radius-sm) !important;
-  padding: var(--space-1) var(--space-2) !important;
-  height: 1.75rem !important;
-  max-width: 130px !important;
+  padding: var(--space-2) var(--space-3) !important;
+  height: auto !important;
+  max-width: none !important;
   width: 100% !important;
   cursor: pointer !important;
+}
+
+.nav-drawer__lang .gtranslate_wrapper select {
+  font-size: var(--text-md) !important;
+  padding: var(--space-3) var(--space-4) !important;
 }
 
 .nav-drawer .gtranslate_wrapper img,
