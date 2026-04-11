@@ -10,6 +10,7 @@ layout: layouts/base.njk
     {% if leadStory %}
     {% set article = leadStory %}
     {% set size = "lg" %}
+    {% set showImage = true %}
     {% include "partials/article-card.njk" %}
     {% endif %}
   </section>
@@ -36,7 +37,7 @@ layout: layouts/base.njk
   <section class="front-section-strip" aria-label="{{ sectionKey | title }} section">
 
     {# Section label column #}
-    <div>
+    <div class="front-section-strip__label">
       <a href="/{{ sectionKey }}/"
          class="section-badge section-badge--{{ sectionKey }}"
          style="font-size: var(--text-md); display: block; margin-bottom: var(--space-3);">
@@ -51,7 +52,7 @@ layout: layouts/base.njk
     </div>
 
     {# Articles in this section #}
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-6);">
+    <div class="front-section-strip__articles">
       {% for item in sectionItems %}
       {% set article = item %}
       {% set size = "sm" %}
@@ -63,31 +64,29 @@ layout: layouts/base.njk
   {% endif %}
   {% endfor %}
 
-  {# ─── Arts / Science / Letters row ────────────────────────── #}
-  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-8); padding: var(--space-8) 0; border-top: 1px solid var(--color-rule); margin-top: var(--space-4);">
-
+  {# ─── Quick Sections ──────────────────────────────────────── #}
+  <section class="front-quick" aria-label="More sections">
     {% set quickSections = ["arts-culture", "science-technology", "letters"] %}
     {% for sectionKey in quickSections %}
     {% set sectionItems = collections[sectionKey] | limit(3) %}
-    <div>
+    <div class="front-quick__col">
       <a href="/{{ sectionKey }}/"
-         class="section-badge section-badge--{{ sectionKey }}"
-         style="display: block; margin-bottom: var(--space-4); font-size: var(--text-sm);">
+         class="section-badge section-badge--{{ sectionKey }} front-quick__badge">
         {{ sectionKey | replace("-", " ") | title }}
       </a>
       {% for item in sectionItems %}
-      <div style="{% if not loop.last %}padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-rule); margin-bottom: var(--space-3);{% endif %}">
-        <a href="{{ item.url }}" style="font-family: var(--font-headline); font-size: var(--text-base); font-weight: 600; color: var(--color-ink); text-decoration: none; line-height: var(--leading-snug); display: block;">
-          {{ item.data.title }}
-        </a>
-        <time style="font-family: var(--font-ui); font-size: var(--text-xs); color: var(--color-ink-faint);">
-          {{ item.date | shortDate }}
-        </time>
+      <div class="front-quick__item{% if not loop.last %} front-quick__item--border{% endif %}">
+        <a href="{{ item.url }}" class="front-quick__link">{{ item.data.title }}</a>
+        <time class="front-quick__date">{{ item.date | shortDate }}</time>
       </div>
       {% endfor %}
     </div>
     {% endfor %}
+  </section>
 
+  {# ─── Explore banner ──────────────────────────────────────── #}
+  <div class="front-explore">
+    <p class="front-explore__text">Beyond the articles: <a href="/library/">Library</a> · <a href="/quotes/">Quotes</a> · <a href="/videos/">Videos</a> · <a href="/timeline/">Timeline</a> · <a href="/events/">Events</a> · <a href="/more/">More</a></p>
   </div>
 
 </div>{# /.container #}

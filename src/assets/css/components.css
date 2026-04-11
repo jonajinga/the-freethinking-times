@@ -453,8 +453,8 @@
 .article-card__eyebrow {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  margin-bottom: var(--space-1);
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
 }
 
 .article-card__headline {

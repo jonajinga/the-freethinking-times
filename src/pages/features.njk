@@ -29,6 +29,7 @@ permalink: /features/
         <li><strong>Back to top button</strong> — appears after scrolling 400 px on articles and library reading pages</li>
         <li><strong>Reading percentage</strong> — shows how far through the current text you are; visible on articles and library reading pages</li>
         <li><strong>Reading time</strong> — calculated from word count at build time; shown on every article card, article page, and library reading page</li>
+        <li><strong>Listen time</strong> — estimated TTS duration (~1.3x read time); shown next to reading time on articles</li>
         <li><strong>Word count</strong> — displayed next to reading time on articles and library reading pages</li>
         <li><strong>Pullquote sharing</strong> — select any text in an article body; a share button appears; shares via Web Share API or copies to clipboard</li>
         <li><strong>Text selection colour</strong> — pansy purple, consistent with the publication's identity</li>
@@ -41,7 +42,8 @@ permalink: /features/
         <li><strong>Download</strong> — export article as plain text (.txt) or Markdown (.md)</li>
         <li><strong>Print</strong> — print-optimised CSS suppresses all chrome and renders clean text; works for PDF saving</li>
         <li><strong>Cite</strong> — citation modal with APA, MLA, and Chicago formats; one-click copy for each</li>
-        <li><strong>Reader toolbar</strong> — persistent bottom bar on every article and library page with Highlight, Note, Bookmark, and Share actions; Highlight and Note activate when text is selected</li>
+        <li><strong>Reader toolbar</strong> — persistent bottom bar with Highlight, Note, Bookmark, and Share actions</li>
+        <li><strong>Reader panel</strong> — slide-out panel with Contents (TOC), Highlights, Notes, Bookmarks, and Related tabs</li>
         <li><strong>Highlight & annotate</strong> — select text to highlight it or add a personal note; highlights and notes persist in <code>localStorage</code> and display inline in the article</li>
         <li><strong>Position bookmarks</strong> — save your scroll position from the reader toolbar; bookmark indicators appear in the left margin</li>
         <li><strong>Notes panel</strong> — slide-out panel with separate Highlights, Notes, and Bookmarks tabs</li>
@@ -67,11 +69,12 @@ permalink: /features/
       <h2>Navigation & discovery</h2>
       <ul>
         <li><strong>Full-site search</strong> via Pagefind — built at deploy time, no backend; section filter bar included</li>
-        <li><strong>Section navigation</strong> — dropdown menus per section showing recent articles; Library, Projects, and Games have curated dropdowns</li>
-        <li><strong>Mobile nav drawer</strong> — organized into 5 labeled groups (Sections, Explore, Community & Events, Resources & Tools, About) with icon quick-actions</li>
+        <li><strong>Section navigation</strong> — dropdown menus per section showing recent articles</li>
+        <li><strong>More mega-dropdown</strong> — 5-column dropdown with links to every non-article section (Explore, Projects, Community, About, Reader Tools)</li>
+        <li><strong>Mobile nav drawer</strong> — sentence-case links with visual hierarchy, icon toolbar pinned to bottom, language toggle inline</li>
         <li><strong>Surprise Me</strong> — button in the masthead that redirects to a random article</li>
         <li><strong>Reading time filter</strong> — filter articles by All / Short reads (&lt;5 min) / Long reads (&gt;15 min) on section pages</li>
-        <li><strong>Related articles</strong> — ranked by shared tags with section fallback; shown at the bottom of every article</li>
+        <li><strong>Related articles</strong> — ranked by shared tags with section fallback; accessible in the reader panel's Related tab</li>
         <li><strong>Backlinks</strong> — each article shows other articles on the site that link to it, discovered at build time</li>
         <li><strong>Tags / topics index</strong> at <a href="/topics/">/topics/</a></li>
         <li><strong>Archives</strong> at <a href="/archives/">/archives/</a> — articles indexed by date</li>
@@ -81,7 +84,7 @@ permalink: /features/
       <h2>Publishing & editorial</h2>
       <ul>
         <li><strong>Corrections log</strong> — articles carry corrections in front matter; aggregate view at <a href="/corrections/">/corrections/</a></li>
-        <li><strong>Suggest a correction</strong> — mailto link on every article</li>
+        <li><strong>Suggest a correction</strong> — button in the article action bar linking to <a href="/corrections/report/">/corrections/report/</a></li>
         <li><strong>Article series</strong> — numbered parts with previous/next navigation</li>
         <li><strong>Inter-article response system</strong> — <code>responseTo</code> front matter links articles with banners shown on both</li>
         <li><strong>Argument map</strong> — structured Claim → Evidence → Conclusion box for opinion pieces</li>
@@ -166,6 +169,11 @@ permalink: /features/
         <li><strong>Editorial handbook</strong> at <a href="/editorial/">/editorial/</a> — public standards covering accuracy, sourcing, corrections, AI use, and complaints</li>
         <li><strong>Corrections log</strong> at <a href="/corrections/">/corrections/</a> — aggregate view of all published corrections</li>
         <li><strong>Open source</strong> — the site's codebase is available as an open-source template; see <a href="/open-source/">/open-source/</a></li>
+        <li><strong>How it's built</strong> at <a href="/stack/">/stack/</a> — plain-language explanation of every tool and service</li>
+        <li><strong>Site map</strong> at <a href="/site-map/">/site-map/</a> — visual directory of every page on the site</li>
+        <li><strong>Terms of use</strong> at <a href="/terms/">/terms/</a> — plain-language terms covering content, submissions, and data</li>
+        <li><strong>Cookies policy</strong> at <a href="/cookies/">/cookies/</a> — zero first-party cookies; full disclosure of third-party cookies</li>
+        <li><strong>Accessibility statement</strong> at <a href="/accessibility/">/accessibility/</a> — WCAG 2.2 AA commitment with detailed feature documentation</li>
       </ul>
 
       <h2>Quotes, media & resources</h2>
@@ -194,7 +202,7 @@ permalink: /features/
         <li><strong>Editorial Dashboard</strong> at <a href="/dashboard/">/dashboard/</a> — content counts and status overview</li>
       </ul>
 
-      <p><em>Last updated: 12 April 2026</em></p>
+      <p><em>Last updated: 13 April 2026</em></p>
 
     </div>
   </div>
