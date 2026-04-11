@@ -312,21 +312,37 @@ layout: layouts/base.njk
             <span class="btn-label">Cite</span>
           </button>
 
-          {# 8. Suggest a correction #}
-          <a class="article-action-btn" href="/corrections/report/" aria-label="Suggest a correction">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
-            <span class="btn-label">Correct</span>
-          </a>
-
-          {# 9. Feedback #}
-          <a class="article-action-btn" href="/feedback/" aria-label="Send feedback about this article">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-            </svg>
-            <span class="btn-label">Feedback</span>
-          </a>
+          {# 8. Feedback (popup form) #}
+          <div class="article-feedback-wrap">
+            <button class="article-action-btn" type="button" id="article-feedback-btn" aria-label="Send feedback" aria-expanded="false"
+              onclick="var p=document.getElementById('article-feedback-popup');p.hidden=!p.hidden;this.setAttribute('aria-expanded',!p.hidden);">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              <span class="btn-label">Feedback</span>
+            </button>
+            <div id="article-feedback-popup" class="article-feedback-popup" hidden>
+              <form action="https://api.web3forms.com/submit" method="POST" style="display:flex;flex-direction:column;gap:var(--space-3);">
+                <input type="hidden" name="access_key" value="{{ site.forms.accessKey }}">
+                <input type="hidden" name="subject" value="Article feedback — {{ title | escape }}">
+                <input type="hidden" name="redirect" value="{{ site.url }}/thank-you/">
+                <input type="hidden" name="from_name" value="{{ site.title }} Article Feedback">
+                <input type="hidden" name="page_url" value="{{ site.url }}{{ page.url }}">
+                <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+                <select name="category" style="width:100%;font-family:var(--font-ui);font-size:var(--text-xs);padding:var(--space-2);border:1px solid var(--color-rule);background:var(--color-bg-alt);color:var(--color-ink);">
+                  <option value="General feedback">General feedback</option>
+                  <option value="Correction">Correction or error</option>
+                  <option value="Suggestion">Suggestion</option>
+                  <option value="Compliment">Compliment</option>
+                </select>
+                <textarea name="message" rows="3" required placeholder="Your feedback…" style="width:100%;font-family:var(--font-ui);font-size:var(--text-sm);padding:var(--space-2);border:1px solid var(--color-rule);background:var(--color-bg-alt);color:var(--color-ink);resize:vertical;"></textarea>
+                <input type="email" name="email" placeholder="Email (optional — for a response)" autocomplete="email" style="width:100%;font-family:var(--font-ui);font-size:var(--text-xs);padding:var(--space-2);border:1px solid var(--color-rule);background:var(--color-bg-alt);color:var(--color-ink);">
+                <div style="display:flex;justify-content:flex-end;">
+                  <button type="submit" style="font-family:var(--font-ui);font-size:var(--text-xs);font-weight:700;background:var(--color-ink);color:var(--color-bg);border:none;padding:var(--space-2) var(--space-4);cursor:pointer;">Send Feedback</button>
+                </div>
+              </form>
+            </div>
+          </div>
 
         </div>
 
