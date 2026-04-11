@@ -37,13 +37,20 @@
     root.removeAttribute('data-gs-font');
     if (prefs.font !== 'default') root.setAttribute('data-gs-font', prefs.font);
 
-    // Spacing
+    // Spacing — override the design token
     var spacingMap = { tight: '1.3', normal: '', relaxed: '1.8' };
-    root.style.lineHeight = spacingMap[prefs.spacing] || '';
+    if (prefs.spacing !== 'normal') {
+      root.style.setProperty('--leading-normal', spacingMap[prefs.spacing]);
+      root.style.setProperty('--leading-relaxed', (parseFloat(spacingMap[prefs.spacing]) + 0.2).toString());
+      root.style.setProperty('--leading-loose', (parseFloat(spacingMap[prefs.spacing]) + 0.4).toString());
+    } else {
+      root.style.removeProperty('--leading-normal');
+      root.style.removeProperty('--leading-relaxed');
+      root.style.removeProperty('--leading-loose');
+    }
 
-    // Word spacing
-    var wsMap = { normal: '', wide: '0.12em', wider: '0.25em' };
-    root.style.wordSpacing = wsMap[prefs.wordspace] || '';
+    // Word spacing — set on body to cascade
+    document.body.style.wordSpacing = prefs.wordspace === 'normal' ? '' : (prefs.wordspace === 'wide' ? '0.12em' : '0.25em');
 
     // Background
     root.removeAttribute('data-gs-bg');

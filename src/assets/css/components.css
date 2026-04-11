@@ -134,23 +134,43 @@
 
 .global-settings-panel .rs-label {
   font-family: var(--font-ui);
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   font-weight: 600;
   color: var(--color-ink-muted);
   margin-bottom: var(--space-2);
-  text-transform: none;
-  letter-spacing: 0;
+}
+
+.global-settings-panel .gtranslate_wrapper select {
+  width: 100% !important;
+  max-width: none !important;
+  font-size: var(--text-sm) !important;
+  padding: var(--space-2) var(--space-3) !important;
+  background: var(--color-bg-alt) !important;
+  color: var(--color-ink) !important;
+  border: 1px solid var(--color-rule) !important;
+  height: auto !important;
 }
 
 /* Global font overrides — redefine the tokens */
 [data-gs-font="sans"] { --font-body: var(--font-ui); --font-headline: var(--font-ui); }
+[data-gs-font="lora"] { --font-body: 'Lora', Georgia, serif; --font-headline: 'Lora', Georgia, serif; }
 [data-gs-font="georgia"] { --font-body: Georgia, 'Times New Roman', serif; --font-headline: Georgia, 'Times New Roman', serif; }
+[data-gs-font="palatino"] { --font-body: 'Palatino Linotype', 'Book Antiqua', Palatino, serif; --font-headline: 'Palatino Linotype', 'Book Antiqua', Palatino, serif; }
+[data-gs-font="times"] { --font-body: 'Times New Roman', Times, serif; --font-headline: 'Times New Roman', Times, serif; }
 [data-gs-font="system"] { --font-body: system-ui, -apple-system, sans-serif; --font-headline: system-ui, -apple-system, sans-serif; }
+[data-gs-font="arial"] { --font-body: Arial, Helvetica, sans-serif; --font-headline: Arial, Helvetica, sans-serif; }
+[data-gs-font="verdana"] { --font-body: Verdana, Geneva, sans-serif; --font-headline: Verdana, Geneva, sans-serif; }
+[data-gs-font="trebuchet"] { --font-body: 'Trebuchet MS', Helvetica, sans-serif; --font-headline: 'Trebuchet MS', Helvetica, sans-serif; }
 [data-gs-font="mono"] { --font-body: 'SF Mono', 'Fira Code', Consolas, monospace; --font-headline: 'SF Mono', 'Fira Code', Consolas, monospace; }
 
 /* Global background presets */
-[data-gs-bg="sepia"] { --color-bg: #f4ecd8; --color-bg-alt: #ede4cc; }
-[data-gs-bg="cream"] { --color-bg: #fefcf0; --color-bg-alt: #f8f5e8; }
+[data-gs-bg="sepia"] { --color-bg: #f4ecd8; --color-bg-alt: #ede4cc; --color-bg-inset: #e5dcc4; }
+[data-gs-bg="cream"] { --color-bg: #fefcf0; --color-bg-alt: #f8f5e8; --color-bg-inset: #f0edde; }
+
+/* Smooth theme transitions (prevent flash) */
+body, .masthead, .site-footer, .nav-dropdown, .global-settings-panel {
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
 
 /* ── Masthead language dropdown ─────────────────────────────── */
 .masthead__lang-wrap {

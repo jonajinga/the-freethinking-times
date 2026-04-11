@@ -2741,9 +2741,9 @@
 .rs-label {
   display: block;
   font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  color: var(--color-ink-faint);
-  text-transform: uppercase;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-ink-muted);
   letter-spacing: 0.06em;
   margin-bottom: var(--space-2);
 }

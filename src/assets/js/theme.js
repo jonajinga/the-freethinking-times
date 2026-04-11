@@ -25,6 +25,30 @@
   const stored = getStoredTheme();
   applyTheme(stored || getSystemTheme());
 
+  // Apply background preset immediately (prevent flash)
+  try {
+    const bg = localStorage.getItem((window.__PREFIX || 'tft') + '-gs-bg');
+    if (bg && bg !== 'default') root.setAttribute('data-gs-bg', bg);
+
+    const gsFont = localStorage.getItem((window.__PREFIX || 'tft') + '-gs-font');
+    if (gsFont && gsFont !== 'default') root.setAttribute('data-gs-font', gsFont);
+
+    const gsFontSize = localStorage.getItem((window.__PREFIX || 'tft') + '-gs-font-size');
+    if (gsFontSize && parseInt(gsFontSize) > 0) root.style.fontSize = gsFontSize + 'px';
+
+    const gsSpacing = localStorage.getItem((window.__PREFIX || 'tft') + '-gs-spacing');
+    if (gsSpacing && gsSpacing !== 'normal') {
+      const map = { tight: '1.3', relaxed: '1.8' };
+      if (map[gsSpacing]) root.style.lineHeight = map[gsSpacing];
+    }
+
+    const gsWordspace = localStorage.getItem((window.__PREFIX || 'tft') + '-gs-wordspace');
+    if (gsWordspace && gsWordspace !== 'normal') {
+      const wsMap = { wide: '0.12em', wider: '0.25em' };
+      if (wsMap[gsWordspace]) root.style.wordSpacing = wsMap[gsWordspace];
+    }
+  } catch (e) {}
+
   // After DOM is ready, wire up the toggle button
   document.addEventListener('DOMContentLoaded', function () {
     const btn = document.getElementById('theme-toggle');

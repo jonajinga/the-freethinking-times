@@ -110,10 +110,16 @@
             <div class="rs-group">
               <label class="rs-label" for="gs-font-select">Font</label>
               <select id="gs-font-select" class="rs-select">
-                <option value="default">Default</option>
-                <option value="sans">Sans-serif</option>
+                <option value="default">Default (Source Serif)</option>
+                <option value="sans">DM Sans</option>
+                <option value="lora">Lora</option>
                 <option value="georgia">Georgia</option>
-                <option value="system">System</option>
+                <option value="palatino">Palatino</option>
+                <option value="times">Times New Roman</option>
+                <option value="system">System default</option>
+                <option value="arial">Arial / Helvetica</option>
+                <option value="verdana">Verdana</option>
+                <option value="trebuchet">Trebuchet MS</option>
                 <option value="mono">Monospace</option>
               </select>
             </div>
@@ -134,11 +140,13 @@
               </div>
             </div>
             <div class="rs-group">
-              <p class="rs-label">Background</p>
+              <p class="rs-label">Theme</p>
               <div class="rs-btngroup" role="group">
-                <button class="rs-btn is-active" data-gs-bg="default" type="button">Default</button>
-                <button class="rs-btn" data-gs-bg="sepia" type="button" style="background:#f4ecd8;color:#5b4636;">Sepia</button>
-                <button class="rs-btn" data-gs-bg="cream" type="button" style="background:#fefcf0;color:#333;">Cream</button>
+                <button class="rs-btn is-active" data-gs-theme="auto" type="button" onclick="document.documentElement.removeAttribute('data-theme');document.documentElement.removeAttribute('data-gs-bg');localStorage.removeItem('tft-theme');localStorage.removeItem('tft-gs-bg');">Auto</button>
+                <button class="rs-btn" data-gs-theme="light" type="button" onclick="document.documentElement.setAttribute('data-theme','light');document.documentElement.removeAttribute('data-gs-bg');localStorage.setItem('tft-theme','light');localStorage.removeItem('tft-gs-bg');">Light</button>
+                <button class="rs-btn" data-gs-theme="sepia" type="button" onclick="document.documentElement.setAttribute('data-theme','light');document.documentElement.setAttribute('data-gs-bg','sepia');localStorage.setItem('tft-theme','light');localStorage.setItem('tft-gs-bg','sepia');">Sepia</button>
+                <button class="rs-btn" data-gs-theme="cream" type="button" onclick="document.documentElement.setAttribute('data-theme','light');document.documentElement.setAttribute('data-gs-bg','cream');localStorage.setItem('tft-theme','light');localStorage.setItem('tft-gs-bg','cream');">Cream</button>
+                <button class="rs-btn" data-gs-theme="dark" type="button" onclick="document.documentElement.setAttribute('data-theme','dark');document.documentElement.removeAttribute('data-gs-bg');localStorage.setItem('tft-theme','dark');localStorage.removeItem('tft-gs-bg');">Dark</button>
               </div>
             </div>
             {% if site.gtranslate %}
@@ -147,23 +155,10 @@
               <div class="gtranslate_wrapper"></div>
             </div>
             {% endif %}
-            <div class="rs-group">
-              <p class="rs-label">Theme</p>
-              <div class="rs-btngroup" role="group">
-                <button class="rs-btn" data-gs-theme="light" type="button" onclick="document.documentElement.setAttribute('data-theme','light');localStorage.setItem('tft-theme','light');">Light</button>
-                <button class="rs-btn" data-gs-theme="dark" type="button" onclick="document.documentElement.setAttribute('data-theme','dark');localStorage.setItem('tft-theme','dark');">Dark</button>
-                <button class="rs-btn is-active" data-gs-theme="auto" type="button" onclick="document.documentElement.removeAttribute('data-theme');localStorage.removeItem('tft-theme');">Auto</button>
-              </div>
-            </div>
             <button type="button" style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);background:none;border:none;cursor:pointer;padding:var(--space-1) 0;" onclick="if(window.__resetGlobalSettings)window.__resetGlobalSettings();">Reset to defaults</button>
           </div>
         </div>
 
-        {# Dark mode toggle (hidden, triggered by display settings panel and drawer) #}
-        <button class="masthead__icon-btn js-only" id="theme-toggle" aria-label="Toggle dark mode" type="button" title="Toggle dark mode" hidden>
-          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        </button>
 
       </div>
     </div>
