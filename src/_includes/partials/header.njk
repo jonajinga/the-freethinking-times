@@ -68,40 +68,6 @@
           </svg>
         </a>
 
-        {# Contact #}
-        <a href="/contact/"
-           class="masthead__icon-btn"
-           aria-label="Contact us"
-           title="Contact us">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-        </a>
-
-        {# RSS — follow via feed reader #}
-        <a href="/feed.xml"
-           class="masthead__icon-btn"
-           aria-label="RSS feed"
-           title="RSS feed"
-           type="application/rss+xml">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M4 11a9 9 0 0 1 9 9"/>
-            <path d="M4 4a16 16 0 0 1 16 16"/>
-            <circle cx="5" cy="19" r="1" fill="currentColor"/>
-          </svg>
-        </a>
-
-        {# Support — help keep us independent #}
-        <a href="/support/"
-           class="masthead__icon-btn"
-           aria-label="Support us"
-           title="Support us">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-          </svg>
-        </a>
-
         {# Surprise Me — random article #}
         <a href="/random/"
            class="masthead__icon-btn"
@@ -139,7 +105,7 @@
         <ul class="site-nav__list" role="list">
           {% for item in site.nav %}
           {% set sectionItems = collections[item.collection] if item.collection %}
-          {% set hasDropdown = item.type == "projects" or item.type == "games" or item.type == "library" or item.type == "quotes" or (sectionItems and sectionItems.length) %}
+          {% set hasDropdown = item.type == "library" or (sectionItems and sectionItems.length) %}
           <li class="site-nav__item{% if hasDropdown %} site-nav__item--has-dropdown{% endif %}">
             <a
               class="site-nav__link"
@@ -171,30 +137,6 @@
           <a href="/library/subjects/" class="nav-dropdown__footer">Browse by Subject</a>
           <a href="/library/authors/" class="nav-dropdown__footer">Browse by Author</a>
           <a href="/library/" class="nav-dropdown__footer">View full library →</a>
-        {% elif item.type == "projects" %}
-          {% for project in projects.index %}
-          <a href="{{ project.url }}" class="nav-dropdown__item">
-            <span class="nav-dropdown__title">{{ project.title }}</span>
-            <span class="nav-dropdown__desc">{{ project.shortDescription }}</span>
-          </a>
-          {% endfor %}
-          <a href="/projects/" class="nav-dropdown__footer">View all projects →</a>
-        {% elif item.type == "games" %}
-          {% for game in games %}
-          <a href="{{ game.url }}" class="nav-dropdown__item">
-            <span class="nav-dropdown__title">{{ game.title }}</span>
-            <span class="nav-dropdown__desc">{{ game.description }}</span>
-          </a>
-          {% endfor %}
-          <a href="/games/" class="nav-dropdown__footer">View all games →</a>
-        {% elif item.type == "quotes" %}
-          {% for q in quotes | limit(3) %}
-          <a href="/quotes/#q{{ loop.index }}" class="nav-dropdown__item">
-            <span class="nav-dropdown__desc">&ldquo;{{ q.quote }}&rdquo;</span>
-            <span class="nav-dropdown__title">{{ q.author }}</span>
-          </a>
-          {% endfor %}
-          <a href="/quotes/" class="nav-dropdown__footer">View all quotes →</a>
         {% else %}
           {% for article in sectionItems | limit(4) %}
           <a href="{{ article.url }}" class="nav-dropdown__item">
@@ -310,16 +252,12 @@
   {# ── Explore (content collections & projects) ── #}
   <p class="nav-drawer__section-label">Explore</p>
   <ul class="nav-drawer__list" role="list">
-    <li><a class="nav-drawer__link" href="/library/" {% if page.url == "/library/" %}aria-current="page"{% endif %}>Library</a></li>
+    <li><a class="nav-drawer__link" href="/library/" {% if page.url == "/library/" %}aria-current="page"{% endif %}>Public Domain Library</a></li>
     <li><a class="nav-drawer__link" href="/quotes/" {% if page.url == "/quotes/" %}aria-current="page"{% endif %}>Quotes</a></li>
     <li><a class="nav-drawer__link" href="/videos/" {% if page.url == "/videos/" %}aria-current="page"{% endif %}>Videos</a></li>
     <li><a class="nav-drawer__link" href="/timeline/" {% if page.url == "/timeline/" %}aria-current="page"{% endif %}>Timeline</a></li>
     <li><a class="nav-drawer__link" href="/projects/" {% if page.url == "/projects/" %}aria-current="page"{% endif %}>Projects</a></li>
     <li><a class="nav-drawer__link" href="/games/" {% if page.url == "/games/" %}aria-current="page"{% endif %}>Games</a></li>
-    <li><a class="nav-drawer__link" href="/glossary/" {% if page.url == "/glossary/" %}aria-current="page"{% endif %}>Glossary</a></li>
-    <li><a class="nav-drawer__link" href="/bookshelf/" {% if page.url == "/bookshelf/" %}aria-current="page"{% endif %}>Bookshelf</a></li>
-    <li><a class="nav-drawer__link" href="/thought-experiments/" {% if page.url == "/thought-experiments/" %}aria-current="page"{% endif %}>Thought Experiments</a></li>
-    <li><a class="nav-drawer__link" href="/trials/" {% if page.url == "/trials/" %}aria-current="page"{% endif %}>Trials of Thought</a></li>
   </ul>
 
   <div class="nav-drawer__divider"></div>
@@ -362,9 +300,6 @@
 
   {# ── Quick actions (icons) ── #}
   <div class="nav-drawer__actions">
-    <button class="nav-drawer__action-btn js-only" type="button" aria-label="Search" title="Search" onclick="var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-drawer-overlay');d.classList.remove('is-open');o.classList.remove('is-open');d.setAttribute('aria-hidden','true');document.body.style.overflow='';var m=document.getElementById('search-modal'),so=document.getElementById('search-overlay');if(m){m.classList.add('is-open');m.setAttribute('aria-hidden','false');so&&so.classList.add('is-open');document.body.style.overflow='hidden';var i=document.getElementById('search-input');i&&i.focus();}">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    </button>
     <a class="nav-drawer__action-btn" href="/notes/" aria-label="Notes & highlights" title="Notes & highlights">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
     </a>
@@ -374,18 +309,9 @@
     <a class="nav-drawer__action-btn" href="/random/" aria-label="Surprise me" title="Surprise me">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
     </a>
-    <a class="nav-drawer__action-btn" href="/contact/" aria-label="Contact us" title="Contact us">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-    </a>
-    <a class="nav-drawer__action-btn" href="/feed.xml" aria-label="RSS feed" title="RSS feed">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1" fill="currentColor"/></svg>
-    </a>
     <button class="nav-drawer__action-btn js-only" type="button" aria-label="Toggle dark mode" title="Toggle dark mode" onclick="var t=document.getElementById('theme-toggle');if(t)t.click();">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
     </button>
-    <a class="nav-drawer__action-btn nav-drawer__action-btn--heart" href="/support/" aria-label="Support us" title="Support us">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-    </a>
   </div>
 
   {# ── Bottom sections ── #}

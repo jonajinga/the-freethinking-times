@@ -542,12 +542,12 @@ a.dateline:hover { color: var(--color-accent); }
 
 .site-footer__grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: var(--space-6);
   margin-bottom: var(--space-8);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .site-footer__grid { grid-template-columns: repeat(3, 1fr); }
 }
 

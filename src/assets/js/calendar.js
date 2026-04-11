@@ -179,7 +179,7 @@
     var view = isMobile() && state.view === 'week' ? 'list' : state.view;
 
     var hasSidebar = !isMobile();
-    if (hasSidebar) html += '<div class="cal-layout">';
+    if (hasSidebar) html += '<div class="cal-layout">' + renderLeftSidebar() + '<div class="cal-layout__main">';
 
     switch (view) {
       case 'month': html += renderMonth(); break;
@@ -188,9 +188,10 @@
       case 'list':  html += renderList(); break;
     }
 
-    if (hasSidebar) html += renderSidebar() + '</div>';
+    if (hasSidebar) html += '</div>' + renderRightSidebar() + '</div>';
 
     html += renderLegend();
+    html += renderOrganizations();
     root.innerHTML = html;
     bind();
     writeHash(false);
@@ -365,35 +366,8 @@
   }
 
   /* ── Sidebar ────────────────────────────────────────────────── */
-  function renderSidebar() {
-    var today = dk(new Date());
-
-    // Next Up — next 5 upcoming events
-    var upcoming = expanded.filter(function (e) {
-      var end = e.endDate || e.date;
-      return end >= today;
-    });
-    upcoming.sort(function (a, b) { return a.date.localeCompare(b.date); });
-    var nextUp = upcoming.slice(0, 5);
-
-    var nextHtml = '<div class="cal-sidebar__section">' +
-      '<p class="cal-sidebar__heading">Next Up</p>';
-    if (!nextUp.length) {
-      nextHtml += '<p class="cal-sidebar__empty">No upcoming events.</p>';
-    } else {
-      nextUp.forEach(function (e) {
-        nextHtml += '<div class="cal-sidebar__item" data-evt-id="' + e.id + '">' +
-          '<span class="cal-dot cal-dot--' + (e.type || '') + '" style="flex-shrink:0;margin-top:4px"></span>' +
-          '<div>' +
-            '<span class="cal-sidebar__name">' + esc(e.name) + '</span>' +
-            '<span class="cal-sidebar__date">' + fmtDate(e.date) + '</span>' +
-          '</div>' +
-        '</div>';
-      });
-    }
-    nextHtml += '</div>';
-
-    // This Month — event counts by type
+  /* ── Left Sidebar (This Month) ───────────────────────────── */
+  function renderLeftSidebar() {
     var y = state.date.getFullYear(), m = state.date.getMonth();
     var monthStart = dk(new Date(y, m, 1));
     var monthEnd = dk(new Date(y, m + 1, 0));
@@ -406,45 +380,79 @@
       typeCounts[t] = (typeCounts[t] || 0) + 1;
     });
 
-    var monthHtml = '<div class="cal-sidebar__section">' +
+    var html = '<aside class="cal-sidebar cal-sidebar--left">' +
+      '<div class="cal-sidebar__section">' +
       '<p class="cal-sidebar__heading">This Month</p>' +
       '<p class="cal-sidebar__stat">' + monthEvts.length + ' event' + (monthEvts.length !== 1 ? 's' : '') + '</p>';
     Object.keys(typeCounts).forEach(function (t) {
-      monthHtml += '<div class="cal-sidebar__type-row">' +
+      html += '<div class="cal-sidebar__type-row">' +
         '<span class="cal-dot cal-dot--' + t + '"></span> ' +
         typeName(t) + ': ' + typeCounts[t] +
       '</div>';
     });
-    monthHtml += '</div>';
+    html += '</div></aside>';
+    return html;
+  }
 
-    // Organizations — recurring event sources
+  /* ── Right Sidebar (Next Up) ───────────────────────────────── */
+  function renderRightSidebar() {
+    var today = dk(new Date());
+    var upcoming = expanded.filter(function (e) {
+      var end = e.endDate || e.date;
+      return end >= today;
+    });
+    upcoming.sort(function (a, b) { return a.date.localeCompare(b.date); });
+    var nextUp = upcoming.slice(0, 5);
+
+    var html = '<aside class="cal-sidebar cal-sidebar--right">' +
+      '<div class="cal-sidebar__section">' +
+      '<p class="cal-sidebar__heading">Next Up</p>';
+    if (!nextUp.length) {
+      html += '<p class="cal-sidebar__empty">No upcoming events.</p>';
+    } else {
+      nextUp.forEach(function (e) {
+        html += '<div class="cal-sidebar__item" data-evt-id="' + e.id + '">' +
+          '<span class="cal-dot cal-dot--' + (e.type || '') + '" style="flex-shrink:0;margin-top:4px"></span>' +
+          '<div>' +
+            '<span class="cal-sidebar__name">' + esc(e.name) + '</span>' +
+            '<span class="cal-sidebar__date">' + fmtDate(e.date) + '</span>' +
+          '</div>' +
+        '</div>';
+      });
+    }
+    html += '</div></aside>';
+    return html;
+  }
+
+  /* ── Organizations Directory (bottom section) ──────────────── */
+  function renderOrganizations() {
     var orgMap = {};
     expanded.forEach(function (e) {
       if (e._recurring) {
-        if (!orgMap[e.name]) orgMap[e.name] = { type: e.type, count: 0 };
-        orgMap[e.name].count++;
+        if (!orgMap[e.name]) orgMap[e.name] = { type: e.type };
       }
     });
-    // Also add one-time orgs from rawEvents
     rawEvents.forEach(function (e) {
       if (!e.recurrence && !orgMap[e.name]) {
-        orgMap[e.name] = { type: e.type, count: 1 };
+        orgMap[e.name] = { type: e.type };
       }
     });
 
     var orgNames = Object.keys(orgMap).sort();
-    var orgHtml = '<div class="cal-sidebar__section">' +
-      '<p class="cal-sidebar__heading">Organizations</p>';
+    if (!orgNames.length) return '';
+
+    var html = '<div class="cal-orgs">' +
+      '<p class="cal-orgs__heading">Organizations & Events</p>' +
+      '<div class="cal-orgs__grid">';
     orgNames.forEach(function (name) {
       var o = orgMap[name];
-      orgHtml += '<div class="cal-sidebar__org">' +
+      html += '<div class="cal-orgs__item">' +
         '<span class="cal-dot cal-dot--' + (o.type || '') + '"></span> ' +
         esc(name) +
       '</div>';
     });
-    orgHtml += '</div>';
-
-    return '<aside class="cal-sidebar">' + nextHtml + monthHtml + orgHtml + '</aside>';
+    html += '</div></div>';
+    return html;
   }
 
   /* ── Legend ────────────────────────────────────────────────── */

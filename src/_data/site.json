@@ -35,12 +35,7 @@
     { "label": "Arts & Culture", "url": "/arts-culture/",      "key": "arts-culture", "collection": "arts-culture" },
     { "label": "Science & Tech", "url": "/science-technology/","key": "science-tech", "collection": "science-technology" },
     { "label": "History",        "url": "/history/",           "key": "history",      "collection": "history" },
-    { "label": "Letters",        "url": "/letters/",           "key": "letters",      "collection": "letters" },
-    { "label": "Library",        "url": "/library/",           "key": "library",  "type": "library" },
-    { "label": "Projects",       "url": "/projects/",          "key": "projects",     "type": "projects" },
-    { "label": "Quotes",         "url": "/quotes/",            "key": "quotes",       "type": "quotes" },
-    { "label": "Videos",         "url": "/videos/",            "key": "videos" },
-    { "label": "Games",          "url": "/games/",             "key": "games",        "type": "games" }
+    { "label": "Letters",        "url": "/letters/",           "key": "letters",      "collection": "letters" }
   ],
   "social": {
     "twitter": "",
