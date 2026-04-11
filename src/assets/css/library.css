@@ -679,10 +679,10 @@
 
 .library-panel {
   position: fixed;
-  top: 0;
+  top: var(--space-16);
   right: 0;
   width: min(360px, 100vw);
-  height: 100%;
+  height: calc(100% - var(--space-16));
   background: var(--color-bg);
   border-left: 1px solid var(--color-rule);
   box-shadow: var(--shadow-md);
@@ -987,17 +987,9 @@
   border-bottom-color: rgba(250, 204, 21, 0.5);
 }
 
-/* Panel overlay backdrop */
+/* Panel overlay — disabled (panel is non-blocking sidebar) */
 .library-panel-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.3);
-  z-index: calc(var(--z-overlay) - 1);
-}
-
-.library-panel-overlay[aria-hidden="false"] {
-  display: block;
+  display: none !important;
 }
 
 /* Bookmark toggle button in header */

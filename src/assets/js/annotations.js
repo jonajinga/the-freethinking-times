@@ -49,6 +49,7 @@
 
     function save(list) {
       try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {}
+      if (window.__refreshReaderPanel) window.__refreshReaderPanel();
     }
 
     function add(scrollPct, context, bodyOffset) {
@@ -111,6 +112,7 @@
 
     function save(list) {
       try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {}
+      if (window.__refreshReaderPanel) window.__refreshReaderPanel();
     }
 
     function add(quote, note) {
@@ -276,12 +278,15 @@
     var panelOverlay = document.querySelector('.article-notes-overlay');
     var panelClose   = panel ? panel.querySelector('.library-panel__close') : null;
 
+    var PANEL_KEY = (window.__PREFIX || 'tft') + '-reader-panel';
+
     function openPanel() {
       if (!panel) return;
       panel.setAttribute('aria-hidden', 'false');
       if (panelOverlay) panelOverlay.setAttribute('aria-hidden', 'false');
       panelToggles.forEach(function (t) { t.setAttribute('aria-expanded', 'true'); });
       refreshPanelContents();
+      try { localStorage.setItem(PANEL_KEY, 'open'); } catch (e) {}
     }
 
     function closePanel() {
@@ -289,6 +294,7 @@
       panel.setAttribute('aria-hidden', 'true');
       if (panelOverlay) panelOverlay.setAttribute('aria-hidden', 'true');
       panelToggles.forEach(function (t) { t.setAttribute('aria-expanded', 'false'); });
+      try { localStorage.setItem(PANEL_KEY, 'closed'); } catch (e) {}
     }
 
     panelToggles.forEach(function (btn) {
@@ -299,6 +305,12 @@
     });
     if (panelClose) panelClose.addEventListener('click', closePanel);
     if (panelOverlay) panelOverlay.addEventListener('click', closePanel);
+
+    // Auto-open on first visit, remember preference
+    var panelPref = localStorage.getItem(PANEL_KEY);
+    if (panelPref !== 'closed') {
+      openPanel();
+    }
 
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && panel && panel.getAttribute('aria-hidden') === 'false') {
@@ -338,6 +350,9 @@
         closePanel();
       }, renderBookmarkIndicators);
     }
+
+    // Expose globally so save operations can trigger refresh
+    window.__refreshReaderPanel = refreshPanelContents;
 
     // ── Body element (used by toolbar + bookmark indicators) ──
     var bodyEl = document.querySelector('.article-body');
@@ -497,8 +512,10 @@
 
     }
 
-    // Restore saved highlights on load
-    if (bodyEl) Annotations.restoreHighlights(bodyEl);
+    // Restore saved highlights after DOM is fully settled
+    setTimeout(function () {
+      if (bodyEl) Annotations.restoreHighlights(bodyEl);
+    }, 100);
 
     // Render bookmark indicators after layout is stable
     if (document.readyState === 'complete') {
