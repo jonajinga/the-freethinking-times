@@ -52,10 +52,10 @@
       if (window.__refreshReaderPanel) window.__refreshReaderPanel();
     }
 
-    function add(scrollPct, context, bodyOffset) {
+    function add(scrollPct, context, bodyOffset, section) {
       var list = load();
       var id = 'bm-' + Date.now();
-      list.push({ id: id, scrollPct: scrollPct, bodyOffset: bodyOffset != null ? bodyOffset : -1, context: context || '', ts: Date.now() });
+      list.push({ id: id, scrollPct: scrollPct, bodyOffset: bodyOffset != null ? bodyOffset : -1, context: context || '', section: section || '', ts: Date.now() });
       save(list);
       return id;
     }
@@ -80,6 +80,7 @@
           ? '<span class="library-bookmark-item__chapter">&ldquo;' + escHtml(bm.context) + '&rdquo;</span>'
           : '';
         item.innerHTML =
+          (bm.section ? '<span style="font-family:var(--font-ui);font-size:10px;color:var(--color-ink-faint);text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:2px;">' + escHtml(bm.section) + '</span>' : '') +
           contextHtml +
           '<span class="library-bookmark-item__pos">' + bm.scrollPct + '% through</span>' +
           '<span style="font-size:var(--text-xs);color:var(--color-ink-faint);">' + fmtDate(bm.ts) + '</span>' +
@@ -115,10 +116,10 @@
       if (window.__refreshReaderPanel) window.__refreshReaderPanel();
     }
 
-    function add(quote, note) {
+    function add(quote, note, section) {
       var list = load();
       var id = 'ann-' + Date.now();
-      list.push({ id: id, quote: quote, note: note || '', ts: Date.now() });
+      list.push({ id: id, quote: quote, note: note || '', section: section || '', ts: Date.now() });
       save(list);
       return id;
     }
@@ -275,6 +276,7 @@
         var modStr = ann.modified ? ' (edited ' + fmtDate(ann.modified) + ')' : '';
 
         item.innerHTML =
+          (ann.section ? '<p style="font-family:var(--font-ui);font-size:10px;color:var(--color-ink-faint);text-transform:uppercase;letter-spacing:0.06em;margin:0 0 var(--space-1);">' + escHtml(ann.section) + '</p>' : '') +
           '<p class="library-annotation-item__quote">&ldquo;' + escHtml(ann.quote) + '&rdquo;</p>' +
           (ann.note ? '<p class="library-annotation-item__note">' + escHtml(ann.note) + '</p>' : '') +
           '<p style="font-size:var(--text-xs);color:var(--color-ink-faint);margin:var(--space-1) 0 0;">' + dateStr + modStr + '</p>' +
@@ -454,15 +456,15 @@
         var lines = ['# Notes & Highlights', '', pageTitle, pageUrl, '', '---'];
         if (highlights.length) {
           lines.push('', '## Highlights', '');
-          highlights.forEach(function (a, i) { lines.push((i+1) + '. "' + a.quote + '"', '   ' + fmtDate(a.ts), ''); });
+          highlights.forEach(function (a, i) { lines.push((a.section ? '   [' + a.section + ']' : '') + (i+1) + '. "' + a.quote + '"', '   ' + fmtDate(a.ts), ''); });
         }
         if (notes.length) {
           lines.push('## Notes', '');
-          notes.forEach(function (a, i) { lines.push((i+1) + '. "' + a.quote + '"', '   Note: ' + a.note, '   ' + fmtDate(a.ts), ''); });
+          notes.forEach(function (a, i) { lines.push((a.section ? '   [' + a.section + ']' : '') + (i+1) + '. "' + a.quote + '"', '   Note: ' + a.note, '   ' + fmtDate(a.ts), ''); });
         }
         if (bms.length) {
           lines.push('## Bookmarks', '');
-          bms.forEach(function (b, i) { lines.push((i+1) + '. ' + (b.context || 'Position ' + Math.round(b.scrollPct) + '%'), '   ' + fmtDate(b.ts), ''); });
+          bms.forEach(function (b, i) { lines.push((b.section ? '   [' + b.section + ']' : '') + (i+1) + '. ' + (b.context || 'Position ' + Math.round(b.scrollPct) + '%'), '   ' + fmtDate(b.ts), ''); });
         }
         var ext = fmt === 'md' ? '.md' : '.txt';
         var blob = new Blob([lines.join('\n')], { type: 'text/plain' });
@@ -493,6 +495,7 @@
       if (highlights.length) {
         html += '<h2>Highlights</h2>';
         highlights.forEach(function (a) {
+          if (a.section) html += '<p style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;color:#999;margin:0.5rem 0 0.2rem;">' + a.section + '</p>';
           html += '<blockquote>&ldquo;' + a.quote + '&rdquo;</blockquote>';
           html += '<p class="date">' + fmtDate(a.ts) + '</p>';
         });
@@ -501,6 +504,7 @@
       if (notes.length) {
         html += '<h2>Notes</h2>';
         notes.forEach(function (a) {
+          if (a.section) html += '<p style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;color:#999;margin:0.5rem 0 0.2rem;">' + a.section + '</p>';
           html += '<blockquote>&ldquo;' + a.quote + '&rdquo;</blockquote>';
           html += '<p class="note">' + a.note + '</p>';
           html += '<p class="date">' + fmtDate(a.ts) + '</p>';
@@ -510,6 +514,7 @@
       if (bms.length) {
         html += '<h2>Bookmarks</h2>';
         bms.forEach(function (b) {
+          if (b.section) html += '<p style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;color:#999;margin:0.5rem 0 0.2rem;">' + b.section + '</p>';
           html += '<p>' + (b.context || 'Position ' + Math.round(b.scrollPct) + '%') + '</p>';
           html += '<p class="date">' + fmtDate(b.ts) + '</p>';
         });
@@ -595,6 +600,26 @@
         });
       }
 
+      // Find nearest heading above the current selection
+      function getNearestHeading() {
+        if (!lastRange || !lastRange.range) return '';
+        var node = lastRange.range.startContainer;
+        if (node.nodeType === 3) node = node.parentNode;
+        // Walk up and backwards to find the nearest h2/h3
+        var el = node;
+        while (el && el !== bodyEl) {
+          if (/^H[2-3]$/i.test(el.tagName)) return el.textContent.trim();
+          // Check previous siblings
+          var prev = el.previousElementSibling;
+          while (prev) {
+            if (/^H[2-3]$/i.test(prev.tagName)) return prev.textContent.trim();
+            prev = prev.previousElementSibling;
+          }
+          el = el.parentElement;
+        }
+        return '';
+      }
+
       var _actionInProgress = false;
 
       function afterAction() {
@@ -617,7 +642,7 @@
       if (highlightBtn) {
         highlightBtn.addEventListener('click', function () {
           if (!lastRange) return;
-          var annId = Annotations.add(lastRange.text, '');
+          var annId = Annotations.add(lastRange.text, '', getNearestHeading());
           wrapSelectionInMark(annId, false);
           afterAction();
         });
@@ -627,7 +652,7 @@
         annotateBtn.addEventListener('click', function () {
           if (!lastRange) return;
           var note = prompt('Add a note (optional):') || '';
-          var annId = Annotations.add(lastRange.text, note);
+          var annId = Annotations.add(lastRange.text, note, getNearestHeading());
           wrapSelectionInMark(annId, !!note);
           afterAction();
         });
@@ -668,7 +693,19 @@
           }
 
           var context = lastRange ? lastRange.text.slice(0, 80) : '';
-          Bookmarks.add(pagePct, context, bodyOffset);
+          // Find nearest heading at current scroll position
+          var bmSection = '';
+          if (bodyEl) {
+            var headings = bodyEl.querySelectorAll('h2, h3');
+            var scrollY = window.scrollY + 100;
+            for (var hi = headings.length - 1; hi >= 0; hi--) {
+              if (headings[hi].getBoundingClientRect().top + window.scrollY <= scrollY) {
+                bmSection = headings[hi].textContent.trim();
+                break;
+              }
+            }
+          }
+          Bookmarks.add(pagePct, context, bodyOffset, bmSection);
           lastRange = null;
           renderBookmarkIndicators();
           var orig = bookmarkBtn.textContent;
