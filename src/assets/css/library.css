@@ -681,7 +681,7 @@
   position: fixed;
   top: var(--space-16);
   right: 0;
-  width: min(360px, 100vw);
+  width: min(340px, 85vw);
   height: calc(100% - var(--space-16));
   background: var(--color-bg);
   border-left: 1px solid var(--color-rule);
@@ -692,6 +692,7 @@
   transform: translateX(100%);
   transition: transform var(--transition-normal);
   overflow: hidden;
+  font-family: 'DM Sans', system-ui, sans-serif;
 }
 
 .library-panel[aria-hidden="false"] {
