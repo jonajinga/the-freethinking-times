@@ -943,11 +943,10 @@ a.dateline:hover { color: var(--color-accent); }
 
 /* ── Drawer action buttons (icon-only mobile quick-actions) ── */
 .nav-drawer__actions {
-  display: grid;
-  grid-template-columns: repeat(4, 44px);
-  gap: 8px;
+  display: flex;
   justify-content: center;
-  padding: var(--space-4) 0;
+  gap: 8px;
+  padding: var(--space-3) var(--space-5);
 }
 
 .nav-drawer__action-btn {
