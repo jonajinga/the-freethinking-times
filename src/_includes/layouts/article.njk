@@ -502,6 +502,9 @@ layout: layouts/base.njk
       {% endif %}
 
 
+      {# Footnotes — visible, hideable #}
+      <div id="article-footnotes" class="article-footnotes"></div>
+
       {# Comments #}
       {% if site.comments and site.comments.appId %}
       <section class="comments-section">
@@ -546,7 +549,7 @@ layout: layouts/base.njk
   <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top">↑</button>
 </div>
 
-{# Print-only footnotes and citations — populated by JS on page load #}
+{# Print-only footnotes #}
 <div id="print-footnotes" class="print-footnotes" aria-hidden="true"></div>
 <div id="print-citations" class="print-citations" aria-hidden="true"></div>
 

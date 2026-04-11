@@ -600,19 +600,16 @@
     }
   }
 
-  /* ── Print footnotes ─────────────────────────────────────── */
+  /* ── Footnotes (visible + print) ─────────────────────────── */
+  var allFnBtns = document.querySelectorAll('.fn-btn');
+  var articleFnEl = document.getElementById('article-footnotes');
   var printFnEl = document.getElementById('print-footnotes');
-  if (printFnEl) {
-    var allFnBtns = document.querySelectorAll('.fn-btn');
-    if (allFnBtns.length) {
-      var fnHeading = document.createElement('p');
-      fnHeading.className = 'print-footnotes__heading';
-      fnHeading.textContent = 'Notes';
-      printFnEl.appendChild(fnHeading);
 
-      var fnList = document.createElement('ol');
-      fnList.className = 'print-footnotes__list';
-
+  if (allFnBtns.length) {
+    // Build footnotes list
+    function buildFnList(className) {
+      var ol = document.createElement('ol');
+      ol.className = className;
       allFnBtns.forEach(function (btn) {
         var contentEl = btn.parentElement.querySelector('.fn-content');
         if (!contentEl) return;
@@ -620,10 +617,39 @@
         var id = btn.getAttribute('data-fn-id');
         if (id) li.setAttribute('value', id);
         li.textContent = contentEl.textContent;
-        fnList.appendChild(li);
+        ol.appendChild(li);
       });
+      return ol;
+    }
 
-      printFnEl.appendChild(fnList);
+    // Visible footnotes section
+    if (articleFnEl) {
+      var fnHeader = document.createElement('div');
+      fnHeader.className = 'article-footnotes__header';
+      fnHeader.innerHTML = '<span class="article-footnotes__title">Footnotes</span>' +
+        '<button class="article-footnotes__toggle" type="button" id="fn-toggle">Hide</button>';
+      articleFnEl.appendChild(fnHeader);
+
+      var fnBody = document.createElement('div');
+      fnBody.id = 'fn-body';
+      fnBody.appendChild(buildFnList('article-footnotes__list'));
+      articleFnEl.appendChild(fnBody);
+
+      document.getElementById('fn-toggle').addEventListener('click', function () {
+        var body = document.getElementById('fn-body');
+        var hidden = body.hidden;
+        body.hidden = !hidden;
+        this.textContent = hidden ? 'Hide' : 'Show';
+      });
+    }
+
+    // Print footnotes
+    if (printFnEl) {
+      var pfnHeading = document.createElement('p');
+      pfnHeading.className = 'print-footnotes__heading';
+      pfnHeading.textContent = 'Notes';
+      printFnEl.appendChild(pfnHeading);
+      printFnEl.appendChild(buildFnList('print-footnotes__list'));
     }
   }
 

@@ -386,6 +386,60 @@
   color: var(--color-ink-faint);
 }
 
+/* ── Article footnotes (visible section) ───────────────────── */
+.article-footnotes:empty { display: none; }
+
+.article-footnotes {
+  max-width: var(--max-width-prose);
+  margin: var(--space-8) auto 0;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-rule);
+}
+
+.article-footnotes__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.article-footnotes__title {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-faint);
+}
+
+.article-footnotes__toggle {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-link);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.article-footnotes__toggle:hover { text-decoration: underline; }
+
+.article-footnotes__list {
+  margin: 0;
+  padding-left: var(--space-6);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  line-height: var(--leading-relaxed);
+}
+
+.article-footnotes__list li {
+  margin-bottom: var(--space-2);
+}
+
+@media print {
+  .article-footnotes { display: none !important; }
+}
+
 /* ── Article feedback popup ─────────────────────────────────── */
 .article-feedback-wrap { position: relative; }
 .article-feedback-popup {
