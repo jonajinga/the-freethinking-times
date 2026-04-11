@@ -100,29 +100,48 @@
       ruler.id = 'rs-reading-ruler';
       ruler.className = 'rs-ruler-line';
       document.body.appendChild(ruler);
-      positionRulerWidth();
+      updateRulerBounds();
       document.addEventListener('mousemove', moveRuler);
-      window.addEventListener('resize', positionRulerWidth);
+      window.addEventListener('resize', updateRulerBounds);
+      window.addEventListener('scroll', updateRulerBounds, { passive: true });
     } else if (!on && existing) {
       existing.remove();
       document.removeEventListener('mousemove', moveRuler);
-      window.removeEventListener('resize', positionRulerWidth);
+      window.removeEventListener('resize', updateRulerBounds);
+      window.removeEventListener('scroll', updateRulerBounds);
     }
     var cb = document.getElementById('rs-ruler');
     if (cb) cb.checked = on;
   }
 
-  function positionRulerWidth() {
-    var ruler = document.getElementById('rs-reading-ruler');
-    if (!ruler) return;
+  // Cache the body bounds for ruler positioning
+  var rulerBounds = { left: 0, width: 0, top: 0, bottom: 0 };
+  function updateRulerBounds() {
     var rect = body.getBoundingClientRect();
-    ruler.style.left = rect.left + 'px';
-    ruler.style.width = rect.width + 'px';
+    rulerBounds.left = rect.left;
+    rulerBounds.width = rect.width;
+    rulerBounds.top = rect.top;
+    rulerBounds.bottom = rect.bottom;
+    var ruler = document.getElementById('rs-reading-ruler');
+    if (ruler) {
+      ruler.style.left = rect.left + 'px';
+      ruler.style.width = rect.width + 'px';
+    }
   }
 
+  var lastRulerY = -1;
   function moveRuler(e) {
     var ruler = document.getElementById('rs-reading-ruler');
-    if (ruler) ruler.style.top = e.clientY + 'px';
+    if (!ruler) return;
+    var y = e.clientY;
+    // Hide ruler if cursor is above or below the article body
+    if (y < rulerBounds.top || y > rulerBounds.bottom) {
+      ruler.style.opacity = '0';
+    } else {
+      ruler.style.opacity = '';
+      ruler.style.top = y + 'px';
+    }
+    lastRulerY = y;
   }
 
   function applyParaNums(on) {

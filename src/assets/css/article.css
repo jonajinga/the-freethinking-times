@@ -2893,9 +2893,9 @@
   height: 2px;
   background: var(--color-accent);
   opacity: 0.5;
-  z-index: var(--z-nav);
+  z-index: 50;
   pointer-events: none;
-  transition: top 0.05s linear;
+  transition: top 0.04s linear, opacity 0.15s ease;
 }
 
 /* Paragraph numbers */
