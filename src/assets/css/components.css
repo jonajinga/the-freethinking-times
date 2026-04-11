@@ -1784,7 +1784,7 @@ a.dateline:hover { color: var(--color-accent); }
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #fff;
+  color: var(--color-bg);
   background: var(--color-ink);
   border: none;
   padding: var(--space-3) var(--space-8);
@@ -1796,6 +1796,7 @@ a.dateline:hover { color: var(--color-accent); }
 
 .w3f__submit:hover {
   background: var(--color-accent);
+  color: #fff;
 }
 
 .w3f__privacy {
