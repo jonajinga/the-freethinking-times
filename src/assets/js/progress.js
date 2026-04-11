@@ -153,24 +153,59 @@
       var ttsText      = '';
 
       /* — Voice loader — */
+      var voicesLoaded = false;
       function loadVoices() {
         var voices = window.speechSynthesis.getVoices();
+        if (!voices.length) return; // not ready yet — wait for onvoiceschanged
+        if (!voiceSelect) return;
+
+        // Filter to English voices, sorted by name
         var list = voices.filter(function (v) { return v.lang.startsWith('en'); });
         if (!list.length) list = voices;
-        if (!voiceSelect) return;
-        if (list.length <= 1) { voiceSelect.hidden = true; return; }
+        list.sort(function (a, b) { return a.name.localeCompare(b.name); });
+
+        if (list.length <= 1) {
+          voiceSelect.hidden = true;
+          if (list.length === 1) ttsVoice = list[0];
+          return;
+        }
+
         var saved = localStorage.getItem(_p + '-tts-voice');
         voiceSelect.innerHTML = '';
+        var foundSaved = false;
         list.forEach(function (v) {
           var opt = document.createElement('option');
           opt.value = v.name;
-          opt.textContent = v.name;
-          if (v.name === saved) { opt.selected = true; ttsVoice = v; }
+          // Show a cleaner label: name + (local) indicator
+          var label = v.name.replace(/\s*\(.*?\)\s*/g, ' ').trim();
+          if (v.localService) label += ' (offline)';
+          opt.textContent = label;
+          if (saved && v.name === saved) { opt.selected = true; ttsVoice = v; foundSaved = true; }
           voiceSelect.appendChild(opt);
         });
+
+        // If no saved voice, select the first one as default
+        if (!foundSaved) {
+          ttsVoice = list[0];
+          voiceSelect.value = list[0].name;
+        }
+
+        voiceSelect.hidden = false;
+        voicesLoaded = true;
       }
-      window.speechSynthesis.onvoiceschanged = loadVoices;
+
+      // Chrome loads voices async — onvoiceschanged fires when ready
+      if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+      }
       loadVoices();
+
+      // Fallback: retry after a short delay (some mobile browsers need this)
+      if (!voicesLoaded) {
+        setTimeout(loadVoices, 100);
+        setTimeout(loadVoices, 500);
+        setTimeout(loadVoices, 1000);
+      }
 
       /* — Helpers — */
       function buildUtterance(text) {
