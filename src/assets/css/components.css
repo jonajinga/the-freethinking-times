@@ -152,16 +152,37 @@
 }
 
 /* Global font overrides — redefine the tokens */
+/* Site fonts */
 [data-gs-font="sans"] { --font-body: var(--font-ui); --font-headline: var(--font-ui); }
 [data-gs-font="lora"] { --font-body: 'Lora', Georgia, serif; --font-headline: 'Lora', Georgia, serif; }
+[data-gs-font="playfair"] { --font-body: 'Playfair Display', Georgia, serif; --font-headline: 'Playfair Display', Georgia, serif; }
+/* System serif */
 [data-gs-font="georgia"] { --font-body: Georgia, 'Times New Roman', serif; --font-headline: Georgia, 'Times New Roman', serif; }
 [data-gs-font="palatino"] { --font-body: 'Palatino Linotype', 'Book Antiqua', Palatino, serif; --font-headline: 'Palatino Linotype', 'Book Antiqua', Palatino, serif; }
 [data-gs-font="times"] { --font-body: 'Times New Roman', Times, serif; --font-headline: 'Times New Roman', Times, serif; }
+[data-gs-font="garamond"] { --font-body: Garamond, 'EB Garamond', Georgia, serif; --font-headline: Garamond, 'EB Garamond', Georgia, serif; }
+[data-gs-font="bookman"] { --font-body: 'Bookman Old Style', Georgia, serif; --font-headline: 'Bookman Old Style', Georgia, serif; }
+/* System sans */
 [data-gs-font="system"] { --font-body: system-ui, -apple-system, sans-serif; --font-headline: system-ui, -apple-system, sans-serif; }
 [data-gs-font="arial"] { --font-body: Arial, Helvetica, sans-serif; --font-headline: Arial, Helvetica, sans-serif; }
 [data-gs-font="verdana"] { --font-body: Verdana, Geneva, sans-serif; --font-headline: Verdana, Geneva, sans-serif; }
 [data-gs-font="trebuchet"] { --font-body: 'Trebuchet MS', Helvetica, sans-serif; --font-headline: 'Trebuchet MS', Helvetica, sans-serif; }
+[data-gs-font="tahoma"] { --font-body: Tahoma, Geneva, sans-serif; --font-headline: Tahoma, Geneva, sans-serif; }
+[data-gs-font="century"] { --font-body: 'Century Gothic', 'Apple Gothic', sans-serif; --font-headline: 'Century Gothic', 'Apple Gothic', sans-serif; }
+/* System mono */
 [data-gs-font="mono"] { --font-body: 'SF Mono', 'Fira Code', Consolas, monospace; --font-headline: 'SF Mono', 'Fira Code', Consolas, monospace; }
+[data-gs-font="courier"] { --font-body: 'Courier New', Courier, monospace; --font-headline: 'Courier New', Courier, monospace; }
+[data-gs-font="lucida"] { --font-body: 'Lucida Console', Monaco, monospace; --font-headline: 'Lucida Console', Monaco, monospace; }
+/* Web fonts (loaded on demand via Bunny Fonts) */
+[data-gs-font="inter"] { --font-body: 'Inter', system-ui, sans-serif; --font-headline: 'Inter', system-ui, sans-serif; }
+[data-gs-font="merriweather"] { --font-body: 'Merriweather', Georgia, serif; --font-headline: 'Merriweather', Georgia, serif; }
+[data-gs-font="roboto"] { --font-body: 'Roboto', system-ui, sans-serif; --font-headline: 'Roboto', system-ui, sans-serif; }
+[data-gs-font="opensans"] { --font-body: 'Open Sans', system-ui, sans-serif; --font-headline: 'Open Sans', system-ui, sans-serif; }
+[data-gs-font="baskerville"] { --font-body: 'Libre Baskerville', Georgia, serif; --font-headline: 'Libre Baskerville', Georgia, serif; }
+[data-gs-font="crimson"] { --font-body: 'Crimson Pro', Georgia, serif; --font-headline: 'Crimson Pro', Georgia, serif; }
+[data-gs-font="ibmplex"] { --font-body: 'IBM Plex Serif', Georgia, serif; --font-headline: 'IBM Plex Serif', Georgia, serif; }
+[data-gs-font="literata"] { --font-body: 'Literata', Georgia, serif; --font-headline: 'Literata', Georgia, serif; }
+[data-gs-font="atkinson"] { --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif; --font-headline: 'Atkinson Hyperlegible', system-ui, sans-serif; }
 
 /* Global background presets */
 [data-gs-bg="sepia"] { --color-bg: #f4ecd8; --color-bg-alt: #ede4cc; --color-bg-inset: #e5dcc4; }

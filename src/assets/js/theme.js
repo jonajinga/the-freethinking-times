@@ -31,7 +31,12 @@
     if (bg && bg !== 'default') root.setAttribute('data-gs-bg', bg);
 
     const gsFont = localStorage.getItem((window.__PREFIX || 'tft') + '-gs-font');
-    if (gsFont && gsFont !== 'default') root.setAttribute('data-gs-font', gsFont);
+    if (gsFont && gsFont !== 'default') {
+      root.setAttribute('data-gs-font', gsFont);
+      // Preload web fonts
+      const wf = {inter:'inter:wght@400;600;700',merriweather:'merriweather:wght@400;700',roboto:'roboto:wght@400;700',opensans:'open-sans:wght@400;600;700',baskerville:'libre-baskerville:wght@400;700',crimson:'crimson-pro:wght@400;600;700',ibmplex:'ibm-plex-serif:wght@400;600;700',literata:'literata:wght@400;600;700',atkinson:'atkinson-hyperlegible:wght@400;700'};
+      if (wf[gsFont]) { const l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.bunny.net/css?family='+wf[gsFont]+'&display=swap';document.head.appendChild(l); }
+    }
 
     const gsFontSize = localStorage.getItem((window.__PREFIX || 'tft') + '-gs-font-size');
     if (gsFontSize && parseInt(gsFontSize) > 0) root.style.fontSize = gsFontSize + 'px';
