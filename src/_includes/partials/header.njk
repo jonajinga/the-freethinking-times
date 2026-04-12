@@ -482,10 +482,13 @@
 
   <div class="nav-drawer__header">
     <span class="nav-drawer__label">{{ site.title }}</span>
-    <button class="nav-drawer__close" id="nav-drawer-close" type="button" aria-label="Close navigation menu" onclick="var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-drawer-overlay');d.classList.remove('is-open');o.classList.remove('is-open');d.setAttribute('aria-hidden','true');document.getElementById('nav-drawer-toggle').setAttribute('aria-expanded','false');document.body.style.overflow='';">✕</button>
+    <button class="nav-drawer__close" id="nav-drawer-close" type="button" aria-label="Close navigation menu" onclick="var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-drawer-overlay');d.classList.remove('is-open');o.classList.remove('is-open');d.setAttribute('aria-hidden','true');document.getElementById('nav-drawer-toggle').setAttribute('aria-expanded','false');document.body.style.overflow='';">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
   </div>
 
-  {# ── Primary nav (editorial sections) ── #}
+  {# ── Sections ── #}
+  <p class="nav-drawer__section-label">Sections</p>
   <ul class="nav-drawer__list" role="list">
     {% for item in site.nav %}
     {% if item.collection %}
@@ -497,33 +500,48 @@
   <div class="nav-drawer__divider"></div>
 
   {# ── Explore ── #}
+  <p class="nav-drawer__section-label">Explore</p>
   <ul class="nav-drawer__list" role="list">
-    <li><a class="nav-drawer__link" href="/library/">Library</a></li>
-    <li><a class="nav-drawer__link" href="/quotes/">Quotes</a></li>
-    <li><a class="nav-drawer__link" href="/videos/">Videos</a></li>
-    <li><a class="nav-drawer__link" href="/timeline/">Timeline</a></li>
-    <li><a class="nav-drawer__link" href="/projects/">Projects</a></li>
+    <li><a class="nav-drawer__link" href="/library/">Public Domain Library</a></li>
+    <li><a class="nav-drawer__link" href="/quotes/">Freethought Quotes</a></li>
+    <li><a class="nav-drawer__link" href="/videos/">Freethought Videos</a></li>
+    <li><a class="nav-drawer__link" href="/timeline/">Freethought Timeline</a></li>
+    <li><a class="nav-drawer__link" href="/resources/">Freethought Resources</a></li>
     <li><a class="nav-drawer__link" href="/games/">Games</a></li>
   </ul>
 
   <div class="nav-drawer__divider"></div>
 
-  {# ── Community & more ── #}
+  {# ── Projects ── #}
+  <p class="nav-drawer__section-label">Projects</p>
   <ul class="nav-drawer__list" role="list">
-    <li><a class="nav-drawer__link" href="/community/">Community</a></li>
-    <li><a class="nav-drawer__link" href="/events/">Events</a></li>
-    <li><a class="nav-drawer__link" href="/resources/">Resources</a></li>
-    <li><a class="nav-drawer__link" href="/contribute/">Contribute</a></li>
-    <li><a class="nav-drawer__link" href="/more/">More</a></li>
+    <li><a class="nav-drawer__link" href="/glossary/">Freethought Glossary</a></li>
+    <li><a class="nav-drawer__link" href="/bookshelf/">Freethinker's Bookshelf</a></li>
+    <li><a class="nav-drawer__link" href="/thought-experiments/">Thought Experiments</a></li>
+    <li><a class="nav-drawer__link" href="/trials/">Trials of Thought</a></li>
   </ul>
 
   <div class="nav-drawer__divider"></div>
 
-  {# ── Footer links ── #}
+  {# ── Community ── #}
+  <p class="nav-drawer__section-label">Community</p>
+  <ul class="nav-drawer__list" role="list">
+    <li><a class="nav-drawer__link" href="/community/">Community Hub</a></li>
+    <li><a class="nav-drawer__link" href="/events/">Events Calendar</a></li>
+    <li><a class="nav-drawer__link" href="/newsletter/">Newsletter</a></li>
+    <li><a class="nav-drawer__link" href="/contribute/">Contribute</a></li>
+    <li><a class="nav-drawer__link" href="/submit/">Submit</a></li>
+  </ul>
+
+  <div class="nav-drawer__divider"></div>
+
+  {# ── About & more ── #}
   <ul class="nav-drawer__list" role="list">
     <li><a class="nav-drawer__link nav-drawer__link--small" href="/about/">About</a></li>
     <li><a class="nav-drawer__link nav-drawer__link--small" href="/contact/">Contact</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--small" href="/support/">Support</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/reader-tools/">Reader Tools</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/transparency/">Transparency</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/legal/">Legal</a></li>
   </ul>
 
   {# ── Bottom toolbar ── #}
