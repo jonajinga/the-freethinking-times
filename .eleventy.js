@@ -143,6 +143,15 @@ module.exports = function (eleventyConfig) {
     return (str || '').toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
   });
 
+  eleventyConfig.addFilter("extractYear", (source, era) => {
+    if (!source) return 0;
+    const m = source.match(/\((?:c\.\s*)?(-?\d{3,4})/);
+    if (m) return parseInt(m[1], 10);
+    // Fallback by era for "attributed" quotes
+    const eraMap = { 'Ancient': -300, 'Early Modern': 1550, 'Enlightenment': 1760, '18th Century': 1780, '19th Century': 1870, '20th Century': 1950, '21st Century': 2005 };
+    return eraMap[era] || 0;
+  });
+
   eleventyConfig.addFilter("quoteSlug", (q) => {
     const author = (q.author || "unknown").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
     const words = (q.quote || "").split(/\s+/).slice(0, 6).join(" ").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
