@@ -144,27 +144,12 @@ permalink: /glossary/
 
 @media (max-width: 768px) {
   .glossary-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1.5rem;
+    gap: var(--space-2);
   }
-  .glossary-az {
-    flex-direction: row;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    position: sticky;
-    top: 3.5rem;
-    background: var(--color-bg);
-    border-bottom: 1px solid var(--color-rule);
-    padding: var(--space-1) var(--space-2);
-    gap: 0;
-    order: -1;
-  }
-  .glossary-az::-webkit-scrollbar { display: none; }
   .glossary-az__letter {
-    padding: 2px 5px;
-    flex-shrink: 0;
-    font-size: 11px;
+    font-size: 9px;
+    padding: 1px 0;
   }
 }
 </style>

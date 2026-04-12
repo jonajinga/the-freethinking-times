@@ -1254,6 +1254,41 @@ a.dateline:hover { color: var(--color-accent); }
   border-color: var(--color-ink);
 }
 
+/* ── Glossary Tooltips (Tippy.js) ──────────────────────────── */
+.glossary-tip {
+  border-bottom: 1px dotted var(--color-ink-faint);
+  cursor: help;
+  transition: border-color 0.15s;
+}
+
+.glossary-tip:hover {
+  border-bottom-color: var(--color-accent);
+}
+
+.tippy-box[data-theme~='glossary'] {
+  background: var(--color-ink);
+  color: var(--color-bg);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  padding: var(--space-2) var(--space-3);
+  border-radius: 4px;
+  max-width: 320px;
+}
+
+.tippy-box[data-theme~='glossary'] .tippy-arrow {
+  color: var(--color-ink);
+}
+
+[data-theme="dark"] .tippy-box[data-theme~='glossary'] {
+  background: var(--color-bg-alt);
+  color: var(--color-ink);
+}
+
+[data-theme="dark"] .tippy-box[data-theme~='glossary'] .tippy-arrow {
+  color: var(--color-bg-alt);
+}
+
 /* ── GTranslate in nav drawer ──────────────────────────────── */
 /* Old drawer classes no longer used */
 .nav-drawer__translate,

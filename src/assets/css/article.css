@@ -647,6 +647,18 @@
 }
 
 /* ── TTS control bar ────────────────────────────────────────── */
+/* TTS word highlight */
+.tts-word-active {
+  background: rgba(250, 204, 21, 0.35);
+  border-radius: 2px;
+  transition: background 0.1s ease;
+}
+
+[data-theme="dark"] .tts-word-active {
+  background: rgba(250, 204, 21, 0.2);
+  color: #f5f0e0;
+}
+
 .tts-controls {
   position: fixed;
   bottom: 5.5rem;

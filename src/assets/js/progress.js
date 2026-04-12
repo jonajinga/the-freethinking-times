@@ -211,16 +211,68 @@
         setTimeout(loadVoices, 1000);
       }
 
+      /* — TTS highlight tracking — */
+      var ttsHighlightEl = null;
+
+      function clearTtsHighlight() {
+        if (ttsHighlightEl) {
+          ttsHighlightEl.classList.remove('tts-word-active');
+          ttsHighlightEl = null;
+        }
+        document.querySelectorAll('.tts-word-active').forEach(function (el) {
+          el.classList.remove('tts-word-active');
+        });
+      }
+
       /* — Helpers — */
       function buildUtterance(text) {
         var utt = new SpeechSynthesisUtterance(text);
         utt.rate  = ttsRate;
         utt.voice = ttsVoice;
-        utt.onend = stopTts;
+        utt.onend = function () { clearTtsHighlight(); stopTts(); };
+
+        // Synced highlighting via onboundary (Chrome, Edge)
+        utt.onboundary = function (e) {
+          if (e.name !== 'word') return;
+          clearTtsHighlight();
+          var charIdx = e.charIndex;
+          var wordLen = e.charLength || 1;
+          // Find the text node at this character offset in article body
+          var body = document.querySelector('.article-body');
+          if (!body) return;
+          var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null, false);
+          var offset = 0;
+          var node;
+          while ((node = walker.nextNode())) {
+            var len = node.nodeValue.length;
+            if (offset + len > charIdx) {
+              // Found the node — find the word
+              var localIdx = charIdx - offset;
+              var range = document.createRange();
+              try {
+                range.setStart(node, localIdx);
+                range.setEnd(node, Math.min(localIdx + wordLen, len));
+                var span = document.createElement('span');
+                span.className = 'tts-word-active';
+                range.surroundContents(span);
+                ttsHighlightEl = span;
+                // Auto-scroll to keep word visible
+                var rect = span.getBoundingClientRect();
+                if (rect.top < 80 || rect.bottom > window.innerHeight - 80) {
+                  span.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                }
+              } catch (ex) {}
+              break;
+            }
+            offset += len;
+          }
+        };
+
         return utt;
       }
 
       function stopTts() {
+        clearTtsHighlight();
         window.speechSynthesis.cancel();
         ttsSpeaking = false;
         ttsPaused   = false;

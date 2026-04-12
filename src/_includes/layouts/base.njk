@@ -125,6 +125,14 @@
   <script src="/assets/js/global-settings.js" defer></script>
   {% block scripts %}{% endblock %}
 
+  {# ── Glossary tooltips (Tippy.js) ── #}
+  <script>
+  window.__glossaryTerms=[{% for entry in collections.glossary %}{ term:"{{ entry.data.title | escape }}", def:"{{ entry.data.description | escape }}", url:"{{ entry.url }}" }{% if not loop.last %},{% endif %}{% endfor %}];
+  </script>
+  <script src="/assets/js/popper.min.js" defer></script>
+  <script src="/assets/js/tippy.min.js" defer></script>
+  <script src="/assets/js/glossary-tips.js" defer></script>
+
   {# ── hCaptcha + dictation for Web3Forms pages ── #}
   {% if site.forms and site.forms.accessKey %}
   <script src="https://web3forms.com/client/script.js" async defer></script>
