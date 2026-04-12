@@ -2847,6 +2847,19 @@
   color: var(--color-bg) !important;
 }
 
+.rs-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1) var(--space-2);
+}
+
+.rs-icon-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
 /* ── Reading settings select ── */
 .rs-select {
   width: 100%;

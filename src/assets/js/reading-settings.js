@@ -90,11 +90,6 @@
     setActive('[data-rs-wordspace]', v);
   }
 
-  function applyBg(v) {
-    document.documentElement.removeAttribute('data-rs-bg');
-    if (v !== 'default') document.documentElement.setAttribute('data-rs-bg', v);
-    setActive('[data-rs-bg]', v);
-  }
 
   var rulerColorMap = {
     accent: 'var(--color-accent)',
@@ -249,7 +244,6 @@
   applySpacing(prefs.spacing);
   applyWidth(prefs.width);
   applyWordspace(prefs.wordspace);
-  applyBg(prefs.bg);
   // Ruler and para nums are session-only — don't auto-apply from localStorage
   // if (prefs.ruler) applyRuler(true);
   if (prefs.paraNums) applyParaNums(true);
@@ -293,7 +287,6 @@
   bindBtnGroup('data-rs-spacing', 'spacing', applySpacing);
   bindBtnGroup('data-rs-width', 'width', applyWidth);
   bindBtnGroup('data-rs-wordspace', 'wordspace', applyWordspace);
-  bindBtnGroup('data-rs-bg', 'bg', applyBg);
 
   // Toggles
   var rulerCb = document.getElementById('rs-ruler');

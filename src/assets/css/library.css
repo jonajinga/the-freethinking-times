@@ -1076,6 +1076,14 @@
 .library-highlight--orange.library-highlight--note { border-bottom-color: rgba(234, 88, 12, 0.5); }
 .library-highlight--purple.library-highlight--note { border-bottom-color: rgba(124, 58, 237, 0.5); }
 
+/* Article-level dark background */
+[data-rs-bg="dark"] .library-highlight { background: rgba(250, 204, 21, 0.15); color: #f5f0e0; }
+[data-rs-bg="dark"] .library-highlight--pink { background: rgba(244, 114, 182, 0.2); color: #fce7f3; }
+[data-rs-bg="dark"] .library-highlight--blue { background: rgba(96, 165, 250, 0.2); color: #dbeafe; }
+[data-rs-bg="dark"] .library-highlight--green { background: rgba(74, 222, 128, 0.2); color: #dcfce7; }
+[data-rs-bg="dark"] .library-highlight--orange { background: rgba(251, 146, 60, 0.2); color: #fed7aa; }
+[data-rs-bg="dark"] .library-highlight--purple { background: rgba(167, 139, 250, 0.2); color: #ede9fe; }
+
 [data-theme="dark"] .library-highlight--note {
   border-bottom-color: rgba(250, 204, 21, 0.5);
 }

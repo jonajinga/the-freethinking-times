@@ -105,7 +105,12 @@
 
     {# Global settings panel — outside masthead__actions so it's accessible on mobile via drawer button #}
     <div id="global-settings-panel" class="global-settings-panel" hidden>
-      <p style="font-family:var(--font-headline);font-size:var(--text-sm);font-weight:700;color:var(--color-ink);margin:0 0 var(--space-4);">Display Settings</p>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4);">
+        <p style="font-family:var(--font-headline);font-size:var(--text-sm);font-weight:700;color:var(--color-ink);margin:0;">Display Settings</p>
+        <button type="button" aria-label="Close" style="background:none;border:none;color:var(--color-ink-faint);cursor:pointer;padding:var(--space-1);line-height:1;" onclick="this.closest('.global-settings-panel').hidden=true;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
       <div class="rs-group">
         <label class="rs-label" for="gs-font-size">Text size</label>
         <div class="rs-size-row">
