@@ -721,6 +721,19 @@
 
 .library-panel__header-btn:hover { color: var(--color-ink); }
 
+.library-panel__export-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--color-bg);
+  border: 1px solid var(--color-rule);
+  box-shadow: 0 4px 16px rgba(0,0,0,.15);
+  padding: var(--space-2);
+  z-index: var(--z-modal);
+  min-width: 160px;
+  border-radius: 6px;
+}
+
 .library-panel__export-item {
   display: flex;
   align-items: center;
@@ -761,9 +774,7 @@
   display: flex;
   border-bottom: 1px solid var(--color-rule);
   flex-shrink: 0;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  overflow: visible;
 }
 
 .library-panel__tabs::-webkit-scrollbar { display: none; }
