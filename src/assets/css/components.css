@@ -1089,7 +1089,7 @@ a.dateline:hover { color: var(--color-accent); }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-4) var(--space-5) var(--space-5);
   border-bottom: 1px solid var(--color-rule);
   position: sticky;
   top: 0;
@@ -1126,21 +1126,19 @@ a.dateline:hover { color: var(--color-accent); }
 
 .nav-drawer__close {
   background: none;
-  border: 1px solid var(--color-rule);
-  color: var(--color-ink-muted);
+  border: none;
+  color: var(--color-ink-faint);
   cursor: pointer;
   padding: var(--space-2);
   line-height: 1;
-  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color var(--transition-fast), border-color var(--transition-fast);
+  transition: color var(--transition-fast);
 }
 
 .nav-drawer__close:hover {
   color: var(--color-ink);
-  border-color: var(--color-ink);
 }
 
 .nav-drawer__section-label {
