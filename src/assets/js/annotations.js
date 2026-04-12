@@ -32,6 +32,125 @@
       .replace(/"/g, '&quot;');
   }
 
+  // Mini markdown → HTML (bold, italic, code, links, lists, blockquotes)
+  function parseMd(str) {
+    if (!str) return '';
+    var s = escHtml(str);
+    // Code blocks (``` ... ```)
+    s = s.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+    // Inline code
+    s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+    // Bold
+    s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // Italic
+    s = s.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    // Links [text](url)
+    s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    // Blockquotes (> text)
+    s = s.replace(/^&gt;\s?(.+)$/gm, '<blockquote>$1</blockquote>');
+    // Unordered list items (- text)
+    s = s.replace(/^-\s+(.+)$/gm, '<li>$1</li>');
+    s = s.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+    // Line breaks
+    s = s.replace(/\n/g, '<br>');
+    // Clean up br inside block elements
+    s = s.replace(/<br><(ul|blockquote|pre)/g, '<$1');
+    s = s.replace(/<\/(ul|blockquote|pre)><br>/g, '</$1>');
+    return s;
+  }
+
+  // Note editor modal (replaces prompt())
+  // Sanitize HTML from contenteditable (strip scripts, event handlers)
+  function sanitizeHtml(html) {
+    var div = document.createElement('div');
+    div.innerHTML = html;
+    div.querySelectorAll('script,style,iframe,object,embed').forEach(function (el) { el.remove(); });
+    div.querySelectorAll('*').forEach(function (el) {
+      Array.from(el.attributes).forEach(function (attr) {
+        if (attr.name.startsWith('on')) el.removeAttribute(attr.name);
+      });
+    });
+    return div.innerHTML;
+  }
+
+  function openNoteEditor(initialText, callback) {
+    var existing = document.getElementById('ann-note-editor');
+    if (existing) existing.remove();
+
+    var overlay = document.createElement('div');
+    overlay.id = 'ann-note-editor';
+    overlay.className = 'ann-note-overlay';
+
+    var modal = document.createElement('div');
+    modal.className = 'ann-note-modal';
+    modal.innerHTML =
+      '<div class="ann-note-modal__header">' +
+        '<span style="font-family:var(--font-ui);font-size:var(--text-sm);font-weight:700;">Note</span>' +
+      '</div>' +
+      '<div class="ann-note-toolbar">' +
+        '<button type="button" data-cmd="bold" title="Bold"><strong>B</strong></button>' +
+        '<button type="button" data-cmd="italic" title="Italic"><em>I</em></button>' +
+        '<button type="button" data-cmd="insertUnorderedList" title="List">&#8226;</button>' +
+        '<button type="button" data-cmd="formatBlock" data-val="blockquote" title="Quote">&ldquo;</button>' +
+        '<button type="button" data-cmd="createLink" title="Link">&#128279;</button>' +
+      '</div>' +
+      '<div class="ann-note-editable" contenteditable="true" role="textbox" aria-multiline="true"></div>' +
+      '<div class="ann-note-modal__footer">' +
+        '<button type="button" class="ann-note-btn ann-note-btn--cancel">Cancel</button>' +
+        '<button type="button" class="ann-note-btn ann-note-btn--save">Save</button>' +
+      '</div>';
+
+    var editor = modal.querySelector('.ann-note-editable');
+
+    // Toolbar: execCommand for WYSIWYG formatting
+    modal.querySelectorAll('[data-cmd]').forEach(function (btn) {
+      btn.addEventListener('mousedown', function (e) { e.preventDefault(); }); // keep focus in editor
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        editor.focus();
+        var cmd = btn.dataset.cmd;
+        if (cmd === 'createLink') {
+          var url = prompt('Link URL:');
+          if (url) document.execCommand('createLink', false, url);
+        } else if (btn.dataset.val) {
+          document.execCommand(cmd, false, btn.dataset.val);
+        } else {
+          document.execCommand(cmd, false, null);
+        }
+      });
+    });
+
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    // Load initial content (support both HTML and plain text from old notes)
+    if (initialText) {
+      if (initialText.indexOf('<') !== -1) {
+        editor.innerHTML = initialText;
+      } else {
+        editor.innerHTML = parseMd(initialText);
+      }
+    }
+    setTimeout(function () { editor.focus(); }, 50);
+
+    modal.querySelector('.ann-note-btn--save').addEventListener('click', function () {
+      var html = sanitizeHtml(editor.innerHTML).trim();
+      // Convert empty editor to empty string
+      if (html === '<br>' || html === '<div><br></div>') html = '';
+      callback(html);
+      overlay.remove();
+    });
+    modal.querySelector('.ann-note-btn--cancel').addEventListener('click', function () {
+      overlay.remove();
+    });
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) overlay.remove();
+    });
+    document.addEventListener('keydown', function escClose(e) {
+      if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', escClose); }
+    });
+  }
+
   function fmtDate(ts) {
     if (!ts) return '';
     try { return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }); }
@@ -152,7 +271,7 @@
         item.dataset.annId = ann.id;
         item.innerHTML =
           '<p class="library-annotation-item__quote" style="cursor:pointer;" title="Click to scroll to highlight">&ldquo;' + escHtml(ann.quote) + '&rdquo;</p>' +
-          (ann.note ? '<p class="library-annotation-item__note">' + escHtml(ann.note) + '</p>' : '') +
+          (ann.note ? '<div class="library-annotation-item__note">' + (ann.note.indexOf('<') !== -1 ? sanitizeHtml(ann.note) : parseMd(ann.note)) + '</div>' : '') +
           '<div class="library-annotation-item__meta">' + fmtDate(ann.ts) + '</div>' +
           '<div class="library-annotation-item__actions">' +
             '<button class="library-annotation-item__action" data-ann-copy title="Copy text">Copy</button>' +
@@ -282,7 +401,7 @@
         item.innerHTML =
           (ann.section ? '<p style="font-family:var(--font-ui);font-size:10px;color:var(--color-ink-faint);text-transform:uppercase;letter-spacing:0.06em;margin:0 0 var(--space-1);">' + escHtml(ann.section) + '</p>' : '') +
           '<p class="library-annotation-item__quote">&ldquo;' + escHtml(ann.quote) + '&rdquo;</p>' +
-          (ann.note ? '<p class="library-annotation-item__note">' + escHtml(ann.note) + '</p>' : '') +
+          (ann.note ? '<div class="library-annotation-item__note">' + (ann.note.indexOf('<') !== -1 ? sanitizeHtml(ann.note) : parseMd(ann.note)) + '</div>' : '') +
           '<p style="font-size:var(--text-xs);color:var(--color-ink-faint);margin:var(--space-1) 0 0;">' + dateStr + modStr + '</p>' +
           '<div class="library-annotation-item__actions">' +
             '<button class="library-annotation-item__action" data-ann-copy>Copy</button>' +
@@ -328,11 +447,10 @@
         if (editBtn) {
           editBtn.addEventListener('click', function (e) {
             e.stopPropagation();
-            var newNote = prompt('Edit note:', ann.note || '');
-            if (newNote !== null) {
+            openNoteEditor(ann.note || '', function (newNote) {
               updateNote(ann.id, newNote);
               renderFiltered(containerEl, filterFn, emptyMsg);
-            }
+            });
           });
         }
 
@@ -726,16 +844,16 @@
       if (annotateBtn) {
         annotateBtn.addEventListener('click', function () {
           if (!lastRange) return;
-          // Save range before prompt clears selection
           var savedText = lastRange.text;
           var savedRange = lastRange.range ? lastRange.range.cloneRange() : null;
           var savedHeading = getNearestHeading();
-          var note = prompt('Add a note (optional):') || '';
-          // Restore lastRange for wrapSelectionInMark
-          lastRange = { text: savedText, range: savedRange };
-          var annId = Annotations.add(savedText, note, savedHeading, lastHlColor);
-          wrapSelectionInMark(annId, !!note, lastHlColor);
-          afterAction();
+          var savedColor = lastHlColor;
+          openNoteEditor('', function (note) {
+            lastRange = { text: savedText, range: savedRange };
+            var annId = Annotations.add(savedText, note, savedHeading, savedColor);
+            wrapSelectionInMark(annId, !!note, savedColor);
+            afterAction();
+          });
         });
       }
 
