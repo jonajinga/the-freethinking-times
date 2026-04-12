@@ -1019,37 +1019,71 @@
   background: rgba(250, 204, 21, 0.25);
 }
 
-/* Highlight color variants */
-.library-highlight--pink { background: rgba(236, 72, 153, 0.25); }
-.library-highlight--pink:hover { background: rgba(236, 72, 153, 0.4); }
-.library-highlight--blue { background: rgba(59, 130, 246, 0.2); }
-.library-highlight--blue:hover { background: rgba(59, 130, 246, 0.35); }
-.library-highlight--green { background: rgba(34, 197, 94, 0.25); }
-.library-highlight--green:hover { background: rgba(34, 197, 94, 0.4); }
-.library-highlight--orange { background: rgba(249, 115, 22, 0.25); }
-.library-highlight--orange:hover { background: rgba(249, 115, 22, 0.4); }
-.library-highlight--purple { background: rgba(139, 92, 246, 0.2); }
-.library-highlight--purple:hover { background: rgba(139, 92, 246, 0.35); }
+/* Highlight color variants — light theme */
+.library-highlight--pink { background: rgba(219, 39, 119, 0.18); }
+.library-highlight--pink:hover { background: rgba(219, 39, 119, 0.3); }
+.library-highlight--blue { background: rgba(37, 99, 235, 0.15); }
+.library-highlight--blue:hover { background: rgba(37, 99, 235, 0.28); }
+.library-highlight--green { background: rgba(22, 163, 74, 0.18); }
+.library-highlight--green:hover { background: rgba(22, 163, 74, 0.3); }
+.library-highlight--orange { background: rgba(234, 88, 12, 0.18); }
+.library-highlight--orange:hover { background: rgba(234, 88, 12, 0.3); }
+.library-highlight--purple { background: rgba(124, 58, 237, 0.15); }
+.library-highlight--purple:hover { background: rgba(124, 58, 237, 0.28); }
 
-[data-theme="dark"] .library-highlight--pink { background: rgba(236, 72, 153, 0.15); }
-[data-theme="dark"] .library-highlight--blue { background: rgba(59, 130, 246, 0.15); }
-[data-theme="dark"] .library-highlight--green { background: rgba(34, 197, 94, 0.15); }
-[data-theme="dark"] .library-highlight--orange { background: rgba(249, 115, 22, 0.15); }
-[data-theme="dark"] .library-highlight--purple { background: rgba(139, 92, 246, 0.15); }
+/* Dark theme */
+[data-theme="dark"] .library-highlight--pink { background: rgba(244, 114, 182, 0.2); color: #fce7f3; }
+[data-theme="dark"] .library-highlight--blue { background: rgba(96, 165, 250, 0.2); color: #dbeafe; }
+[data-theme="dark"] .library-highlight--green { background: rgba(74, 222, 128, 0.2); color: #dcfce7; }
+[data-theme="dark"] .library-highlight--orange { background: rgba(251, 146, 60, 0.2); color: #fed7aa; }
+[data-theme="dark"] .library-highlight--purple { background: rgba(167, 139, 250, 0.2); color: #ede9fe; }
+
+/* Sepia theme */
+[data-rs-bg="sepia"] .library-highlight { background: rgba(180, 140, 20, 0.25); }
+[data-rs-bg="sepia"] .library-highlight--pink { background: rgba(190, 50, 100, 0.2); }
+[data-rs-bg="sepia"] .library-highlight--blue { background: rgba(50, 100, 180, 0.18); }
+[data-rs-bg="sepia"] .library-highlight--green { background: rgba(40, 140, 70, 0.2); }
+[data-rs-bg="sepia"] .library-highlight--orange { background: rgba(200, 90, 20, 0.22); }
+[data-rs-bg="sepia"] .library-highlight--purple { background: rgba(120, 60, 200, 0.18); }
+[data-gs-bg="sepia"] .library-highlight { background: rgba(180, 140, 20, 0.25); }
+[data-gs-bg="sepia"] .library-highlight--pink { background: rgba(190, 50, 100, 0.2); }
+[data-gs-bg="sepia"] .library-highlight--blue { background: rgba(50, 100, 180, 0.18); }
+[data-gs-bg="sepia"] .library-highlight--green { background: rgba(40, 140, 70, 0.2); }
+[data-gs-bg="sepia"] .library-highlight--orange { background: rgba(200, 90, 20, 0.22); }
+[data-gs-bg="sepia"] .library-highlight--purple { background: rgba(120, 60, 200, 0.18); }
+
+/* Cream theme */
+[data-rs-bg="cream"] .library-highlight { background: rgba(200, 160, 20, 0.22); }
+[data-rs-bg="cream"] .library-highlight--pink { background: rgba(200, 50, 110, 0.16); }
+[data-rs-bg="cream"] .library-highlight--blue { background: rgba(50, 100, 190, 0.14); }
+[data-rs-bg="cream"] .library-highlight--green { background: rgba(30, 140, 60, 0.16); }
+[data-rs-bg="cream"] .library-highlight--orange { background: rgba(210, 90, 20, 0.18); }
+[data-rs-bg="cream"] .library-highlight--purple { background: rgba(120, 50, 210, 0.14); }
+[data-gs-bg="cream"] .library-highlight { background: rgba(200, 160, 20, 0.22); }
+[data-gs-bg="cream"] .library-highlight--pink { background: rgba(200, 50, 110, 0.16); }
+[data-gs-bg="cream"] .library-highlight--blue { background: rgba(50, 100, 190, 0.14); }
+[data-gs-bg="cream"] .library-highlight--green { background: rgba(30, 140, 60, 0.16); }
+[data-gs-bg="cream"] .library-highlight--orange { background: rgba(210, 90, 20, 0.18); }
+[data-gs-bg="cream"] .library-highlight--purple { background: rgba(120, 50, 210, 0.14); }
 
 /* Highlights with notes — dotted underline to indicate attached note */
 .library-highlight--note {
   border-bottom: 2px dotted rgba(200, 160, 0, 0.6);
 }
-.library-highlight--pink.library-highlight--note { border-bottom-color: rgba(236, 72, 153, 0.6); }
-.library-highlight--blue.library-highlight--note { border-bottom-color: rgba(59, 130, 246, 0.6); }
-.library-highlight--green.library-highlight--note { border-bottom-color: rgba(34, 197, 94, 0.6); }
-.library-highlight--orange.library-highlight--note { border-bottom-color: rgba(249, 115, 22, 0.6); }
-.library-highlight--purple.library-highlight--note { border-bottom-color: rgba(139, 92, 246, 0.6); }
+.library-highlight--pink.library-highlight--note { border-bottom-color: rgba(219, 39, 119, 0.5); }
+.library-highlight--blue.library-highlight--note { border-bottom-color: rgba(37, 99, 235, 0.5); }
+.library-highlight--green.library-highlight--note { border-bottom-color: rgba(22, 163, 74, 0.5); }
+.library-highlight--orange.library-highlight--note { border-bottom-color: rgba(234, 88, 12, 0.5); }
+.library-highlight--purple.library-highlight--note { border-bottom-color: rgba(124, 58, 237, 0.5); }
 
 [data-theme="dark"] .library-highlight--note {
   border-bottom-color: rgba(250, 204, 21, 0.5);
 }
+[data-theme="dark"] .library-highlight--pink.library-highlight--note { border-bottom-color: rgba(244, 114, 182, 0.5); }
+[data-theme="dark"] .library-highlight--blue.library-highlight--note { border-bottom-color: rgba(96, 165, 250, 0.5); }
+[data-theme="dark"] .library-highlight--green.library-highlight--note { border-bottom-color: rgba(74, 222, 128, 0.5); }
+[data-theme="dark"] .library-highlight--orange.library-highlight--note { border-bottom-color: rgba(251, 146, 60, 0.5); }
+[data-theme="dark"] .library-highlight--purple.library-highlight--note { border-bottom-color: rgba(167, 139, 250, 0.5); }
 
 /* Highlight color picker popup */
 .hl-color-picker {
