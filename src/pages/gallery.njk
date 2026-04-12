@@ -24,13 +24,47 @@ permalink: /gallery/
     <p style="font-family:var(--font-ui);font-size:var(--text-md);color:var(--color-ink-faint);font-style:italic;">The gallery is being curated. Check back soon, or <a href="/gallery/submit/" style="color:var(--color-link);">submit a photo</a> to help us get started.</p>
   </div>
   {% else %}
+
+  {# Filters #}
+  <div style="display:flex;gap:var(--space-3);margin-bottom:var(--space-6);flex-wrap:wrap;align-items:center;">
+    <input type="search" id="gallery-search" placeholder="Search images..." aria-label="Search gallery" style="flex:1;min-width:200px;font-family:var(--font-ui);font-size:var(--text-sm);padding:var(--space-2) var(--space-4);border:1px solid var(--color-rule);background:var(--color-bg);color:var(--color-ink);border-radius:var(--radius-sm);">
+    <select id="gallery-category" aria-label="Filter by category" style="font-family:var(--font-ui);font-size:var(--text-sm);padding:var(--space-2) var(--space-3);border:1px solid var(--color-rule);background:var(--color-bg);color:var(--color-ink);">
+      <option value="">All categories</option>
+      {% set cats = [] %}
+      {% for img in gallery %}{% if img.category and img.category not in cats %}{% set cats = cats.concat([img.category]) %}{% endif %}{% endfor %}
+      {% for cat in cats %}<option value="{{ cat }}">{{ cat }}</option>{% endfor %}
+    </select>
+    <select id="gallery-license" aria-label="Filter by licence" style="font-family:var(--font-ui);font-size:var(--text-sm);padding:var(--space-2) var(--space-3);border:1px solid var(--color-rule);background:var(--color-bg);color:var(--color-ink);">
+      <option value="">All licences</option>
+      {% set lics = [] %}
+      {% for img in gallery %}{% if img.license and img.license not in lics %}{% set lics = lics.concat([img.license]) %}{% endif %}{% endfor %}
+      {% for lic in lics %}<option value="{{ lic }}">{{ lic }}</option>{% endfor %}
+    </select>
+    <select id="gallery-source" aria-label="Filter by source" style="font-family:var(--font-ui);font-size:var(--text-sm);padding:var(--space-2) var(--space-3);border:1px solid var(--color-rule);background:var(--color-bg);color:var(--color-ink);">
+      <option value="">All sources</option>
+      {% set srcs = [] %}
+      {% for img in gallery %}{% if img.credit and img.credit not in srcs %}{% set srcs = srcs.concat([img.credit]) %}{% endif %}{% endfor %}
+      {% for src in srcs %}<option value="{{ src }}">{{ src }}</option>{% endfor %}
+    </select>
+    <span id="gallery-count" style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);">{{ gallery.length }} image{{ "s" if gallery.length != 1 }}</span>
+  </div>
+
   <div class="gallery-grid">
     {% for img in gallery %}
-    <figure class="gallery-card" onclick="openLightbox({{ loop.index0 }})">
-      <img src="{{ img.src }}" alt="{{ img.alt }}" loading="lazy" class="gallery-card__img">
+    <figure class="gallery-card" data-idx="{{ loop.index0 }}" data-alt="{{ img.alt | lower }}" data-category="{{ img.category or '' }}" data-license="{{ img.license or '' }}" data-credit="{{ img.credit or '' }}" onclick="openLightbox({{ loop.index0 }})">
+      <div class="gallery-card__img-wrap">
+        <img src="{{ img.src }}" alt="{{ img.alt }}" loading="lazy" class="gallery-card__img">
+        <div class="gallery-card__overlay">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </div>
+      </div>
       <figcaption class="gallery-card__caption">
+        {% if img.category %}<span class="gallery-card__tag">{{ img.category }}</span>{% endif %}
         <p class="gallery-card__title">{{ img.alt }}</p>
-        {% if img.credit %}<p class="gallery-card__credit">{{ img.credit }}{% if img.license %} · {{ img.license }}{% endif %}</p>{% endif %}
+        <div class="gallery-card__meta">
+          {% if img.credit %}<span>{{ img.credit }}</span>{% endif %}
+          {% if img.license %}<span class="gallery-card__license">{{ img.license }}</span>{% endif %}
+        </div>
       </figcaption>
     </figure>
     {% endfor %}
@@ -77,37 +111,89 @@ permalink: /gallery/
 .gallery-card {
   margin: 0;
   border: 1px solid var(--color-rule);
+  background: var(--color-bg);
   cursor: pointer;
-  transition: box-shadow 0.2s;
+  transition: box-shadow 0.25s, transform 0.25s;
   overflow: hidden;
 }
 
-.gallery-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+.gallery-card:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+  transform: translateY(-3px);
+}
+
+.gallery-card__img-wrap {
+  position: relative;
+  overflow: hidden;
+}
 
 .gallery-card__img {
   width: 100%;
-  height: 220px;
-  object-fit: cover;
+  height: 260px;
+  object-fit: contain;
   display: block;
+  background: #111;
+  transition: transform 0.3s ease;
 }
 
+.gallery-card:hover .gallery-card__img {
+  transform: scale(1.03);
+}
+
+.gallery-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.gallery-card:hover .gallery-card__overlay { opacity: 1; }
+
 .gallery-card__caption {
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-6) var(--space-8);
+}
+
+.gallery-card__tag {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  margin-bottom: var(--space-3);
 }
 
 .gallery-card__title {
   font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--color-ink);
-  line-height: 1.5;
-  margin: 0 0 var(--space-2);
+  line-height: 1.6;
+  margin: 0 0 var(--space-4);
 }
 
-.gallery-card__credit {
+.gallery-card__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   font-family: var(--font-ui);
   font-size: var(--text-xs);
   color: var(--color-ink-faint);
-  margin: 0;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-rule);
+}
+
+.gallery-card__license {
+  padding: 1px 6px;
+  border: 1px solid var(--color-rule);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Lightbox */
@@ -312,5 +398,36 @@ permalink: /gallery/
     else if (e.key === '+' || e.key === '=') zoomIn();
     else if (e.key === '-') zoomOut();
   });
+
+  // Filters
+  var searchInput = document.getElementById('gallery-search');
+  var catFilter = document.getElementById('gallery-category');
+  var licFilter = document.getElementById('gallery-license');
+  var srcFilter = document.getElementById('gallery-source');
+  var countEl = document.getElementById('gallery-count');
+  var cards = document.querySelectorAll('.gallery-card');
+
+  function filterGallery() {
+    var q = (searchInput.value || '').toLowerCase().trim();
+    var cat = catFilter.value;
+    var lic = licFilter.value;
+    var src = srcFilter.value;
+    var visible = 0;
+    cards.forEach(function (card) {
+      var show = true;
+      if (q && card.dataset.alt.indexOf(q) === -1) show = false;
+      if (cat && card.dataset.category !== cat) show = false;
+      if (lic && card.dataset.license !== lic) show = false;
+      if (src && card.dataset.credit !== src) show = false;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    countEl.textContent = visible + ' image' + (visible !== 1 ? 's' : '');
+  }
+
+  if (searchInput) searchInput.addEventListener('input', filterGallery);
+  if (catFilter) catFilter.addEventListener('change', filterGallery);
+  if (licFilter) licFilter.addEventListener('change', filterGallery);
+  if (srcFilter) srcFilter.addEventListener('change', filterGallery);
 })();
 </script>
