@@ -364,7 +364,8 @@
   </div>{# /.container #}
 </header>
 
-{# ── Daily Quote Bar ── #}
+{# ── Daily Quote Bar (homepage only) ── #}
+{% if page.url == "/" %}
 <div class="quote-bar" id="quote-bar" data-pagefind-ignore>
   <a class="quote-bar__link" href="/quotes/showcase/" title="View quotes showcase">
     <span class="quote-bar__text" id="quote-bar-text"></span>
@@ -396,6 +397,7 @@
   setInterval(function(){show(idx+1);},10000);
 })();
 </script>
+{% endif %}
 
 {# ── Search Modal ── (lives outside header for z-index stacking) #}
 <div class="search-overlay js-only" id="search-overlay" aria-hidden="true" onclick="var m=document.getElementById('search-modal'),o=this;m.classList.remove('is-open');m.setAttribute('aria-hidden','true');o.classList.remove('is-open');document.body.style.overflow='';document.getElementById('search-input').value='';document.getElementById('search-results').innerHTML='';"></div>
