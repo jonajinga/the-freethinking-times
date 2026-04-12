@@ -8,6 +8,9 @@ layout: layouts/base.njk
     <header class="library-hero">
       <h1 class="library-hero__headline">{{ title or "The Library" }}</h1>
       <p class="library-hero__deck">{{ description or "A curated collection of public domain texts — philosophy, history, science, literature — freely readable and fully annotated." }}</p>
+      <p style="font-family: var(--font-ui); font-size: var(--text-sm); margin-top: var(--space-4);">
+        Know a public domain text we should publish? <a href="/library/submit/" style="color: var(--color-link); font-weight: 600;">Suggest it</a>
+      </p>
     </header>
 
     {# ── Featured Works ── #}

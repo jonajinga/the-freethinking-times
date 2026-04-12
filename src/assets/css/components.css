@@ -788,8 +788,8 @@ a.dateline:hover { color: var(--color-accent); }
 
 .site-footer__grid {
   display: grid;
-  grid-template-columns: 1.5fr repeat(9, 1fr);
-  gap: var(--space-2);
+  grid-template-columns: 1.4fr repeat(9, minmax(0, 1fr));
+  gap: var(--space-1);
   margin-bottom: var(--space-8);
 }
 
