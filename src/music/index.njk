@@ -19,63 +19,103 @@ permalink: /music/
       </p>
     </header>
 
-    {# Player bar — hidden until a playlist is selected #}
-    <div id="music-player" class="music-player" hidden>
-      <div class="music-player__info">
-        <span class="music-player__now-playing" id="mp-now-playing">Loading...</span>
-      </div>
-      <div class="music-player__controls">
-        <button type="button" id="mp-prev" aria-label="Previous" class="music-player__btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"/></svg>
-        </button>
-        <button type="button" id="mp-play" aria-label="Play" class="music-player__btn music-player__btn--play">
-          <svg id="mp-play-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          <svg id="mp-pause-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-        </button>
-        <button type="button" id="mp-next" aria-label="Next" class="music-player__btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"/></svg>
-        </button>
-        <input type="range" id="mp-volume" min="0" max="100" value="80" aria-label="Volume" class="music-player__volume">
+    {# Custom playlist input #}
+    <div style="margin-bottom:var(--space-8);padding:var(--space-5) var(--space-6);border:1px solid var(--color-rule);background:var(--color-bg-alt);">
+      <p style="font-family:var(--font-ui);font-size:var(--text-sm);font-weight:600;margin:0 0 var(--space-3);">Play your own playlist</p>
+      <div style="display:flex;gap:var(--space-2);">
+        <input type="url" id="custom-playlist-url" placeholder="Paste a YouTube playlist URL..." aria-label="YouTube playlist URL" style="flex:1;font-family:var(--font-ui);font-size:var(--text-sm);padding:var(--space-2) var(--space-3);border:1px solid var(--color-rule);background:var(--color-bg);color:var(--color-ink);">
+        <button type="button" class="btn" onclick="var u=document.getElementById('custom-playlist-url').value;if(u){var m=u.match(/[?&]list=([a-zA-Z0-9_-]+)/);if(m)window.musicPlayer.loadPlaylist(m[1],'Custom Playlist');else alert('Please paste a valid YouTube playlist URL');}">Play</button>
       </div>
     </div>
 
+    {# Search and filter #}
+    <div style="display:flex;gap:var(--space-3);margin-bottom:var(--space-6);flex-wrap:wrap;">
+      <input type="search" id="music-search" placeholder="Search playlists..." aria-label="Search playlists" style="flex:1;min-width:180px;font-family:var(--font-ui);font-size:var(--text-sm);padding:var(--space-2) var(--space-4);border:1px solid var(--color-rule);background:var(--color-bg);color:var(--color-ink);">
+      <select id="music-category" aria-label="Filter by category" style="font-family:var(--font-ui);font-size:var(--text-sm);padding:var(--space-2) var(--space-3);border:1px solid var(--color-rule);background:var(--color-bg);color:var(--color-ink);">
+        <option value="">All categories</option>
+        {% set cats = [] %}
+        {% for pl in playlists %}{% if pl.category and pl.category not in cats %}{% set cats = cats.concat([pl.category]) %}{% endif %}{% endfor %}
+        {% for cat in cats %}<option value="{{ cat }}">{{ cat }}</option>{% endfor %}
+      </select>
+    </div>
+
     {# Playlist cards #}
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-6);margin-top:var(--space-6);">
+    <div class="music-grid" id="music-grid">
       {% for pl in playlists %}
-      <div class="music-playlist-card" data-playlist-id="{{ pl.playlistId }}" data-playlist-name="{{ pl.name }}">
-        <span style="font-family:var(--font-ui);font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-ink-faint);">{{ pl.category }}</span>
-        <h2 style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;margin:var(--space-2) 0;">{{ pl.name }}</h2>
-        <p style="font-family:var(--font-body);font-size:var(--text-sm);color:var(--color-ink-muted);line-height:1.5;margin:0 0 var(--space-4);">{{ pl.description }}</p>
-        <button type="button" class="btn music-playlist-card__play" onclick="window.musicPlayer.loadPlaylist('{{ pl.playlistId }}','{{ pl.name | escape }}')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="margin-right:4px;vertical-align:-2px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          Play
-        </button>
-        <div class="music-tracklist"></div>
+      <div class="music-card" data-playlist-id="{{ pl.playlistId }}" data-name="{{ pl.name | lower }}" data-desc="{{ pl.description | lower }}" data-category="{{ pl.category }}">
+        <div class="music-card__header">
+          <span class="music-card__category">{{ pl.category }}</span>
+          <h2 class="music-card__title">{{ pl.name }}</h2>
+          <p class="music-card__desc">{{ pl.description }}</p>
+        </div>
+        <div class="music-card__actions">
+          <button type="button" class="btn" onclick="window.musicPlayer.loadPlaylist('{{ pl.playlistId }}','{{ pl.name | escape }}')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="margin-right:4px;vertical-align:-2px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Play
+          </button>
+          <button type="button" class="music-card__toggle" onclick="this.parentElement.parentElement.querySelector('.music-card__tracklist').hidden=!this.parentElement.parentElement.querySelector('.music-card__tracklist').hidden;this.textContent=this.parentElement.parentElement.querySelector('.music-card__tracklist').hidden?'Show tracks':'Hide tracks';">Show tracks</button>
+        </div>
+        <div class="music-card__tracklist" hidden>
+          <p style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);font-style:italic;padding:var(--space-3);">Click Play to load track list</p>
+        </div>
       </div>
       {% endfor %}
     </div>
 
+    <p id="music-no-results" hidden style="font-family:var(--font-ui);font-size:var(--text-sm);color:var(--color-ink-faint);font-style:italic;text-align:center;padding:var(--space-6) 0;">No playlists match your search.</p>
+
   </div>
 </div>
 
-<div id="music-yt-player" style="position:absolute;left:-9999px;width:1px;height:1px;"></div>
+{# Sticky player bar at bottom #}
+<div id="music-player" class="music-player" hidden>
+  <div class="music-player__info">
+    <span class="music-player__playlist-name" id="mp-playlist-name"></span>
+    <span class="music-player__now-playing" id="mp-now-playing">Loading...</span>
+  </div>
+  <div class="music-player__controls">
+    <button type="button" id="mp-prev" aria-label="Previous" class="music-player__btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"/></svg>
+    </button>
+    <button type="button" id="mp-play" aria-label="Play/Pause" class="music-player__btn music-player__btn--play">
+      <svg id="mp-play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      <svg id="mp-pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+    </button>
+    <button type="button" id="mp-next" aria-label="Next" class="music-player__btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"/></svg>
+    </button>
+    <input type="range" id="mp-volume" min="0" max="100" value="80" aria-label="Volume" class="music-player__volume">
+  </div>
+</div>
 
 <style>
+/* Player bar — fixed at bottom */
 .music-player {
-  position: sticky;
-  top: 4rem;
-  z-index: 50;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-3) var(--space-6);
   background: var(--color-ink);
   color: var(--color-bg);
-  margin-bottom: var(--space-6);
+  z-index: var(--z-overlay);
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.2);
 }
 
+.music-player[hidden] { display: none !important; }
+
 .music-player__info { flex: 1; min-width: 0; }
+
+.music-player__playlist-name {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  opacity: 0.5;
+  display: block;
+}
 
 .music-player__now-playing {
   font-family: var(--font-ui);
@@ -106,100 +146,145 @@ permalink: /music/
 }
 
 .music-player__btn:hover { opacity: 1; }
-
 .music-player__btn--play { opacity: 1; }
 
-.music-player__volume {
-  width: 80px;
-  accent-color: var(--color-accent);
+.music-player__volume { width: 80px; accent-color: var(--color-accent); }
+
+/* Playlist cards */
+.music-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-6);
 }
 
-.music-playlist-card {
-  padding: var(--space-6);
+.music-card {
   border: 1px solid var(--color-rule);
   border-top: 3px solid var(--color-accent);
   background: var(--color-bg);
   transition: box-shadow 0.2s;
 }
 
-.music-playlist-card:hover {
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+.music-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+
+.music-card__header { padding: var(--space-5) var(--space-6); }
+
+.music-card__category {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
 }
 
-.music-tracklist {
-  margin-top: var(--space-4);
-  padding-top: var(--space-3);
+.music-card__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-md);
+  font-weight: 700;
+  margin: var(--space-2) 0 var(--space-3);
+}
+
+.music-card__desc {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.music-card__actions {
+  padding: 0 var(--space-6) var(--space-5);
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.music-card__toggle {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-link);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.music-card__toggle:hover { text-decoration: underline; }
+
+.music-card__tracklist {
   border-top: 1px solid var(--color-rule);
-  max-height: 200px;
+  max-height: 250px;
   overflow-y: auto;
+}
+
+.music-card__tracklist[hidden] { display: none; }
+
+.music-track {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-6);
   font-family: var(--font-ui);
   font-size: var(--text-xs);
   color: var(--color-ink-muted);
-}
-
-.music-tracklist__item {
-  padding: var(--space-1) 0;
   border-bottom: 1px solid var(--color-rule);
-  display: flex;
-  gap: var(--space-2);
+  cursor: pointer;
+  transition: background 0.15s;
 }
 
-.music-tracklist__item:last-child { border-bottom: none; }
+.music-track:last-child { border-bottom: none; }
+.music-track:hover { background: var(--color-bg-alt); }
 
-.music-tracklist__num {
-  color: var(--color-ink-faint);
-  min-width: 1.5em;
-}
+.music-track__num { color: var(--color-ink-faint); min-width: 1.5em; }
 
 @media (max-width: 640px) {
-  .music-player { flex-direction: column; gap: var(--space-2); }
+  .music-player { flex-direction: column; gap: var(--space-2); padding: var(--space-2) var(--space-4); }
   .music-player__volume { width: 100%; }
 }
 </style>
 
 <script>
 (function () {
+  var ytReady = false;
+  var ytLoading = false;
   var player = null;
-  var ready = false;
-  var currentPlaylistName = '';
-  var apiLoading = false;
+  var currentName = '';
+  var activeCard = null;
 
   var playerBar = document.getElementById('music-player');
-  var nowPlaying = document.getElementById('mp-now-playing');
+  var playlistNameEl = document.getElementById('mp-playlist-name');
+  var nowPlayingEl = document.getElementById('mp-now-playing');
   var playIcon = document.getElementById('mp-play-icon');
   var pauseIcon = document.getElementById('mp-pause-icon');
   var volumeSlider = document.getElementById('mp-volume');
 
-  function loadYTApi() {
-    if (window.YT && window.YT.Player) { ready = true; return; }
-    if (apiLoading) return;
-    apiLoading = true;
-    var tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    document.head.appendChild(tag);
+  // Load YouTube IFrame API
+  function ensureYT(cb) {
+    if (ytReady) { cb(); return; }
+    if (!ytLoading) {
+      ytLoading = true;
+      var tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(tag);
+    }
+    var check = setInterval(function () {
+      if (window.YT && window.YT.Player) {
+        clearInterval(check);
+        ytReady = true;
+        cb();
+      }
+    }, 150);
   }
 
-  window.onYouTubeIframeAPIReady = function () { ready = true; };
+  function createPlayer(playlistId, cb) {
+    // Remove old player element and recreate
+    var old = document.getElementById('yt-music-player');
+    if (old) old.remove();
+    var div = document.createElement('div');
+    div.id = 'yt-music-player';
+    div.style.cssText = 'position:fixed;left:-9999px;width:1px;height:1px;';
+    document.body.appendChild(div);
 
-  function createPlayer(playlistId) {
-    // Recreate the container div (destroy removes it)
-    var container = document.getElementById('music-yt-player');
-    if (!container) {
-      container = document.createElement('div');
-      container.id = 'music-yt-player';
-      container.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;';
-      document.body.appendChild(container);
-    }
-    if (player && player.destroy) {
-      try { player.destroy(); } catch (e) {}
-      // Recreate container after destroy
-      container = document.createElement('div');
-      container.id = 'music-yt-player';
-      container.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;';
-      document.body.appendChild(container);
-    }
-
-    player = new YT.Player('music-yt-player', {
+    player = new YT.Player('yt-music-player', {
       height: '1', width: '1',
       playerVars: {
         autoplay: 1, controls: 0, disablekb: 1, fs: 0,
@@ -210,11 +295,10 @@ permalink: /music/
         onReady: function () {
           player.setVolume(parseInt(volumeSlider.value, 10));
           player.playVideo();
-          setTimeout(updateTrackList, 2000);
-          updateUI();
+          if (cb) cb();
+          updateNowPlaying();
         },
         onStateChange: function (e) {
-          updateUI();
           if (e.data === YT.PlayerState.PLAYING) {
             playIcon.style.display = 'none';
             pauseIcon.style.display = '';
@@ -222,83 +306,111 @@ permalink: /music/
             playIcon.style.display = '';
             pauseIcon.style.display = 'none';
           }
+          updateNowPlaying();
         }
       }
     });
   }
 
-  function updateUI() {
+  function updateNowPlaying() {
     if (!player || !player.getVideoData) return;
-    var data = player.getVideoData();
-    var title = data.title || 'Loading...';
-    nowPlaying.textContent = currentPlaylistName + ' — ' + title;
+    var d = player.getVideoData();
+    nowPlayingEl.textContent = d.title || 'Loading...';
+    playlistNameEl.textContent = currentName;
   }
 
-  function updateTrackList() {
-    if (!player || !player.getPlaylist) return;
+  function loadTracklist() {
+    if (!player || !player.getPlaylist || !activeCard) return;
     var ids = player.getPlaylist();
-    if (!ids || !ids.length) return;
-    // Update all track list containers
-    document.querySelectorAll('.music-tracklist').forEach(function (el) { el.innerHTML = ''; });
-    var activeCard = document.querySelector('.music-playlist-card.is-playing');
-    if (!activeCard) return;
-    var tl = activeCard.querySelector('.music-tracklist');
+    if (!ids || !ids.length) {
+      setTimeout(loadTracklist, 1500);
+      return;
+    }
+    var tl = activeCard.querySelector('.music-card__tracklist');
     if (!tl) return;
+    tl.innerHTML = '';
+    tl.hidden = false;
+    var toggle = activeCard.querySelector('.music-card__toggle');
+    if (toggle) toggle.textContent = 'Hide tracks';
+
     ids.forEach(function (id, i) {
-      var item = document.createElement('div');
-      item.className = 'music-tracklist__item';
-      item.innerHTML = '<span class="music-tracklist__num">' + (i + 1) + '</span><span>Loading...</span>';
-      item.style.cursor = 'pointer';
-      item.addEventListener('click', function () { player.playVideoAt(i); });
-      tl.appendChild(item);
-      // Fetch title via noembed
+      var row = document.createElement('div');
+      row.className = 'music-track';
+      row.innerHTML = '<span class="music-track__num">' + (i + 1) + '</span><span>Loading...</span>';
+      row.addEventListener('click', function () { if (player) player.playVideoAt(i); });
+      tl.appendChild(row);
+      // Fetch title
       fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v=' + id)
         .then(function (r) { return r.json(); })
-        .then(function (d) {
-          if (d.title) item.querySelector('span:last-child').textContent = d.title;
-        }).catch(function () {});
+        .then(function (d) { if (d.title) row.querySelector('span:last-child').textContent = d.title; })
+        .catch(function () { row.querySelector('span:last-child').textContent = 'Track ' + (i + 1); });
     });
   }
 
-  setInterval(function () { if (player && ready) updateUI(); }, 3000);
+  setInterval(function () { if (player && ytReady) updateNowPlaying(); }, 3000);
 
   window.musicPlayer = {
     loadPlaylist: function (id, name) {
-      loadYTApi();
-      currentPlaylistName = name;
+      currentName = name;
       playerBar.hidden = false;
-      nowPlaying.textContent = name + ' — Loading...';
-      // Mark active card
-      document.querySelectorAll('.music-playlist-card').forEach(function (c) { c.classList.remove('is-playing'); });
-      var card = document.querySelector('[data-playlist-id="' + id + '"]');
-      if (card) card.classList.add('is-playing');
+      playlistNameEl.textContent = name;
+      nowPlayingEl.textContent = 'Loading...';
 
-      if (ready) { createPlayer(id); }
-      else {
-        var wait = setInterval(function () {
-          if (window.YT && window.YT.Player) { clearInterval(wait); ready = true; createPlayer(id); }
-        }, 200);
-      }
+      // Mark active card
+      document.querySelectorAll('.music-card').forEach(function (c) { c.style.borderTopColor = ''; });
+      activeCard = document.querySelector('[data-playlist-id="' + id + '"]') ||
+                   document.querySelector('.music-card');
+      if (activeCard) activeCard.style.borderTopColor = 'var(--color-link)';
+
+      ensureYT(function () {
+        createPlayer(id, function () {
+          setTimeout(loadTracklist, 2000);
+        });
+      });
     }
   };
 
+  // Transport controls
   document.getElementById('mp-play').addEventListener('click', function () {
     if (!player) return;
-    var state = player.getPlayerState();
-    if (state === YT.PlayerState.PLAYING) player.pauseVideo();
+    var s = player.getPlayerState();
+    if (s === YT.PlayerState.PLAYING) player.pauseVideo();
     else player.playVideo();
   });
 
   document.getElementById('mp-next').addEventListener('click', function () {
-    if (player) { player.nextVideo(); setTimeout(updateUI, 500); }
+    if (player) { player.nextVideo(); setTimeout(updateNowPlaying, 500); }
   });
 
   document.getElementById('mp-prev').addEventListener('click', function () {
-    if (player) { player.previousVideo(); setTimeout(updateUI, 500); }
+    if (player) { player.previousVideo(); setTimeout(updateNowPlaying, 500); }
   });
 
   volumeSlider.addEventListener('input', function () {
     if (player) player.setVolume(parseInt(this.value, 10));
   });
+
+  // Search and filter
+  var searchInput = document.getElementById('music-search');
+  var catFilter = document.getElementById('music-category');
+  var cards = document.querySelectorAll('.music-card');
+  var noResults = document.getElementById('music-no-results');
+
+  function filterMusic() {
+    var q = (searchInput.value || '').toLowerCase().trim();
+    var cat = catFilter.value;
+    var visible = 0;
+    cards.forEach(function (card) {
+      var show = true;
+      if (q && card.dataset.name.indexOf(q) === -1 && card.dataset.desc.indexOf(q) === -1) show = false;
+      if (cat && card.dataset.category !== cat) show = false;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    noResults.hidden = visible > 0;
+  }
+
+  if (searchInput) searchInput.addEventListener('input', filterMusic);
+  if (catFilter) catFilter.addEventListener('change', filterMusic);
 })();
 </script>
