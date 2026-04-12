@@ -28,8 +28,7 @@ permalink: /glossary/
   <div class="glossary-layout">
 
     {# Terms list #}
-    <div class="glossary-list" id="glossary-list" data-pagefind-body>
-      <span data-pagefind-filter="section" hidden>Glossary</span>
+    <div class="glossary-list" id="glossary-list" data-pagefind-ignore>
       {% set sorted = collections.glossary | sort(false, false, 'data.title') %}
       {% set currentLetter = '' %}
       {% for entry in sorted %}
@@ -39,7 +38,7 @@ permalink: /glossary/
           <h2 class="glossary-letter-heading" id="letter-{{ currentLetter }}">{{ currentLetter }}</h2>
         {% endif %}
         <div class="glossary-entry" data-term="{{ entry.data.title | lower }}" id="{{ entry.data.title | slugify }}">
-          <dt class="glossary-entry__term" data-pagefind-meta="title">{{ entry.data.title }}</dt>
+          <dt class="glossary-entry__term"><a href="{{ entry.url }}">{{ entry.data.title }}</a></dt>
           <dd class="glossary-entry__def">{{ entry.data.description }}</dd>
         </div>
       {% endfor %}
@@ -123,8 +122,16 @@ permalink: /glossary/
   font-family: var(--font-headline);
   font-size: var(--text-md);
   font-weight: 700;
-  color: var(--color-ink);
   margin: 0 0 var(--space-2);
+}
+
+.glossary-entry__term a {
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.glossary-entry__term a:hover {
+  color: var(--color-accent);
 }
 
 .glossary-entry__def {

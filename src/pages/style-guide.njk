@@ -1,0 +1,199 @@
+---
+layout: base
+title: Style Guide
+description: Brand identity, typography, colour palette, and UI patterns for The Freethinking Times.
+permalink: /style-guide/
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+  <div class="container--prose">
+
+    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Style Guide</h1>
+      <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic;">
+        The visual language of {{ site.title }}.
+      </p>
+    </header>
+
+    <div class="article-body">
+
+      <h2>Brand Identity</h2>
+
+      <p>The publication name is always written as <strong>The Freethinking Times</strong> — capitalised, no abbreviation. The icon is a pansy flower, a historical symbol of freethought (from the French <em>pens&eacute;e</em>, meaning "thought").</p>
+
+      <div style="display:flex;align-items:center;gap:var(--space-4);padding:var(--space-6);background:var(--color-bg-alt);border:1px solid var(--color-rule);margin:var(--space-6) 0;">
+        <img src="/assets/favicon.svg" alt="Pansy icon" width="48" height="48">
+        <span style="font-family:var(--font-masthead);font-size:var(--text-xl);font-weight:700;">{{ site.title }}</span>
+      </div>
+
+      <p><strong>Tagline:</strong> {{ site.description }}</p>
+
+      <h2>Typography</h2>
+
+      <p>Four font families, each with a specific role. All loaded from <a href="https://fonts.bunny.net" target="_blank" rel="noopener noreferrer">Bunny Fonts</a> (privacy-friendly, no tracking).</p>
+
+      <table style="width:100%;border-collapse:collapse;margin:var(--space-6) 0;">
+        <thead>
+          <tr style="border-bottom:2px solid var(--color-ink);text-align:left;">
+            <th style="padding:var(--space-2);">Role</th>
+            <th style="padding:var(--space-2);">Font</th>
+            <th style="padding:var(--space-2);">Sample</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--color-rule);">
+            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">Masthead</td>
+            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">Playfair Display</td>
+            <td style="padding:var(--space-3);font-family:var(--font-masthead);font-size:var(--text-lg);">The Freethinking Times</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-rule);">
+            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">Headlines</td>
+            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">Lora</td>
+            <td style="padding:var(--space-3);font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;">Reason Against Orthodoxy</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-rule);">
+            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">Body text</td>
+            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">Source Serif 4</td>
+            <td style="padding:var(--space-3);font-family:var(--font-body);font-size:var(--text-base);">The examined life is the only one worth living.</td>
+          </tr>
+          <tr>
+            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">UI / Labels</td>
+            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">DM Sans</td>
+            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">ANALYSIS &middot; 8 MIN READ</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Type scale</h3>
+      <p>Major Third ratio (1.25). Base size is 16px (1rem).</p>
+
+      <div style="margin:var(--space-6) 0;">
+        <p style="font-size:var(--text-xs);color:var(--color-ink-faint);margin:var(--space-1) 0;">text-xs &mdash; {{ "0.75rem / ~12px" }}</p>
+        <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:var(--space-1) 0;">text-sm &mdash; 0.875rem / ~14px</p>
+        <p style="font-size:var(--text-base);margin:var(--space-1) 0;">text-base &mdash; 1rem / 16px</p>
+        <p style="font-size:var(--text-md);margin:var(--space-1) 0;">text-md &mdash; 1.25rem / ~20px</p>
+        <p style="font-size:var(--text-lg);margin:var(--space-1) 0;">text-lg &mdash; 1.563rem / ~25px</p>
+        <p style="font-size:var(--text-xl);margin:var(--space-1) 0;">text-xl &mdash; 1.953rem / ~31px</p>
+      </div>
+
+      <h2>Colour Palette</h2>
+
+      <h3>Core colours</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:var(--space-3);margin:var(--space-6) 0;">
+        <div style="text-align:center;">
+          <div style="width:100%;height:64px;background:#F4F1EB;border:1px solid var(--color-rule);margin-bottom:var(--space-2);"></div>
+          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Background<br><code>#F4F1EB</code></p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:100%;height:64px;background:#1A1A1A;margin-bottom:var(--space-2);"></div>
+          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Ink<br><code>#1A1A1A</code></p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:100%;height:64px;background:#C0392B;margin-bottom:var(--space-2);"></div>
+          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Accent<br><code>#C0392B</code></p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:100%;height:64px;background:#2C5F8A;margin-bottom:var(--space-2);"></div>
+          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Link<br><code>#2C5F8A</code></p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:100%;height:64px;background:#6A1B9A;margin-bottom:var(--space-2);"></div>
+          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Selection<br><code>#6A1B9A</code></p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:100%;height:64px;background:#C8C2B6;margin-bottom:var(--space-2);"></div>
+          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Rule<br><code>#C8C2B6</code></p>
+        </div>
+      </div>
+
+      <h3>Section colours</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:var(--space-3);margin:var(--space-6) 0;">
+        <div style="text-align:center;">
+          <div style="width:100%;height:48px;background:#C0392B;margin-bottom:var(--space-1);"></div>
+          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">News</p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:100%;height:48px;background:#2C5F8A;margin-bottom:var(--space-1);"></div>
+          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">Opinion</p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:100%;height:48px;background:#5D4037;margin-bottom:var(--space-1);"></div>
+          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">Analysis</p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:100%;height:48px;background:#6A1B9A;margin-bottom:var(--space-1);"></div>
+          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">Arts & Culture</p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:100%;height:48px;background:#1B5E20;margin-bottom:var(--space-1);"></div>
+          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">Science</p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:100%;height:48px;background:#BF8C00;margin-bottom:var(--space-1);"></div>
+          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">History</p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:100%;height:48px;background:#37474F;margin-bottom:var(--space-1);"></div>
+          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">Letters</p>
+        </div>
+      </div>
+
+      <h3>Dark mode</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:var(--space-3);margin:var(--space-6) 0;">
+        <div style="text-align:center;">
+          <div style="width:100%;height:64px;background:#141414;border:1px solid #303030;margin-bottom:var(--space-2);"></div>
+          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Background<br><code>#141414</code></p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:100%;height:64px;background:#E8E4DC;margin-bottom:var(--space-2);"></div>
+          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Ink<br><code>#E8E4DC</code></p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:100%;height:64px;background:#E05545;margin-bottom:var(--space-2);"></div>
+          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Accent<br><code>#E05545</code></p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:100%;height:64px;background:#6B9EC7;margin-bottom:var(--space-2);"></div>
+          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Link<br><code>#6B9EC7</code></p>
+        </div>
+      </div>
+
+      <h2>UI Patterns</h2>
+
+      <h3>Buttons</h3>
+      <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:center;margin:var(--space-4) 0;">
+        <a href="#" class="btn" onclick="return false;">Default Button</a>
+        <a href="#" class="btn btn--accent" onclick="return false;">Accent Button</a>
+      </div>
+      <p style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);">Square corners. DM Sans. Uppercase is optional. Border on default, filled on hover.</p>
+
+      <h3>Cards</h3>
+      <p>Content cards use <code>background: var(--color-bg-alt)</code> with a <code>1px solid var(--color-rule)</code> border. Article-style cards get a left accent border (3px). Hover lifts with shadow.</p>
+
+      <h3>Section badges</h3>
+      <div style="display:flex;gap:var(--space-2);flex-wrap:wrap;margin:var(--space-4) 0;">
+        <span style="font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:var(--space-1) var(--space-3);background:var(--color-news);color:#fff;">News</span>
+        <span style="font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:var(--space-1) var(--space-3);background:var(--color-opinion);color:#fff;">Opinion</span>
+        <span style="font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:var(--space-1) var(--space-3);background:var(--color-analysis);color:#fff;">Analysis</span>
+        <span style="font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:var(--space-1) var(--space-3);background:var(--color-history);color:#fff;">History</span>
+      </div>
+
+      <h3>Spacing</h3>
+      <p>All spacing uses a consistent scale from <code>--space-1</code> (0.25rem) to <code>--space-20</code> (5rem). No magic numbers.</p>
+
+      <h3>Border radius</h3>
+      <p>Default to <strong>square corners</strong> (<code>border-radius: 0</code>) for a professional, authoritative feel. Rounded corners used only where softness is intentional (pills, toggles).</p>
+
+      <h2>Naming</h2>
+
+      <ul>
+        <li>Publication name: <strong>The Freethinking Times</strong> (always full, always capitalised)</li>
+        <li>Never abbreviated to "TFT" in reader-facing copy</li>
+        <li>Prefix for localStorage keys: <code>tft</code></li>
+        <li>CSS class convention: BEM-style (<code>.block__element--modifier</code>)</li>
+        <li>Design tokens live in <code>tokens.css</code> — edit once, retheme everywhere</li>
+      </ul>
+
+    </div>
+  </div>
+</div>
