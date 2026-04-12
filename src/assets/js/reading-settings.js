@@ -15,7 +15,7 @@
 
   // ─── Storage keys ──────────────────────────────────────────
   var K = {};
-  ['fontSize','font','spacing','width','wordspace','bg','ruler','paraNums','autoscroll','scrollSpeed'].forEach(function (k) {
+  ['fontSize','font','spacing','width','wordspace','bg','ruler','rulerThick','rulerColor','rulerStyle','paraNums','autoscroll','scrollSpeed'].forEach(function (k) {
     K[k] = _p + '-rs-' + k;
   });
 
@@ -28,6 +28,9 @@
     wordspace:   localStorage.getItem(K.wordspace) || 'normal',
     bg:          localStorage.getItem(K.bg) || 'default',
     ruler:       localStorage.getItem(K.ruler) === 'true',
+    rulerThick:  localStorage.getItem(K.rulerThick) || '2',
+    rulerColor:  localStorage.getItem(K.rulerColor) || 'accent',
+    rulerStyle:  localStorage.getItem(K.rulerStyle) || 'solid',
     paraNums:    localStorage.getItem(K.paraNums) === 'true',
     autoscroll:  localStorage.getItem(K.autoscroll) === 'true',
     scrollSpeed: parseInt(localStorage.getItem(K.scrollSpeed), 10) || 3
@@ -93,6 +96,16 @@
     setActive('[data-rs-bg]', v);
   }
 
+  var rulerColorMap = {
+    accent: 'var(--color-accent)',
+    red: '#e53e3e',
+    blue: '#3182ce',
+    green: '#38a169',
+    yellow: '#d69e2e',
+    black: '#111',
+    white: '#eee'
+  };
+
   function applyRuler(on) {
     var existing = document.getElementById('rs-reading-ruler');
     if (on && !existing) {
@@ -100,6 +113,7 @@
       ruler.id = 'rs-reading-ruler';
       ruler.className = 'rs-ruler-line';
       document.body.appendChild(ruler);
+      applyRulerStyle();
       updateRulerBounds();
       document.addEventListener('mousemove', moveRuler);
       window.addEventListener('resize', updateRulerBounds);
@@ -112,6 +126,35 @@
     }
     var cb = document.getElementById('rs-ruler');
     if (cb) cb.checked = on;
+    // Show/hide ruler options
+    var opts = document.getElementById('rs-ruler-options');
+    if (opts) opts.hidden = !on;
+  }
+
+  function applyRulerStyle() {
+    var ruler = document.getElementById('rs-reading-ruler');
+    if (!ruler) return;
+    var thick = parseInt(prefs.rulerThick, 10) || 2;
+    ruler.style.height = thick + 'px';
+    ruler.style.background = rulerColorMap[prefs.rulerColor] || rulerColorMap.accent;
+    // Style: solid (default), dashed, dotted, glow
+    if (prefs.rulerStyle === 'dashed') {
+      ruler.style.background = 'none';
+      ruler.style.borderTop = thick + 'px dashed ' + (rulerColorMap[prefs.rulerColor] || rulerColorMap.accent);
+      ruler.style.height = '0';
+    } else if (prefs.rulerStyle === 'dotted') {
+      ruler.style.background = 'none';
+      ruler.style.borderTop = thick + 'px dotted ' + (rulerColorMap[prefs.rulerColor] || rulerColorMap.accent);
+      ruler.style.height = '0';
+    } else if (prefs.rulerStyle === 'glow') {
+      var c = rulerColorMap[prefs.rulerColor] || rulerColorMap.accent;
+      ruler.style.borderTop = 'none';
+      ruler.style.height = thick + 'px';
+      ruler.style.boxShadow = '0 0 ' + (thick * 3) + 'px ' + thick + 'px ' + c;
+    } else {
+      ruler.style.borderTop = 'none';
+      ruler.style.boxShadow = 'none';
+    }
   }
 
   // Cache the body bounds for ruler positioning
@@ -129,19 +172,16 @@
     }
   }
 
-  var lastRulerY = -1;
   function moveRuler(e) {
     var ruler = document.getElementById('rs-reading-ruler');
     if (!ruler) return;
     var y = e.clientY;
-    // Hide ruler if cursor is above or below the article body
     if (y < rulerBounds.top || y > rulerBounds.bottom) {
       ruler.style.opacity = '0';
     } else {
       ruler.style.opacity = '';
       ruler.style.top = y + 'px';
     }
-    lastRulerY = y;
   }
 
   function applyParaNums(on) {
@@ -240,6 +280,45 @@
     });
   }
 
+  // Ruler thickness
+  var rulerThickSlider = document.getElementById('rs-ruler-thick');
+  if (rulerThickSlider) {
+    rulerThickSlider.value = prefs.rulerThick;
+    rulerThickSlider.addEventListener('input', function () {
+      prefs.rulerThick = this.value;
+      save('rulerThick', prefs.rulerThick);
+      applyRulerStyle();
+    });
+  }
+
+  // Ruler color
+  var rulerColorBtns = panel.querySelectorAll('[data-rs-ruler-color]');
+  rulerColorBtns.forEach(function (b) {
+    b.classList.toggle('is-active', b.dataset.rsRulerColor === prefs.rulerColor);
+    b.addEventListener('click', function () {
+      prefs.rulerColor = b.dataset.rsRulerColor;
+      save('rulerColor', prefs.rulerColor);
+      applyRulerStyle();
+      rulerColorBtns.forEach(function (x) {
+        x.classList.toggle('is-active', x.dataset.rsRulerColor === prefs.rulerColor);
+      });
+    });
+  });
+
+  // Ruler style
+  var rulerStyleBtns = panel.querySelectorAll('[data-rs-ruler-style]');
+  rulerStyleBtns.forEach(function (b) {
+    b.classList.toggle('is-active', b.dataset.rsRulerStyle === prefs.rulerStyle);
+    b.addEventListener('click', function () {
+      prefs.rulerStyle = b.dataset.rsRulerStyle;
+      save('rulerStyle', prefs.rulerStyle);
+      applyRulerStyle();
+      rulerStyleBtns.forEach(function (x) {
+        x.classList.toggle('is-active', x.dataset.rsRulerStyle === prefs.rulerStyle);
+      });
+    });
+  });
+
   var paraNumsCb = document.getElementById('rs-para-nums');
   if (paraNumsCb) {
     paraNumsCb.addEventListener('change', function () {
@@ -285,7 +364,8 @@
     Object.keys(K).forEach(function (k) { try { localStorage.removeItem(K[k]); } catch (e) {} });
     prefs.fontSize = 18; prefs.font = 'serif'; prefs.spacing = 'normal';
     prefs.width = 'normal'; prefs.wordspace = 'normal'; prefs.bg = 'default';
-    prefs.ruler = false; prefs.paraNums = false; prefs.autoscroll = false; prefs.scrollSpeed = 3;
+    prefs.ruler = false; prefs.rulerThick = '2'; prefs.rulerColor = 'accent'; prefs.rulerStyle = 'solid';
+    prefs.paraNums = false; prefs.autoscroll = false; prefs.scrollSpeed = 3;
     body.style.fontSize = ''; body.style.lineHeight = ''; body.style.wordSpacing = '';
     body.removeAttribute('data-rs-font'); body.removeAttribute('data-rs-width');
     body.classList.remove('rs-para-numbers');

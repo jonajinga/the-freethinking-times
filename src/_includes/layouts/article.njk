@@ -340,6 +340,33 @@ layout: layouts/base.njk
                   <input type="checkbox" id="rs-ruler" class="rs-toggle__input">
                   <span class="rs-toggle__label">Reading ruler</span>
                 </label>
+                <div id="rs-ruler-options" hidden style="margin-top:var(--space-2);padding-left:var(--space-1);">
+                  <div style="margin-bottom:var(--space-2);">
+                    <label style="font-size:var(--text-xs);color:var(--color-ink-faint);display:block;margin-bottom:var(--space-1);">Thickness</label>
+                    <input type="range" class="rs-slider" id="rs-ruler-thick" min="1" max="8" step="1" value="2" aria-label="Ruler thickness">
+                  </div>
+                  <div style="margin-bottom:var(--space-2);">
+                    <label style="font-size:var(--text-xs);color:var(--color-ink-faint);display:block;margin-bottom:var(--space-1);">Color</label>
+                    <div class="rs-btngroup rs-ruler-colors" role="group">
+                      <button class="rs-btn rs-color-swatch is-active" data-rs-ruler-color="accent" type="button" style="background:var(--color-accent);" aria-label="Accent"></button>
+                      <button class="rs-btn rs-color-swatch" data-rs-ruler-color="red" type="button" style="background:#e53e3e;" aria-label="Red"></button>
+                      <button class="rs-btn rs-color-swatch" data-rs-ruler-color="blue" type="button" style="background:#3182ce;" aria-label="Blue"></button>
+                      <button class="rs-btn rs-color-swatch" data-rs-ruler-color="green" type="button" style="background:#38a169;" aria-label="Green"></button>
+                      <button class="rs-btn rs-color-swatch" data-rs-ruler-color="yellow" type="button" style="background:#d69e2e;" aria-label="Yellow"></button>
+                      <button class="rs-btn rs-color-swatch" data-rs-ruler-color="black" type="button" style="background:#111;" aria-label="Black"></button>
+                      <button class="rs-btn rs-color-swatch" data-rs-ruler-color="white" type="button" style="background:#eee;border:1px solid var(--color-rule);" aria-label="White"></button>
+                    </div>
+                  </div>
+                  <div>
+                    <label style="font-size:var(--text-xs);color:var(--color-ink-faint);display:block;margin-bottom:var(--space-1);">Style</label>
+                    <div class="rs-btngroup" role="group">
+                      <button class="rs-btn is-active" data-rs-ruler-style="solid" type="button">Solid</button>
+                      <button class="rs-btn" data-rs-ruler-style="dashed" type="button">Dashed</button>
+                      <button class="rs-btn" data-rs-ruler-style="dotted" type="button">Dotted</button>
+                      <button class="rs-btn" data-rs-ruler-style="glow" type="button">Glow</button>
+                    </div>
+                  </div>
+                </div>
                 <label class="rs-toggle">
                   <input type="checkbox" id="rs-para-nums" class="rs-toggle__input">
                   <span class="rs-toggle__label">Paragraph numbers</span>
