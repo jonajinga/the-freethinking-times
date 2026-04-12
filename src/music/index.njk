@@ -62,8 +62,11 @@ permalink: /music/
   </div>
 </div>
 
-{# Hidden player wrapper — must be in DOM, visible to browser (1px) #}
-<div id="yt-player-wrap" style="position:fixed;bottom:0;left:0;width:1px;height:1px;overflow:hidden;opacity:0.01;pointer-events:none;z-index:-1;"></div>
+{# YouTube API + player container #}
+<script src="https://www.youtube.com/iframe_api"></script>
+<div id="yt-player-wrap" style="position:fixed;bottom:60px;left:0;width:1px;height:1px;overflow:hidden;pointer-events:none;z-index:-1;">
+  <div id="arena-dj-player"></div>
+</div>
 
 {# Sticky player bar at bottom #}
 <div id="music-player" class="music-player" hidden>
@@ -309,11 +312,11 @@ permalink: /music/
 
 <script>
 (function () {
-  var ytReady = false;
-  var ytLoading = false;
   var player = null;
+  var ready = false;
   var currentName = '';
   var activeCard = null;
+  var targetVolume = 80;
 
   var playerBar = document.getElementById('music-player');
   var playlistNameEl = document.getElementById('mp-playlist-name');
@@ -322,79 +325,86 @@ permalink: /music/
   var pauseIcon = document.getElementById('mp-pause-icon');
   var volumeSlider = document.getElementById('mp-volume');
 
-  // Load YouTube IFrame API
-  function ensureYT(cb) {
-    if (ytReady) { cb(); return; }
-    if (!ytLoading) {
-      ytLoading = true;
-      var tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      document.head.appendChild(tag);
-    }
-    var check = setInterval(function () {
-      if (window.YT && window.YT.Player) {
-        clearInterval(check);
-        ytReady = true;
-        cb();
-      }
-    }, 150);
+  function extractId(raw) {
+    if (!raw) return '';
+    var m = raw.match(/[?&]list=([a-zA-Z0-9_-]+)/);
+    if (m) return m[1];
+    m = raw.match(/^(PL[a-zA-Z0-9_-]{10,}|OLAK[a-zA-Z0-9_-]+|RDCLAK[a-zA-Z0-9_-]+)/);
+    return m ? m[1] : raw;
   }
 
+  // YouTube API ready callback
+  window.onYouTubeIframeAPIReady = function () {
+    ready = true;
+  };
+
   function createPlayer(playlistId, cb) {
-    // Remove old player
-    var old = document.getElementById('yt-music-player');
-    if (old) old.remove();
-    var oldIframe = document.getElementById('yt-embed-fallback');
-    if (oldIframe) oldIframe.remove();
-
-    var wrap = document.getElementById('yt-player-wrap');
-    wrap.innerHTML = '';
-
-    try {
-      var div = document.createElement('div');
-      div.id = 'yt-music-player';
-      wrap.appendChild(div);
-
-      player = new YT.Player('yt-music-player', {
-        height: '1', width: '1',
-        playerVars: {
-          autoplay: 1, controls: 0, disablekb: 1, fs: 0,
-          modestbranding: 1, rel: 0, playsinline: 1,
-          list: playlistId, listType: 'playlist'
-        },
-        events: {
-          onReady: function () {
-            player.setVolume(parseInt(volumeSlider.value, 10));
-            player.playVideo();
-            if (cb) cb();
-            setTimeout(updateNowPlaying, 1000);
-          },
-          onStateChange: function (e) {
-            if (e.data === YT.PlayerState.PLAYING) {
-              playIcon.style.display = 'none';
-              pauseIcon.style.display = '';
-            } else {
-              playIcon.style.display = '';
-              pauseIcon.style.display = 'none';
-            }
-            updateNowPlaying();
-          },
-          onError: function () {
-            nowPlayingEl.textContent = 'Playlist not found — try a different URL';
-          }
-        }
-      });
-    } catch (err) {
-      // Fallback: embed a visible iframe with YouTube's native controls
-      nowPlayingEl.textContent = 'Using embedded player';
-      var iframe = document.createElement('iframe');
-      iframe.id = 'yt-embed-fallback';
-      iframe.src = 'https://www.youtube-nocookie.com/embed/videoseries?list=' + playlistId + '&autoplay=1';
-      iframe.allow = 'autoplay';
-      iframe.style.cssText = 'width:100%;height:80px;border:none;';
-      playerBar.appendChild(iframe);
-      player = null;
+    var containerId = 'arena-dj-player';
+    var old = document.getElementById(containerId);
+    if (old && player && player.destroy) {
+      try { player.destroy(); } catch (e) {}
     }
+    // Recreate container
+    var wrap = document.getElementById('yt-player-wrap');
+    wrap.innerHTML = '<div id="' + containerId + '"></div>';
+
+    var plId = extractId(playlistId);
+    var vars = {
+      autoplay: 1,
+      controls: 0,
+      disablekb: 1,
+      fs: 0,
+      modestbranding: 1,
+      rel: 0,
+      playsinline: 1,
+      mute: 1
+    };
+    if (plId) {
+      vars.list = plId;
+      vars.listType = 'playlist';
+    }
+
+    player = new YT.Player(containerId, {
+      height: '1',
+      width: '1',
+      playerVars: vars,
+      events: {
+        onReady: function () {
+          ready = true;
+          // Start muted, then unmute and set volume
+          player.setVolume(0);
+          player.unMute();
+          fadeIn();
+          if (cb) cb();
+          setTimeout(updateNowPlaying, 1500);
+        },
+        onStateChange: function (e) {
+          if (e.data === YT.PlayerState.PLAYING) {
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = '';
+          } else {
+            playIcon.style.display = '';
+            pauseIcon.style.display = 'none';
+          }
+          updateNowPlaying();
+        },
+        onError: function () {
+          nowPlayingEl.textContent = 'Playlist not found — try a different URL';
+        }
+      }
+    });
+  }
+
+  function fadeIn() {
+    if (!player) return;
+    var vol = 0;
+    targetVolume = parseInt(volumeSlider.value, 10) || 80;
+    var step = targetVolume / 20;
+    var iv = setInterval(function () {
+      vol += step;
+      if (vol >= targetVolume) { vol = targetVolume; clearInterval(iv); }
+      if (player && player.setVolume) player.setVolume(Math.round(vol));
+    }, 50);
   }
 
   function updateNowPlaying() {
@@ -443,15 +453,21 @@ permalink: /music/
 
       // Mark active card
       document.querySelectorAll('.music-card').forEach(function (c) { c.style.borderTopColor = ''; });
-      activeCard = document.querySelector('[data-playlist-id="' + id + '"]') ||
-                   document.querySelector('.music-card');
+      activeCard = document.querySelector('[data-playlist-id="' + id + '"]');
       if (activeCard) activeCard.style.borderTopColor = 'var(--color-link)';
 
-      ensureYT(function () {
-        createPlayer(id, function () {
-          setTimeout(loadTracklist, 2000);
-        });
-      });
+      if (ready) {
+        createPlayer(id, function () { setTimeout(loadTracklist, 2000); });
+      } else {
+        // Wait for API
+        var wait = setInterval(function () {
+          if (ready || (window.YT && window.YT.Player)) {
+            clearInterval(wait);
+            ready = true;
+            createPlayer(id, function () { setTimeout(loadTracklist, 2000); });
+          }
+        }, 200);
+      }
     }
   };
 
@@ -476,32 +492,17 @@ permalink: /music/
   });
 
   // Custom playlist URL
-  function extractPlaylistId(url) {
-    if (!url) return null;
-    // Standard: ?list=PLxxx or &list=PLxxx
-    var m = url.match(/[?&]list=([a-zA-Z0-9_-]+)/);
-    if (m) return m[1];
-    // Bare playlist ID pasted directly
-    m = url.match(/^(PL[a-zA-Z0-9_-]{10,}|OLAK[a-zA-Z0-9_-]+|RDCLAK[a-zA-Z0-9_-]+|RD[a-zA-Z0-9_-]+)/);
-    if (m) return m[1];
-    // YouTube Music browse ID in URL path
-    m = url.match(/browse\/(VL[a-zA-Z0-9_-]+)/);
-    if (m) return m[1].replace(/^VL/, '');
-    return null;
-  }
-
   document.getElementById('custom-play-btn').addEventListener('click', function () {
     var url = document.getElementById('custom-playlist-url').value.trim();
     if (!url) return;
-    var id = extractPlaylistId(url);
+    var id = extractId(url);
     if (id) {
       window.musicPlayer.loadPlaylist(id, 'Custom Playlist');
     } else {
-      alert('Could not find a playlist ID in that URL.\n\nPaste a URL like:\nhttps://www.youtube.com/playlist?list=PLxxx\nhttps://music.youtube.com/playlist?list=OLAKxxx');
+      alert('Paste a YouTube playlist URL like:\nhttps://www.youtube.com/playlist?list=PLxxx');
     }
   });
 
-  // Also play on Enter key
   document.getElementById('custom-playlist-url').addEventListener('keydown', function (e) {
     if (e.key === 'Enter') document.getElementById('custom-play-btn').click();
   });
