@@ -481,7 +481,7 @@
   document.addEventListener('DOMContentLoaded', function () {
 
     // ── Panel ──
-    var panelToggles = document.querySelectorAll('.article-notes-toggle');
+    var panelToggles = document.querySelectorAll('.article-notes-toggle, .library-panel-toggle');
     var panel        = document.getElementById('article-notes-panel') || document.getElementById('library-panel');
     var panelOverlay = document.querySelector('.article-notes-overlay');
     var panelClose   = panel ? panel.querySelector('.library-panel__close') : null;
@@ -660,6 +660,27 @@
     var bookmarkBtn = document.getElementById('ann-bookmark-btn');
     var lastRange = null;
 
+    // Add click handler to a highlight mark to open panel and scroll to entry
+    function addMarkClickHandler(mark, annId, hasNote) {
+      mark.style.cursor = 'pointer';
+      mark.addEventListener('click', function () {
+        if (window.__openReaderPanel) window.__openReaderPanel();
+        setTimeout(function () {
+          var targetTab = hasNote ? 'article-panel-notes' : 'article-panel-highlights';
+          var tab = document.querySelector('[data-target="' + targetTab + '"]') ||
+                    document.querySelector('[data-target="' + (hasNote ? 'panel-notes' : 'panel-highlights') + '"]');
+          if (tab) tab.click();
+          var panelItem = document.querySelector('.library-annotation-item[data-ann-id="' + annId + '"]');
+          if (panelItem) {
+            panelItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            panelItem.style.transition = 'background 0.3s';
+            panelItem.style.background = 'var(--color-bg-inset)';
+            setTimeout(function () { panelItem.style.background = ''; }, 1500);
+          }
+        }, 150);
+      });
+    }
+
     // Wrap the saved selection range in a <mark> for immediate visual feedback
     function wrapSelectionInMark(annId, hasNote, color) {
       if (!lastRange) return;
@@ -674,6 +695,7 @@
           mark.className = cls;
           mark.dataset.annId = annId;
           lastRange.range.surroundContents(mark);
+          addMarkClickHandler(mark, annId, hasNote);
           done = true;
         } catch (e) {
           try {
@@ -683,6 +705,7 @@
             mark2.dataset.annId = annId;
             mark2.appendChild(fragment);
             lastRange.range.insertNode(mark2);
+            addMarkClickHandler(mark2, annId, hasNote);
             done = true;
           } catch (e2) {}
         }
