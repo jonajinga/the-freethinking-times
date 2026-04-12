@@ -98,5 +98,45 @@
     "date": "2005",
     "tags": ["Paine", "History", "Democracy"],
     "description": "Historian Harvey Kaye discusses Thomas Paine's radical democratic vision and its relevance today."
+  },
+  {
+    "title": "Daniel Dennett — The Magic of Consciousness",
+    "url": "https://www.youtube.com/watch?v=fjbWr3ODbAo",
+    "embed": "https://www.youtube-nocookie.com/embed/fjbWr3ODbAo",
+    "duration": "21:17",
+    "speaker": "Daniel Dennett",
+    "date": "2003",
+    "tags": ["Consciousness", "Philosophy", "Science"],
+    "description": "Dennett's TED talk on how consciousness is less mysterious than it seems — a materialist account of the mind's greatest trick."
+  },
+  {
+    "title": "Steven Pinker — Is the World Getting Better or Worse?",
+    "url": "https://www.youtube.com/watch?v=yCm9Ng0bbEQ",
+    "embed": "https://www.youtube-nocookie.com/embed/yCm9Ng0bbEQ",
+    "duration": "18:36",
+    "speaker": "Steven Pinker",
+    "date": "2018",
+    "tags": ["Progress", "Enlightenment", "Rationalism"],
+    "description": "Pinker makes the data-driven case for Enlightenment values — that by almost every measure, human life has improved dramatically."
+  },
+  {
+    "title": "AronRa — Foundational Falsehoods of Creationism",
+    "url": "https://www.youtube.com/watch?v=KnJX68ELbAY",
+    "embed": "https://www.youtube-nocookie.com/embed/KnJX68ELbAY",
+    "duration": "1:00:41",
+    "speaker": "AronRa",
+    "date": "2016",
+    "tags": ["Evolution", "Creationism", "Science"],
+    "description": "A systematic demolition of creationist arguments, presented with encyclopaedic knowledge of paleontology, genetics, and taxonomy."
+  },
+  {
+    "title": "Julia Galef — Why You Think You're Right Even If You're Wrong",
+    "url": "https://www.youtube.com/watch?v=w4RLfVxTGH4",
+    "embed": "https://www.youtube-nocookie.com/embed/w4RLfVxTGH4",
+    "duration": "11:38",
+    "speaker": "Julia Galef",
+    "date": "2016",
+    "tags": ["Rationalism", "Critical Thinking", "Bias"],
+    "description": "Galef introduces the distinction between soldier mindset (defending beliefs) and scout mindset (seeking truth) — the foundation of her book on rational thinking."
   }
 ]

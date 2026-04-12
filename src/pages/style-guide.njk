@@ -184,6 +184,39 @@ permalink: /style-guide/
       <h3>Border radius</h3>
       <p>Default to <strong>square corners</strong> (<code>border-radius: 0</code>) for a professional, authoritative feel. Rounded corners used only where softness is intentional (pills, toggles).</p>
 
+      <h2>Interactive Elements</h2>
+
+      <h3>Glossary tooltips</h3>
+      <p>Glossary terms detected in article and library text receive a <span class="glossary-tip" data-tippy-content="This is an example tooltip showing how glossary definitions appear on hover." tabindex="0">dotted underline</span>. Hover or focus shows the definition. Powered by Tippy.js.</p>
+
+      <h3>Highlight colours</h3>
+      <div style="display:flex;gap:var(--space-2);flex-wrap:wrap;margin:var(--space-4) 0;">
+        <span style="display:inline-block;padding:var(--space-1) var(--space-3);background:rgba(250,204,21,0.3);font-size:var(--text-sm);">Yellow</span>
+        <span style="display:inline-block;padding:var(--space-1) var(--space-3);background:rgba(219,39,119,0.18);font-size:var(--text-sm);">Pink</span>
+        <span style="display:inline-block;padding:var(--space-1) var(--space-3);background:rgba(37,99,235,0.15);font-size:var(--text-sm);">Blue</span>
+        <span style="display:inline-block;padding:var(--space-1) var(--space-3);background:rgba(22,163,74,0.18);font-size:var(--text-sm);">Green</span>
+        <span style="display:inline-block;padding:var(--space-1) var(--space-3);background:rgba(234,88,12,0.18);font-size:var(--text-sm);">Orange</span>
+        <span style="display:inline-block;padding:var(--space-1) var(--space-3);background:rgba(124,58,237,0.15);font-size:var(--text-sm);">Purple</span>
+      </div>
+      <p style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);">Six highlight colours for reader annotations. Opacity adapts per theme (light, dark, sepia, cream).</p>
+
+      <h3>Timeline cards</h3>
+      <p>Timeline events use alternating left/right cards with a central vertical line, accent-coloured dots, and horizontal connectors. Cards have a left (or right) accent border, <code>var(--color-bg-alt)</code> background, and hover lift.</p>
+
+      <h3>Showcase pages</h3>
+      <p>Full-screen screensaver-style displays for quotes, timeline events, trials, glossary terms, bookshelf, and thought experiments. Dark background uses <code>var(--color-bg)</code> and <code>var(--color-ink)</code> to respect theme. Auto-advance with progress bar, keyboard navigation, pause/play.</p>
+
+      <h2>Page Layouts</h2>
+
+      <h3>Standard page</h3>
+      <p>Container with <code>padding-top: var(--space-10)</code>, <code>padding-bottom: var(--space-20)</code>. Header uses <code>font-masthead</code> h1 with <code>clamp(1.8rem, 5vw, 3.815rem)</code>, italic subtitle, and <code>border-bottom: 3px solid var(--color-ink)</code>.</p>
+
+      <h3>Hub page</h3>
+      <p>Card grid with <code>grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))</code>. Cards link to sub-pages with title, description, and optional arrow indicator.</p>
+
+      <h3>Article page</h3>
+      <p>Single-column centred layout. Action button bar below the article header. Reader panel on the right (icon-only tabs). Annotation toolbar fixed at the bottom.</p>
+
       <h2>Naming</h2>
 
       <ul>
@@ -192,6 +225,20 @@ permalink: /style-guide/
         <li>Prefix for localStorage keys: <code>tft</code></li>
         <li>CSS class convention: BEM-style (<code>.block__element--modifier</code>)</li>
         <li>Design tokens live in <code>tokens.css</code> — edit once, retheme everywhere</li>
+        <li>JS files: one per feature, deferred, no bundler</li>
+        <li>Layouts: <code>src/_includes/layouts/</code> — base, article, library-chapter, library-short, glossary-entry, etc.</li>
+      </ul>
+
+      <h2>Accessibility Standards</h2>
+
+      <ul>
+        <li>WCAG 2.2 Level AA minimum</li>
+        <li>4.5:1 contrast for normal text, 3:1 for large text</li>
+        <li>44 &times; 44px minimum touch targets</li>
+        <li>Skip-to-main link on every page</li>
+        <li>Visible focus rings on all interactive elements</li>
+        <li>ARIA labels on all icon-only buttons</li>
+        <li><code>prefers-reduced-motion</code> respected globally</li>
       </ul>
 
     </div>
