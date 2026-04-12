@@ -105,7 +105,7 @@ layout: layouts/base.njk
                 <td class="library-table__title-cell">
                   <a href="/library/{{ w.slug }}/">{{ w.title }}</a>
                 </td>
-                <td class="library-table__author">{{ w.author or "—" }}</td>
+                <td class="library-table__author">{% if w.authorSlug %}<a href="/library/authors/#{{ w.authorSlug }}" style="color:var(--color-ink);text-decoration:none;border-bottom:1px dotted var(--color-rule);">{{ w.author }}</a>{% else %}{{ w.author or "—" }}{% endif %}</td>
                 <td class="library-table__type">{{ w.type or "—" }}</td>
                 <td class="library-table__era">{{ w.era or (w.year ~ " CE") or "—" }}</td>
               </tr>

@@ -152,9 +152,10 @@
 
 .project-section-header h1 {
   font-family: var(--font-masthead);
-  font-size: var(--text-4xl);
+  font-size: clamp(1.8rem, 5vw, 3.815rem);
   margin-bottom: var(--space-4);
   line-height: var(--leading-snug);
+  overflow-wrap: break-word;
 }
 
 .project-section-lede {
