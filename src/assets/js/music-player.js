@@ -94,7 +94,7 @@
     document.body.appendChild(wrap);
   }
 
-  function initPlayer(playlistId, cb) {
+  function initPlayer(playlistId, cb, resumeIndex, resumeTime) {
     createPlayerBar();
 
     if (player) {
@@ -126,16 +126,23 @@
           ready = true;
           player.setVolume(0);
           player.unMute();
-          // Fade in
-          var vol = 0;
-          var step = targetVolume / 20;
-          var iv = setInterval(function () {
-            vol += step;
-            if (vol >= targetVolume) { vol = targetVolume; clearInterval(iv); }
-            if (player && player.setVolume) player.setVolume(Math.round(vol));
-          }, 50);
+
+          // Resume at saved track and time if provided
+          if (resumeIndex > 0 || resumeTime > 0) {
+            setTimeout(function () {
+              if (player && resumeIndex > 0) player.playVideoAt(resumeIndex);
+              setTimeout(function () {
+                if (player && resumeTime > 0) player.seekTo(resumeTime, true);
+                // Fade in after seeking
+                fadeIn();
+              }, 500);
+            }, 1000);
+          } else {
+            fadeIn();
+          }
+
           if (cb) cb();
-          setTimeout(updateNowPlaying, 1500);
+          setTimeout(updateNowPlaying, 2000);
         },
         onStateChange: function (e) {
           if (e.data === YT.PlayerState.PLAYING) {
@@ -176,7 +183,21 @@
     } catch (e) {}
   }
 
-  setInterval(function () { if (player && ready) updateNowPlaying(); }, 3000);
+  function fadeIn() {
+    var vol = 0;
+    var step = targetVolume / 20;
+    var iv = setInterval(function () {
+      vol += step;
+      if (vol >= targetVolume) { vol = targetVolume; clearInterval(iv); }
+      if (player && player.setVolume) player.setVolume(Math.round(vol));
+    }, 50);
+  }
+
+  // Save state frequently so page navigation can resume
+  setInterval(function () { if (player && ready) { updateNowPlaying(); saveState(); } }, 2000);
+
+  // Save on page unload
+  window.addEventListener('beforeunload', saveState);
 
   // Public API
   window.musicPlayer = {
@@ -227,13 +248,20 @@
   var wasPlaying = localStorage.getItem(K.playing) === '1';
   var savedPlaylist = localStorage.getItem(K.playlist);
   var savedName = localStorage.getItem(K.name);
+  var savedIndex = parseInt(localStorage.getItem(K.index), 10) || 0;
+  var savedTime = parseInt(localStorage.getItem(K.time), 10) || 0;
+
   if (wasPlaying && savedPlaylist) {
-    // Wait for YT API then resume
     var resumeCheck = setInterval(function () {
       if (window.YT && window.YT.Player) {
         clearInterval(resumeCheck);
         ready = true;
-        window.musicPlayer.loadPlaylist(savedPlaylist, savedName || 'Playlist');
+        currentName = savedName || 'Playlist';
+        createPlayerBar();
+        bar.hidden = false;
+        if (nameEl) nameEl.textContent = currentName;
+        if (titleEl) titleEl.textContent = 'Resuming...';
+        initPlayer(savedPlaylist, null, savedIndex, savedTime);
       }
     }, 300);
     setTimeout(function () { clearInterval(resumeCheck); }, 10000);
