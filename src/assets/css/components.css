@@ -2049,7 +2049,7 @@ a.dateline:hover { color: var(--color-accent); }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-4);
-  align-items: start;
+  align-items: end;
 }
 
 @media (max-width: 480px) {
