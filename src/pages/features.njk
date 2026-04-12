@@ -23,7 +23,8 @@ permalink: /features/
         <li><strong>Reading progress bar</strong> — fixed at the top of article and library pages; stops at the end of the body text</li>
         <li><strong>Focus mode</strong> — hides the site masthead for distraction-free reading; persisted in <code>localStorage</code>; available on articles and library texts</li>
         <li><strong>Global display settings</strong> — masthead panel with 27 font choices (system serif, sans, mono, plus Bunny web fonts loaded on demand), font size, line spacing, word spacing, and unified theme selector (Auto / Light / Sepia / Cream / Dark); preferences saved to <code>localStorage</code></li>
-        <li><strong>Article reading settings</strong> — per-article panel with 27 fonts, line spacing (tight/normal/relaxed/loose), text width (narrow/normal/wide), word spacing, background presets, reading ruler (constrained to article width), paragraph numbers, auto-scroll with speed control, and reset to defaults</li>
+        <li><strong>Article reading settings</strong> — per-article panel with 27 fonts, line spacing, text width, word spacing, reading ruler, paragraph numbers, auto-scroll with speed control, and reset to defaults; also available on library pages</li>
+        <li><strong>Reading ruler</strong> — customisable guide line: adjustable thickness (1–8 px), 7 colour choices, 4 styles (solid, dashed, dotted, glow); fixed position on mobile; hides during text selection</li>
         <li><strong>Read aloud</strong> — Web Speech API text-to-speech with play/pause/stop, speed presets (0.75×–2×), and voice selector</li>
         <li><strong>Table of contents</strong> — auto-generated from h2/h3 headings on article pages with scroll-spy highlighting; floating within-chapter TOC on library pages (≥1200 px screens)</li>
         <li><strong>Heading anchor links</strong> — link icon appears on hover for every h2/h3 for deep-linking to any section</li>
@@ -45,9 +46,10 @@ permalink: /features/
         <li><strong>Cite</strong> — citation modal with APA, MLA, and Chicago formats; one-click copy for each</li>
         <li><strong>Reader toolbar</strong> — persistent bottom bar with Highlight, Note, Bookmark, and Share actions</li>
         <li><strong>Reader panel</strong> — slide-out panel with Contents (TOC), Highlights, Notes, Bookmarks, and Related tabs</li>
-        <li><strong>Highlight & annotate</strong> — select text to highlight it or add a personal note; highlights and notes persist in <code>localStorage</code> and display inline in the article</li>
+        <li><strong>Highlight & annotate</strong> — select text to highlight it in one of 6 colours (yellow, pink, blue, green, orange, purple) or add a rich-text note; highlights and notes persist in <code>localStorage</code></li>
+        <li><strong>Rich-text notes</strong> — WYSIWYG editor with formatting toolbar (bold, italic, lists, blockquotes, links); what you see is what gets saved</li>
+        <li><strong>Reader panel</strong> — icon-only tabs (Contents, Highlights, Notes, Bookmarks, Related) with export (plain text, Markdown, JSON) and print buttons</li>
         <li><strong>Position bookmarks</strong> — save your scroll position from the reader toolbar; bookmark indicators appear in the left margin</li>
-        <li><strong>Notes panel</strong> — slide-out panel with separate Highlights, Notes, and Bookmarks tabs</li>
         <li><strong>Notes page</strong> at <a href="/notes/">/notes/</a> — all highlights, notes, and bookmarks across the site with export and import (JSON) for cross-device sync</li>
         <li><strong>Annotation footnotes</strong> — inline tooltip footnotes via shortcode; no jump to the bottom of the page</li>
       </ul>
@@ -118,6 +120,7 @@ permalink: /features/
         <li><strong>JSON-LD structured data</strong> — NewsArticle on article pages; Book and Chapter on library pages</li>
         <li><strong>Open Graph social card images</strong> — auto-generated per article at build time</li>
         <li><strong>Print CSS</strong> — suppresses nav, sidebar, and all non-essential chrome across article and edition pages</li>
+        <li><strong>Instant page</strong> — prefetches links on hover for near-instant navigation (self-hosted, ~3 KB)</li>
         <li><strong>Bunny Fonts</strong> — privacy-friendly font CDN; no IP logging, no cookies, no tracking</li>
         <li><strong>Hosted on Cloudflare Pages</strong></li>
       </ul>
@@ -150,6 +153,12 @@ permalink: /features/
         <li><strong>Send Feedback</strong> at <a href="/feedback/">/feedback/</a> — bug reports, suggestions, accessibility issues, with auto-fill page URL</li>
         <li><strong>Write a Letter</strong> at <a href="/letters/submit/">/letters/submit/</a> — letters to the editor with city, background, and voice dictation</li>
         <li><strong>Submit a Quote</strong> at <a href="/quotes/submit/">/quotes/submit/</a> — quote text, author, source, and context</li>
+        <li><strong>Suggest a Timeline Entry</strong> at <a href="/timeline/submit/">/timeline/submit/</a> — event title, year, era, description</li>
+        <li><strong>Recommend a Book</strong> at <a href="/bookshelf/submit/">/bookshelf/submit/</a> — title, author, category, why it belongs</li>
+        <li><strong>Suggest a Public Domain Text</strong> at <a href="/library/submit/">/library/submit/</a> — title, author, source link</li>
+        <li><strong>Suggest a Glossary Term</strong> at <a href="/glossary/submit/">/glossary/submit/</a> — term, definition, reason</li>
+        <li><strong>Suggest a Trial</strong> at <a href="/trials/submit/">/trials/submit/</a> — trial name, year, defendant, charge</li>
+        <li><strong>Suggest a Thought Experiment</strong> at <a href="/thought-experiments/submit/">/thought-experiments/submit/</a> — name, philosopher, description</li>
         <li><strong>All forms</strong> use Web3Forms with hCaptcha, honeypot spam protection, maxlength limits, aria-required attributes, and email fallback</li>
       </ul>
 
@@ -175,6 +184,8 @@ permalink: /features/
         <li><strong>Terms of use</strong> at <a href="/terms/">/terms/</a> — plain-language terms covering content, submissions, and data</li>
         <li><strong>Cookies policy</strong> at <a href="/cookies/">/cookies/</a> — zero first-party cookies; full disclosure of third-party cookies</li>
         <li><strong>Accessibility statement</strong> at <a href="/accessibility/">/accessibility/</a> — WCAG 2.2 AA commitment with detailed feature documentation</li>
+        <li><strong>Community guidelines</strong> at <a href="/community-guidelines/">/community-guidelines/</a> — standards for comments and community participation</li>
+        <li><strong>Hub pages</strong> — dedicated landing pages for <a href="/explore/">Explore</a>, <a href="/submit/">Submit</a>, <a href="/reader-tools/">Reader Tools</a>, <a href="/transparency/">Transparency</a>, and <a href="/legal/">Legal</a></li>
       </ul>
 
       <h2>Quotes, media & resources</h2>
@@ -183,8 +194,13 @@ permalink: /features/
         <li><strong>Daily quote bar</strong> — rotating quote in the masthead header, cycling every 10 seconds with fade transitions</li>
         <li><strong>Quotes Showcase</strong> at <a href="/quotes/showcase/">/quotes/showcase/</a> — full-screen screensaver-style display cycling through all quotes with crossfade transitions, auto-advance, shuffle, keyboard navigation, and pause/play</li>
         <li><strong>Video Library</strong> at <a href="/videos/">/videos/</a> — curated lectures, debates, and documentaries with speaker and topic filters</li>
-        <li><strong>Freethought Timeline</strong> at <a href="/timeline/">/timeline/</a> — 2,400 years of freethought history from Socrates to the New Atheism</li>
-        <li><strong>Resources hub</strong> at <a href="/resources/">/resources/</a> — hub page linking to 5 sub-pages: education, legal rights, personal support, media & tools, and on-this-site guide</li>
+        <li><strong>Freethought Timeline</strong> at <a href="/timeline/">/timeline/</a> — 2,400 years of freethought history in a vertical alternating timeline with era markers and scroll-reveal animation</li>
+        <li><strong>Timeline Showcase</strong> at <a href="/timeline/showcase/">/timeline/showcase/</a> — full-screen screensaver cycling through all timeline events with auto-advance and keyboard navigation</li>
+        <li><strong>Quotes Timeline</strong> at <a href="/quotes/timeline/">/quotes/timeline/</a> — quotes arranged chronologically with years extracted from source citations</li>
+        <li><strong>Bookshelf Timeline</strong> at <a href="/bookshelf/timeline/">/bookshelf/timeline/</a> — the annotated bookshelf in chronological order</li>
+        <li><strong>Trials Timeline</strong> at <a href="/trials/timeline/">/trials/timeline/</a> — landmark trials from 399 BCE to 1989 in timeline format</li>
+        <li><strong>Trials Showcase</strong> at <a href="/trials/showcase/">/trials/showcase/</a> — full-screen screensaver cycling through trial events</li>
+        <li><strong>Resources</strong> at <a href="/resources/">/resources/</a> — hub page linking to 5 sub-pages: education, legal rights, personal support, media & tools, and on-this-site guide</li>
         <li><strong>Community</strong> at <a href="/community/">/community/</a> — national and international freethought groups, online communities, student organizations</li>
         <li><strong>Events calendar</strong> at <a href="/events/">/events/</a> — interactive calendar with month/week/day/list views, recurrence engine for weekly/monthly/annual events, dot-based month grid with hover tooltips, slide-in detail panel, sidebar (Next Up, This Month, Organizations), URL hash persistence, keyboard navigation, touch swipe, type and region filters</li>
         <li><strong>Contribute</strong> at <a href="/contribute/">/contribute/</a> — submission guidelines, style guide, and pitch instructions</li>
@@ -205,7 +221,7 @@ permalink: /features/
         <li><strong>Editorial Dashboard</strong> at <a href="/dashboard/">/dashboard/</a> — content counts and status overview</li>
       </ul>
 
-      <p><em>Last updated: 11 April 2026</em></p>
+      <p><em>Last updated: {{ currentYear }}</em></p>
 
     </div>
   </div>
