@@ -25,6 +25,8 @@ layout: layouts/base.njk
      data-chapter-slug="{{ chapterSlug or workSlug }}"
      data-chapter-title="{{ title }}"
      hidden></div>
+{# Context for annotations.js #}
+<div id="annotations-context" data-page-slug="{{ workSlug }}" data-page-url="{{ page.url }}" data-page-title="{{ workTitle | escape }}: {{ title | escape }}" hidden></div>
 
 {# Inline script: apply focus mode before paint to avoid layout shift #}
 <script>document.documentElement.classList.add('is-library-reading');(function(){if(localStorage.getItem((window.__PREFIX||'tft')+'-focus')==='on')document.documentElement.setAttribute('data-focus-mode','on');}());</script>
@@ -207,4 +209,5 @@ layout: layouts/base.njk
 <script src="/assets/js/download.js" defer></script>
 <script src="/assets/js/reading-settings.js" defer></script>
 <script src="/assets/js/library.js" defer></script>
+<script src="/assets/js/annotations.js" defer></script>
 {% endblock %}
