@@ -44,8 +44,8 @@
   --font-ui:         'DM Sans', system-ui, sans-serif;
 
   /* ── Typography: Scale (Major Third — 1.25) ────────────── */
-  --text-xs:    0.64rem;    /*  ~10px */
-  --text-sm:    0.8rem;     /*  ~13px */
+  --text-xs:    0.75rem;    /*  ~12px */
+  --text-sm:    0.875rem;   /*  ~14px */
   --text-base:  1rem;       /*  ~16px */
   --text-md:    1.25rem;    /*  ~20px */
   --text-lg:    1.563rem;   /*  ~25px */

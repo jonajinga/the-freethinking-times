@@ -4,19 +4,20 @@
     {# ── Footer grid ── #}
     <div class="site-footer__grid">
 
-      {# Column 0: Branding #}
+      {# Column 0: Branding — single row: info left, newsletter right #}
       <div class="site-footer__brand">
-        <p style="font-family: var(--font-masthead); font-size: clamp(1rem, 3vw, var(--text-xl)); color: var(--color-ink); margin-bottom: var(--space-2); display: flex; align-items: center; gap: 0.5rem; white-space: nowrap;">
-          <img src="/assets/favicon.svg" alt="" aria-hidden="true" width="24" height="24">{{ site.title }}
-        </p>
-        <p style="font-size: var(--text-sm); color: var(--color-ink-muted); max-width: 42ch; line-height: var(--leading-normal); margin-bottom: var(--space-4);">
-          {{ site.description }}
-        </p>
-        <p style="font-size: var(--text-xs); color: var(--color-ink-faint); margin-bottom: var(--space-4);">
-          Founded {{ site.founded }}. Independent. Accountable to no one but the truth.
-        </p>
-        {% set subscribeVariant = "footer" %}
-        {% include "partials/subscribe.njk" %}
+        <div class="site-footer__brand-info">
+          <p style="font-family: var(--font-masthead); font-size: clamp(1rem, 3vw, var(--text-xl)); color: var(--color-ink); margin-bottom: var(--space-2); display: flex; align-items: center; gap: 0.5rem; white-space: nowrap;">
+            <img src="/assets/favicon.svg" alt="" aria-hidden="true" width="24" height="24">{{ site.title }}
+          </p>
+          <p style="font-size: var(--text-sm); color: var(--color-ink-muted); max-width: 42ch; line-height: var(--leading-normal);">
+            Founded {{ site.founded }}. Investigative. Philosophical. Adversarial to power.
+          </p>
+        </div>
+        <div class="site-footer__brand-newsletter">
+          {% set subscribeVariant = "footer" %}
+          {% include "partials/subscribe.njk" %}
+        </div>
       </div>
 
       {# Column 1: Sections (editorial only) #}
@@ -33,7 +34,7 @@
 
       {# Column 2: Explore #}
       <div>
-        <p class="site-footer__heading">Explore</p>
+        <p class="site-footer__heading"><a href="/explore/" style="color:inherit;text-decoration:none;">Explore</a></p>
         <ul class="site-footer__nav">
           <li><a href="/library/">Public Domain Library</a></li>
           <li><a href="/quotes/">Freethought Quotes</a></li>
@@ -83,24 +84,24 @@
 
       {# Column 6: Submit #}
       <div>
-        <p class="site-footer__heading">Submit</p>
+        <p class="site-footer__heading"><a href="/submit/" style="color:inherit;text-decoration:none;">Submit</a></p>
         <ul class="site-footer__nav">
           <li><a href="/submit/">Submit a Piece</a></li>
           <li><a href="/letters/submit/">Write a Letter</a></li>
-          <li><a href="/quotes/submit/">Submit a Quote</a></li>
-          <li><a href="/events/submit/">Submit an Event</a></li>
-          <li><a href="/timeline/submit/">Suggest Timeline</a></li>
+          <li><a href="/quotes/submit/">Submit Freethought Quote</a></li>
+          <li><a href="/events/submit/">Submit Freethought Event</a></li>
+          <li><a href="/timeline/submit/">Suggest Timeline Entry</a></li>
           <li><a href="/bookshelf/submit/">Recommend Book</a></li>
-          <li><a href="/library/submit/">Suggest Text</a></li>
+          <li><a href="/library/submit/">Suggest Public Domain Text</a></li>
           <li><a href="/glossary/submit/">Suggest Term</a></li>
           <li><a href="/trials/submit/">Suggest Trial</a></li>
-          <li><a href="/thought-experiments/submit/">Suggest Experiment</a></li>
+          <li><a href="/thought-experiments/submit/">Suggest Thought Experiment</a></li>
         </ul>
       </div>
 
       {# Column 5: Reader Tools #}
       <div>
-        <p class="site-footer__heading">Reader Tools</p>
+        <p class="site-footer__heading"><a href="/reader-tools/" style="color:inherit;text-decoration:none;">Reader Tools</a></p>
         <ul class="site-footer__nav">
           <li><a href="/search/">Search</a></li>
           <li><a href="/start-here/">Start Here</a></li>
@@ -129,7 +130,7 @@
 
       {# Column 7: Transparency #}
       <div>
-        <p class="site-footer__heading">Transparency</p>
+        <p class="site-footer__heading"><a href="/transparency/" style="color:inherit;text-decoration:none;">Transparency</a></p>
         <ul class="site-footer__nav">
           <li><a href="/features/">Features</a></li>
           <li><a href="/stack/">How It's Built</a></li>
@@ -142,7 +143,7 @@
 
       {# Column 8: Legal #}
       <div>
-        <p class="site-footer__heading">Legal</p>
+        <p class="site-footer__heading"><a href="/legal/" style="color:inherit;text-decoration:none;">Legal</a></p>
         <ul class="site-footer__nav">
           <li><a href="/privacy/">Privacy</a></li>
           <li><a href="/terms/">Terms</a></li>

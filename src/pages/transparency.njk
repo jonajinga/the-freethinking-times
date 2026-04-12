@@ -1,0 +1,58 @@
+---
+layout: base
+title: Transparency
+description: How this publication works, what we build, and how we hold ourselves accountable.
+permalink: /transparency/
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+  <div class="container--prose">
+
+    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Transparency</h1>
+      <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic;">
+        A publication that demands transparency from others should practise it itself.
+      </p>
+    </header>
+
+    <div class="article-body">
+      <p>Everything about how this site works is public. The code is open source, the analytics are public, the corrections are logged, and the editorial standards are written down. If we make a mistake, you will find it here before we try to hide it.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-6); margin-top: var(--space-8);">
+
+      <a href="/features/" style="display:block;padding:var(--space-6);border:1px solid var(--color-rule);text-decoration:none;color:var(--color-ink);">
+        <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">Features</h2>
+        <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">A complete inventory of every feature this site offers — reading tools, publishing infrastructure, and editorial systems.</p>
+      </a>
+
+      <a href="/stack/" style="display:block;padding:var(--space-6);border:1px solid var(--color-rule);text-decoration:none;color:var(--color-ink);">
+        <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">How It's Built</h2>
+        <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">The technology behind every page — explained in plain language, with no marketing.</p>
+      </a>
+
+      <a href="/changelog/" style="display:block;padding:var(--space-6);border:1px solid var(--color-rule);text-decoration:none;color:var(--color-ink);">
+        <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">Changelog</h2>
+        <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">A public record of every change made to this site, dated and categorised.</p>
+      </a>
+
+      <a href="/corrections/" style="display:block;padding:var(--space-6);border:1px solid var(--color-rule);text-decoration:none;color:var(--color-ink);">
+        <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">Corrections</h2>
+        <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">Every factual correction we have published, logged permanently and linked from the original article.</p>
+      </a>
+
+      <a href="/open-source/" style="display:block;padding:var(--space-6);border:1px solid var(--color-rule);text-decoration:none;color:var(--color-ink);">
+        <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">Open Source</h2>
+        <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">The full source code is on GitHub under the MIT licence. Fork it, improve it, launch your own publication.</p>
+      </a>
+
+      {% if site.analytics and site.analytics.dashboardUrl %}
+      <a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer" style="display:block;padding:var(--space-6);border:1px solid var(--color-rule);text-decoration:none;color:var(--color-ink);">
+        <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">Public Analytics</h2>
+        <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0;">Our Umami analytics dashboard is public. You can see the same traffic data we see — no cookies, no tracking.</p>
+      </a>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
