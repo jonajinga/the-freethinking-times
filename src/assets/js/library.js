@@ -467,6 +467,8 @@
     }
 
     // ── Annotation toolbar ──
+    // Skip if annotations.js is handling this (detected by annotations-context div)
+    if (!document.getElementById('annotations-context')) {
     var toolbar       = document.getElementById('annotation-toolbar');
     var highlightBtn  = document.getElementById('ann-highlight-btn');
     var annotateBtn   = document.getElementById('ann-annotate-btn');
@@ -605,6 +607,7 @@
       // Restore saved highlights on load
       Annotations.restoreHighlights(bodyEl);
     }
+    } // end annotations-context guard
 
   }); // end DOMContentLoaded
 

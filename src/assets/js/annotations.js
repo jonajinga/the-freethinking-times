@@ -357,7 +357,8 @@
             setTimeout(function () {
               // Switch to the right tab (notes or highlights)
               var targetTab = hasNote ? 'article-panel-notes' : 'article-panel-highlights';
-              var tab = document.querySelector('[data-target="' + targetTab + '"]');
+              var tab = document.querySelector('[data-target="' + targetTab + '"]') ||
+                        document.querySelector('[data-target="' + (hasNote ? 'panel-notes' : 'panel-highlights') + '"]');
               if (tab) tab.click();
               // Find the matching item
               var panelItem = document.querySelector('.library-annotation-item[data-ann-id="' + annId + '"]');
@@ -481,7 +482,7 @@
 
     // ── Panel ──
     var panelToggles = document.querySelectorAll('.article-notes-toggle');
-    var panel        = document.getElementById('article-notes-panel');
+    var panel        = document.getElementById('article-notes-panel') || document.getElementById('library-panel');
     var panelOverlay = document.querySelector('.article-notes-overlay');
     var panelClose   = panel ? panel.querySelector('.library-panel__close') : null;
 
@@ -541,9 +542,9 @@
     });
 
     function refreshPanelContents() {
-      var hlContainer   = document.getElementById('article-panel-highlights');
-      var noteContainer = document.getElementById('article-panel-notes');
-      var bmContainer   = document.getElementById('article-panel-bookmarks');
+      var hlContainer   = document.getElementById('article-panel-highlights') || document.getElementById('panel-highlights');
+      var noteContainer = document.getElementById('article-panel-notes') || document.getElementById('panel-notes');
+      var bmContainer   = document.getElementById('article-panel-bookmarks') || document.getElementById('panel-bookmarks');
       if (hlContainer)   Annotations.renderHighlights(hlContainer);
       if (noteContainer) Annotations.renderNotes(noteContainer);
       if (bmContainer) Bookmarks.render(bmContainer, function (bm) {
