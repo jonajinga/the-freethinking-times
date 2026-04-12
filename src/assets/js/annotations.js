@@ -682,10 +682,16 @@
         return picker;
       }
 
+      // Saved selection for the color picker (mobile clears selection on tap)
+      var savedPickerRange = null;
+
       function doHighlight(color) {
+        // Restore the saved range if the live one was cleared
+        if (!lastRange && savedPickerRange) lastRange = savedPickerRange;
         if (!lastRange) return;
         var annId = Annotations.add(lastRange.text, '', getNearestHeading(), color);
         wrapSelectionInMark(annId, false, color);
+        savedPickerRange = null;
         afterAction();
       }
 
@@ -693,6 +699,11 @@
         highlightBtn.addEventListener('click', function (e) {
           if (!lastRange) return;
           e.stopPropagation();
+          // Save the selection before the picker opens (mobile will clear it)
+          savedPickerRange = {
+            text: lastRange.text,
+            range: lastRange.range ? lastRange.range.cloneRange() : null
+          };
           var existing = document.getElementById('hl-color-picker');
           if (existing) { existing.remove(); return; }
           var picker = createHighlightPicker();
@@ -705,6 +716,7 @@
             document.addEventListener('click', function closePicker() {
               var p = document.getElementById('hl-color-picker');
               if (p) p.remove();
+              savedPickerRange = null;
               document.removeEventListener('click', closePicker);
             });
           }, 10);

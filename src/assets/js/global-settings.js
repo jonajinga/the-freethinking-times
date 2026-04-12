@@ -170,12 +170,23 @@
       });
     }
 
-    // Close on outside click
+    // Close on outside click (with grace period for drawer button)
+    var panelOpenTime = 0;
+    var origHiddenProp = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'hidden') ||
+      Object.getOwnPropertyDescriptor(Element.prototype, 'hidden');
+    // Track when panel opens
+    new MutationObserver(function () {
+      if (!panel.hidden) panelOpenTime = Date.now();
+    }).observe(panel, { attributes: true, attributeFilter: ['hidden'] });
+
     document.addEventListener('click', function (e) {
+      if (panel.hidden) return;
+      // Ignore clicks within 200ms of opening (prevents drawer button from closing)
+      if (Date.now() - panelOpenTime < 200) return;
       var btn = document.getElementById('global-settings-btn');
-      if (btn && !btn.contains(e.target) && !panel.contains(e.target)) {
-        panel.hidden = true;
-      }
+      if (btn && btn.contains(e.target)) return;
+      if (panel.contains(e.target)) return;
+      panel.hidden = true;
     });
 
     // Reset
