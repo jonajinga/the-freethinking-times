@@ -116,10 +116,12 @@
       if (window.__refreshReaderPanel) window.__refreshReaderPanel();
     }
 
-    function add(quote, note, section) {
+    function add(quote, note, section, color) {
       var list = load();
       var id = 'ann-' + Date.now();
-      list.push({ id: id, quote: quote, note: note || '', section: section || '', ts: Date.now() });
+      var entry = { id: id, quote: quote, note: note || '', section: section || '', ts: Date.now() };
+      if (color && color !== 'yellow') entry.color = color;
+      list.push(entry);
       save(list);
       return id;
     }
@@ -211,12 +213,12 @@
       // Re-apply all saved annotations
       var list = load();
       list.forEach(function (ann) {
-        try { highlightTextInEl(bodyEl, ann.quote, ann.id, !!ann.note); }
+        try { highlightTextInEl(bodyEl, ann.quote, ann.id, !!ann.note, ann.color); }
         catch (e) {}
       });
     }
 
-    function highlightTextInEl(el, text, annId, hasNote) {
+    function highlightTextInEl(el, text, annId, hasNote, color) {
       var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
       var node;
       while ((node = walker.nextNode())) {
@@ -224,7 +226,9 @@
         if (idx !== -1) {
           var before = document.createTextNode(node.nodeValue.slice(0, idx));
           var mark = document.createElement('mark');
-          mark.className = 'library-highlight' + (hasNote ? ' library-highlight--note' : '');
+          var cls = 'library-highlight' + (hasNote ? ' library-highlight--note' : '');
+          if (color && color !== 'yellow') cls += ' library-highlight--' + color;
+          mark.className = cls;
           mark.dataset.annId = annId;
           mark.textContent = text;
           mark.style.cursor = 'pointer';
@@ -538,9 +542,10 @@
     var lastRange = null;
 
     // Wrap the saved selection range in a <mark> for immediate visual feedback
-    function wrapSelectionInMark(annId, hasNote) {
+    function wrapSelectionInMark(annId, hasNote, color) {
       if (!lastRange) return;
       var cls = 'library-highlight' + (hasNote ? ' library-highlight--note' : '');
+      if (color && color !== 'yellow') cls += ' library-highlight--' + color;
       var done = false;
 
       // Try using the saved range first
@@ -566,7 +571,7 @@
 
       // Fallback: search for the text in the body and wrap it
       if (!done && lastRange.text && bodyEl) {
-        highlightTextInEl(bodyEl, lastRange.text, annId, hasNote);
+        highlightTextInEl(bodyEl, lastRange.text, annId, hasNote, color);
       }
     }
 
@@ -639,12 +644,70 @@
         setTimeout(updateSelectionState, 250);
       });
 
+      // Highlight color picker
+      var hlColors = [
+        { key: 'yellow', bg: 'rgba(250,204,21,0.45)', label: 'Yellow' },
+        { key: 'pink', bg: 'rgba(236,72,153,0.35)', label: 'Pink' },
+        { key: 'blue', bg: 'rgba(59,130,246,0.3)', label: 'Blue' },
+        { key: 'green', bg: 'rgba(34,197,94,0.35)', label: 'Green' },
+        { key: 'orange', bg: 'rgba(249,115,22,0.35)', label: 'Orange' },
+        { key: 'purple', bg: 'rgba(139,92,246,0.3)', label: 'Purple' }
+      ];
+      var lastHlColor = localStorage.getItem((_p || 'tft') + '-hl-color') || 'yellow';
+
+      function createHighlightPicker() {
+        var picker = document.createElement('div');
+        picker.id = 'hl-color-picker';
+        picker.className = 'hl-color-picker';
+        hlColors.forEach(function (c) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'hl-color-btn' + (c.key === lastHlColor ? ' is-active' : '');
+          btn.style.background = c.bg;
+          btn.title = c.label;
+          btn.setAttribute('aria-label', c.label);
+          btn.dataset.hlColor = c.key;
+          btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            lastHlColor = c.key;
+            try { localStorage.setItem((_p || 'tft') + '-hl-color', lastHlColor); } catch (ex) {}
+            picker.querySelectorAll('.hl-color-btn').forEach(function (b) {
+              b.classList.toggle('is-active', b.dataset.hlColor === lastHlColor);
+            });
+            doHighlight(lastHlColor);
+            picker.remove();
+          });
+          picker.appendChild(btn);
+        });
+        return picker;
+      }
+
+      function doHighlight(color) {
+        if (!lastRange) return;
+        var annId = Annotations.add(lastRange.text, '', getNearestHeading(), color);
+        wrapSelectionInMark(annId, false, color);
+        afterAction();
+      }
+
       if (highlightBtn) {
-        highlightBtn.addEventListener('click', function () {
+        highlightBtn.addEventListener('click', function (e) {
           if (!lastRange) return;
-          var annId = Annotations.add(lastRange.text, '', getNearestHeading());
-          wrapSelectionInMark(annId, false);
-          afterAction();
+          e.stopPropagation();
+          var existing = document.getElementById('hl-color-picker');
+          if (existing) { existing.remove(); return; }
+          var picker = createHighlightPicker();
+          highlightBtn.parentElement.appendChild(picker);
+          // Position near the button
+          picker.style.left = (highlightBtn.offsetLeft) + 'px';
+          picker.style.bottom = (highlightBtn.parentElement.offsetHeight + 4) + 'px';
+          // Close on outside click
+          setTimeout(function () {
+            document.addEventListener('click', function closePicker() {
+              var p = document.getElementById('hl-color-picker');
+              if (p) p.remove();
+              document.removeEventListener('click', closePicker);
+            });
+          }, 10);
         });
       }
 
@@ -658,8 +721,8 @@
           var note = prompt('Add a note (optional):') || '';
           // Restore lastRange for wrapSelectionInMark
           lastRange = { text: savedText, range: savedRange };
-          var annId = Annotations.add(savedText, note, savedHeading);
-          wrapSelectionInMark(annId, !!note);
+          var annId = Annotations.add(savedText, note, savedHeading, lastHlColor);
+          wrapSelectionInMark(annId, !!note, lastHlColor);
           afterAction();
         });
       }

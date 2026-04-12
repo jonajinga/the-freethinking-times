@@ -106,6 +106,8 @@
     white: '#eee'
   };
 
+  var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
   function applyRuler(on) {
     var existing = document.getElementById('rs-reading-ruler');
     if (on && !existing) {
@@ -115,16 +117,18 @@
       document.body.appendChild(ruler);
       applyRulerStyle();
       updateRulerBounds();
-      document.addEventListener('mousemove', moveRuler);
-      document.addEventListener('touchmove', touchMoveRuler, { passive: true });
-      document.addEventListener('touchstart', touchMoveRuler, { passive: true });
+      if (isTouchDevice) {
+        // On touch: fixed at 40% of viewport height, stays put while scrolling
+        ruler.style.top = Math.round(window.innerHeight * 0.4) + 'px';
+        ruler.style.opacity = '';
+      } else {
+        document.addEventListener('mousemove', moveRuler);
+      }
       window.addEventListener('resize', updateRulerBounds);
       window.addEventListener('scroll', updateRulerBounds, { passive: true });
     } else if (!on && existing) {
       existing.remove();
       document.removeEventListener('mousemove', moveRuler);
-      document.removeEventListener('touchmove', touchMoveRuler);
-      document.removeEventListener('touchstart', touchMoveRuler);
       window.removeEventListener('resize', updateRulerBounds);
       window.removeEventListener('scroll', updateRulerBounds);
     }
@@ -173,6 +177,10 @@
     if (ruler) {
       ruler.style.left = rect.left + 'px';
       ruler.style.width = rect.width + 'px';
+      // On touch devices, keep ruler at 40% viewport height
+      if (isTouchDevice) {
+        ruler.style.top = Math.round(window.innerHeight * 0.4) + 'px';
+      }
     }
   }
 
@@ -188,17 +196,6 @@
     }
   }
 
-  function touchMoveRuler(e) {
-    var ruler = document.getElementById('rs-reading-ruler');
-    if (!ruler || !e.touches || !e.touches.length) return;
-    var y = e.touches[0].clientY;
-    if (y < rulerBounds.top || y > rulerBounds.bottom) {
-      ruler.style.opacity = '0';
-    } else {
-      ruler.style.opacity = '';
-      ruler.style.top = y + 'px';
-    }
-  }
 
   // Hide ruler while text is selected
   document.addEventListener('selectionchange', function () {

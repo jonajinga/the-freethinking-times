@@ -1019,13 +1019,66 @@
   background: rgba(250, 204, 21, 0.25);
 }
 
+/* Highlight color variants */
+.library-highlight--pink { background: rgba(236, 72, 153, 0.25); }
+.library-highlight--pink:hover { background: rgba(236, 72, 153, 0.4); }
+.library-highlight--blue { background: rgba(59, 130, 246, 0.2); }
+.library-highlight--blue:hover { background: rgba(59, 130, 246, 0.35); }
+.library-highlight--green { background: rgba(34, 197, 94, 0.25); }
+.library-highlight--green:hover { background: rgba(34, 197, 94, 0.4); }
+.library-highlight--orange { background: rgba(249, 115, 22, 0.25); }
+.library-highlight--orange:hover { background: rgba(249, 115, 22, 0.4); }
+.library-highlight--purple { background: rgba(139, 92, 246, 0.2); }
+.library-highlight--purple:hover { background: rgba(139, 92, 246, 0.35); }
+
+[data-theme="dark"] .library-highlight--pink { background: rgba(236, 72, 153, 0.15); }
+[data-theme="dark"] .library-highlight--blue { background: rgba(59, 130, 246, 0.15); }
+[data-theme="dark"] .library-highlight--green { background: rgba(34, 197, 94, 0.15); }
+[data-theme="dark"] .library-highlight--orange { background: rgba(249, 115, 22, 0.15); }
+[data-theme="dark"] .library-highlight--purple { background: rgba(139, 92, 246, 0.15); }
+
 /* Highlights with notes — dotted underline to indicate attached note */
 .library-highlight--note {
   border-bottom: 2px dotted rgba(200, 160, 0, 0.6);
 }
+.library-highlight--pink.library-highlight--note { border-bottom-color: rgba(236, 72, 153, 0.6); }
+.library-highlight--blue.library-highlight--note { border-bottom-color: rgba(59, 130, 246, 0.6); }
+.library-highlight--green.library-highlight--note { border-bottom-color: rgba(34, 197, 94, 0.6); }
+.library-highlight--orange.library-highlight--note { border-bottom-color: rgba(249, 115, 22, 0.6); }
+.library-highlight--purple.library-highlight--note { border-bottom-color: rgba(139, 92, 246, 0.6); }
 
 [data-theme="dark"] .library-highlight--note {
   border-bottom-color: rgba(250, 204, 21, 0.5);
+}
+
+/* Highlight color picker popup */
+.hl-color-picker {
+  position: absolute;
+  display: flex;
+  gap: 4px;
+  padding: 6px 8px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-rule);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  z-index: 300;
+}
+
+.hl-color-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.hl-color-btn:hover {
+  transform: scale(1.2);
+}
+
+.hl-color-btn.is-active {
+  border-color: var(--color-ink);
 }
 
 /* Panel overlay — disabled (panel is non-blocking sidebar) */
