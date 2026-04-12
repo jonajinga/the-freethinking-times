@@ -36,6 +36,7 @@
     { "label": "Science & Tech", "url": "/science-technology/","key": "science-tech", "collection": "science-technology" },
     { "label": "History",        "url": "/history/",           "key": "history",      "collection": "history" },
     { "label": "Letters",        "url": "/letters/",           "key": "letters",      "collection": "letters" },
+    { "label": "Reviews",        "url": "/reviews/",           "key": "reviews",      "collection": "reviews" },
     { "label": "More",           "url": "/more/",               "key": "more",         "type": "more" }
   ],
   "social": {
@@ -78,6 +79,11 @@
       "label": "Letters",
       "color": "#37474F",
       "description": "Reader responses and correspondence."
+    },
+    "reviews": {
+      "label": "Reviews",
+      "color": "#8B6914",
+      "description": "Books, films, podcasts, and documentaries assessed honestly."
     },
     "thought-experiments": {
       "label": "Thought Experiments",

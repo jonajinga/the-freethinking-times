@@ -1,0 +1,304 @@
+---
+layout: base
+title: Freethought Music
+description: Curated playlists for reading, thinking, and reflecting — music connected to the freethought tradition.
+permalink: /music/
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+  <div class="container--prose">
+
+    <header style="padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);">
+      <a href="/projects/" style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);text-decoration:none;">&larr; Projects</a>
+      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4); margin-top: var(--space-2);">Freethought Music</h1>
+      <p style="color: var(--color-ink-muted); font-size: var(--text-md); font-style: italic; max-width: 45ch;">
+        Curated playlists for reading, thinking, and reflecting.
+      </p>
+      <p style="font-family: var(--font-ui); font-size: var(--text-sm); margin-top: var(--space-4);">
+        Know a song we should add? <a href="/music/submit/" style="color: var(--color-link); font-weight: 600;">Suggest it</a>
+      </p>
+    </header>
+
+    {# Player bar — hidden until a playlist is selected #}
+    <div id="music-player" class="music-player" hidden>
+      <div class="music-player__info">
+        <span class="music-player__now-playing" id="mp-now-playing">Loading...</span>
+      </div>
+      <div class="music-player__controls">
+        <button type="button" id="mp-prev" aria-label="Previous" class="music-player__btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+        <button type="button" id="mp-play" aria-label="Play" class="music-player__btn music-player__btn--play">
+          <svg id="mp-play-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <svg id="mp-pause-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <button type="button" id="mp-next" aria-label="Next" class="music-player__btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+        <input type="range" id="mp-volume" min="0" max="100" value="80" aria-label="Volume" class="music-player__volume">
+      </div>
+    </div>
+
+    {# Playlist cards #}
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-6);margin-top:var(--space-6);">
+      {% for pl in playlists %}
+      <div class="music-playlist-card" data-playlist-id="{{ pl.playlistId }}" data-playlist-name="{{ pl.name }}">
+        <span style="font-family:var(--font-ui);font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-ink-faint);">{{ pl.category }}</span>
+        <h2 style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;margin:var(--space-2) 0;">{{ pl.name }}</h2>
+        <p style="font-family:var(--font-body);font-size:var(--text-sm);color:var(--color-ink-muted);line-height:1.5;margin:0 0 var(--space-4);">{{ pl.description }}</p>
+        <button type="button" class="btn music-playlist-card__play" onclick="window.musicPlayer.loadPlaylist('{{ pl.playlistId }}','{{ pl.name | escape }}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="margin-right:4px;vertical-align:-2px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Play
+        </button>
+        <div class="music-tracklist"></div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+<div id="music-yt-player" style="position:absolute;left:-9999px;width:1px;height:1px;"></div>
+
+<style>
+.music-player {
+  position: sticky;
+  top: 4rem;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-ink);
+  color: var(--color-bg);
+  margin-bottom: var(--space-6);
+}
+
+.music-player__info { flex: 1; min-width: 0; }
+
+.music-player__now-playing {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.music-player__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.music-player__btn {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: var(--space-1);
+  display: flex;
+  align-items: center;
+  opacity: 0.8;
+  transition: opacity 0.15s;
+}
+
+.music-player__btn:hover { opacity: 1; }
+
+.music-player__btn--play { opacity: 1; }
+
+.music-player__volume {
+  width: 80px;
+  accent-color: var(--color-accent);
+}
+
+.music-playlist-card {
+  padding: var(--space-6);
+  border: 1px solid var(--color-rule);
+  border-top: 3px solid var(--color-accent);
+  background: var(--color-bg);
+  transition: box-shadow 0.2s;
+}
+
+.music-playlist-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.music-tracklist {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-rule);
+  max-height: 200px;
+  overflow-y: auto;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+}
+
+.music-tracklist__item {
+  padding: var(--space-1) 0;
+  border-bottom: 1px solid var(--color-rule);
+  display: flex;
+  gap: var(--space-2);
+}
+
+.music-tracklist__item:last-child { border-bottom: none; }
+
+.music-tracklist__num {
+  color: var(--color-ink-faint);
+  min-width: 1.5em;
+}
+
+@media (max-width: 640px) {
+  .music-player { flex-direction: column; gap: var(--space-2); }
+  .music-player__volume { width: 100%; }
+}
+</style>
+
+<script>
+(function () {
+  var player = null;
+  var ready = false;
+  var currentPlaylistName = '';
+  var apiLoading = false;
+
+  var playerBar = document.getElementById('music-player');
+  var nowPlaying = document.getElementById('mp-now-playing');
+  var playIcon = document.getElementById('mp-play-icon');
+  var pauseIcon = document.getElementById('mp-pause-icon');
+  var volumeSlider = document.getElementById('mp-volume');
+
+  function loadYTApi() {
+    if (window.YT && window.YT.Player) { ready = true; return; }
+    if (apiLoading) return;
+    apiLoading = true;
+    var tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
+  }
+
+  window.onYouTubeIframeAPIReady = function () { ready = true; };
+
+  function createPlayer(playlistId) {
+    // Recreate the container div (destroy removes it)
+    var container = document.getElementById('music-yt-player');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'music-yt-player';
+      container.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;';
+      document.body.appendChild(container);
+    }
+    if (player && player.destroy) {
+      try { player.destroy(); } catch (e) {}
+      // Recreate container after destroy
+      container = document.createElement('div');
+      container.id = 'music-yt-player';
+      container.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;';
+      document.body.appendChild(container);
+    }
+
+    player = new YT.Player('music-yt-player', {
+      height: '1', width: '1',
+      playerVars: {
+        autoplay: 1, controls: 0, disablekb: 1, fs: 0,
+        modestbranding: 1, rel: 0, playsinline: 1,
+        list: playlistId, listType: 'playlist'
+      },
+      events: {
+        onReady: function () {
+          player.setVolume(parseInt(volumeSlider.value, 10));
+          player.playVideo();
+          setTimeout(updateTrackList, 2000);
+          updateUI();
+        },
+        onStateChange: function (e) {
+          updateUI();
+          if (e.data === YT.PlayerState.PLAYING) {
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = '';
+          } else {
+            playIcon.style.display = '';
+            pauseIcon.style.display = 'none';
+          }
+        }
+      }
+    });
+  }
+
+  function updateUI() {
+    if (!player || !player.getVideoData) return;
+    var data = player.getVideoData();
+    var title = data.title || 'Loading...';
+    nowPlaying.textContent = currentPlaylistName + ' — ' + title;
+  }
+
+  function updateTrackList() {
+    if (!player || !player.getPlaylist) return;
+    var ids = player.getPlaylist();
+    if (!ids || !ids.length) return;
+    // Update all track list containers
+    document.querySelectorAll('.music-tracklist').forEach(function (el) { el.innerHTML = ''; });
+    var activeCard = document.querySelector('.music-playlist-card.is-playing');
+    if (!activeCard) return;
+    var tl = activeCard.querySelector('.music-tracklist');
+    if (!tl) return;
+    ids.forEach(function (id, i) {
+      var item = document.createElement('div');
+      item.className = 'music-tracklist__item';
+      item.innerHTML = '<span class="music-tracklist__num">' + (i + 1) + '</span><span>Loading...</span>';
+      item.style.cursor = 'pointer';
+      item.addEventListener('click', function () { player.playVideoAt(i); });
+      tl.appendChild(item);
+      // Fetch title via noembed
+      fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v=' + id)
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d.title) item.querySelector('span:last-child').textContent = d.title;
+        }).catch(function () {});
+    });
+  }
+
+  setInterval(function () { if (player && ready) updateUI(); }, 3000);
+
+  window.musicPlayer = {
+    loadPlaylist: function (id, name) {
+      loadYTApi();
+      currentPlaylistName = name;
+      playerBar.hidden = false;
+      nowPlaying.textContent = name + ' — Loading...';
+      // Mark active card
+      document.querySelectorAll('.music-playlist-card').forEach(function (c) { c.classList.remove('is-playing'); });
+      var card = document.querySelector('[data-playlist-id="' + id + '"]');
+      if (card) card.classList.add('is-playing');
+
+      if (ready) { createPlayer(id); }
+      else {
+        var wait = setInterval(function () {
+          if (window.YT && window.YT.Player) { clearInterval(wait); ready = true; createPlayer(id); }
+        }, 200);
+      }
+    }
+  };
+
+  document.getElementById('mp-play').addEventListener('click', function () {
+    if (!player) return;
+    var state = player.getPlayerState();
+    if (state === YT.PlayerState.PLAYING) player.pauseVideo();
+    else player.playVideo();
+  });
+
+  document.getElementById('mp-next').addEventListener('click', function () {
+    if (player) { player.nextVideo(); setTimeout(updateUI, 500); }
+  });
+
+  document.getElementById('mp-prev').addEventListener('click', function () {
+    if (player) { player.previousVideo(); setTimeout(updateUI, 500); }
+  });
+
+  volumeSlider.addEventListener('input', function () {
+    if (player) player.setVolume(parseInt(this.value, 10));
+  });
+})();
+</script>

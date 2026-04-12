@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Enlightenment Classical",
+    "description": "Classical works from the Age of Reason — Mozart, Beethoven, Haydn, and their contemporaries who composed during the Enlightenment.",
+    "playlistId": "PLVhQhcFsEV_AjtPFHFmHv6pkjq2xLaFWo",
+    "category": "Classical"
+  },
+  {
+    "name": "Focus & Deep Reading",
+    "description": "Instrumental ambient music for concentrated reading and study — no lyrics, no distractions.",
+    "playlistId": "PLMIbegGpBiMH9pBwGFgLGCcU6sYZiuqxQ",
+    "category": "Ambient"
+  },
+  {
+    "name": "Philosophical Folk",
+    "description": "Folk and acoustic music that asks big questions — Leonard Cohen, Bob Dylan, Joni Mitchell, and modern inheritors.",
+    "playlistId": "PLGBuKfnErZlDa3A1LCshyP-iQ2zgyC2UZ",
+    "category": "Folk"
+  }
+]

@@ -1,0 +1,68 @@
+---
+layout: base
+title: "Suggest a Song"
+description: Know a song that fits the freethought spirit? Tell us about it.
+permalink: /music/submit/
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+  <div class="container--prose">
+    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+      <nav style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);margin-bottom:var(--space-4);">
+        <a href="/music/" style="color:var(--color-link);">Music</a> &rarr; Suggest a Song
+      </nav>
+      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Suggest a Song</h1>
+      <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 60ch;">
+        Know a song that pairs well with reading, thinking, or reflecting? We add community suggestions to our playlists.
+      </p>
+    </header>
+    <div class="article-body">
+      <form action="https://api.web3forms.com/submit" method="POST" class="w3f" style="margin: var(--space-6) 0;">
+        <input type="hidden" name="access_key" value="{{ site.forms.accessKey }}">
+        <input type="hidden" name="subject" value="Song suggestion — {{ site.title }}">
+        <input type="hidden" name="redirect" value="{{ site.url }}/thank-you/">
+        <input type="hidden" name="from_name" value="{{ site.title }} Music Form">
+        <input type="checkbox" name="botcheck" class="visually-hidden" style="display:none" tabindex="-1" autocomplete="off">
+        <div class="w3f__group">
+          <label class="w3f__label" for="mu-url">YouTube link <span class="w3f__required">*</span></label>
+          <input class="w3f__input" type="url" name="song_url" id="mu-url" required aria-required="true" placeholder="https://www.youtube.com/watch?v=...">
+        </div>
+        <div class="w3f__row">
+          <div class="w3f__group">
+            <label class="w3f__label" for="mu-title">Song title <span class="w3f__required">*</span></label>
+            <input class="w3f__input" type="text" name="title" id="mu-title" required aria-required="true">
+          </div>
+          <div class="w3f__group">
+            <label class="w3f__label" for="mu-artist">Artist <span class="w3f__required">*</span></label>
+            <input class="w3f__input" type="text" name="artist" id="mu-artist" required aria-required="true">
+          </div>
+        </div>
+        <div class="w3f__group">
+          <label class="w3f__label" for="mu-playlist">Which playlist should it go in? <span class="w3f__optional">(optional)</span></label>
+          <select class="w3f__input" name="playlist" id="mu-playlist">
+            <option value="">Any / not sure</option>
+            {% for pl in playlists %}
+            <option value="{{ pl.name }}">{{ pl.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="w3f__group">
+          <label class="w3f__label" for="mu-why">Why this song? <span class="w3f__optional">(optional)</span></label>
+          <textarea class="w3f__textarea" name="reason" id="mu-why" rows="3" maxlength="1000" placeholder="What makes it good for reading or thinking?"></textarea>
+        </div>
+        <div class="w3f__row">
+          <div class="w3f__group">
+            <label class="w3f__label" for="mu-sname">Your name <span class="w3f__optional">(optional)</span></label>
+            <input class="w3f__input" type="text" name="submitter_name" id="mu-sname" autocomplete="name">
+          </div>
+          <div class="w3f__group">
+            <label class="w3f__label" for="mu-email">Email <span class="w3f__optional">(optional)</span></label>
+            <input class="w3f__input" type="email" name="email" id="mu-email" autocomplete="email">
+          </div>
+        </div>
+        <div class="h-captcha" data-captcha="true"></div>
+        <button type="submit" class="w3f__submit">Submit Song</button>
+      </form>
+    </div>
+  </div>
+</div>

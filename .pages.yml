@@ -142,6 +142,29 @@ content:
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: body, type: rich-text }
 
+  - name: reviews
+    label: Reviews
+    path: src/content/reviews
+    type: collection
+    filename: "{fields.title|slugify}.md"
+    fields:
+      - { name: layout, type: string, default: article, hidden: true }
+      - { name: title, type: string, required: true }
+      - { name: description, type: string, required: true }
+      - { name: section, type: string, default: Reviews, hidden: true }
+      - { name: author, type: string, default: jon-ajinga }
+      - { name: authorName, type: string, default: "Jon Ajinga" }
+      - { name: date, type: date, required: true }
+      - { name: mediaType, type: select, options: [Book, Film, Podcast, Documentary, Series], required: true }
+      - { name: creator, type: string, required: true }
+      - { name: year, type: number }
+      - { name: rating, type: number }
+      - { name: tags, type: string, list: true }
+      - { name: featured, type: boolean, default: false }
+      - { name: draft, type: boolean, default: true }
+      - { name: status, type: select, options: [draft, review, published], default: draft }
+      - { name: body, type: rich-text }
+
   # ── Projects ──────────────────────────────────────────────
   - name: glossary
     label: Glossary
@@ -238,6 +261,16 @@ content:
   - name: site-config
     label: Site Configuration
     path: src/_data/site.json
+    type: file
+
+  - name: gallery
+    label: Gallery
+    path: src/_data/gallery.json
+    type: file
+
+  - name: playlists
+    label: Music Playlists
+    path: src/_data/playlists.json
     type: file
 
   # ── Static Pages ──────────────────────────────────────────

@@ -1,0 +1,40 @@
+---
+layout: base
+title: Gallery
+description: A collection of natural world photography — celebrating the beauty that exists without design.
+permalink: /gallery/
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+
+  <header style="padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8); text-align: center;">
+    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Gallery</h1>
+    <p style="color: var(--color-ink-muted); font-size: var(--text-md); font-style: italic; max-width: 40ch; margin-inline: auto;">
+      The natural world needs no designer to be beautiful.
+    </p>
+    <div style="display:flex;justify-content:center;margin-top:var(--space-4);">
+      <p style="font-family: var(--font-ui); font-size: var(--text-sm); margin: 0;">
+        Have a photo to share? <a href="/gallery/submit/" style="color: var(--color-link); font-weight: 600;">Submit it</a>
+      </p>
+    </div>
+  </header>
+
+  {% if gallery.length == 0 %}
+  <div style="text-align:center;padding:var(--space-10) 0;">
+    <p style="font-family:var(--font-ui);font-size:var(--text-md);color:var(--color-ink-faint);font-style:italic;">The gallery is being curated. Check back soon, or <a href="/gallery/submit/" style="color:var(--color-link);">submit a photo</a> to help us get started.</p>
+  </div>
+  {% else %}
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-4);">
+    {% for img in gallery %}
+    <figure style="margin:0;overflow:hidden;border:1px solid var(--color-rule);">
+      <img src="{{ img.src }}" alt="{{ img.alt }}" loading="lazy" style="width:100%;height:250px;object-fit:cover;display:block;">
+      <figcaption style="padding:var(--space-3) var(--space-4);font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-muted);">
+        {{ img.alt }}
+        {% if img.credit %}<br><span style="color:var(--color-ink-faint);">{{ img.credit }}{% if img.license %} · {{ img.license }}{% endif %}</span>{% endif %}
+      </figcaption>
+    </figure>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+</div>
