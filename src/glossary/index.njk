@@ -27,16 +27,9 @@ permalink: /glossary/
 
   <div class="glossary-layout">
 
-    {# Letter nav — sticky #}
-    <nav class="glossary-az" aria-label="Jump to letter">
-      {% set letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" %}
-      {% for letter in letters %}
-        <a href="#letter-{{ letter }}" class="glossary-az__letter">{{ letter }}</a>
-      {% endfor %}
-    </nav>
-
     {# Terms list #}
-    <div class="glossary-list" id="glossary-list">
+    <div class="glossary-list" id="glossary-list" data-pagefind-body>
+      <span data-pagefind-filter="section" hidden>Glossary</span>
       {% set sorted = collections.glossary | sort(false, false, 'data.title') %}
       {% set currentLetter = '' %}
       {% for entry in sorted %}
@@ -45,13 +38,21 @@ permalink: /glossary/
           {% set currentLetter = firstLetter %}
           <h2 class="glossary-letter-heading" id="letter-{{ currentLetter }}">{{ currentLetter }}</h2>
         {% endif %}
-        <div class="glossary-entry" data-term="{{ entry.data.title | lower }}">
-          <dt class="glossary-entry__term">{{ entry.data.title }}</dt>
+        <div class="glossary-entry" data-term="{{ entry.data.title | lower }}" id="{{ entry.data.title | slugify }}">
+          <dt class="glossary-entry__term" data-pagefind-meta="title">{{ entry.data.title }}</dt>
           <dd class="glossary-entry__def">{{ entry.data.description }}</dd>
         </div>
       {% endfor %}
       <p id="glossary-no-results" hidden style="font-family:var(--font-ui);font-size:var(--text-sm);color:var(--color-ink-faint);font-style:italic;padding:var(--space-6) 0;text-align:center;">No terms match your search.</p>
     </div>
+
+    {# Letter nav — right sidebar #}
+    <nav class="glossary-az" aria-label="Jump to letter">
+      {% set letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" %}
+      {% for letter in letters %}
+        <a href="#letter-{{ letter }}" class="glossary-az__letter">{{ letter }}</a>
+      {% endfor %}
+    </nav>
 
   </div>
 </div>
@@ -59,14 +60,13 @@ permalink: /glossary/
 <style>
 .glossary-layout {
   display: grid;
-  grid-template-columns: 2rem 1fr;
-  gap: var(--space-6);
-  max-width: var(--max-width-prose);
+  grid-template-columns: 1fr 2rem;
+  gap: var(--space-4);
+  max-width: calc(var(--max-width-prose) + 3rem);
   margin-inline: auto;
-  position: relative;
 }
 
-/* Letter nav — vertical sidebar, sticky */
+/* Letter nav — vertical, sticky right of content, centered vertically */
 .glossary-az {
   display: flex;
   flex-direction: column;
@@ -75,6 +75,7 @@ permalink: /glossary/
   position: sticky;
   top: 8rem;
   align-self: start;
+  height: fit-content;
   z-index: 10;
 }
 
@@ -134,10 +135,9 @@ permalink: /glossary/
   margin: 0;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .glossary-layout {
     grid-template-columns: 1fr;
-    gap: 0;
   }
   .glossary-az {
     flex-direction: row;
@@ -151,12 +151,13 @@ permalink: /glossary/
     border-bottom: 1px solid var(--color-rule);
     padding: var(--space-1) var(--space-2);
     gap: 0;
+    order: -1;
   }
   .glossary-az::-webkit-scrollbar { display: none; }
   .glossary-az__letter {
-    width: auto;
     padding: 2px 5px;
     flex-shrink: 0;
+    font-size: 11px;
   }
 }
 </style>
