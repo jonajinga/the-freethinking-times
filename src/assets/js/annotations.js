@@ -526,8 +526,8 @@
       }
     });
 
-    // ── Panel tabs ──
-    var tabs = panel ? panel.querySelectorAll('.library-panel__tab') : [];
+    // ── Panel tabs (only content tabs with data-target, not action buttons) ──
+    var tabs = panel ? panel.querySelectorAll('.library-panel__tab[data-target]') : [];
     tabs.forEach(function (tab) {
       tab.addEventListener('click', function () {
         tabs.forEach(function (t) {
