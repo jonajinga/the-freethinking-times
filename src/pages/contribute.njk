@@ -62,18 +62,60 @@ permalink: /contribute/
 
       <h2>How to pitch</h2>
 
-      <p>Email <a href="/contact/">{{ site.email }}</a> with:</p>
+      <p>Use the form below or email <a href="mailto:{{ site.email }}">{{ site.email }}</a> with "Pitch:" in the subject line.</p>
 
-      <ol>
-        <li><strong>Subject line:</strong> "Pitch: [Your Title]"</li>
-        <li><strong>A one-paragraph summary</strong> of what you want to write and why it matters now</li>
-        <li><strong>Your proposed section</strong> (News, Opinion, Analysis, etc.)</li>
-        <li><strong>Estimated word count</strong> (800-3000 words preferred)</li>
-        <li><strong>A brief bio</strong> (2-3 sentences about your background)</li>
-        <li><strong>1-2 writing samples</strong> (links to published work)</li>
-      </ol>
+      <form action="https://api.web3forms.com/submit" method="POST" class="w3f" style="margin: var(--space-6) 0 var(--space-10);">
+        <input type="hidden" name="access_key" value="{{ site.forms.accessKey }}">
+        <input type="hidden" name="subject" value="Pitch submission — {{ site.title }}">
+        <input type="hidden" name="redirect" value="{{ site.url }}/thank-you/">
+        <input type="hidden" name="from_name" value="{{ site.title }} Pitch Form">
+        <input type="checkbox" name="botcheck" class="visually-hidden" style="display:none" tabindex="-1" autocomplete="off">
 
-      <p>We respond to all pitches within one week. If accepted, we provide editorial guidance and work with you through revisions.</p>
+        <div class="w3f__row">
+          <div class="w3f__group">
+            <label class="w3f__label" for="contrib-name">Your name <span class="w3f__required">*</span></label>
+            <input class="w3f__input" type="text" name="name" id="contrib-name" required aria-required="true" autocomplete="name">
+          </div>
+          <div class="w3f__group">
+            <label class="w3f__label" for="contrib-email">Email <span class="w3f__required">*</span></label>
+            <input class="w3f__input" type="email" name="email" id="contrib-email" required aria-required="true" autocomplete="email">
+          </div>
+        </div>
+
+        <div class="w3f__group">
+          <label class="w3f__label" for="contrib-section">Proposed section</label>
+          <select class="w3f__select" name="section" id="contrib-section">
+            <option value="News">News</option>
+            <option value="Opinion">Opinion</option>
+            <option value="Analysis">Analysis</option>
+            <option value="Arts & Culture">Arts & Culture</option>
+            <option value="Science & Technology">Science & Technology</option>
+            <option value="History">History</option>
+            <option value="Letters">Letters to the Editor</option>
+          </select>
+        </div>
+
+        <div class="w3f__group">
+          <label class="w3f__label" for="contrib-headline">Proposed headline <span class="w3f__required">*</span></label>
+          <input class="w3f__input" type="text" name="headline" id="contrib-headline" required aria-required="true">
+        </div>
+
+        <div class="w3f__group">
+          <label class="w3f__label" for="contrib-pitch">Your pitch <span class="w3f__required">*</span></label>
+          <span class="w3f__hint" id="contrib-pitch-hint">What is the piece about? Why does it matter? What evidence will you use? (Under 400 words)</span>
+          <textarea class="w3f__textarea" name="pitch" id="contrib-pitch" rows="6" required aria-required="true" aria-describedby="contrib-pitch-hint" maxlength="3000"></textarea>
+        </div>
+
+        <div class="w3f__group">
+          <label class="w3f__label" for="contrib-clips">Published work <span class="w3f__optional">(optional)</span></label>
+          <span class="w3f__hint">Link to one or two examples of your writing</span>
+          <input class="w3f__input" type="url" name="clips" id="contrib-clips" placeholder="https://" inputmode="url">
+        </div>
+
+        <div class="h-captcha" data-captcha="true"></div>
+        <button type="submit" class="w3f__submit">Submit Pitch</button>
+        <p class="w3f__privacy">We respond to pitches that interest us within two weeks.</p>
+      </form>
 
       <h2>Style guide</h2>
 

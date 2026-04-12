@@ -190,8 +190,7 @@
 
     if (hasSidebar) html += '</div>' + renderRightSidebar() + '</div>';
 
-    html += renderLegend();
-    html += renderOrganizations();
+    // Legend and organizations removed — cluttered the page
     root.innerHTML = html;
     bind();
     writeHash(false);
@@ -361,7 +360,7 @@
       '</div>' +
       '<h3 class="cal-card__headline">' + esc(e.name) + '</h3>' +
       '<p class="cal-card__dek">' + esc(e.description) + '</p>' +
-      '<div class="cal-card__meta">' + esc(e.location) + (e.region ? ' &middot; ' + esc(e.region) : '') + '</div>' +
+      '<div class="cal-card__meta">' + esc(e.location) + (e.region && e.region !== e.location ? ' &middot; ' + esc(e.region) : '') + '</div>' +
     '</article>';
   }
 
