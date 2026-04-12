@@ -250,15 +250,12 @@
         var body = document.querySelector('.article-body');
         if (!body) return;
         ttsText = body.innerText;
-        // Cancel any pending speech first (fixes Chrome silent bug)
+        // Cancel then speak immediately (setTimeout breaks user gesture chain in Chrome)
         window.speechSynthesis.cancel();
-        // Small delay after cancel to let Chrome reset
-        setTimeout(function () {
-          window.speechSynthesis.speak(buildUtterance(ttsText));
-          ttsSpeaking = true;
-          ttsBtn.setAttribute('aria-label', 'Stop reading');
-          ttsBtn.classList.add('is-speaking');
-        }, 50);
+        window.speechSynthesis.speak(buildUtterance(ttsText));
+        ttsSpeaking = true;
+        ttsBtn.setAttribute('aria-label', 'Stop reading');
+        ttsBtn.classList.add('is-speaking');
       }
 
       /* — Play / Pause / Resume — */
