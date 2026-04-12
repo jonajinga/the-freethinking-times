@@ -1,5 +1,5 @@
 ---
-layout: glossary-term
+layout: layouts/glossary-entry
 title: "Rationalism"
 description: "Rationalism is the philosophical position that reason, independent of sensory experience, is the primary source of knowledge — and that the most important truths about reality are those that can be arrived at through pure thought."
 etymology: "From Latin 'ratio' (reason, reckoning, calculation, account), and 'rationalis' (endowed with reason, relating to reason); 'rationalism' as a distinct philosophical label consolidates in the 18th century to describe the tradition running through Descartes, Spinoza, and Leibniz, in contrast to British empiricism."

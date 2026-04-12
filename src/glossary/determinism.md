@@ -1,5 +1,5 @@
 ---
-layout: glossary-term
+layout: layouts/glossary-entry
 title: "Determinism"
 description: "Determinism is the metaphysical doctrine that every event, including every human thought and action, is the inevitable consequence of prior events and the laws of nature — that given the state of the universe at any moment, only one future is possible."
 etymology: "From Latin 'determinare' (to bound, limit, fix, determine the boundaries of), from 'de-' (completely) + 'terminare' (to limit, from 'terminus,' boundary); 'determinism' as a distinct philosophical term appears in 19th-century German and French philosophy before entering English usage, where it consolidated a set of ideas previously discussed under labels like 'necessity' and 'fate.'"

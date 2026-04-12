@@ -1,5 +1,5 @@
 ---
-layout: glossary-term
+layout: layouts/glossary-entry
 title: "Agnosticism"
 description: "Agnosticism is the position that the existence of God, gods, or the supernatural is unknown and perhaps unknowable — that the evidence available to human beings is insufficient to justify either theistic belief or confident atheism."
 etymology: "Coined by Thomas Henry Huxley in 1869 at a meeting of the Metaphysical Society in London, from Greek 'a-' (without, not) + 'gnosis' (knowledge); Huxley deliberately formed it on the model of 'gnostic,' to describe someone who, unlike the Gnostics, claimed no special knowledge of ultimate things."

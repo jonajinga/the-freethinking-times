@@ -1,5 +1,5 @@
 ---
-layout: glossary-term
+layout: layouts/glossary-entry
 title: "Deism"
 description: "Deism is the belief that a creator God can be known through reason and observation of the natural world, but that this God does not intervene in human affairs, has not revealed himself through scripture, and is not available for prayer or worship."
 etymology: "From Latin 'deus' (god); 'deism' emerges as a distinct label in 17th-century English writing, often contrasted with 'theism' (from Greek 'theos') to distinguish the rationalist, non-interventionist view of God from orthodox Christianity; the contrast between deism and theism was not stable across all writers, and some used the terms interchangeably."

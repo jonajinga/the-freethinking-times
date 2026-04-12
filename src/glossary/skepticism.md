@@ -1,5 +1,5 @@
 ---
-layout: glossary-term
+layout: layouts/glossary-entry
 title: "Skepticism"
 description: "Skepticism is the philosophical position that holds that knowledge claims — particularly those about the external world, God, morality, or the past — require scrutiny, and that many claims commonly accepted as knowledge fail to meet the standards that genuine knowledge demands."
 etymology: "From Greek 'skeptikos' (inquiring, reflective, given to consideration), derived from 'skeptesthai' (to look carefully, to consider, to examine); the Skeptics were a school of ancient Greek philosophy named for their practice of inquiry rather than for any doctrinal conclusion."

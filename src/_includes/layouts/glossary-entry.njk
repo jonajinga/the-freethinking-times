@@ -12,36 +12,7 @@ layout: layouts/base.njk
 
     <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3rem); margin-bottom: var(--space-4);">{{ title }}</h1>
 
-    <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-relaxed); margin-bottom: var(--space-6);">{{ description }}</p>
-
-    {% if etymology %}
-    <p style="font-family: var(--font-ui); font-size: var(--text-sm); color: var(--color-ink-faint); margin-bottom: var(--space-6);">
-      <strong>Etymology:</strong> {{ etymology }}
-    </p>
-    {% endif %}
-
-    {% if keyFigures and keyFigures.length %}
-    <p style="font-family: var(--font-ui); font-size: var(--text-sm); color: var(--color-ink-faint); margin-bottom: var(--space-6);">
-      <strong>Key figures:</strong> {{ keyFigures | join(", ") }}
-    </p>
-    {% endif %}
-
-    {% if content and content | striptags | trim %}
-    <div class="article-body" style="margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--color-rule);">
-      {{ content | safe }}
-    </div>
-    {% endif %}
-
-    {% if relatedTerms and relatedTerms.length %}
-    <div style="margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--color-rule);">
-      <h2 style="font-family:var(--font-headline);font-size:var(--text-sm);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-ink-faint);margin-bottom:var(--space-3);">Related Terms</h2>
-      <ul style="list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:var(--space-2);">
-        {% for term in relatedTerms %}
-        <li><a href="{{ term.url }}" style="font-family:var(--font-ui);font-size:var(--text-sm);color:var(--color-link);text-decoration:none;padding:var(--space-1) var(--space-3);border:1px solid var(--color-rule);">{{ term.title }}</a></li>
-        {% endfor %}
-      </ul>
-    </div>
-    {% endif %}
+    <p style="font-family: var(--font-body); font-size: var(--text-lg); line-height: var(--leading-relaxed);">{{ description }}</p>
 
     <div style="margin-top: var(--space-8);">
       <a href="/glossary/" class="btn">&larr; All Terms</a>

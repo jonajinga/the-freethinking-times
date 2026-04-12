@@ -1,5 +1,5 @@
 ---
-layout: glossary-term
+layout: layouts/glossary-entry
 title: "Freethought"
 description: "Freethought is the practice of forming beliefs about religion, ethics, and metaphysics on the basis of reason and evidence rather than tradition, authority, or revelation."
 etymology: "Middle English/Old French origin; the compound 'free-thinking' appears in English by the late 17th century, but the term entered philosophical discourse when Anthony Collins titled his 1713 pamphlet 'A Discourse of Free-thinking,' establishing the word as a self-conscious movement label."

@@ -1,5 +1,5 @@
 ---
-layout: glossary-term
+layout: layouts/glossary-entry
 title: "Atheism"
 description: "Atheism is the absence of belief in gods, or the positive assertion that no gods exist — a position that can be arrived at through reasoning about evidence, through philosophical argument, or simply through finding no compelling reason to believe."
 etymology: "From Greek 'a-' (without, not) + 'theos' (god); 'atheos' appears in ancient Greek as early as the 5th century BCE, where it typically meant 'godless' or 'impious' as a term of accusation, not self-description; the word entered English in the 16th century and began to be claimed affirmatively by freethinkers in the 18th century."

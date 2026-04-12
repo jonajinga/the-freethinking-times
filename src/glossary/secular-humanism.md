@@ -1,5 +1,5 @@
 ---
-layout: glossary-term
+layout: layouts/glossary-entry
 title: "Secular Humanism"
 description: "Secular humanism is a philosophical life stance that affirms human dignity, reason, and ethics without reference to the supernatural — holding that human beings can live well and act rightly on the basis of natural capacities alone."
 etymology: "'Secular' from Latin 'saeculum' (age, generation, the world as distinct from the Church); 'humanism' from Latin 'humanitas' (human nature, culture, education, civility), revived by Renaissance scholars to describe the recovery of classical learning; the compound 'secular humanism' emerges as a distinct self-description in the mid-20th century, partly in reaction to its use as a term of criticism by religious conservatives."

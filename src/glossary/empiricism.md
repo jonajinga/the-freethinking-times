@@ -1,5 +1,5 @@
 ---
-layout: glossary-term
+layout: layouts/glossary-entry
 title: "Empiricism"
 description: "Empiricism is the philosophical doctrine that all genuine knowledge of the world derives from sensory experience, and that the mind brings no innate content to experience that can serve as a foundation for substantive knowledge."
 etymology: "From Greek 'empeiria' (experience, practical knowledge, acquaintance with a thing), itself from 'en' (in) + 'peira' (trial, experiment, attempt); arrived in English via Latin 'empiricus,' originally describing physicians who relied on clinical experience rather than theoretical doctrine."

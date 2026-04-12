@@ -1,5 +1,5 @@
 ---
-layout: glossary-term
+layout: layouts/glossary-entry
 title: "Pantheism"
 description: "Pantheism is the metaphysical view that God and the universe are identical — that there is no transcendent creator standing apart from creation, but that the totality of nature is itself divine."
 etymology: "From Greek 'pan' (all, everything) + 'theos' (god); the term was coined by the Irish freethinker John Toland in 1705, though the idea substantially predates the word; Toland intended it as a description of views he associated with Bruno and Spinoza, among others."

@@ -1,5 +1,5 @@
 ---
-layout: glossary-term
+layout: layouts/glossary-entry
 title: "Materialism"
 description: "Materialism is the metaphysical doctrine that everything that exists is physical — that matter and energy, interacting according to natural laws, constitute the whole of reality, and that mind, consciousness, and apparently non-physical phenomena are ultimately physical phenomena under other descriptions."
 etymology: "From Latin 'materia' (matter, stuff, timber, material), from 'mater' (mother, origin); 'materialism' as a distinct philosophical label emerges in 17th-century writing and becomes common in the 18th century, when it was used both approvingly by naturalists and as a term of abuse by their theological opponents."
