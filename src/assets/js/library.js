@@ -388,7 +388,9 @@
 
     updateProgress();
 
-    // ── Panel ──
+    // ── Panel (skip if annotations.js handles it) ──
+    var _annCtx = document.getElementById('annotations-context');
+    if (!_annCtx) {
     var panelToggles = document.querySelectorAll('.library-panel-toggle');
     var panel        = document.getElementById('library-panel');
     var panelOverlay = document.querySelector('.library-panel-overlay');
@@ -467,8 +469,6 @@
     }
 
     // ── Annotation toolbar ──
-    // Skip if annotations.js is handling this (detected by annotations-context div)
-    if (!document.getElementById('annotations-context')) {
     var toolbar       = document.getElementById('annotation-toolbar');
     var highlightBtn  = document.getElementById('ann-highlight-btn');
     var annotateBtn   = document.getElementById('ann-annotate-btn');
@@ -607,7 +607,7 @@
       // Restore saved highlights on load
       Annotations.restoreHighlights(bodyEl);
     }
-    } // end annotations-context guard
+    } // end annotations-context panel guard
 
   }); // end DOMContentLoaded
 
