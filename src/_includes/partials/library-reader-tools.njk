@@ -115,6 +115,9 @@
       <span class="btn-label">Reading</span>
     </button>
     <div id="reading-settings-panel" class="reading-settings-panel" hidden>
+      <button class="rs-panel-close" type="button" aria-label="Close reading settings" onclick="this.parentElement.hidden=true;var b=document.getElementById('reading-settings-btn');if(b)b.setAttribute('aria-expanded','false');">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
       <div class="rs-group">
         <label class="rs-label" for="rs-font-size">Text size</label>
         <div class="rs-size-row">
@@ -211,14 +214,14 @@
           </div>
           <div style="margin-bottom:var(--space-2);">
             <label style="font-size:var(--text-xs);color:var(--color-ink-faint);display:block;margin-bottom:var(--space-1);">Color</label>
-            <div class="rs-btngroup rs-ruler-colors" role="group">
-              <button class="rs-btn rs-color-swatch is-active" data-rs-ruler-color="accent" type="button" style="background:var(--color-accent);" aria-label="Accent"></button>
-              <button class="rs-btn rs-color-swatch" data-rs-ruler-color="red" type="button" style="background:#e53e3e;" aria-label="Red"></button>
-              <button class="rs-btn rs-color-swatch" data-rs-ruler-color="blue" type="button" style="background:#3182ce;" aria-label="Blue"></button>
-              <button class="rs-btn rs-color-swatch" data-rs-ruler-color="green" type="button" style="background:#38a169;" aria-label="Green"></button>
-              <button class="rs-btn rs-color-swatch" data-rs-ruler-color="yellow" type="button" style="background:#d69e2e;" aria-label="Yellow"></button>
-              <button class="rs-btn rs-color-swatch" data-rs-ruler-color="black" type="button" style="background:#111;" aria-label="Black"></button>
-              <button class="rs-btn rs-color-swatch" data-rs-ruler-color="white" type="button" style="background:#eee;border:1px solid var(--color-rule);" aria-label="White"></button>
+            <div class="rs-btngroup" role="group">
+              <button class="rs-btn is-active" data-rs-ruler-color="accent" type="button" style="background:var(--color-accent);color:#fff;">Accent</button>
+              <button class="rs-btn" data-rs-ruler-color="red" type="button" style="background:#e53e3e;color:#fff;">Red</button>
+              <button class="rs-btn" data-rs-ruler-color="blue" type="button" style="background:#3182ce;color:#fff;">Blue</button>
+              <button class="rs-btn" data-rs-ruler-color="green" type="button" style="background:#38a169;color:#fff;">Green</button>
+              <button class="rs-btn" data-rs-ruler-color="yellow" type="button" style="background:#d69e2e;color:#fff;">Yellow</button>
+              <button class="rs-btn" data-rs-ruler-color="black" type="button" style="background:#111;color:#eee;">Black</button>
+              <button class="rs-btn" data-rs-ruler-color="white" type="button" style="background:#eee;color:#333;">White</button>
             </div>
           </div>
           <div>

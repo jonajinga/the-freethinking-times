@@ -116,11 +116,15 @@
       applyRulerStyle();
       updateRulerBounds();
       document.addEventListener('mousemove', moveRuler);
+      document.addEventListener('touchmove', touchMoveRuler, { passive: true });
+      document.addEventListener('touchstart', touchMoveRuler, { passive: true });
       window.addEventListener('resize', updateRulerBounds);
       window.addEventListener('scroll', updateRulerBounds, { passive: true });
     } else if (!on && existing) {
       existing.remove();
       document.removeEventListener('mousemove', moveRuler);
+      document.removeEventListener('touchmove', touchMoveRuler);
+      document.removeEventListener('touchstart', touchMoveRuler);
       window.removeEventListener('resize', updateRulerBounds);
       window.removeEventListener('scroll', updateRulerBounds);
     }
@@ -183,6 +187,30 @@
       ruler.style.top = y + 'px';
     }
   }
+
+  function touchMoveRuler(e) {
+    var ruler = document.getElementById('rs-reading-ruler');
+    if (!ruler || !e.touches || !e.touches.length) return;
+    var y = e.touches[0].clientY;
+    if (y < rulerBounds.top || y > rulerBounds.bottom) {
+      ruler.style.opacity = '0';
+    } else {
+      ruler.style.opacity = '';
+      ruler.style.top = y + 'px';
+    }
+  }
+
+  // Hide ruler while text is selected
+  document.addEventListener('selectionchange', function () {
+    var ruler = document.getElementById('rs-reading-ruler');
+    if (!ruler) return;
+    var sel = window.getSelection();
+    if (sel && sel.toString().length > 0) {
+      ruler.style.visibility = 'hidden';
+    } else {
+      ruler.style.visibility = '';
+    }
+  });
 
   function applyParaNums(on) {
     body.classList.toggle('rs-para-numbers', on);
