@@ -1,0 +1,77 @@
+---
+layout: base
+title: "Suggest a Trial"
+description: Know of a landmark trial where ideas were the defendant? Suggest it for the Trials of Thought.
+permalink: /trials/submit/
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+  <div class="container--prose">
+
+    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+      <nav style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);margin-bottom:var(--space-4);">
+        <a href="/trials/" style="color:var(--color-link);">Trials of Thought</a> &rarr; Suggest a Trial
+      </nav>
+      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Suggest a Trial</h1>
+      <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 60ch;">
+        Know of a trial where ideas, speech, or conscience were on trial? We're looking for cases that revealed a civilization's limits.
+      </p>
+    </header>
+
+    <div class="article-body">
+      <form action="https://api.web3forms.com/submit" method="POST" class="w3f" style="margin: var(--space-6) 0;">
+        <input type="hidden" name="access_key" value="{{ site.forms.accessKey }}">
+        <input type="hidden" name="subject" value="Trial suggestion — {{ site.title }}">
+        <input type="hidden" name="redirect" value="{{ site.url }}/thank-you/">
+        <input type="hidden" name="from_name" value="{{ site.title }} Trials Form">
+        <input type="checkbox" name="botcheck" class="visually-hidden" style="display:none" tabindex="-1" autocomplete="off">
+
+        <div class="w3f__group">
+          <label class="w3f__label" for="tr-title">Trial name <span class="w3f__required">*</span></label>
+          <input class="w3f__input" type="text" name="title" id="tr-title" required aria-required="true" placeholder="e.g. The Trial of John Peter Zenger">
+        </div>
+
+        <div class="w3f__row">
+          <div class="w3f__group">
+            <label class="w3f__label" for="tr-year">Year <span class="w3f__required">*</span></label>
+            <input class="w3f__input" type="text" name="year" id="tr-year" required aria-required="true" placeholder="e.g. 1735">
+          </div>
+          <div class="w3f__group">
+            <label class="w3f__label" for="tr-location">Jurisdiction <span class="w3f__optional">(optional)</span></label>
+            <input class="w3f__input" type="text" name="jurisdiction" id="tr-location" placeholder="e.g. New York, British Colony">
+          </div>
+        </div>
+
+        <div class="w3f__row">
+          <div class="w3f__group">
+            <label class="w3f__label" for="tr-defendant">Defendant <span class="w3f__optional">(optional)</span></label>
+            <input class="w3f__input" type="text" name="defendant" id="tr-defendant" placeholder="e.g. John Peter Zenger">
+          </div>
+          <div class="w3f__group">
+            <label class="w3f__label" for="tr-charge">Charge <span class="w3f__optional">(optional)</span></label>
+            <input class="w3f__input" type="text" name="charge" id="tr-charge" placeholder="e.g. Seditious libel">
+          </div>
+        </div>
+
+        <div class="w3f__group">
+          <label class="w3f__label" for="tr-desc">Why this trial matters <span class="w3f__required">*</span></label>
+          <textarea class="w3f__textarea" name="description" id="tr-desc" rows="4" required aria-required="true" maxlength="2000" placeholder="What ideas were at stake? What was the outcome?"></textarea>
+        </div>
+
+        <div class="w3f__row">
+          <div class="w3f__group">
+            <label class="w3f__label" for="tr-name">Your name <span class="w3f__optional">(optional)</span></label>
+            <input class="w3f__input" type="text" name="name" id="tr-name" autocomplete="name">
+          </div>
+          <div class="w3f__group">
+            <label class="w3f__label" for="tr-email">Email <span class="w3f__optional">(optional)</span></label>
+            <input class="w3f__input" type="email" name="email" id="tr-email" autocomplete="email">
+          </div>
+        </div>
+
+        <div class="h-captcha" data-captcha="true"></div>
+        <button type="submit" class="w3f__submit">Submit Suggestion</button>
+      </form>
+    </div>
+  </div>
+</div>
