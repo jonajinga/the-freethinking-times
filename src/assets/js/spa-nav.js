@@ -31,6 +31,8 @@
     if (['xml', 'json', 'pdf', 'txt', 'md', 'epub', 'zip', 'jpg', 'png', 'svg', 'css', 'js'].indexOf(ext) !== -1) return false;
     // Skip if marked
     if (link.dataset.noSpa) return false;
+    // Skip if inside a form
+    if (link.closest('form')) return false;
     return true;
   }
 
@@ -99,6 +101,21 @@
       if (pushState) {
         history.pushState({ url: url }, data.title, url);
       }
+
+      // Close any open overlays/panels
+      var drawer = document.getElementById('nav-drawer');
+      var drawerOverlay = document.getElementById('nav-drawer-overlay');
+      if (drawer) { drawer.classList.remove('is-open'); drawer.setAttribute('aria-hidden', 'true'); }
+      if (drawerOverlay) drawerOverlay.classList.remove('is-open');
+      var searchModal = document.getElementById('search-modal');
+      var searchOverlay = document.getElementById('search-overlay');
+      if (searchModal) { searchModal.classList.remove('is-open'); searchModal.setAttribute('aria-hidden', 'true'); }
+      if (searchOverlay) searchOverlay.classList.remove('is-open');
+      var gsPanel = document.getElementById('global-settings-panel');
+      if (gsPanel) gsPanel.hidden = true;
+      document.body.style.overflow = '';
+      var toggleBtn = document.getElementById('nav-drawer-toggle');
+      if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
 
       // Scroll to top (or to hash)
       var hash = url.split('#')[1];

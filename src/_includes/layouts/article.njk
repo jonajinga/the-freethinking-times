@@ -362,22 +362,30 @@ layout: layouts/base.njk
                   <div style="margin-bottom:var(--space-2);">
                     <label style="font-size:var(--text-xs);color:var(--color-ink-faint);display:block;margin-bottom:var(--space-1);">Color</label>
                     <div class="rs-btngroup" role="group">
-                      <button class="rs-btn is-active" data-rs-ruler-color="accent" type="button" style="background:var(--color-accent);color:#fff;">Accent</button>
-                      <button class="rs-btn" data-rs-ruler-color="red" type="button" style="background:#e53e3e;color:#fff;">Red</button>
-                      <button class="rs-btn" data-rs-ruler-color="blue" type="button" style="background:#3182ce;color:#fff;">Blue</button>
-                      <button class="rs-btn" data-rs-ruler-color="green" type="button" style="background:#38a169;color:#fff;">Green</button>
-                      <button class="rs-btn" data-rs-ruler-color="yellow" type="button" style="background:#d69e2e;color:#fff;">Yellow</button>
-                      <button class="rs-btn" data-rs-ruler-color="black" type="button" style="background:#111;color:#eee;">Black</button>
-                      <button class="rs-btn" data-rs-ruler-color="white" type="button" style="background:#eee;color:#333;">White</button>
+                      <button class="rs-swatch is-active" data-rs-ruler-color="accent" type="button" style="background:var(--color-accent);" title="Accent" aria-label="Accent"></button>
+                      <button class="rs-swatch" data-rs-ruler-color="red" type="button" style="background:#e53e3e;" title="Red" aria-label="Red"></button>
+                      <button class="rs-swatch" data-rs-ruler-color="blue" type="button" style="background:#3182ce;" title="Blue" aria-label="Blue"></button>
+                      <button class="rs-swatch" data-rs-ruler-color="green" type="button" style="background:#38a169;" title="Green" aria-label="Green"></button>
+                      <button class="rs-swatch" data-rs-ruler-color="yellow" type="button" style="background:#d69e2e;" title="Yellow" aria-label="Yellow"></button>
+                      <button class="rs-swatch" data-rs-ruler-color="black" type="button" style="background:#111;" title="Black" aria-label="Black"></button>
+                      <button class="rs-swatch" data-rs-ruler-color="white" type="button" style="background:#eee;border:1px solid var(--color-rule);" title="White" aria-label="White"></button>
                     </div>
                   </div>
                   <div>
                     <label style="font-size:var(--text-xs);color:var(--color-ink-faint);display:block;margin-bottom:var(--space-1);">Style</label>
                     <div class="rs-btngroup" role="group">
-                      <button class="rs-btn is-active" data-rs-ruler-style="solid" type="button">Solid</button>
-                      <button class="rs-btn" data-rs-ruler-style="dashed" type="button">Dashed</button>
-                      <button class="rs-btn" data-rs-ruler-style="dotted" type="button">Dotted</button>
-                      <button class="rs-btn" data-rs-ruler-style="glow" type="button">Glow</button>
+                      <button class="rs-btn rs-icon-btn is-active" data-rs-ruler-style="solid" type="button" title="Solid" aria-label="Solid">
+                        <svg width="16" height="2" viewBox="0 0 16 2"><line x1="0" y1="1" x2="16" y2="1" stroke="currentColor" stroke-width="2"/></svg>
+                      </button>
+                      <button class="rs-btn rs-icon-btn" data-rs-ruler-style="dashed" type="button" title="Dashed" aria-label="Dashed">
+                        <svg width="16" height="2" viewBox="0 0 16 2"><line x1="0" y1="1" x2="16" y2="1" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2"/></svg>
+                      </button>
+                      <button class="rs-btn rs-icon-btn" data-rs-ruler-style="dotted" type="button" title="Dotted" aria-label="Dotted">
+                        <svg width="16" height="2" viewBox="0 0 16 2"><line x1="0" y1="1" x2="16" y2="1" stroke="currentColor" stroke-width="2" stroke-dasharray="1 2"/></svg>
+                      </button>
+                      <button class="rs-btn rs-icon-btn" data-rs-ruler-style="glow" type="button" title="Glow" aria-label="Glow">
+                        <svg width="16" height="6" viewBox="0 0 16 6"><line x1="0" y1="3" x2="16" y2="3" stroke="currentColor" stroke-width="2" filter="url(#glow)"/><defs><filter id="glow"><feGaussianBlur stdDeviation="1" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs></svg>
+                      </button>
                     </div>
                   </div>
                 </div>

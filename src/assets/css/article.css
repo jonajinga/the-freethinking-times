@@ -2859,6 +2859,24 @@
   color: var(--color-bg) !important;
 }
 
+/* Ruler colour swatches */
+.rs-swatch {
+  width: 22px;
+  height: 22px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.15s;
+}
+
+.rs-swatch.is-active {
+  border-color: var(--color-ink);
+  transform: scale(1.2);
+}
+
+.rs-swatch:hover { transform: scale(1.15); }
+
 .rs-icon-btn {
   display: inline-flex;
   align-items: center;
