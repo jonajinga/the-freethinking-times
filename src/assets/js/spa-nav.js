@@ -33,6 +33,15 @@
     if (link.dataset.noSpa) return false;
     // Skip if inside a form
     if (link.closest('form')) return false;
+    // Skip article and library pages — they have complex page-specific JS
+    // (progress.js, reading-settings.js, annotations.js) that needs full reload
+    var path = link.pathname;
+    if (path.match(/^\/(news|opinion|analysis|arts-culture|science-technology|history|letters|reviews)\/.+/)) return false;
+    if (path.match(/^\/library\/.+\/.+/)) return false;
+    if (path.match(/^\/glossary\/.+/) && path !== '/glossary/') return false;
+    if (path.match(/^\/bookshelf\/.+/) && path !== '/bookshelf/') return false;
+    if (path.match(/^\/trials\/.+/) && !path.match(/\/(timeline|showcase|submit)\//)) return false;
+    if (path.match(/^\/thought-experiments\/.+/) && !path.match(/\/(showcase|submit)\//)) return false;
     return true;
   }
 
