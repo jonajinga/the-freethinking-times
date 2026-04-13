@@ -2859,15 +2859,25 @@
   color: var(--color-bg) !important;
 }
 
-/* Ruler colour swatches */
+/* Ruler colour swatches — override btngroup border/overflow */
+.rs-btngroup:has(.rs-swatch) {
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  gap: var(--space-2);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .rs-swatch {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border: 2px solid transparent;
   border-radius: 50%;
   cursor: pointer;
   padding: 0;
   transition: transform 0.15s;
+  flex-shrink: 0;
 }
 
 .rs-swatch.is-active {
