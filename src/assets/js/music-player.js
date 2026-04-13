@@ -184,6 +184,14 @@
   }
 
   function fadeIn() {
+    if (!player || !player.setVolume) return;
+    // On mobile, skip fade — setVolume in intervals can fail
+    var isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isMobile) {
+      player.unMute();
+      player.setVolume(targetVolume);
+      return;
+    }
     var vol = 0;
     var step = targetVolume / 20;
     var iv = setInterval(function () {

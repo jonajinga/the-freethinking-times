@@ -1306,17 +1306,27 @@ a.dateline:hover { color: var(--color-accent); }
   accent-color: var(--color-accent);
 }
 
-/* Push annotation toolbar above music bar when both visible */
+/* Push annotation toolbar and reading floats above music bar */
 body:has(.music-bar:not([hidden])) .annotation-toolbar {
-  bottom: 3rem;
+  bottom: 2.75rem;
+}
+
+body:has(.music-bar:not([hidden])) .reading-floats {
+  bottom: 8rem;
+}
+
+body:has(.music-bar:not([hidden])) .annotation-toolbar ~ .reading-floats,
+body:has(.music-bar:not([hidden]):has(.annotation-toolbar)) .reading-floats {
+  bottom: 8rem;
 }
 
 @media (max-width: 480px) {
-  .music-bar { padding: var(--space-1) var(--space-3); gap: var(--space-2); }
-  .music-bar__vol { display: none; }
+  .music-bar { padding: var(--space-1) var(--space-3); gap: var(--space-1); }
+  .music-bar__vol { width: 40px; }
   .music-bar__name { display: none; }
-  .music-bar__title { font-size: var(--text-xs); }
-  body:has(.music-bar:not([hidden])) .annotation-toolbar { bottom: 2.5rem; }
+  .music-bar__title { font-size: 11px; }
+  body:has(.music-bar:not([hidden])) .annotation-toolbar { bottom: 2.25rem; }
+  body:has(.music-bar:not([hidden])) .reading-floats { bottom: 7rem; }
 }
 
 /* ── Glossary Tooltips (Tippy.js) ──────────────────────────── */
