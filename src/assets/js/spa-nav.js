@@ -42,6 +42,8 @@
     if (path.match(/^\/bookshelf\/.+/) && path !== '/bookshelf/') return false;
     if (path.match(/^\/trials\/.+/) && !path.match(/\/(timeline|showcase|submit)\//)) return false;
     if (path.match(/^\/thought-experiments\/.+/) && !path.match(/\/(showcase|submit)\//)) return false;
+    // Pages with complex page-specific JS
+    if (path === '/reader/' || path === '/search/' || path === '/notes/' || path === '/reading-list/' || path === '/dashboard/' || path === '/events/') return false;
     return true;
   }
 
