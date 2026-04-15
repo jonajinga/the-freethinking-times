@@ -418,6 +418,7 @@ content:
     path: src/pages
     type: collection
     format: yaml-frontmatter
+    extension: njk
     fields:
       - { name: layout, type: string, default: base, hidden: true }
       - { name: title, type: string, required: true }
