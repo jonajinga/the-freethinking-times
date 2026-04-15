@@ -15,7 +15,7 @@ content:
     fields:
       - { name: layout, type: string, default: article, hidden: true }
       - { name: title, type: string, required: true }
-      - { name: description, type: string, required: true }
+      - { name: description, type: text, required: true }
       - { name: section, type: string, default: News, hidden: true }
       - { name: author, type: string, default: jon-ajinga }
       - { name: authorName, type: string, default: "Jon Ajinga" }
@@ -36,7 +36,7 @@ content:
     fields:
       - { name: layout, type: string, default: article, hidden: true }
       - { name: title, type: string, required: true }
-      - { name: description, type: string, required: true }
+      - { name: description, type: text, required: true }
       - { name: section, type: string, default: Opinion, hidden: true }
       - { name: author, type: string, default: jon-ajinga }
       - { name: authorName, type: string, default: "Jon Ajinga" }
@@ -55,7 +55,7 @@ content:
     fields:
       - { name: layout, type: string, default: article, hidden: true }
       - { name: title, type: string, required: true }
-      - { name: description, type: string, required: true }
+      - { name: description, type: text, required: true }
       - { name: section, type: string, default: Analysis, hidden: true }
       - { name: author, type: string, default: jon-ajinga }
       - { name: authorName, type: string, default: "Jon Ajinga" }
@@ -74,7 +74,7 @@ content:
     fields:
       - { name: layout, type: string, default: article, hidden: true }
       - { name: title, type: string, required: true }
-      - { name: description, type: string, required: true }
+      - { name: description, type: text, required: true }
       - { name: section, type: string, default: "Arts & Culture", hidden: true }
       - { name: author, type: string, default: jon-ajinga }
       - { name: authorName, type: string, default: "Jon Ajinga" }
@@ -93,7 +93,7 @@ content:
     fields:
       - { name: layout, type: string, default: article, hidden: true }
       - { name: title, type: string, required: true }
-      - { name: description, type: string, required: true }
+      - { name: description, type: text, required: true }
       - { name: section, type: string, default: "Science & Technology", hidden: true }
       - { name: author, type: string, default: jon-ajinga }
       - { name: authorName, type: string, default: "Jon Ajinga" }
@@ -112,7 +112,7 @@ content:
     fields:
       - { name: layout, type: string, default: article, hidden: true }
       - { name: title, type: string, required: true }
-      - { name: description, type: string, required: true }
+      - { name: description, type: text, required: true }
       - { name: section, type: string, default: History, hidden: true }
       - { name: author, type: string, default: jon-ajinga }
       - { name: authorName, type: string, default: "Jon Ajinga" }
@@ -131,7 +131,7 @@ content:
     fields:
       - { name: layout, type: string, default: article, hidden: true }
       - { name: title, type: string, required: true }
-      - { name: description, type: string, required: true }
+      - { name: description, type: text, required: true }
       - { name: section, type: string, default: Letters, hidden: true }
       - { name: author, type: string, default: jon-ajinga }
       - { name: authorName, type: string, default: "Jon Ajinga" }
@@ -150,7 +150,7 @@ content:
     fields:
       - { name: layout, type: string, default: article, hidden: true }
       - { name: title, type: string, required: true }
-      - { name: description, type: string, required: true }
+      - { name: description, type: text, required: true }
       - { name: section, type: string, default: Reviews, hidden: true }
       - { name: author, type: string, default: jon-ajinga }
       - { name: authorName, type: string, default: "Jon Ajinga" }
@@ -174,8 +174,8 @@ content:
     fields:
       - { name: layout, type: string, default: "layouts/glossary-entry", hidden: true }
       - { name: title, type: string, required: true, label: "Term" }
-      - { name: description, type: string, required: true, label: "Short definition" }
-      - { name: etymology, type: string, label: "Etymology" }
+      - { name: description, type: text, required: true, label: "Short definition" }
+      - { name: etymology, type: text, label: "Etymology" }
       - name: keyFigures
         type: string
         list: true
@@ -204,8 +204,8 @@ content:
       - { name: publisher, type: string }
       - { name: category, type: string, label: "Category" }
       - { name: difficulty, type: select, options: [Accessible, Intermediate, Advanced] }
-      - { name: description, type: string, required: true, label: "Short description" }
-      - { name: bestFor, type: string, label: "Best for (audience)" }
+      - { name: description, type: text, required: true, label: "Short description" }
+      - { name: bestFor, type: text, label: "Best for (audience)" }
       - { name: tags, type: string, list: true }
       - { name: date, type: date }
       - { name: body, type: rich-text, label: "Full review / notes" }
@@ -218,7 +218,7 @@ content:
     fields:
       - { name: layout, type: string, default: article, hidden: true }
       - { name: title, type: string, required: true }
-      - { name: description, type: string, required: true }
+      - { name: description, type: text, required: true }
       - { name: section, type: string, default: "Thought Experiments", hidden: true }
       - { name: author, type: string, default: staff }
       - { name: date, type: date, required: true }
@@ -236,7 +236,7 @@ content:
     fields:
       - { name: layout, type: string, default: article, hidden: true }
       - { name: title, type: string, required: true }
-      - { name: description, type: string, required: true }
+      - { name: description, type: text, required: true }
       - { name: section, type: string, default: "Trials of Thought", hidden: true }
       - { name: author, type: string, default: staff }
       - { name: date, type: date, required: true }
@@ -244,192 +244,183 @@ content:
       - { name: yearLabel, type: string, label: "Year label (display)" }
       - { name: jurisdiction, type: string }
       - { name: defendant, type: string }
-      - { name: charge, type: string }
+      - { name: charge, type: text }
       - { name: verdict, type: string }
-      - { name: outcome, type: string }
+      - { name: outcome, type: text }
       - { name: tags, type: string, list: true }
       - { name: body, type: rich-text }
 
-  # ── Data Files (JSON arrays) ─────────────────────────────
+  # ── Library ──────────────────────────────────────────────
+  - name: library-chapters
+    label: Library Chapters
+    path: src/library/works
+    type: collection
+    fields:
+      - { name: layout, type: string, hidden: true }
+      - { name: title, type: string, required: true }
+      - { name: chapterTitle, type: string, label: "Chapter title (display)" }
+      - { name: chapterNumber, type: number }
+      - { name: chapterSlug, type: string }
+      - { name: workSlug, type: string }
+      - { name: readingTimeMinutes, type: number }
+      - { name: permalink, type: string }
+      - { name: body, type: rich-text }
+
+  # ── Data Files (JSON) ────────────────────────────────────
   - name: quotes
     label: Quotes
     path: src/_data/quotes.json
     type: file
+    format: json
+    list: true
     fields:
-      - name: body
-        type: object
-        list: true
-        label: "Quotes"
-        fields:
-          - { name: quote, type: string, required: true }
-          - { name: author, type: string, required: true }
-          - { name: source, type: string }
-          - { name: tags, type: string, list: true }
-          - { name: era, type: select, options: ["Ancient", "Early Modern", "Enlightenment", "18th Century", "19th Century", "20th Century", "21st Century"] }
+      - { name: quote, type: text, required: true }
+      - { name: author, type: string, required: true }
+      - { name: source, type: string }
+      - { name: tags, type: string, list: true }
+      - { name: era, type: select, options: ["Ancient", "Early Modern", "Enlightenment", "18th Century", "19th Century", "20th Century", "21st Century"] }
 
   - name: authors
     label: Authors
     path: src/_data/authors.json
     type: file
+    format: json
     fields:
-      - name: body
+      - name: jon-ajinga
         type: object
-        label: "Authors"
+        label: "Jon Ajinga"
         fields:
-          - name: jon-ajinga
-            type: object
-            label: "Jon Ajinga"
-            fields:
-              - { name: name, type: string, required: true }
-              - { name: slug, type: string, required: true }
-              - { name: bio, type: string }
-              - { name: role, type: string }
-              - { name: avatar, type: image }
-          - name: staff
-            type: object
-            label: "Staff"
-            fields:
-              - { name: name, type: string, required: true }
-              - { name: slug, type: string, required: true }
-              - { name: bio, type: string }
-              - { name: role, type: string }
-              - { name: avatar, type: image }
+          - { name: name, type: string, required: true }
+          - { name: slug, type: string, required: true }
+          - { name: bio, type: text }
+          - { name: role, type: string }
+          - { name: avatar, type: image }
+      - name: staff
+        type: object
+        label: "Staff"
+        fields:
+          - { name: name, type: string, required: true }
+          - { name: slug, type: string, required: true }
+          - { name: bio, type: text }
+          - { name: role, type: string }
+          - { name: avatar, type: image }
 
   - name: videos
     label: Videos
     path: src/_data/videos.json
     type: file
+    format: json
+    list: true
     fields:
-      - name: body
-        type: object
-        list: true
-        label: "Videos"
-        fields:
-          - { name: title, type: string, required: true }
-          - { name: url, type: string, required: true, label: "YouTube URL" }
-          - { name: embed, type: string, required: true, label: "Embed URL (youtube-nocookie)" }
-          - { name: duration, type: string, label: "Duration (e.g. 58:00)" }
-          - { name: speaker, type: string }
-          - { name: date, type: string, label: "Year" }
-          - { name: tags, type: string, list: true }
-          - { name: description, type: string }
+      - { name: title, type: string, required: true }
+      - { name: url, type: string, required: true, label: "YouTube URL" }
+      - { name: embed, type: string, required: true, label: "Embed URL (youtube-nocookie)" }
+      - { name: duration, type: string, label: "Duration (e.g. 58:00)" }
+      - { name: speaker, type: string }
+      - { name: date, type: string, label: "Year" }
+      - { name: tags, type: string, list: true }
+      - { name: description, type: text }
 
   - name: events
     label: Events
     path: src/_data/events.json
     type: file
+    format: json
+    list: true
     fields:
-      - name: body
-        type: object
-        list: true
-        label: "Events"
-        fields:
-          - { name: name, type: string, required: true }
-          - { name: date, type: date, required: true }
-          - { name: endDate, type: date, label: "End date" }
-          - { name: location, type: string }
-          - { name: region, type: select, options: [National, Northeast, Southeast, Midwest, Southwest, West, Pacific, International, Online] }
-          - { name: type, type: select, options: [convention, conference, meetup, observance, workshop, lecture] }
-          - { name: url, type: string }
-          - { name: description, type: string }
-          - { name: recurrence, type: select, options: ["", annual], label: "Recurrence" }
-          - { name: recurrenceMonth, type: number, label: "Recurrence month (1-12)" }
-          - { name: recurrenceWeek, type: number, label: "Recurrence week (1-5)" }
-          - { name: recurrenceDay, type: number, label: "Recurrence day (0=Sun, 6=Sat)" }
+      - { name: name, type: string, required: true }
+      - { name: date, type: date, required: true }
+      - { name: endDate, type: date, label: "End date" }
+      - { name: location, type: string }
+      - { name: region, type: select, options: [National, Northeast, Southeast, Midwest, Southwest, West, Pacific, International, Online] }
+      - { name: type, type: select, options: [convention, conference, meetup, observance, workshop, lecture] }
+      - { name: url, type: string }
+      - { name: description, type: text }
+      - { name: recurrence, type: select, options: ["", annual], label: "Recurrence" }
+      - { name: recurrenceMonth, type: number, label: "Recurrence month (1-12)" }
+      - { name: recurrenceWeek, type: number, label: "Recurrence week (1-5)" }
+      - { name: recurrenceDay, type: number, label: "Recurrence day (0=Sun, 6=Sat)" }
 
   - name: timeline
     label: Timeline
     path: src/_data/timeline.json
     type: file
+    format: json
+    list: true
     fields:
-      - name: body
-        type: object
-        list: true
-        label: "Timeline entries"
-        fields:
-          - { name: year, type: number, required: true, label: "Year (negative for BCE)" }
-          - { name: title, type: string, required: true }
-          - { name: description, type: string, required: true }
-          - { name: era, type: select, options: [Ancient, "Early Modern", Enlightenment, "19th Century", "20th Century", "21st Century"], required: true }
+      - { name: year, type: number, required: true, label: "Year (negative for BCE)" }
+      - { name: title, type: string, required: true }
+      - { name: description, type: text, required: true }
+      - { name: era, type: select, options: [Ancient, "Early Modern", Enlightenment, "19th Century", "20th Century", "21st Century"], required: true }
 
   - name: feeds
     label: RSS Feeds
     path: src/_data/feeds.json
     type: file
+    format: json
+    list: true
     fields:
-      - name: body
-        type: object
-        list: true
-        label: "Feeds"
-        fields:
-          - { name: name, type: string, required: true }
-          - { name: url, type: string, required: true, label: "Feed URL" }
-          - { name: category, type: select, options: [Organizations, Publications] }
+      - { name: name, type: string, required: true }
+      - { name: url, type: string, required: true, label: "Feed URL" }
+      - { name: category, type: select, options: [Organizations, Publications] }
 
   - name: changelog
     label: Changelog
     path: src/_data/changelog.json
     type: file
+    format: json
+    list: true
     fields:
-      - name: body
+      - { name: date, type: date, required: true }
+      - { name: title, type: string, required: true }
+      - name: sections
         type: object
         list: true
-        label: "Changelog entries"
+        label: "Sections"
         fields:
-          - { name: date, type: date, required: true }
-          - { name: title, type: string, required: true }
-          - name: sections
-            type: object
-            list: true
-            label: "Sections"
-            fields:
-              - { name: label, type: string, required: true }
-              - { name: entries, type: string, list: true, label: "Changes" }
+          - { name: label, type: string, required: true }
+          - { name: entries, type: string, list: true, label: "Changes" }
 
   - name: gallery
     label: Gallery
     path: src/_data/gallery.json
     type: file
+    format: json
+    list: true
     fields:
-      - name: body
-        type: object
-        list: true
-        label: "Photos"
-        fields:
-          - { name: src, type: string, required: true, label: "Image path (e.g. /assets/img/gallery/...)" }
-          - { name: alt, type: string, required: true, label: "Alt text" }
-          - { name: credit, type: string, label: "Photographer / credit" }
-          - { name: license, type: select, options: ["Public Domain", "CC0", "CC BY", "CC BY-SA", "CC BY-NC", "All Rights Reserved"] }
-          - { name: category, type: string }
+      - { name: src, type: string, required: true, label: "Image path (e.g. /assets/img/gallery/...)" }
+      - { name: alt, type: string, required: true, label: "Alt text" }
+      - { name: credit, type: string, label: "Photographer / credit" }
+      - { name: license, type: select, options: ["Public Domain", "CC0", "CC BY", "CC BY-SA", "CC BY-NC", "All Rights Reserved"] }
+      - { name: category, type: string }
 
   - name: playlists
     label: Music Playlists
     path: src/_data/playlists.json
     type: file
+    format: json
+    list: true
     fields:
-      - name: body
-        type: object
-        list: true
-        label: "Playlists"
-        fields:
-          - { name: name, type: string, required: true }
-          - { name: description, type: string }
-          - { name: playlistId, type: string, required: true, label: "YouTube Playlist ID" }
-          - { name: category, type: select, options: [Mixed, Focus, Ambient, Classical, Jazz, Electronic] }
+      - { name: name, type: string, required: true }
+      - { name: description, type: text }
+      - { name: playlistId, type: string, required: true, label: "YouTube Playlist ID" }
+      - { name: category, type: select, options: [Mixed, Focus, Ambient, Classical, Jazz, Electronic] }
 
   - name: site-config
     label: Site Configuration
     path: src/_data/site.json
     type: file
+    format: json
 
-  # ── Static Pages ──────────────────────────────────────────
+  # ── Static Pages (.njk) ─────────────────────────────────
   - name: pages
     label: Pages
     path: src/pages
     type: collection
+    format: yaml-frontmatter
     fields:
-      - { name: layout, type: string, default: base }
+      - { name: layout, type: string, default: base, hidden: true }
       - { name: title, type: string, required: true }
-      - { name: description, type: string }
+      - { name: description, type: text }
       - { name: permalink, type: string }
-      - { name: body, type: rich-text }
+      - { name: body, type: code }
