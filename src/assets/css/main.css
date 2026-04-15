@@ -46,7 +46,23 @@
   .annotation-toolbar,
   .gtranslate_wrapper,
   .gt_float_switcher,
-  .fn-tooltip { display: none !important; }
+  .fn-tooltip,
+  .music-bar,
+  .reading-settings-wrap,
+  .global-settings-panel,
+  .global-settings-overlay { display: none !important; }
+
+  @page { margin: 0.5in; }
+  body { orphans: 2; widows: 2; }
+
+  /* Show link URLs in print (skip internal/anchor links) */
+  .article-body a[href^="http"]::after,
+  .library-body a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    color: #666;
+    word-break: break-all;
+  }
 
   /* Footnote superscript — render as plain text, no button affordance */
   .fn-btn {

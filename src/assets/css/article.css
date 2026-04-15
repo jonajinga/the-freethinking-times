@@ -759,7 +759,7 @@
 /* ── Floating reading tools (progress % + back to top) ─────── */
 .reading-floats {
   position: fixed;
-  bottom: 5rem;
+  bottom: 6rem;
   right: var(--space-6);
   display: flex;
   flex-direction: column;
@@ -786,8 +786,8 @@
 }
 
 .back-to-top {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2864,14 +2864,14 @@
   border: none;
   border-radius: 0;
   overflow: visible;
-  gap: var(--space-2);
+  gap: var(--space-3);
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .rs-swatch {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   border: 2px solid transparent;
   border-radius: 50%;
   cursor: pointer;
