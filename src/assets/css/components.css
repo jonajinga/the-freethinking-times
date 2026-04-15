@@ -1319,7 +1319,7 @@ body:has(.music-bar:not([hidden])) .reading-floats {
   .music-bar { padding: var(--space-1) var(--space-3); gap: var(--space-1); }
   .music-bar__vol { display: none; }
   .music-bar__name { display: none; }
-  .music-bar__title { font-size: 11px; }
+  .music-bar__title { font-size: var(--text-xs); }
   body:has(.music-bar:not([hidden])) .annotation-toolbar { bottom: 2rem; }
   body:has(.music-bar:not([hidden])) .reading-floats { bottom: 5rem; }
 }

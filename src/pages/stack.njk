@@ -67,7 +67,15 @@ permalink: /stack/
 
       <h2>Navigation speed</h2>
 
-      <p>Links are prefetched on hover using <a href="https://instant.page" target="_blank" rel="noopener noreferrer">instant.page</a>, making page transitions feel nearly instant. The library is self-hosted (~3 KB) and loads as a module.</p>
+      <p>Links are prefetched on hover using <a href="https://instant.page" target="_blank" rel="noopener noreferrer">instant.page</a> (~3 KB, self-hosted). For most pages, navigation is handled SPA-style — when you click a link, only the main content area is swapped without a full page reload. This makes transitions feel nearly instant and allows background features like the music player to continue uninterrupted.</p>
+
+      <h2>Glossary tooltips</h2>
+
+      <p>When you hover over a glossary term in an article or library page, a tooltip shows the definition. This is powered by <strong>Tippy.js</strong> and <strong>Popper.js</strong>, both self-hosted (~45 KB combined). No requests are made to external servers, and no data is collected.</p>
+
+      <h2>Music player</h2>
+
+      <p>The <a href="/music/">Freethought Music</a> player uses the <strong>YouTube IFrame API</strong> to play curated playlists in the background. The API script is loaded from Google's servers. Playback state is saved in localStorage so music can resume across page navigation.</p>
 
       <h2>Offline support</h2>
 

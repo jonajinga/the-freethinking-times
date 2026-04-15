@@ -69,6 +69,24 @@ permalink: /accessibility/
         <li><strong>No hover-only interactions:</strong> Everything accessible by hover is also accessible by tap or keyboard.</li>
       </ul>
 
+      <h3>Gallery lightbox</h3>
+      <ul>
+        <li><strong>Keyboard controls:</strong> Arrow keys to move between images, <kbd>+</kbd>/<kbd>-</kbd> to zoom in and out, <kbd>0</kbd> to reset zoom, <kbd>Escape</kbd> to close.</li>
+        <li><strong>Focus trapping:</strong> Focus stays within the lightbox while it is open.</li>
+      </ul>
+
+      <h3>Music player</h3>
+      <ul>
+        <li><strong>Keyboard accessible:</strong> Play/pause, skip, volume, and close buttons are all keyboard-focusable with visible focus rings.</li>
+        <li><strong>Non-intrusive:</strong> The player bar at the bottom of the page does not obscure content — page padding adjusts when the bar is visible.</li>
+      </ul>
+
+      <h3>SPA navigation</h3>
+      <ul>
+        <li><strong>Instant transitions:</strong> Most page navigations swap content without a full reload, reducing wait times and avoiding blank-screen flashes.</li>
+        <li><strong>Graceful fallback:</strong> Pages with complex interactive features (articles, library entries) use full reloads to ensure all reader tools initialise correctly.</li>
+      </ul>
+
       <h3>Performance as accessibility</h3>
       <ul>
         <li><strong>Fast loading:</strong> Pages are pre-built static HTML served from a global CDN. No waiting for server-side rendering.</li>
