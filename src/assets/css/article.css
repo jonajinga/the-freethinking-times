@@ -2988,3 +2988,23 @@
   text-align: right;
 }
 
+/* ── Proofread mode ── */
+.rs-proofread {
+  font-family: 'Courier New', 'Courier', monospace !important;
+  font-size: 18px !important;
+  line-height: 2.2 !important;
+  background: #FFFDE7 !important;
+  color: #1A1A1A !important;
+  max-width: 600px !important;
+  padding: var(--space-6) var(--space-8) !important;
+  border: 2px dashed var(--color-accent) !important;
+}
+[data-theme="dark"] .rs-proofread {
+  background: #1A1A10 !important;
+  color: #E8E4DC !important;
+  border-color: var(--color-accent) !important;
+}
+.rs-proofread p { margin-bottom: 1.5em !important; }
+.rs-proofread a { text-decoration: underline !important; color: #2C5F8A !important; }
+.rs-proofread mark, .rs-proofread .tts-word-active { background: none !important; }
+

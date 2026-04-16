@@ -7,6 +7,14 @@ eleventyExcludeFromCollections: true
 ---
 
 {% set editorialSections = ["news", "opinion", "analysis", "arts-culture", "science-technology", "history", "letters", "reviews"] %}
+{% set tbl = 'style="width:100%;font-size:var(--text-sm);border-collapse:collapse;margin:var(--space-6) 0;"' %}
+{% set th = 'style="padding:var(--space-2);text-align:left;"' %}
+{% set thr = 'style="padding:var(--space-2);text-align:right;"' %}
+{% set td = 'style="padding:var(--space-2);"' %}
+{% set tdr = 'style="padding:var(--space-2);text-align:right;"' %}
+{% set rowb = 'style="border-bottom:1px solid var(--color-rule);"' %}
+{% set headb = 'style="border-bottom:2px solid var(--color-ink);text-align:left;"' %}
+{% set footb = 'style="border-top:2px solid var(--color-ink);font-weight:700;"' %}
 
 <div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
 
@@ -17,95 +25,117 @@ eleventyExcludeFromCollections: true
     </p>
   </header>
 
-  <div class="container--prose">
-    <div class="article-body">
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-6);margin-bottom:var(--space-10);">
 
-      <h2>Articles by Section</h2>
-
-      <table style="width:100%;font-size:var(--text-sm);border-collapse:collapse;margin:var(--space-6) 0;">
-        <thead>
-          <tr style="border-bottom:2px solid var(--color-ink);text-align:left;">
-            <th style="padding:var(--space-2);">Section</th>
-            <th style="padding:var(--space-2);text-align:right;">Articles</th>
-          </tr>
-        </thead>
+    {# ── Articles by Section ── #}
+    <div>
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Articles by Section</h2>
+      <table {{ tbl | safe }}>
+        <thead><tr {{ headb | safe }}><th {{ th | safe }}>Section</th><th {{ thr | safe }}>Count</th></tr></thead>
         <tbody>
           {% for key in editorialSections %}
           {% if collections[key] %}
-          <tr style="border-bottom:1px solid var(--color-rule);">
-            <td style="padding:var(--space-2);"><a href="/{{ key }}/">{{ site.sections[key].label }}</a></td>
-            <td style="padding:var(--space-2);text-align:right;">{{ collections[key].length }}</td>
+          <tr {{ rowb | safe }}>
+            <td {{ td | safe }}><a href="/{{ key }}/">{{ site.sections[key].label }}</a></td>
+            <td {{ tdr | safe }}>{{ collections[key].length }}</td>
           </tr>
           {% endif %}
           {% endfor %}
-          <tr style="border-bottom:2px solid var(--color-ink);font-weight:700;">
-            <td style="padding:var(--space-2);">Total</td>
-            <td style="padding:var(--space-2);text-align:right;">{{ collections.allContent.length }}</td>
-          </tr>
+          <tr {{ footb | safe }}><td {{ td | safe }}>Total</td><td {{ tdr | safe }}>{{ collections.allContent.length }}</td></tr>
         </tbody>
       </table>
+    </div>
 
-      <h2>Library</h2>
-
-      <table style="width:100%;font-size:var(--text-sm);border-collapse:collapse;margin:var(--space-6) 0;">
-        <thead>
-          <tr style="border-bottom:2px solid var(--color-ink);text-align:left;">
-            <th style="padding:var(--space-2);">Metric</th>
-            <th style="padding:var(--space-2);text-align:right;">Count</th>
-          </tr>
-        </thead>
+    {# ── Articles by Status ── #}
+    <div>
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Articles by Status</h2>
+      {% set draftCount = { n: 0 } %}
+      {% set reviewCount = { n: 0 } %}
+      {% set publishedCount = { n: 0 } %}
+      {% for article in collections.allContent %}
+        {% if article.data.status == "draft" or article.data.draft %}{% set draftCount = { n: draftCount.n + 1 } %}
+        {% elif article.data.status == "review" %}{% set reviewCount = { n: reviewCount.n + 1 } %}
+        {% else %}{% set publishedCount = { n: publishedCount.n + 1 } %}
+        {% endif %}
+      {% endfor %}
+      <table {{ tbl | safe }}>
+        <thead><tr {{ headb | safe }}><th {{ th | safe }}>Status</th><th {{ thr | safe }}>Count</th></tr></thead>
         <tbody>
-          <tr style="border-bottom:1px solid var(--color-rule);">
-            <td style="padding:var(--space-2);">Works</td>
-            <td style="padding:var(--space-2);text-align:right;">{{ library.works | length }}</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--color-rule);">
-            <td style="padding:var(--space-2);">Chapters</td>
-            <td style="padding:var(--space-2);text-align:right;">{{ collections.libraryChapters.length }}</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--color-rule);">
-            <td style="padding:var(--space-2);">Authors</td>
-            <td style="padding:var(--space-2);text-align:right;">{{ library.authors | length }}</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--color-rule);">
-            <td style="padding:var(--space-2);">Subjects</td>
-            <td style="padding:var(--space-2);text-align:right;">{{ library.subjects | length }}</td>
-          </tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}>Published</td><td {{ tdr | safe }}>{{ publishedCount.n }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}>In Review</td><td {{ tdr | safe }}>{{ reviewCount.n }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}>Draft</td><td {{ tdr | safe }}>{{ draftCount.n }}</td></tr>
         </tbody>
       </table>
+    </div>
 
-      <h2>Projects</h2>
-
-      <table style="width:100%;font-size:var(--text-sm);border-collapse:collapse;margin:var(--space-6) 0;">
-        <thead>
-          <tr style="border-bottom:2px solid var(--color-ink);text-align:left;">
-            <th style="padding:var(--space-2);">Project</th>
-            <th style="padding:var(--space-2);text-align:right;">Entries</th>
-          </tr>
-        </thead>
+    {# ── Authors ── #}
+    <div>
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Authors</h2>
+      <table {{ tbl | safe }}>
+        <thead><tr {{ headb | safe }}><th {{ th | safe }}>Author</th><th {{ thr | safe }}>Role</th></tr></thead>
         <tbody>
-          <tr style="border-bottom:1px solid var(--color-rule);">
-            <td style="padding:var(--space-2);"><a href="/glossary/">Glossary</a></td>
-            <td style="padding:var(--space-2);text-align:right;">{{ collections.glossary.length }}</td>
+          {% for slug, author in authors %}
+          <tr {{ rowb | safe }}>
+            <td {{ td | safe }}><a href="/author/{{ slug }}/">{{ author.name }}</a></td>
+            <td {{ tdr | safe }}>{{ author.role }}</td>
           </tr>
-          <tr style="border-bottom:1px solid var(--color-rule);">
-            <td style="padding:var(--space-2);"><a href="/bookshelf/">Recommended Reading</a></td>
-            <td style="padding:var(--space-2);text-align:right;">{{ collections.bookshelf.length }}</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--color-rule);">
-            <td style="padding:var(--space-2);"><a href="/thought-experiments/">Thought Experiments</a></td>
-            <td style="padding:var(--space-2);text-align:right;">{{ collections["thought-experiments"].length }}</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--color-rule);">
-            <td style="padding:var(--space-2);"><a href="/trials/">Trials of Thought</a></td>
-            <td style="padding:var(--space-2);text-align:right;">{{ collections["trials-of-thought"].length }}</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--color-rule);">
-            <td style="padding:var(--space-2);"><a href="/quotes/">Quotes</a></td>
-            <td style="padding:var(--space-2);text-align:right;">{{ quotes | length }}</td>
-          </tr>
+          {% endfor %}
         </tbody>
       </table>
+    </div>
+
+    {# ── Projects ── #}
+    <div>
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Projects</h2>
+      <table {{ tbl | safe }}>
+        <thead><tr {{ headb | safe }}><th {{ th | safe }}>Project</th><th {{ thr | safe }}>Entries</th></tr></thead>
+        <tbody>
+          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/glossary/">Glossary</a></td><td {{ tdr | safe }}>{{ collections.glossary.length }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/bookshelf/">Recommended Reading</a></td><td {{ tdr | safe }}>{{ collections.bookshelf.length }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/thought-experiments/">Thought Experiments</a></td><td {{ tdr | safe }}>{{ collections["thought-experiments"].length }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/trials/">Trials of Thought</a></td><td {{ tdr | safe }}>{{ collections["trials-of-thought"].length }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/quotes/">Quotes</a></td><td {{ tdr | safe }}>{{ quotes | length }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/timeline/">Timeline</a></td><td {{ tdr | safe }}>{{ timeline | length }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/music/">Songs</a></td><td {{ tdr | safe }}>{{ songs | length }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/videos/">Videos</a></td><td {{ tdr | safe }}>{{ videos | length }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/gallery/">Gallery</a></td><td {{ tdr | safe }}>{{ gallery | length }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/events/">Events</a></td><td {{ tdr | safe }}>{{ events | length }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/music/">Playlists</a></td><td {{ tdr | safe }}>{{ playlists | length }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    {# ── Library ── #}
+    <div>
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Library</h2>
+      <table {{ tbl | safe }}>
+        <thead><tr {{ headb | safe }}><th {{ th | safe }}>Metric</th><th {{ thr | safe }}>Count</th></tr></thead>
+        <tbody>
+          <tr {{ rowb | safe }}><td {{ td | safe }}>Works</td><td {{ tdr | safe }}>{{ library.works | length }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}>Chapters</td><td {{ tdr | safe }}>{{ collections.libraryChapters.length }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}>Authors</td><td {{ tdr | safe }}>{{ library.authors | length }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}>Subjects</td><td {{ tdr | safe }}>{{ library.subjects | length }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    {# ── Data Collections ── #}
+    <div>
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Infrastructure</h2>
+      <table {{ tbl | safe }}>
+        <thead><tr {{ headb | safe }}><th {{ th | safe }}>Item</th><th {{ thr | safe }}>Count</th></tr></thead>
+        <tbody>
+          <tr {{ rowb | safe }}><td {{ td | safe }}>RSS Feeds</td><td {{ tdr | safe }}>{{ feeds | length }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}>Changelog Entries</td><td {{ tdr | safe }}>{{ changelog | length }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}>Total Pages (build)</td><td {{ tdr | safe }}>545+</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="container--prose">
+    <div class="article-body">
 
       <h2>Recent Articles</h2>
 
@@ -115,6 +145,8 @@ eleventyExcludeFromCollections: true
           <a href="{{ article.url }}">{{ article.data.title }}</a>
           <span style="color:var(--color-ink-faint);font-size:var(--text-xs);">
             {{ article.data.section }} &middot; {{ article.date | readableDate }}
+            {% if article.data.status == "draft" or article.data.draft %} &middot; <strong style="color:var(--color-accent);">DRAFT</strong>{% endif %}
+            {% if article.data.status == "review" %} &middot; <strong style="color:var(--color-history);">IN REVIEW</strong>{% endif %}
           </span>
         </li>
         {% endfor %}

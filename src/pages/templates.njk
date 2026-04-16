@@ -1,0 +1,90 @@
+---
+layout: base
+title: "Content Templates"
+description: Pre-filled article templates for common content types — copy, customise, and publish.
+permalink: /templates/
+eleventyExcludeFromCollections: true
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+  <div class="container--prose">
+
+    <header style="margin-bottom: var(--space-8); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Content Templates</h1>
+      <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic; max-width: 55ch;">
+        Pre-filled templates for common article types. Click to copy the markdown, then paste into Pages CMS or your editor.
+      </p>
+    </header>
+
+    <div class="article-body">
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--space-6);">
+
+        <div style="border:1px solid var(--color-rule);padding:var(--space-6);">
+          <h3 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">News Article</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0 0 var(--space-4);">Breaking news or reported story with inverted pyramid structure.</p>
+          <button type="button" class="btn btn--accent tmpl-copy" style="font-size:var(--text-xs);" data-tmpl="news">Copy Template</button>
+        </div>
+
+        <div style="border:1px solid var(--color-rule);padding:var(--space-6);">
+          <h3 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">Opinion / Essay</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0 0 var(--space-4);">Argument-driven essay with thesis, evidence, and conclusion.</p>
+          <button type="button" class="btn btn--accent tmpl-copy" style="font-size:var(--text-xs);" data-tmpl="opinion">Copy Template</button>
+        </div>
+
+        <div style="border:1px solid var(--color-rule);padding:var(--space-6);">
+          <h3 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">Long-form Analysis</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0 0 var(--space-4);">Deep-dive investigation with sections, evidence, and sourcing.</p>
+          <button type="button" class="btn btn--accent tmpl-copy" style="font-size:var(--text-xs);" data-tmpl="analysis">Copy Template</button>
+        </div>
+
+        <div style="border:1px solid var(--color-rule);padding:var(--space-6);">
+          <h3 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">Book Review</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0 0 var(--space-4);">Review with rating, summary, analysis, and recommendation.</p>
+          <button type="button" class="btn btn--accent tmpl-copy" style="font-size:var(--text-xs);" data-tmpl="review">Copy Template</button>
+        </div>
+
+        <div style="border:1px solid var(--color-rule);padding:var(--space-6);">
+          <h3 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">Interview / Q&A</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0 0 var(--space-4);">Structured interview with introduction, questions, and closing.</p>
+          <button type="button" class="btn btn--accent tmpl-copy" style="font-size:var(--text-xs);" data-tmpl="interview">Copy Template</button>
+        </div>
+
+        <div style="border:1px solid var(--color-rule);padding:var(--space-6);">
+          <h3 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">Letter to the Editor</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0 0 var(--space-4);">Reader response to a published article.</p>
+          <button type="button" class="btn btn--accent tmpl-copy" style="font-size:var(--text-xs);" data-tmpl="letter">Copy Template</button>
+        </div>
+
+      </div>
+
+      <div id="tmpl-toast" hidden style="position:fixed;bottom:var(--space-8);left:50%;transform:translateX(-50%);background:var(--color-ink);color:var(--color-bg);font-family:var(--font-ui);font-size:var(--text-sm);padding:var(--space-2) var(--space-6);z-index:var(--z-modal);">Copied to clipboard</div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var templates = {
+    news: '---\nlayout: article\ntitle: ""\ndescription: ""\nsection: News\nauthor: editor\nauthorName: "Your Name"\ndate: ' + new Date().toISOString().slice(0, 10) + '\ntags:\n  - \nfeatured: false\ndraft: true\nstatus: draft\n---\n\n**CITY** — Lead paragraph with the most important information first. Who, what, when, where, why.\n\n## Background\n\nContext and history that helps the reader understand the significance.\n\n## What happened\n\nDetailed account of events in chronological order.\n\n## What it means\n\nAnalysis of implications and what to watch for next.\n\n## Sources\n\n- Source 1\n- Source 2\n',
+    opinion: '---\nlayout: article\ntitle: ""\ndescription: ""\nsection: Opinion\nauthor: editor\nauthorName: "Your Name"\ndate: ' + new Date().toISOString().slice(0, 10) + '\ntags:\n  - \nfeatured: false\ndraft: true\nstatus: draft\n---\n\n*Thesis statement in one or two sentences. What are you arguing, and why does it matter?*\n\n## The problem\n\nDescribe the issue clearly and fairly. Steel-man the opposing view.\n\n## The evidence\n\nPresent your evidence. Be specific. Cite sources.\n\n## The counterargument\n\nAddress the strongest objection to your position.\n\n## Conclusion\n\nRestate your argument in light of the evidence. What should change?\n',
+    analysis: '---\nlayout: article\ntitle: ""\ndescription: ""\nsection: Analysis\nauthor: editor\nauthorName: "Your Name"\ndate: ' + new Date().toISOString().slice(0, 10) + '\ntags:\n  - \nfeatured: false\ndraft: true\nstatus: draft\n---\n\nIntroduction. What question does this piece investigate? Why does it matter now?\n\n## Background\n\nHistorical context and prior reporting.\n\n## Findings\n\nPresent what you found, organized by theme or chronology.\n\n## Analysis\n\nWhat do the findings mean? What patterns emerge?\n\n## Implications\n\nWhat are the consequences? Who is affected? What should happen next?\n\n## Methodology\n\nHow did you conduct your investigation? What sources did you use?\n',
+    review: '---\nlayout: article\ntitle: ""\ndescription: ""\nsection: Reviews\nauthor: editor\nauthorName: "Your Name"\ndate: ' + new Date().toISOString().slice(0, 10) + '\nmediaType: Book\ncreator: ""\nyear: \nrating: \ntags:\n  - \nfeatured: false\ndraft: true\nstatus: draft\n---\n\n**Title** by *Creator* (Year). Publisher.\n\n## Summary\n\nWhat is this work about? (No spoilers.)\n\n## What works\n\nStrengths of the work.\n\n## What doesn\'t\n\nWeaknesses or missed opportunities.\n\n## Who should read this\n\nTarget audience and what they will get from it.\n\n## Verdict\n\nOne-paragraph assessment.\n',
+    interview: '---\nlayout: article\ntitle: ""\ndescription: ""\nsection: News\nauthor: editor\nauthorName: "Your Name"\ndate: ' + new Date().toISOString().slice(0, 10) + '\ntags:\n  - interview\nfeatured: false\ndraft: true\nstatus: draft\n---\n\n*Introduction: who is the subject, why this conversation matters, and how it came about.*\n\n---\n\n**Q: Opening question — broad, sets the context.**\n\n**A:** Response.\n\n**Q: Follow-up — more specific.**\n\n**A:** Response.\n\n**Q: The hard question.**\n\n**A:** Response.\n\n**Q: Closing — forward-looking or reflective.**\n\n**A:** Response.\n\n---\n\n*This interview has been edited for length and clarity.*\n',
+    letter: '---\nlayout: article\ntitle: ""\ndescription: ""\nsection: Letters\nauthor: editor\nauthorName: "Reader Name"\ndate: ' + new Date().toISOString().slice(0, 10) + '\ntags:\n  - letters\nfeatured: false\ndraft: true\nstatus: draft\n---\n\n**Re: "[Original Article Title](/link-to-article/)"**\n\nDear Editors,\n\nYour letter text here. Reference the original article and make your point clearly.\n\n*— Reader Name, City*\n'
+  };
+
+  var toast = document.getElementById('tmpl-toast');
+  document.querySelectorAll('.tmpl-copy').forEach(function (btn) {
+    btn.onclick = function () {
+      var tmpl = templates[btn.dataset.tmpl];
+      if (!tmpl) return;
+      navigator.clipboard.writeText(tmpl).then(function () {
+        toast.hidden = false;
+        setTimeout(function () { toast.hidden = true; }, 2000);
+      });
+    };
+  });
+})();
+</script>

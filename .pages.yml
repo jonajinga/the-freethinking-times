@@ -26,6 +26,14 @@ content:
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: image, type: image }
       - { name: imageAlt, type: string }
+      - name: attachments
+        type: object
+        list: true
+        label: "File attachments"
+        fields:
+          - { name: name, type: string, required: true, label: "File name" }
+          - { name: path, type: string, required: true, label: "File path or URL" }
+          - { name: description, type: string, label: "Description" }
       - { name: body, type: rich-text }
 
   - name: opinion
