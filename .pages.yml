@@ -406,6 +406,21 @@ content:
       - { name: playlistId, type: string, required: true, label: "YouTube Playlist ID" }
       - { name: category, type: select, options: [Mixed, Focus, Ambient, Classical, Jazz, Electronic] }
 
+  - name: songs
+    label: Songs
+    path: src/_data/songs.json
+    type: file
+    format: json
+    list: true
+    fields:
+      - { name: title, type: string, required: true }
+      - { name: artist, type: string, required: true }
+      - { name: album, type: string }
+      - { name: year, type: number }
+      - { name: genre, type: string }
+      - { name: tags, type: string, list: true }
+      - { name: url, type: string, label: "YouTube URL" }
+
   - name: site-config
     label: Site Configuration
     path: src/_data/site.json
