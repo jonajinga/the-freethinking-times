@@ -1040,7 +1040,11 @@
 .pullquote-share:hover::after { border-top-color: var(--color-accent); }
 
 /* ── Focus / reading mode ───────────────────────────────────── */
-[data-focus-mode="on"] .masthead {
+/* Chrome-hiding only applies when the page is a reading page. On section
+   hubs and index pages the masthead and footer stay visible so the user
+   can navigate out of a section even with focus mode still toggled on. */
+[data-focus-mode="on"]:has(.article-body, .library-body, .glossary-layout, .book-layout) .masthead,
+[data-focus-mode="on"]:has(.article-body, .library-body, .glossary-layout, .book-layout) .site-footer {
   display: none;
 }
 
@@ -1049,10 +1053,6 @@
 [data-focus-mode="on"] .library-reading-header {
   opacity: 1 !important;
   visibility: visible !important;
-}
-
-[data-focus-mode="on"] .site-footer {
-  display: none;
 }
 
 [data-focus-mode="on"] .article-layout__inner {
