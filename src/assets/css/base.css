@@ -199,6 +199,19 @@ table {
   font-size: var(--text-sm);
 }
 
+/* Tables inside prose/article content gain horizontal scroll on narrow
+   viewports so wide tables don't break the page layout. */
+@media (max-width: 640px) {
+  .article-body table,
+  .library-body table,
+  .container--prose table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+}
+
 th {
   text-align: left;
   font-weight: 600;

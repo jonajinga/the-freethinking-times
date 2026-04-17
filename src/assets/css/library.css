@@ -965,7 +965,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 0;
+  row-gap: var(--space-2);
   background: #1a1a1a;
   border-top: 1px solid rgba(255,255,255,0.1);
   border-radius: 0;
@@ -994,6 +996,7 @@
   color: #fff;
   cursor: pointer;
   padding: var(--space-2) var(--space-3);
+  min-height: 44px;
   border-radius: 4px;
   white-space: nowrap;
   transition: background var(--transition-fast);

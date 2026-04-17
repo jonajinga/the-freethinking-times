@@ -472,6 +472,50 @@ module.exports = function (eleventyConfig) {
     }));
   });
 
+  // Topic stats: for each tag, returns { tag, count, related: [{ tag, cooccur }], top: [items] }
+  // Related tags are ordered by how often they co-occur with the current tag.
+  // `limit` controls how many related tags to return per topic (default 5).
+  eleventyConfig.addFilter("topicStats", (allContent, limit = 5) => {
+    const articlesByTag = new Map();
+    allContent.forEach(item => {
+      (item.data.tags || []).forEach(t => {
+        if (t === "post" || t === "all") return;
+        if (!articlesByTag.has(t)) articlesByTag.set(t, []);
+        articlesByTag.get(t).push(item);
+      });
+    });
+
+    const cooccur = new Map(); // "tagA|tagB" → count
+    allContent.forEach(item => {
+      const tags = (item.data.tags || []).filter(t => t !== "post" && t !== "all");
+      for (let i = 0; i < tags.length; i++) {
+        for (let j = i + 1; j < tags.length; j++) {
+          const key = [tags[i], tags[j]].sort().join("|");
+          cooccur.set(key, (cooccur.get(key) || 0) + 1);
+        }
+      }
+    });
+
+    const related = (tag) => {
+      const result = [];
+      cooccur.forEach((count, key) => {
+        const [a, b] = key.split("|");
+        if (a === tag) result.push({ tag: b, cooccur: count });
+        else if (b === tag) result.push({ tag: a, cooccur: count });
+      });
+      return result.sort((a, b) => b.cooccur - a.cooccur).slice(0, limit);
+    };
+
+    return Array.from(articlesByTag.entries())
+      .map(([tag, items]) => ({
+        tag,
+        count: items.length,
+        related: related(tag),
+        top: items.sort((a, b) => (b.date || 0) - (a.date || 0)).slice(0, 3)
+      }))
+      .sort((a, b) => b.count - a.count);
+  });
+
   // Active assignments: articles with an `assignedTo` field that aren't yet published.
   // Returns [{ title, url, assignedTo, dueDate, status, daysUntilDue, overdue }] sorted by due date.
   eleventyConfig.addFilter("activeAssignments", (allContent) => {
