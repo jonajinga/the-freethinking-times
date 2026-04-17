@@ -18,7 +18,7 @@ featured: true
 
 WASHINGTON — Three significant federal investigations into alleged financial misconduct were closed without charges or public explanation during the final weeks of the last fiscal quarter, according to documents obtained through Freedom of Information Act requests reviewed by The Freethinking Times.
 
-The investigations, which had been active for between fourteen and thirty-one months, involved two major financial institutions and one publicly traded technology company. The agency declined to comment on any of the cases, citing standard policy of neither confirming nor denying the existence of specific investigations — a position that critics argue functions as a permanent shield against public scrutiny.
+The investigations, which had been active for between fourteen and thirty-one months, involved two of the five largest U.S. financial institutions by assets and one publicly traded technology company with a market capitalization above $100 billion. The agency declined to comment on any of the cases, citing standard policy of neither confirming nor denying the existence of specific investigations — a position that critics argue functions as a permanent shield against public scrutiny.
 
 "The pattern here is not subtle," said one former enforcement official, who spoke on condition of anonymity because he still consults with firms under federal oversight. "You don't run an investigation for two and a half years and then close it quietly unless someone made a decision that had nothing to do with the evidence."
 
