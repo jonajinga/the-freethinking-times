@@ -1039,6 +1039,50 @@
 .pullquote-share:hover { background: var(--color-accent); }
 .pullquote-share:hover::after { border-top-color: var(--color-accent); }
 
+/* ── Content profile badge ──────────────────────────────────── */
+.profile-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-muted);
+  border: 1px solid var(--color-rule-heavy);
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-sm);
+  cursor: help;
+}
+.profile-badge[data-profile="podcast"] { color: #6B2A2A; border-color: #6B2A2A; }
+.profile-badge[data-profile="longread"] { color: var(--color-opinion); border-color: var(--color-opinion); }
+.profile-badge[data-profile="photoessay"] { color: var(--color-arts-culture); border-color: var(--color-arts-culture); }
+.profile-badge[data-profile="datavisualization"] { color: var(--color-science); border-color: var(--color-science); }
+.profile-badge[data-profile="brief"] { color: var(--color-accent); border-color: var(--color-accent); }
+.profile-badge[data-profile="interview"] { color: var(--color-history); border-color: var(--color-history); }
+.profile-badge[data-profile="explainer"] { color: var(--color-glossary); border-color: var(--color-glossary); }
+
+/* ── Profile-specific content blocks ────────────────────────── */
+.profile-audio {
+  margin: var(--space-8) 0;
+  padding: var(--space-4);
+  border: 1px solid var(--color-rule);
+  background: var(--color-bg-alt);
+}
+.profile-audio audio {
+  width: 100%;
+  margin-bottom: var(--space-2);
+}
+.profile-audio figcaption {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-ink-faint);
+  font-style: italic;
+}
+.profile-embed {
+  margin: var(--space-8) 0;
+}
+
 /* ── Focus / reading mode ───────────────────────────────────── */
 /* Chrome-hiding only applies when the page is a reading page. On section
    hubs and index pages the masthead and footer stay visible so the user

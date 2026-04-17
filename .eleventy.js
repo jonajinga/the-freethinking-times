@@ -157,6 +157,58 @@ module.exports = function (eleventyConfig) {
       .map(({ item }) => item);
   });
 
+  // Weighted related-articles scorer. Combines:
+  //  - tag overlap (3× per shared tag)
+  //  - section match (2×)
+  //  - title word overlap (1× per shared word > 3 chars, lowercased, stopwords removed)
+  //  - recency (soft boost for articles <365 days old, scaled)
+  // Returns top N items sorted by score descending. When no tag/section match,
+  // still returns same-section articles (if any) or recent articles as fallback.
+  eleventyConfig.addFilter("relatedArticles", (allContent, currentData, currentUrl, limit = 4) => {
+    if (!currentData) return [];
+    const STOP = new Set(["the","and","for","with","from","that","this","have","been","into","about","their","there","which","what","when","where","your","also","more","than","these","those","over","some","other","like","such","just","only","will","was","are","its","our"]);
+    const words = (s) => (s || "").toLowerCase().replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter(w => w.length > 3 && !STOP.has(w));
+    const currentTags = new Set((currentData.tags || []).filter(t => t !== "post" && t !== "all"));
+    const currentSection = currentData.section || "";
+    const currentWords = new Set(words(currentData.title));
+    const now = Date.now();
+
+    const scored = allContent
+      .filter(item => item.url !== currentUrl)
+      .filter(item => !item.data.draft && !item.data.emailOnly)
+      .map(item => {
+        let score = 0;
+        const itemTags = (item.data.tags || []).filter(t => t !== "post" && t !== "all");
+        const sharedTags = itemTags.filter(t => currentTags.has(t)).length;
+        score += sharedTags * 3;
+        if (item.data.section && item.data.section === currentSection) score += 2;
+        const itemWords = words(item.data.title);
+        const sharedWords = itemWords.filter(w => currentWords.has(w)).length;
+        score += sharedWords;
+        // Recency: up to +1.5 for articles within the last year
+        const ageDays = item.date ? (now - new Date(item.date).getTime()) / 86400000 : 9999;
+        if (ageDays < 365) score += 1.5 * (1 - ageDays / 365);
+        return { item, score, sharedTags };
+      })
+      .filter(({ score }) => score > 0)
+      .sort((a, b) => b.score - a.score);
+
+    if (scored.length >= limit) return scored.slice(0, limit).map(({ item }) => item);
+
+    // Fallback: top up with same-section, then most recent
+    const chosen = new Set(scored.map(({ item }) => item.url));
+    const fallback = allContent
+      .filter(item => item.url !== currentUrl && !chosen.has(item.url))
+      .filter(item => !item.data.draft && !item.data.emailOnly)
+      .sort((a, b) => {
+        const aSec = a.data.section === currentSection ? 1 : 0;
+        const bSec = b.data.section === currentSection ? 1 : 0;
+        if (aSec !== bSec) return bSec - aSec;
+        return (b.date || 0) - (a.date || 0);
+      });
+    return [...scored.map(({ item }) => item), ...fallback].slice(0, limit);
+  });
+
   // All articles in the same series, sorted by seriesPart
   eleventyConfig.addFilter("seriesArticles", (allContent, seriesTitle) => {
     if (!seriesTitle) return [];

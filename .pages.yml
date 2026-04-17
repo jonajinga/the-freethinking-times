@@ -31,6 +31,9 @@ content:
       - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: assignedTo, type: string, label: "Assigned to (author slug, optional)" }
       - { name: dueDate, type: date, label: "Due date (optional)" }
+      - { name: profile, type: select, options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, label: "Content profile" }
+      - { name: audioUrl, type: string, label: "Audio URL (for podcast profile only)" }
+      - { name: embedUrl, type: string, label: "Embed URL (for data visualization profile only)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
       - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
@@ -64,6 +67,9 @@ content:
       - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: assignedTo, type: string, label: "Assigned to (author slug, optional)" }
       - { name: dueDate, type: date, label: "Due date (optional)" }
+      - { name: profile, type: select, options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, label: "Content profile" }
+      - { name: audioUrl, type: string, label: "Audio URL (for podcast profile only)" }
+      - { name: embedUrl, type: string, label: "Embed URL (for data visualization profile only)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
       - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
@@ -87,6 +93,9 @@ content:
       - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: assignedTo, type: string, label: "Assigned to (author slug, optional)" }
       - { name: dueDate, type: date, label: "Due date (optional)" }
+      - { name: profile, type: select, options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, label: "Content profile" }
+      - { name: audioUrl, type: string, label: "Audio URL (for podcast profile only)" }
+      - { name: embedUrl, type: string, label: "Embed URL (for data visualization profile only)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
       - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
@@ -110,6 +119,9 @@ content:
       - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: assignedTo, type: string, label: "Assigned to (author slug, optional)" }
       - { name: dueDate, type: date, label: "Due date (optional)" }
+      - { name: profile, type: select, options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, label: "Content profile" }
+      - { name: audioUrl, type: string, label: "Audio URL (for podcast profile only)" }
+      - { name: embedUrl, type: string, label: "Embed URL (for data visualization profile only)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
       - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
@@ -133,6 +145,9 @@ content:
       - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: assignedTo, type: string, label: "Assigned to (author slug, optional)" }
       - { name: dueDate, type: date, label: "Due date (optional)" }
+      - { name: profile, type: select, options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, label: "Content profile" }
+      - { name: audioUrl, type: string, label: "Audio URL (for podcast profile only)" }
+      - { name: embedUrl, type: string, label: "Embed URL (for data visualization profile only)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
       - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
@@ -156,6 +171,9 @@ content:
       - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: assignedTo, type: string, label: "Assigned to (author slug, optional)" }
       - { name: dueDate, type: date, label: "Due date (optional)" }
+      - { name: profile, type: select, options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, label: "Content profile" }
+      - { name: audioUrl, type: string, label: "Audio URL (for podcast profile only)" }
+      - { name: embedUrl, type: string, label: "Embed URL (for data visualization profile only)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
       - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
@@ -179,6 +197,9 @@ content:
       - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: assignedTo, type: string, label: "Assigned to (author slug, optional)" }
       - { name: dueDate, type: date, label: "Due date (optional)" }
+      - { name: profile, type: select, options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, label: "Content profile" }
+      - { name: audioUrl, type: string, label: "Audio URL (for podcast profile only)" }
+      - { name: embedUrl, type: string, label: "Embed URL (for data visualization profile only)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
       - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
@@ -202,6 +223,9 @@ content:
       - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: assignedTo, type: string, label: "Assigned to (author slug, optional)" }
       - { name: dueDate, type: date, label: "Due date (optional)" }
+      - { name: profile, type: select, options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, label: "Content profile" }
+      - { name: audioUrl, type: string, label: "Audio URL (for podcast profile only)" }
+      - { name: embedUrl, type: string, label: "Embed URL (for data visualization profile only)" }
       - { name: mediaType, type: select, options: [Book, Film, Podcast, Documentary, Series], required: true }
       - { name: creator, type: string, required: true, label: "Creator / Director / Author" }
       - { name: year, type: number, label: "Year of release" }
@@ -273,6 +297,9 @@ content:
       - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: assignedTo, type: string, label: "Assigned to (author slug, optional)" }
       - { name: dueDate, type: date, label: "Due date (optional)" }
+      - { name: profile, type: select, options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, label: "Content profile" }
+      - { name: audioUrl, type: string, label: "Audio URL (for podcast profile only)" }
+      - { name: embedUrl, type: string, label: "Embed URL (for data visualization profile only)" }
       - { name: philosopher, type: string, label: "Philosopher / originator" }
       - { name: yearProposed, type: string, label: "Year proposed" }
       - { name: field, type: string, label: "Field (e.g. Epistemology, Ethics)" }
@@ -294,6 +321,9 @@ content:
       - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: assignedTo, type: string, label: "Assigned to (author slug, optional)" }
       - { name: dueDate, type: date, label: "Due date (optional)" }
+      - { name: profile, type: select, options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, label: "Content profile" }
+      - { name: audioUrl, type: string, label: "Audio URL (for podcast profile only)" }
+      - { name: embedUrl, type: string, label: "Embed URL (for data visualization profile only)" }
       - { name: year, type: number, label: "Year of trial" }
       - { name: yearLabel, type: string, label: "Year label (display)" }
       - { name: jurisdiction, type: string }
@@ -387,6 +417,9 @@ content:
       - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: assignedTo, type: string, label: "Assigned to (author slug, optional)" }
       - { name: dueDate, type: date, label: "Due date (optional)" }
+      - { name: profile, type: select, options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, label: "Content profile" }
+      - { name: audioUrl, type: string, label: "Audio URL (for podcast profile only)" }
+      - { name: embedUrl, type: string, label: "Embed URL (for data visualization profile only)" }
       - { name: endDate, type: date, label: "End date" }
       - { name: location, type: string }
       - { name: region, type: select, options: [National, Northeast, Southeast, Midwest, Southwest, West, Pacific, International, Online] }
@@ -432,6 +465,9 @@ content:
       - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: assignedTo, type: string, label: "Assigned to (author slug, optional)" }
       - { name: dueDate, type: date, label: "Due date (optional)" }
+      - { name: profile, type: select, options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, label: "Content profile" }
+      - { name: audioUrl, type: string, label: "Audio URL (for podcast profile only)" }
+      - { name: embedUrl, type: string, label: "Embed URL (for data visualization profile only)" }
       - { name: title, type: string, required: true }
       - name: sections
         type: object
@@ -480,6 +516,12 @@ content:
       - { name: genre, type: string }
       - { name: tags, type: string, list: true }
       - { name: url, type: string, label: "YouTube URL" }
+
+  - name: profiles
+    label: Content Profiles
+    path: src/_data/profiles.json
+    type: file
+    format: json
 
   - name: site-config
     label: Site Configuration

@@ -92,6 +92,10 @@ layout: layouts/base.njk
           {% if edition %}
           <a href="/editions/{{ edition }}/" class="edition-badge">Edition {{ edition }}</a>
           {% endif %}
+          {% set profileKey = profile or "standard" %}
+          {% if profiles[profileKey] and profiles[profileKey].badge %}
+          <span class="profile-badge" data-profile="{{ profileKey }}" title="{{ profiles[profileKey].description }}">{{ profiles[profileKey].badge }}</span>
+          {% endif %}
         </div>
 
         <h1 class="article-header__headline">{{ title }}</h1>
@@ -607,6 +611,19 @@ layout: layouts/base.njk
       </figure>
       {% endif %}
 
+      {# Profile-specific header: audio player for podcast, embed for data viz #}
+      {% if profile == "podcast" and audioUrl %}
+      <figure class="profile-audio">
+        <audio controls preload="metadata" src="{{ audioUrl }}"></audio>
+        <figcaption>Listen to this episode. Transcript below.</figcaption>
+      </figure>
+      {% endif %}
+      {% if profile == "datavisualization" and embedUrl %}
+      <figure class="profile-embed">
+        <iframe src="{{ embedUrl }}" loading="lazy" title="{{ title | escape }}" style="width:100%;min-height:480px;border:1px solid var(--color-rule);"></iframe>
+      </figure>
+      {% endif %}
+
       {# Body copy #}
       <div class="article-body">
         {{ content | safe }}
@@ -804,13 +821,10 @@ layout: layouts/base.njk
     <div id="article-panel-notes" class="library-panel__section" aria-hidden="true"></div>
     <div id="article-panel-bookmarks" class="library-panel__section" aria-hidden="true"></div>
     <div id="article-panel-related" class="library-panel__section" aria-hidden="true">
-      {% set relatedArticles = collections.allContent | relatedByTags(tags, page.url, 3) %}
-      {% if relatedArticles.length == 0 and section %}
-        {% set relatedArticles = collections.allContent | where("section", section) | limit(4) %}
-      {% endif %}
-      {% if relatedArticles.length > 0 %}
+      {% set relatedList = collections.allContent | relatedArticles({ tags: tags, section: section, title: title }, page.url, 4) %}
+      {% if relatedList.length > 0 %}
       <ul style="list-style:none;padding:0;margin:0;">
-        {% for item in relatedArticles %}
+        {% for item in relatedList %}
         {% if item.url != page.url %}
         <li style="padding:var(--space-3) 0;border-bottom:1px solid var(--color-rule);">
           <a href="{{ item.url }}" style="font-family:var(--font-headline);font-size:var(--text-sm);font-weight:600;color:var(--color-ink);text-decoration:none;display:block;line-height:var(--leading-snug);">{{ item.data.title }}</a>
