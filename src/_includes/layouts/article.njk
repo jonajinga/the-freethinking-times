@@ -123,8 +123,9 @@ layout: layouts/base.njk
             </span>
             {% endif %}
           </span>
-          {% if lastUpdated %}
-          <span class="article-header__updated">Updated <time datetime="{{ lastUpdated | htmlDateString }}">{{ lastUpdated | readableDate }}</time></span>
+          {% set updatedDate = updated or lastUpdated %}
+          {% if updatedDate %}
+          <span class="article-header__updated">Updated: <time datetime="{{ updatedDate | htmlDateString }}">{{ updatedDate | readableDate }}</time></span>
           {% endif %}
           {% if location %}
           <span class="dateline">{{ location }}</span>

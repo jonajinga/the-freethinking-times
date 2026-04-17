@@ -287,24 +287,27 @@ module.exports = function (eleventyConfig) {
     return Object.values(groups).sort((a, b) => b.date.localeCompare(a.date));
   });
 
-  // Per-author productivity stats: [{ name, count, totalWords, avgWords, sections }]
-  // Reads raw Markdown source (strips front matter) to avoid templateContent
-  // being unavailable at the time this filter runs.
+  // Word count for a single content item (reads raw Markdown, strips front matter).
+  // Safe to call inside filters — doesn't depend on templateContent being populated.
+  const countWords = (item) => {
+    try {
+      if (item.inputPath && fs.existsSync(item.inputPath)) {
+        const raw = fs.readFileSync(item.inputPath, "utf8");
+        const body = raw.replace(/^---[\s\S]*?---/, "");
+        return body.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
+      }
+    } catch (e) { /* ignore */ }
+    return 0;
+  };
+
+  // Per-author stats: [{ name, count, totalWords, avgWords, totalReadingMin, sections }]
   eleventyConfig.addFilter("authorStats", (allContent) => {
     const stats = {};
     allContent.forEach(item => {
       const name = item.data.authorName || item.data.author || "Unknown";
       if (!stats[name]) stats[name] = { name, count: 0, totalWords: 0, sections: new Set() };
       stats[name].count++;
-      let words = 0;
-      try {
-        if (item.inputPath && fs.existsSync(item.inputPath)) {
-          const raw = fs.readFileSync(item.inputPath, "utf8");
-          const body = raw.replace(/^---[\s\S]*?---/, ""); // strip front matter
-          words = body.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
-        }
-      } catch (e) { /* ignore */ }
-      stats[name].totalWords += words;
+      stats[name].totalWords += countWords(item);
       if (item.data.section) stats[name].sections.add(item.data.section);
     });
     return Object.values(stats).map(s => ({
@@ -312,8 +315,27 @@ module.exports = function (eleventyConfig) {
       count: s.count,
       totalWords: s.totalWords,
       avgWords: s.count > 0 ? Math.round(s.totalWords / s.count) : 0,
+      totalReadingMin: Math.ceil(s.totalWords / 225),
       sections: Array.from(s.sections).join(", ")
     })).sort((a, b) => b.count - a.count);
+  });
+
+  // Per-section stats: [{ section, count, totalWords, avgWords, totalReadingMin }]
+  eleventyConfig.addFilter("sectionStats", (allContent) => {
+    const stats = {};
+    allContent.forEach(item => {
+      const section = item.data.section || "Uncategorised";
+      if (!stats[section]) stats[section] = { section, count: 0, totalWords: 0 };
+      stats[section].count++;
+      stats[section].totalWords += countWords(item);
+    });
+    return Object.values(stats).map(s => ({
+      section: s.section,
+      count: s.count,
+      totalWords: s.totalWords,
+      avgWords: s.count > 0 ? Math.round(s.totalWords / s.count) : 0,
+      totalReadingMin: Math.ceil(s.totalWords / 225)
+    })).sort((a, b) => b.totalWords - a.totalWords);
   });
 
   // Status counts for a collection

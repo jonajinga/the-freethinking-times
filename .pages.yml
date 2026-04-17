@@ -28,8 +28,10 @@ content:
       - { name: author, type: string, default: jon-ajinga }  # forks: change to your own authors.json slug
       - { name: authorName, type: string, default: "Jon Ajinga" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: image, type: image }
@@ -57,8 +59,10 @@ content:
       - { name: author, type: string, default: jon-ajinga }
       - { name: authorName, type: string, default: "Jon Ajinga" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: body, type: rich-text }
@@ -76,8 +80,10 @@ content:
       - { name: author, type: string, default: jon-ajinga }
       - { name: authorName, type: string, default: "Jon Ajinga" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: body, type: rich-text }
@@ -95,8 +101,10 @@ content:
       - { name: author, type: string, default: jon-ajinga }
       - { name: authorName, type: string, default: "Jon Ajinga" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: body, type: rich-text }
@@ -114,8 +122,10 @@ content:
       - { name: author, type: string, default: jon-ajinga }
       - { name: authorName, type: string, default: "Jon Ajinga" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: body, type: rich-text }
@@ -133,8 +143,10 @@ content:
       - { name: author, type: string, default: jon-ajinga }
       - { name: authorName, type: string, default: "Jon Ajinga" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: body, type: rich-text }
@@ -152,8 +164,10 @@ content:
       - { name: author, type: string, default: jon-ajinga }
       - { name: authorName, type: string, default: "Jon Ajinga" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: body, type: rich-text }
@@ -171,12 +185,14 @@ content:
       - { name: author, type: string, default: jon-ajinga }
       - { name: authorName, type: string, default: "Jon Ajinga" }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: mediaType, type: select, options: [Book, Film, Podcast, Documentary, Series], required: true }
       - { name: creator, type: string, required: true, label: "Creator / Director / Author" }
       - { name: year, type: number, label: "Year of release" }
       - { name: rating, type: number, label: "Rating (1-5)" }
       - { name: tags, type: string, list: true }
       - { name: featured, type: boolean, default: false }
+      - { name: emailOnly, type: boolean, default: false, label: "Email-only (sends to newsletter, no web page)" }
       - { name: draft, type: boolean, default: true }
       - { name: status, type: select, options: [draft, review, published], default: draft }
       - { name: body, type: rich-text }
@@ -238,6 +254,7 @@ content:
       - { name: section, type: string, default: "Thought Experiments", hidden: true }
       - { name: author, type: string, default: staff }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: philosopher, type: string, label: "Philosopher / originator" }
       - { name: yearProposed, type: string, label: "Year proposed" }
       - { name: field, type: string, label: "Field (e.g. Epistemology, Ethics)" }
@@ -256,6 +273,7 @@ content:
       - { name: section, type: string, default: "Trials of Thought", hidden: true }
       - { name: author, type: string, default: staff }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: year, type: number, label: "Year of trial" }
       - { name: yearLabel, type: string, label: "Year label (display)" }
       - { name: jurisdiction, type: string }
@@ -346,6 +364,7 @@ content:
     fields:
       - { name: name, type: string, required: true }
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: endDate, type: date, label: "End date" }
       - { name: location, type: string }
       - { name: region, type: select, options: [National, Northeast, Southeast, Midwest, Southwest, West, Pacific, International, Online] }
@@ -388,6 +407,7 @@ content:
     list: true
     fields:
       - { name: date, type: date, required: true }
+      - { name: updated, type: date, label: "Last updated (optional)" }
       - { name: title, type: string, required: true }
       - name: sections
         type: object

@@ -27,6 +27,9 @@ eleventyExcludeFromCollections: true
       <a href="/editorial/board/" class="btn" style="font-size:var(--text-xs);">Editorial Board</a>
       <a href="/templates/" class="btn" style="font-size:var(--text-xs);">Content Templates</a>
       <a href="/abbreviations/" class="btn" style="font-size:var(--text-xs);">Abbreviations</a>
+      {% if site.comments and site.comments.appId %}
+      <a href="https://cusdis.com/dashboard/project/{{ site.comments.appId }}" target="_blank" rel="noopener noreferrer" class="btn" style="font-size:var(--text-xs);">Moderate Comments &nearr;</a>
+      {% endif %}
     </div>
   </header>
 
@@ -75,6 +78,7 @@ eleventyExcludeFromCollections: true
             <th {{ thr | safe }}>Articles</th>
             <th {{ thr | safe }}>Total Words</th>
             <th {{ thr | safe }}>Avg Length</th>
+            <th {{ thr | safe }}>Reading Time</th>
           </tr>
         </thead>
         <tbody>
@@ -84,6 +88,34 @@ eleventyExcludeFromCollections: true
             <td {{ tdr | safe }}>{{ stat.count }}</td>
             <td {{ tdr | safe }}>{{ stat.totalWords }}</td>
             <td {{ tdr | safe }}>{{ stat.avgWords }}</td>
+            <td {{ tdr | safe }}>{{ stat.totalReadingMin }} min</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {# ── Reading Time by Section ── #}
+    <div style="grid-column: span 2;">
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Reading Time by Section</h2>
+      <table {{ tbl | safe }}>
+        <thead>
+          <tr {{ headb | safe }}>
+            <th {{ th | safe }}>Section</th>
+            <th {{ thr | safe }}>Articles</th>
+            <th {{ thr | safe }}>Total Words</th>
+            <th {{ thr | safe }}>Avg Length</th>
+            <th {{ thr | safe }}>Total Reading</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for stat in collections.allContent | sectionStats %}
+          <tr {{ rowb | safe }}>
+            <td {{ td | safe }}>{{ stat.section }}</td>
+            <td {{ tdr | safe }}>{{ stat.count }}</td>
+            <td {{ tdr | safe }}>{{ stat.totalWords }}</td>
+            <td {{ tdr | safe }}>{{ stat.avgWords }}</td>
+            <td {{ tdr | safe }}>{{ stat.totalReadingMin }} min</td>
           </tr>
           {% endfor %}
         </tbody>

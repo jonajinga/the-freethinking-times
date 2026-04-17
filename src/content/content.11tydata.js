@@ -1,5 +1,9 @@
-// Scheduled publishing: articles with a future `date` field are not rendered.
-// Set SHOW_FUTURE=1 in the environment to preview future-dated content locally.
+// Content computed data for all articles under src/content/.
+//
+// - Scheduled publishing: articles with a future `date` field are not rendered.
+//   Set SHOW_FUTURE=1 in the environment to preview future-dated content locally.
+// - Email-only posts: articles with `emailOnly: true` in front matter don't
+//   render a web page but still appear in the newsletter/RSS feed via collections.
 module.exports = {
   eleventyComputed: {
     eleventyExcludeFromCollections: (data) => {
@@ -11,6 +15,8 @@ module.exports = {
       return data.eleventyExcludeFromCollections || false;
     },
     permalink: (data) => {
+      // Email-only posts: don't render a web page
+      if (data.emailOnly) return false;
       if (process.env.SHOW_FUTURE === "1") return data.permalink;
       const now = new Date();
       const pageDate = data.page && data.page.date ? new Date(data.page.date) : null;
