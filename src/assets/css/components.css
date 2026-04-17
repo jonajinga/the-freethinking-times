@@ -1306,13 +1306,47 @@ a.dateline:hover { color: var(--color-accent); }
   accent-color: var(--color-accent);
 }
 
-/* Push elements above music bar when visible */
-body:has(.music-bar:not([hidden])) .annotation-toolbar {
-  bottom: 2.5rem;
+/* When the music bar renders INSIDE the annotation-toolbar (reading
+   pages), flatten it to an inline row that shares the bar's dark
+   background. On pages without an annotation-toolbar it keeps its
+   original position:fixed layout so it remains visible. */
+.annotation-toolbar .music-bar {
+  position: static;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  padding: 0;
+  gap: var(--space-2);
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  width: auto;
+  max-width: 100%;
+  font-size: var(--text-xs);
+  z-index: auto;
+}
+.annotation-toolbar .music-bar__info {
+  min-width: 0;
+  max-width: min(240px, 30vw);
+}
+.annotation-toolbar .music-bar__title { font-size: var(--text-xs); }
+.annotation-toolbar .music-bar__vol { width: 60px; }
+
+/* Push the reading-floats (percentage + back-to-top) up above the
+   annotation-toolbar so they don't sit behind it. */
+body:has(.annotation-toolbar) .reading-floats {
+  bottom: 4.25rem;
+}
+@media (max-width: 600px) {
+  body:has(.annotation-toolbar) .reading-floats {
+    bottom: 4rem;
+  }
 }
 
-body:has(.music-bar:not([hidden])) .reading-floats {
-  bottom: 5.5rem;
+/* When the music bar is NOT inside the annotation-toolbar (non-reading
+   pages), keep the legacy "push reading-floats up above music-bar" rule. */
+body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .reading-floats {
+  bottom: 3.5rem;
 }
 
 @media (max-width: 480px) {
@@ -1320,8 +1354,6 @@ body:has(.music-bar:not([hidden])) .reading-floats {
   .music-bar__vol { display: none; }
   .music-bar__name { display: none; }
   .music-bar__title { font-size: var(--text-xs); }
-  body:has(.music-bar:not([hidden])) .annotation-toolbar { bottom: 2rem; }
-  body:has(.music-bar:not([hidden])) .reading-floats { bottom: 5rem; }
 }
 
 /* ── Glossary Tooltips (Tippy.js) ──────────────────────────── */

@@ -502,6 +502,9 @@
       panel.setAttribute('aria-hidden', 'true');
       if (panelOverlay) panelOverlay.setAttribute('aria-hidden', 'true');
       panelToggles.forEach(function (t) { t.setAttribute('aria-expanded', 'false'); });
+      // Safety: clear any lingering scroll-lock set by another widget (nav
+      // drawer, search modal) whose close handler was skipped.
+      if (document.body.style.overflow === 'hidden') document.body.style.overflow = '';
       try { localStorage.setItem(PANEL_KEY, 'closed'); } catch (e) {}
     }
 
