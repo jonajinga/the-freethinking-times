@@ -1,10 +1,11 @@
 ---
 layout: base
 title: "Content Templates"
-description: Pre-filled article templates for common content types — copy, customise, and publish.
+description: "See exactly what we expect when you pitch an article — ready-to-use Markdown templates for every content type we publish."
 permalink: /templates/
-eleventyExcludeFromCollections: true
 ---
+
+{% set today = "" %}{% set today %}{{ "now" | readableDate }}{% endset %}
 
 <div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
   <div class="container--prose">
@@ -12,75 +13,366 @@ eleventyExcludeFromCollections: true
     <header style="margin-bottom: var(--space-8); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
       <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Content Templates</h1>
       <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic; max-width: 55ch;">
-        Pre-filled templates for common article types. Click to copy the markdown, then paste into Pages CMS or your editor.
+        Here's exactly what we expect when you pitch an article. Start from any of these templates, fill in your content, and paste it into your editor or Pages CMS.
       </p>
     </header>
 
     <div class="article-body">
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--space-6);">
+      <p>These are the starting points for every content type we publish. Each template shows the required front matter fields, the structure we find works well, and what belongs in each section. The prose in italics is guidance — replace it with your actual writing.</p>
 
-        <div style="border:1px solid var(--color-rule);padding:var(--space-6);">
-          <h3 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">News Article</h3>
-          <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0 0 var(--space-4);">Breaking news or reported story with inverted pyramid structure.</p>
-          <button type="button" class="btn btn--accent tmpl-copy" style="font-size:var(--text-xs);" data-tmpl="news">Copy Template</button>
-        </div>
-
-        <div style="border:1px solid var(--color-rule);padding:var(--space-6);">
-          <h3 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">Opinion / Essay</h3>
-          <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0 0 var(--space-4);">Argument-driven essay with thesis, evidence, and conclusion.</p>
-          <button type="button" class="btn btn--accent tmpl-copy" style="font-size:var(--text-xs);" data-tmpl="opinion">Copy Template</button>
-        </div>
-
-        <div style="border:1px solid var(--color-rule);padding:var(--space-6);">
-          <h3 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">Long-form Analysis</h3>
-          <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0 0 var(--space-4);">Deep-dive investigation with sections, evidence, and sourcing.</p>
-          <button type="button" class="btn btn--accent tmpl-copy" style="font-size:var(--text-xs);" data-tmpl="analysis">Copy Template</button>
-        </div>
-
-        <div style="border:1px solid var(--color-rule);padding:var(--space-6);">
-          <h3 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">Book Review</h3>
-          <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0 0 var(--space-4);">Review with rating, summary, analysis, and recommendation.</p>
-          <button type="button" class="btn btn--accent tmpl-copy" style="font-size:var(--text-xs);" data-tmpl="review">Copy Template</button>
-        </div>
-
-        <div style="border:1px solid var(--color-rule);padding:var(--space-6);">
-          <h3 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">Interview / Q&A</h3>
-          <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0 0 var(--space-4);">Structured interview with introduction, questions, and closing.</p>
-          <button type="button" class="btn btn--accent tmpl-copy" style="font-size:var(--text-xs);" data-tmpl="interview">Copy Template</button>
-        </div>
-
-        <div style="border:1px solid var(--color-rule);padding:var(--space-6);">
-          <h3 style="font-family:var(--font-headline);font-size:var(--text-md);margin:0 0 var(--space-2);">Letter to the Editor</h3>
-          <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:0 0 var(--space-4);">Reader response to a published article.</p>
-          <button type="button" class="btn btn--accent tmpl-copy" style="font-size:var(--text-xs);" data-tmpl="letter">Copy Template</button>
-        </div>
-
-      </div>
-
-      <div id="tmpl-toast" hidden style="position:fixed;bottom:var(--space-8);left:50%;transform:translateX(-50%);background:var(--color-ink);color:var(--color-bg);font-family:var(--font-ui);font-size:var(--text-sm);padding:var(--space-2) var(--space-6);z-index:var(--z-modal);">Copied to clipboard</div>
+      <p>If you're writing for us: read our <a href="/contribute/">contributor guidelines</a> and <a href="/ethics/">editorial ethics</a> first, then pick the template that matches what you're pitching.</p>
 
     </div>
+
+    <div id="tmpl-list" style="display:flex;flex-direction:column;gap:var(--space-6);margin-top:var(--space-10);"></div>
+
+    <div id="tmpl-toast" hidden style="position:fixed;bottom:var(--space-8);left:50%;transform:translateX(-50%);background:var(--color-ink);color:var(--color-bg);font-family:var(--font-ui);font-size:var(--text-sm);padding:var(--space-2) var(--space-6);z-index:var(--z-modal);border-radius:var(--radius-md);">Copied to clipboard</div>
+
   </div>
 </div>
 
+<style>
+.tmpl-card {
+  border: 1px solid var(--color-rule);
+  border-top: 3px solid var(--color-ink);
+  padding: var(--space-6);
+}
+.tmpl-card[open] {
+  border-top-color: var(--color-accent);
+}
+.tmpl-card > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-4);
+}
+.tmpl-card > summary::-webkit-details-marker { display: none; }
+.tmpl-card__heading {
+  font-family: var(--font-headline);
+  font-size: var(--text-md);
+  font-weight: 700;
+  margin: 0;
+  line-height: var(--leading-snug);
+}
+.tmpl-card__desc {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  margin: var(--space-2) 0 0;
+  line-height: var(--leading-normal);
+}
+.tmpl-card__toggle {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-ink-faint);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.tmpl-card[open] .tmpl-card__toggle::before { content: "Hide"; }
+.tmpl-card:not([open]) .tmpl-card__toggle::before { content: "Show"; }
+.tmpl-card__body {
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-rule);
+}
+.tmpl-card__actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+.tmpl-card pre {
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-rule);
+  padding: var(--space-4);
+  overflow-x: auto;
+  font-family: var(--font-ui), monospace;
+  font-size: var(--text-xs);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+  white-space: pre;
+  color: var(--color-ink);
+}
+.tmpl-card code { font-family: inherit; background: none; padding: 0; }
+</style>
+
 <script>
 (function () {
-  var templates = {
-    news: '---\nlayout: article\ntitle: ""\ndescription: ""\nsection: News\nauthor: editor\nauthorName: "Your Name"\ndate: ' + new Date().toISOString().slice(0, 10) + '\ntags:\n  - \nfeatured: false\ndraft: true\nstatus: draft\n---\n\n**CITY** — Lead paragraph with the most important information first. Who, what, when, where, why.\n\n## Background\n\nContext and history that helps the reader understand the significance.\n\n## What happened\n\nDetailed account of events in chronological order.\n\n## What it means\n\nAnalysis of implications and what to watch for next.\n\n## Sources\n\n- Source 1\n- Source 2\n',
-    opinion: '---\nlayout: article\ntitle: ""\ndescription: ""\nsection: Opinion\nauthor: editor\nauthorName: "Your Name"\ndate: ' + new Date().toISOString().slice(0, 10) + '\ntags:\n  - \nfeatured: false\ndraft: true\nstatus: draft\n---\n\n*Thesis statement in one or two sentences. What are you arguing, and why does it matter?*\n\n## The problem\n\nDescribe the issue clearly and fairly. Steel-man the opposing view.\n\n## The evidence\n\nPresent your evidence. Be specific. Cite sources.\n\n## The counterargument\n\nAddress the strongest objection to your position.\n\n## Conclusion\n\nRestate your argument in light of the evidence. What should change?\n',
-    analysis: '---\nlayout: article\ntitle: ""\ndescription: ""\nsection: Analysis\nauthor: editor\nauthorName: "Your Name"\ndate: ' + new Date().toISOString().slice(0, 10) + '\ntags:\n  - \nfeatured: false\ndraft: true\nstatus: draft\n---\n\nIntroduction. What question does this piece investigate? Why does it matter now?\n\n## Background\n\nHistorical context and prior reporting.\n\n## Findings\n\nPresent what you found, organized by theme or chronology.\n\n## Analysis\n\nWhat do the findings mean? What patterns emerge?\n\n## Implications\n\nWhat are the consequences? Who is affected? What should happen next?\n\n## Methodology\n\nHow did you conduct your investigation? What sources did you use?\n',
-    review: '---\nlayout: article\ntitle: ""\ndescription: ""\nsection: Reviews\nauthor: editor\nauthorName: "Your Name"\ndate: ' + new Date().toISOString().slice(0, 10) + '\nmediaType: Book\ncreator: ""\nyear: \nrating: \ntags:\n  - \nfeatured: false\ndraft: true\nstatus: draft\n---\n\n**Title** by *Creator* (Year). Publisher.\n\n## Summary\n\nWhat is this work about? (No spoilers.)\n\n## What works\n\nStrengths of the work.\n\n## What doesn\'t\n\nWeaknesses or missed opportunities.\n\n## Who should read this\n\nTarget audience and what they will get from it.\n\n## Verdict\n\nOne-paragraph assessment.\n',
-    interview: '---\nlayout: article\ntitle: ""\ndescription: ""\nsection: News\nauthor: editor\nauthorName: "Your Name"\ndate: ' + new Date().toISOString().slice(0, 10) + '\ntags:\n  - interview\nfeatured: false\ndraft: true\nstatus: draft\n---\n\n*Introduction: who is the subject, why this conversation matters, and how it came about.*\n\n---\n\n**Q: Opening question — broad, sets the context.**\n\n**A:** Response.\n\n**Q: Follow-up — more specific.**\n\n**A:** Response.\n\n**Q: The hard question.**\n\n**A:** Response.\n\n**Q: Closing — forward-looking or reflective.**\n\n**A:** Response.\n\n---\n\n*This interview has been edited for length and clarity.*\n',
-    letter: '---\nlayout: article\ntitle: ""\ndescription: ""\nsection: Letters\nauthor: editor\nauthorName: "Reader Name"\ndate: ' + new Date().toISOString().slice(0, 10) + '\ntags:\n  - letters\nfeatured: false\ndraft: true\nstatus: draft\n---\n\n**Re: "[Original Article Title](/link-to-article/)"**\n\nDear Editors,\n\nYour letter text here. Reference the original article and make your point clearly.\n\n*— Reader Name, City*\n'
-  };
+  var today = new Date().toISOString().slice(0, 10);
+
+  var templates = [
+    {
+      id: "news",
+      title: "News Article",
+      desc: "Breaking news or reported story. Inverted-pyramid structure: most important facts first, context and analysis later.",
+      body:
+'---\n\
+layout: article\n\
+title: ""\n\
+description: ""\n\
+section: News\n\
+author: your-slug\n\
+authorName: "Your Name"\n\
+date: ' + today + '\n\
+tags:\n\
+  -\n\
+featured: false\n\
+draft: true\n\
+status: draft\n\
+---\n\
+\n\
+**CITY** \u2014 Lead paragraph with the most important information first. Who, what, when, where, why.\n\
+\n\
+## Background\n\
+\n\
+Context and history that helps the reader understand the significance.\n\
+\n\
+## What happened\n\
+\n\
+Detailed account of events in chronological order.\n\
+\n\
+## What it means\n\
+\n\
+Analysis of implications and what to watch for next.\n\
+\n\
+## Sources\n\
+\n\
+- Source 1\n\
+- Source 2\n'
+    },
+    {
+      id: "opinion",
+      title: "Opinion / Essay",
+      desc: "Argument-driven essay. State your thesis, present evidence, address the strongest counterargument, restate in light of what you've shown.",
+      body:
+'---\n\
+layout: article\n\
+title: ""\n\
+description: ""\n\
+section: Opinion\n\
+author: your-slug\n\
+authorName: "Your Name"\n\
+date: ' + today + '\n\
+tags:\n\
+  -\n\
+featured: false\n\
+draft: true\n\
+status: draft\n\
+---\n\
+\n\
+*Thesis statement in one or two sentences. What are you arguing, and why does it matter?*\n\
+\n\
+## The problem\n\
+\n\
+Describe the issue clearly and fairly. Steel-man the opposing view.\n\
+\n\
+## The evidence\n\
+\n\
+Present your evidence. Be specific. Cite sources.\n\
+\n\
+## The counterargument\n\
+\n\
+Address the strongest objection to your position.\n\
+\n\
+## Conclusion\n\
+\n\
+Restate your argument in light of the evidence. What should change?\n'
+    },
+    {
+      id: "analysis",
+      title: "Long-form Analysis",
+      desc: "Deep-dive investigation with sections, evidence, and sourcing. Methodology should be explicit so readers can evaluate your work.",
+      body:
+'---\n\
+layout: article\n\
+title: ""\n\
+description: ""\n\
+section: Analysis\n\
+author: your-slug\n\
+authorName: "Your Name"\n\
+date: ' + today + '\n\
+tags:\n\
+  -\n\
+featured: false\n\
+draft: true\n\
+status: draft\n\
+---\n\
+\n\
+Introduction. What question does this piece investigate? Why does it matter now?\n\
+\n\
+## Background\n\
+\n\
+Historical context and prior reporting.\n\
+\n\
+## Findings\n\
+\n\
+Present what you found, organized by theme or chronology.\n\
+\n\
+## Analysis\n\
+\n\
+What do the findings mean? What patterns emerge?\n\
+\n\
+## Implications\n\
+\n\
+What are the consequences? Who is affected? What should happen next?\n\
+\n\
+## Methodology\n\
+\n\
+How did you conduct your investigation? What sources did you use?\n'
+    },
+    {
+      id: "review",
+      title: "Book / Film / Podcast Review",
+      desc: "Honest assessment with rating. Brief summary (no spoilers), what works, what doesn't, who it's for, verdict.",
+      body:
+'---\n\
+layout: article\n\
+title: ""\n\
+description: ""\n\
+section: Reviews\n\
+author: your-slug\n\
+authorName: "Your Name"\n\
+date: ' + today + '\n\
+mediaType: Book\n\
+creator: ""\n\
+year:\n\
+rating:\n\
+tags:\n\
+  -\n\
+featured: false\n\
+draft: true\n\
+status: draft\n\
+---\n\
+\n\
+**Title** by *Creator* (Year). Publisher.\n\
+\n\
+## Summary\n\
+\n\
+What is this work about? (No spoilers.)\n\
+\n\
+## What works\n\
+\n\
+Strengths of the work.\n\
+\n\
+## What doesn\'t\n\
+\n\
+Weaknesses or missed opportunities.\n\
+\n\
+## Who should read this\n\
+\n\
+Target audience and what they will get from it.\n\
+\n\
+## Verdict\n\
+\n\
+One-paragraph assessment.\n'
+    },
+    {
+      id: "interview",
+      title: "Interview / Q&A",
+      desc: "Structured conversation. Brief introduction, Q&A block, standard edit note. Keep questions short; let the subject do the talking.",
+      body:
+'---\n\
+layout: article\n\
+title: ""\n\
+description: ""\n\
+section: News\n\
+author: your-slug\n\
+authorName: "Your Name"\n\
+date: ' + today + '\n\
+tags:\n\
+  - interview\n\
+featured: false\n\
+draft: true\n\
+status: draft\n\
+---\n\
+\n\
+*Introduction: who is the subject, why this conversation matters, and how it came about.*\n\
+\n\
+---\n\
+\n\
+**Q: Opening question \u2014 broad, sets the context.**\n\
+\n\
+**A:** Response.\n\
+\n\
+**Q: Follow-up \u2014 more specific.**\n\
+\n\
+**A:** Response.\n\
+\n\
+**Q: The hard question.**\n\
+\n\
+**A:** Response.\n\
+\n\
+**Q: Closing \u2014 forward-looking or reflective.**\n\
+\n\
+**A:** Response.\n\
+\n\
+---\n\
+\n\
+*This interview has been edited for length and clarity.*\n'
+    },
+    {
+      id: "letter",
+      title: "Letter to the Editor",
+      desc: "Short response to something we published. Quote or link to the original, make your point clearly, sign off with your name and city.",
+      body:
+'---\n\
+layout: article\n\
+title: ""\n\
+description: ""\n\
+section: Letters\n\
+author: your-slug\n\
+authorName: "Reader Name"\n\
+date: ' + today + '\n\
+tags:\n\
+  - letters\n\
+featured: false\n\
+draft: true\n\
+status: draft\n\
+---\n\
+\n\
+**Re: "[Original Article Title](/link-to-article/)"**\n\
+\n\
+Dear Editors,\n\
+\n\
+Your letter text here. Reference the original article and make your point clearly.\n\
+\n\
+*\u2014 Reader Name, City*\n'
+    }
+  ];
+
+  function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+  var list = document.getElementById('tmpl-list');
+  list.innerHTML = templates.map(function (t) {
+    return '<details class="tmpl-card" id="tmpl-' + t.id + '">' +
+      '<summary>' +
+        '<div>' +
+          '<h2 class="tmpl-card__heading">' + esc(t.title) + '</h2>' +
+          '<p class="tmpl-card__desc">' + esc(t.desc) + '</p>' +
+        '</div>' +
+        '<span class="tmpl-card__toggle"></span>' +
+      '</summary>' +
+      '<div class="tmpl-card__body">' +
+        '<div class="tmpl-card__actions">' +
+          '<button type="button" class="btn btn--accent tmpl-copy" data-id="' + t.id + '" style="font-size:var(--text-xs);">Copy Markdown</button>' +
+          '<a href="/submit/" class="btn" style="font-size:var(--text-xs);">Pitch this &rarr;</a>' +
+        '</div>' +
+        '<pre><code>' + esc(t.body) + '</code></pre>' +
+      '</div>' +
+    '</details>';
+  }).join('');
 
   var toast = document.getElementById('tmpl-toast');
   document.querySelectorAll('.tmpl-copy').forEach(function (btn) {
-    btn.onclick = function () {
-      var tmpl = templates[btn.dataset.tmpl];
-      if (!tmpl) return;
-      navigator.clipboard.writeText(tmpl).then(function () {
+    btn.onclick = function (e) {
+      e.preventDefault();
+      var id = btn.dataset.id;
+      var t = templates.find(function (x) { return x.id === id; });
+      if (!t) return;
+      navigator.clipboard.writeText(t.body).then(function () {
         toast.hidden = false;
         setTimeout(function () { toast.hidden = true; }, 2000);
       });
