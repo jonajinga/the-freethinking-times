@@ -541,11 +541,24 @@
 }
 
 @media (max-width: 480px) {
+  /* Single horizontally-scrollable row — avoids wrapping icon buttons to a
+     second line when there are too many to fit in a 320px viewport. */
   .article-header__actions,
   .library-reader-actions {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
     gap: var(--space-1);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: var(--space-1);
   }
+  .article-header__actions::-webkit-scrollbar,
+  .library-reader-actions::-webkit-scrollbar { display: none; }
+
   .article-action-btn {
+    flex-shrink: 0;
     min-width: 44px;
     min-height: 44px;
     width: auto;

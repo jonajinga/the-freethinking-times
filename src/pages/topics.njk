@@ -20,17 +20,16 @@ permalink: /topics/
   {# ── Cloud view ── #}
   <section style="margin-bottom: var(--space-12);">
     <h2 style="font-family:var(--font-headline);font-size:var(--text-lg);margin-bottom:var(--space-4);">Topic cloud</h2>
-    <div style="display:flex;flex-wrap:wrap;gap:var(--space-3);line-height:1.5;">
+    <div class="topic-cloud">
       {% for t in topics %}
       {% set weight = (t.count / maxCount) %}
       {% set size = 0.85 + weight * 0.9 %}
       <a href="/topics/{{ t.tag | slugify }}/"
-        style="font-family:var(--font-headline);font-size:{{ size }}rem;color:var(--color-ink);text-decoration:none;padding:var(--space-1) var(--space-3);border:1px solid var(--color-rule);border-radius:var(--radius-md);transition:all var(--transition-fast);"
-        onmouseover="this.style.borderColor='var(--color-ink)';this.style.background='var(--color-bg-alt)';"
-        onmouseout="this.style.borderColor='var(--color-rule)';this.style.background='transparent';"
+        class="topic-cloud__item"
+        style="font-size:{{ size }}rem;"
         title="{{ t.count }} article{% if t.count != 1 %}s{% endif %}">
         {{ t.tag }}
-        <span style="font-size:0.65em;color:var(--color-ink-faint);margin-left:var(--space-1);">{{ t.count }}</span>
+        <span class="topic-cloud__count">{{ t.count }}</span>
       </a>
       {% endfor %}
     </div>
@@ -38,34 +37,36 @@ permalink: /topics/
 
   {# ── Top topics with related clusters ── #}
   <section>
-    <h2 style="font-family:var(--font-headline);font-size:var(--text-lg);margin-bottom:var(--space-4);">Most covered topics</h2>
+    <h2 style="font-family:var(--font-headline);font-size:var(--text-lg);margin-bottom:var(--space-2);">Most covered topics</h2>
     <p style="font-family:var(--font-body);font-size:var(--text-sm);color:var(--color-ink-muted);max-width:55ch;margin-bottom:var(--space-6);">
       Our most frequent subjects, with the topics that most often appear alongside them.
     </p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--space-6);">
+    <div class="topic-grid">
       {% for t in topics | limit(12) %}
-      <article style="border:1px solid var(--color-rule);padding:var(--space-5) var(--space-6);display:flex;flex-direction:column;gap:var(--space-3);">
-        <header style="display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-3);">
-          <a href="/topics/{{ t.tag | slugify }}/" style="font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;color:var(--color-ink);text-decoration:none;">{{ t.tag }}</a>
-          <span style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);">{{ t.count }} article{% if t.count != 1 %}s{% endif %}</span>
+      <article class="topic-card">
+        <header class="topic-card__header">
+          <a href="/topics/{{ t.tag | slugify }}/" class="topic-card__title">{{ t.tag }}</a>
+          <span class="topic-card__count">{{ t.count }} article{% if t.count != 1 %}s{% endif %}</span>
         </header>
+
         {% if t.related.length %}
         <div>
-          <p style="font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-ink-faint);margin:0 0 var(--space-2);">Related topics</p>
-          <div style="display:flex;flex-wrap:wrap;gap:var(--space-1);">
+          <p class="topic-card__label">Related topics</p>
+          <div class="topic-card__chips">
             {% for r in t.related %}
-            <a href="/topics/{{ r.tag | slugify }}/" style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-link);text-decoration:none;border:1px solid var(--color-rule);padding:1px var(--space-2);border-radius:var(--radius-sm);">{{ r.tag }}</a>
+            <a href="/topics/{{ r.tag | slugify }}/" class="topic-card__chip">{{ r.tag }}</a>
             {% endfor %}
           </div>
         </div>
         {% endif %}
+
         {% if t.top.length %}
         <div>
-          <p style="font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-ink-faint);margin:0 0 var(--space-2);">Latest</p>
-          <ul style="list-style:none;padding:0;margin:0;">
+          <p class="topic-card__label">Latest</p>
+          <ul class="topic-card__latest">
             {% for item in t.top %}
-            <li style="padding:var(--space-1) 0;">
-              <a href="{{ item.url }}" style="font-family:var(--font-body);font-size:var(--text-sm);color:var(--color-ink);text-decoration:none;line-height:var(--leading-snug);">{{ item.data.title }}</a>
+            <li class="topic-card__latest-item">
+              <a href="{{ item.url }}" class="topic-card__latest-link">{{ item.data.title }}</a>
             </li>
             {% endfor %}
           </ul>
