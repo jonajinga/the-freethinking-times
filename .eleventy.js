@@ -766,6 +766,40 @@ module.exports = function (eleventyConfig) {
     }
   });
 
+  // ─── OG image rasterization: convert the SVGs in /og/ to PNGs ─────────────
+  // Social platforms (Twitter, Facebook, LinkedIn, Slack, Discord) don't
+  // render SVG in OG previews. We keep the SVGs (nice for direct viewing)
+  // and also write a PNG alongside each one for sharing.
+  eleventyConfig.on("eleventy.after", async () => {
+    const ogDir = "./_site/og";
+    if (!fs.existsSync(ogDir)) return;
+    let Resvg;
+    try { ({ Resvg } = require("@resvg/resvg-js")); } catch (e) {
+      console.warn("@resvg/resvg-js not installed; skipping OG PNG generation.");
+      return;
+    }
+    const files = fs.readdirSync(ogDir).filter(f => f.endsWith(".svg"));
+    if (!files.length) return;
+    let written = 0;
+    for (const file of files) {
+      const svgPath = path.join(ogDir, file);
+      const pngPath = path.join(ogDir, file.replace(/\.svg$/, ".png"));
+      try {
+        const svg = fs.readFileSync(svgPath, "utf8");
+        const resvg = new Resvg(svg, {
+          fitTo: { mode: "width", value: 1200 },
+          font: { loadSystemFonts: true }
+        });
+        const png = resvg.render().asPng();
+        fs.writeFileSync(pngPath, png);
+        written++;
+      } catch (e) {
+        console.warn("OG PNG failed for", file, "—", e.message);
+      }
+    }
+    if (written) console.log(`[og] Rasterized ${written} OG image${written === 1 ? '' : 's'} to PNG.`);
+  });
+
   // ─── Build Config ────────────────────────────────────────────────────────────
   return {
     templateFormats: ["md", "njk", "html"],
