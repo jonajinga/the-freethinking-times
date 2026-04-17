@@ -94,6 +94,7 @@
     fetch(api, { headers: { 'Accept': 'application/vnd.github+json' } })
       .then(function (r) {
         if (r.status === 403) throw new Error('GitHub API rate limit reached. Try again in an hour.');
+        if (r.status === 404) throw new Error('This repository is private, so the revision history cannot be loaded without authentication. Ask the publication to make the source repository public, or view the commit log locally.');
         if (!r.ok) throw new Error('Could not load commit history (HTTP ' + r.status + ').');
         return r.json();
       })
