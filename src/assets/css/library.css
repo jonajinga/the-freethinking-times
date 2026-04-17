@@ -965,9 +965,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
   gap: 0;
-  row-gap: var(--space-2);
   background: #1a1a1a;
   border-top: 1px solid rgba(255,255,255,0.1);
   border-radius: 0;

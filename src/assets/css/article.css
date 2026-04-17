@@ -540,11 +540,18 @@
   display: none;
 }
 
-@media (max-width: 480px) {
-  /* Single horizontally-scrollable row — avoids wrapping icon buttons to a
-     second line when there are too many to fit in a 320px viewport. */
+@media (max-width: 768px) {
+  /* Mobile: reader-tools icon rows scroll horizontally in a single row
+     rather than wrapping to multiple lines. Matches the glossary A-Z
+     navigation pattern — swipe through the tools instead of vertical
+     space-stealing wrap. Applied to:
+       .article-header__actions   — article reader tools bar
+       .library-reader-actions    — library chapter reader tools
+       .annotation-toolbar        — selection toolbar at bottom
+  */
   .article-header__actions,
-  .library-reader-actions {
+  .library-reader-actions,
+  .annotation-toolbar {
     flex-wrap: nowrap;
     justify-content: flex-start;
     gap: var(--space-1);
@@ -555,10 +562,14 @@
     padding-bottom: var(--space-1);
   }
   .article-header__actions::-webkit-scrollbar,
-  .library-reader-actions::-webkit-scrollbar { display: none; }
+  .library-reader-actions::-webkit-scrollbar,
+  .annotation-toolbar::-webkit-scrollbar { display: none; }
 
-  .article-action-btn {
+  .article-action-btn,
+  .annotation-toolbar__btn {
     flex-shrink: 0;
+  }
+  .article-action-btn {
     min-width: 44px;
     min-height: 44px;
     width: auto;
