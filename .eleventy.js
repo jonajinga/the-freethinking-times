@@ -173,7 +173,7 @@ module.exports = function (eleventyConfig) {
   });
 
   // ─── Collections ─────────────────────────────────────────────────────────────
-  const siteData = JSON.parse(fs.readFileSync("./src/_data/site.json", "utf8"));
+  const siteData = require("./src/_data/site.js");
   const sections = Object.keys(siteData.sections).filter(
     key => !["thought-experiments", "trials-of-thought", "glossary", "bookshelf"].includes(key)
   );
@@ -279,6 +279,49 @@ module.exports = function (eleventyConfig) {
       groups[dateStr].articles.push(item);
     });
     return Object.values(groups).sort((a, b) => b.date.localeCompare(a.date));
+  });
+
+  // Per-author productivity stats: [{ name, count, totalWords, avgWords, sections }]
+  eleventyConfig.addFilter("authorStats", (allContent) => {
+    const stats = {};
+    allContent.forEach(item => {
+      const name = item.data.authorName || item.data.author || "Unknown";
+      if (!stats[name]) stats[name] = { name, count: 0, totalWords: 0, sections: new Set() };
+      stats[name].count++;
+      const words = (item.templateContent || "").replace(/<[^>]+>/g, "").split(/\s+/).filter(Boolean).length;
+      stats[name].totalWords += words;
+      if (item.data.section) stats[name].sections.add(item.data.section);
+    });
+    return Object.values(stats).map(s => ({
+      name: s.name,
+      count: s.count,
+      totalWords: s.totalWords,
+      avgWords: s.count > 0 ? Math.round(s.totalWords / s.count) : 0,
+      sections: Array.from(s.sections).join(", ")
+    })).sort((a, b) => b.count - a.count);
+  });
+
+  // Status counts for a collection
+  eleventyConfig.addFilter("statusCounts", (allContent) => {
+    const counts = { draft: 0, review: 0, published: 0 };
+    allContent.forEach(item => {
+      if (item.data.status === "draft" || item.data.draft) counts.draft++;
+      else if (item.data.status === "review") counts.review++;
+      else counts.published++;
+    });
+    return counts;
+  });
+
+  // Filter a collection by status (draft / review / published)
+  eleventyConfig.addFilter("byStatus", (allContent, status) => {
+    return allContent.filter(item => {
+      const isDraft = item.data.status === "draft" || item.data.draft;
+      const isReview = item.data.status === "review";
+      if (status === "draft") return isDraft;
+      if (status === "review") return isReview && !isDraft;
+      if (status === "published") return !isDraft && !isReview;
+      return false;
+    });
   });
 
   // Primary source documents library, newest first

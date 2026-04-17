@@ -1,0 +1,201 @@
+---
+layout: base
+title: "Editorial Board"
+description: Kanban-style view of articles by status — draft, in review, published.
+permalink: /editorial/board/
+eleventyExcludeFromCollections: true
+---
+
+<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+
+  <header style="padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);">
+    <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-2);">Editorial Board</h1>
+    <p style="color: var(--color-ink-muted); font-size: var(--text-md);">
+      Articles grouped by workflow status. <a href="/dashboard/">Back to dashboard</a>.
+    </p>
+    <div style="display:flex;gap:var(--space-3);margin-top:var(--space-4);flex-wrap:wrap;">
+      <input type="search" id="eb-search" placeholder="Filter articles..." style="flex:1;min-width:200px;font-family:var(--font-ui);font-size:var(--text-sm);padding:var(--space-2) var(--space-4);border:1px solid var(--color-rule);background:var(--color-bg);color:var(--color-ink);">
+      <select id="eb-section" aria-label="Filter by section" style="font-family:var(--font-ui);font-size:var(--text-sm);padding:var(--space-2) var(--space-3);border:1px solid var(--color-rule);background:var(--color-bg);color:var(--color-ink);">
+        <option value="">All sections</option>
+        {% for key, section in site.sections %}
+        {% if key in ["news","opinion","analysis","arts-culture","science-technology","history","letters","reviews"] %}
+        <option value="{{ section.label }}">{{ section.label }}</option>
+        {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+  </header>
+
+  <div class="eb-board">
+
+    {% set draftItems = collections.allContent | byStatus("draft") %}
+    {% set reviewItems = collections.allContent | byStatus("review") %}
+    {% set publishedItems = collections.allContent | byStatus("published") %}
+
+    {# ── Draft column ── #}
+    <div class="eb-col">
+      <div class="eb-col__header" style="border-top:3px solid var(--color-ink-faint);">
+        <h2 class="eb-col__title">Draft</h2>
+        <span class="eb-col__count">{{ draftItems.length }}</span>
+      </div>
+      <div class="eb-col__body">
+        {% for article in draftItems %}
+        <a href="{{ article.url }}" class="eb-card" data-search="{{ article.data.title | lower }} {{ article.data.authorName | lower }}" data-section="{{ article.data.section }}">
+          <span class="eb-card__section">{{ article.data.section }}</span>
+          <span class="eb-card__title">{{ article.data.title }}</span>
+          <span class="eb-card__meta">{{ article.data.authorName }} &middot; {{ article.date | readableDate }}</span>
+        </a>
+        {% endfor %}
+        {% if not draftItems.length %}<p class="eb-empty">No drafts.</p>{% endif %}
+      </div>
+    </div>
+
+    {# ── Review column ── #}
+    <div class="eb-col">
+      <div class="eb-col__header" style="border-top:3px solid var(--color-history);">
+        <h2 class="eb-col__title">In Review</h2>
+        <span class="eb-col__count">{{ reviewItems.length }}</span>
+      </div>
+      <div class="eb-col__body">
+        {% for article in reviewItems %}
+        <a href="{{ article.url }}" class="eb-card" data-search="{{ article.data.title | lower }} {{ article.data.authorName | lower }}" data-section="{{ article.data.section }}">
+          <span class="eb-card__section">{{ article.data.section }}</span>
+          <span class="eb-card__title">{{ article.data.title }}</span>
+          <span class="eb-card__meta">{{ article.data.authorName }} &middot; {{ article.date | readableDate }}</span>
+        </a>
+        {% endfor %}
+        {% if not reviewItems.length %}<p class="eb-empty">Nothing in review.</p>{% endif %}
+      </div>
+    </div>
+
+    {# ── Published column ── #}
+    <div class="eb-col">
+      <div class="eb-col__header" style="border-top:3px solid var(--color-science);">
+        <h2 class="eb-col__title">Published</h2>
+        <span class="eb-col__count">{{ publishedItems.length }}</span>
+      </div>
+      <div class="eb-col__body">
+        {% for article in publishedItems | limit(50) %}
+        <a href="{{ article.url }}" class="eb-card" data-search="{{ article.data.title | lower }} {{ article.data.authorName | lower }}" data-section="{{ article.data.section }}">
+          <span class="eb-card__section">{{ article.data.section }}</span>
+          <span class="eb-card__title">{{ article.data.title }}</span>
+          <span class="eb-card__meta">{{ article.data.authorName }} &middot; {{ article.date | readableDate }}</span>
+        </a>
+        {% endfor %}
+        {% if publishedItems.length > 50 %}<p class="eb-empty">Showing 50 of {{ publishedItems.length }}. <a href="/archives/">Full archive &rarr;</a></p>{% endif %}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.eb-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+@media (max-width: 900px) {
+  .eb-board { grid-template-columns: 1fr; }
+}
+.eb-col {
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-rule);
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+}
+.eb-col__header {
+  padding: var(--space-4) var(--space-4) var(--space-3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-rule);
+}
+.eb-col__title {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+.eb-col__count {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+  background: var(--color-bg);
+  border: 1px solid var(--color-rule);
+  padding: 1px var(--space-2);
+}
+.eb-col__body {
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+.eb-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg);
+  border: 1px solid var(--color-rule);
+  text-decoration: none;
+  color: var(--color-ink);
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.eb-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
+}
+.eb-card__section {
+  font-family: var(--font-ui);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-faint);
+}
+.eb-card__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1.3;
+}
+.eb-card__meta {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-ink-faint);
+}
+.eb-empty {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-ink-faint);
+  font-style: italic;
+  margin: 0;
+  padding: var(--space-2);
+}
+</style>
+
+<script>
+(function () {
+  var s = document.getElementById('eb-search');
+  var sec = document.getElementById('eb-section');
+  var cards = document.querySelectorAll('.eb-card');
+
+  function filter() {
+    var q = (s.value || '').toLowerCase().trim();
+    var sf = sec.value;
+    cards.forEach(function (c) {
+      var matchQ = !q || c.dataset.search.indexOf(q) !== -1;
+      var matchS = !sf || c.dataset.section === sf;
+      c.style.display = matchQ && matchS ? '' : 'none';
+    });
+  }
+
+  s.addEventListener('input', filter);
+  sec.addEventListener('change', filter);
+})();
+</script>

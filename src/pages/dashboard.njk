@@ -23,6 +23,11 @@ eleventyExcludeFromCollections: true
     <p style="color: var(--color-ink-muted); font-size: var(--text-md);">
       Content overview across all sections.
     </p>
+    <div style="display:flex;gap:var(--space-3);margin-top:var(--space-4);flex-wrap:wrap;">
+      <a href="/editorial/board/" class="btn" style="font-size:var(--text-xs);">Editorial Board</a>
+      <a href="/templates/" class="btn" style="font-size:var(--text-xs);">Content Templates</a>
+      <a href="/abbreviations/" class="btn" style="font-size:var(--text-xs);">Abbreviations</a>
+    </div>
   </header>
 
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-6);margin-bottom:var(--space-10);">
@@ -49,35 +54,36 @@ eleventyExcludeFromCollections: true
     {# ── Articles by Status ── #}
     <div>
       <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Articles by Status</h2>
-      {% set draftCount = { n: 0 } %}
-      {% set reviewCount = { n: 0 } %}
-      {% set publishedCount = { n: 0 } %}
-      {% for article in collections.allContent %}
-        {% if article.data.status == "draft" or article.data.draft %}{% set draftCount = { n: draftCount.n + 1 } %}
-        {% elif article.data.status == "review" %}{% set reviewCount = { n: reviewCount.n + 1 } %}
-        {% else %}{% set publishedCount = { n: publishedCount.n + 1 } %}
-        {% endif %}
-      {% endfor %}
+      {% set sc = collections.allContent | statusCounts %}
       <table {{ tbl | safe }}>
         <thead><tr {{ headb | safe }}><th {{ th | safe }}>Status</th><th {{ thr | safe }}>Count</th></tr></thead>
         <tbody>
-          <tr {{ rowb | safe }}><td {{ td | safe }}>Published</td><td {{ tdr | safe }}>{{ publishedCount.n }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}>In Review</td><td {{ tdr | safe }}>{{ reviewCount.n }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}>Draft</td><td {{ tdr | safe }}>{{ draftCount.n }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/editorial/board/">Published</a></td><td {{ tdr | safe }}>{{ sc.published }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/editorial/board/">In Review</a></td><td {{ tdr | safe }}>{{ sc.review }}</td></tr>
+          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/editorial/board/">Draft</a></td><td {{ tdr | safe }}>{{ sc.draft }}</td></tr>
         </tbody>
       </table>
     </div>
 
-    {# ── Authors ── #}
-    <div>
-      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Authors</h2>
+    {# ── Author Productivity ── #}
+    <div style="grid-column: span 2;">
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Author Productivity</h2>
       <table {{ tbl | safe }}>
-        <thead><tr {{ headb | safe }}><th {{ th | safe }}>Author</th><th {{ thr | safe }}>Role</th></tr></thead>
+        <thead>
+          <tr {{ headb | safe }}>
+            <th {{ th | safe }}>Author</th>
+            <th {{ thr | safe }}>Articles</th>
+            <th {{ thr | safe }}>Total Words</th>
+            <th {{ thr | safe }}>Avg Length</th>
+          </tr>
+        </thead>
         <tbody>
-          {% for slug, author in authors %}
+          {% for stat in collections.allContent | authorStats %}
           <tr {{ rowb | safe }}>
-            <td {{ td | safe }}><a href="/author/{{ slug }}/">{{ author.name }}</a></td>
-            <td {{ tdr | safe }}>{{ author.role }}</td>
+            <td {{ td | safe }}>{{ stat.name }}</td>
+            <td {{ tdr | safe }}>{{ stat.count }}</td>
+            <td {{ tdr | safe }}>{{ stat.totalWords }}</td>
+            <td {{ tdr | safe }}>{{ stat.avgWords }}</td>
           </tr>
           {% endfor %}
         </tbody>

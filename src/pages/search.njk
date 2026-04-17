@@ -44,6 +44,7 @@ permalink: /search/
 
     {# States — only one visible at a time #}
     <div id="sp-default" class="sp-state">
+      <div id="sp-saved"></div>
       <div id="sp-history"></div>
       <div class="sp-try">
         <p class="sp-try__label">Try searching for</p>
@@ -69,6 +70,10 @@ permalink: /search/
         <span id="sp-count"></span>
         <div id="sp-section-counts" class="sp-section-counts"></div>
         <div class="sp-sort">
+          <button type="button" id="sp-save" class="sp-save-btn" title="Save this search">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            Save
+          </button>
           <select id="sp-sort" class="sp-sort-select" aria-label="Sort results">
             <option value="relevance">Relevance</option>
             <option value="newest">Newest</option>
@@ -148,6 +153,20 @@ permalink: /search/
 .sp-history__clear:hover { color: var(--color-ink); }
 #sp-history:not(:empty) { margin-bottom: var(--space-8); padding-bottom: var(--space-6); border-bottom: 1px solid var(--color-rule); }
 
+/* Saved searches */
+.sp-saved__label { font-family: var(--font-ui); font-size: var(--text-xs); color: var(--color-ink-faint); margin: 0 0 var(--space-2); text-transform: uppercase; letter-spacing: 0.08em; }
+.sp-saved__item { display: flex; justify-content: space-between; align-items: center; padding: var(--space-1) 0; }
+.sp-saved__link { font-family: var(--font-ui); font-size: var(--text-sm); color: var(--color-link); background: none; border: none; cursor: pointer; padding: 0; text-align: left; flex: 1; }
+.sp-saved__link:hover { text-decoration: underline; }
+.sp-saved__meta { font-family: var(--font-ui); font-size: var(--text-xs); color: var(--color-ink-faint); margin-left: var(--space-3); }
+.sp-saved__del { background: none; border: none; color: var(--color-ink-faint); cursor: pointer; font-size: var(--text-md); padding: 0 var(--space-2); line-height: 1; }
+.sp-saved__del:hover { color: var(--color-accent); }
+#sp-saved:not(:empty) { margin-bottom: var(--space-8); padding-bottom: var(--space-6); border-bottom: 1px solid var(--color-rule); }
+
+.sp-save-btn { font-family: var(--font-ui); font-size: var(--text-xs); background: var(--color-bg); border: 1px solid var(--color-rule); color: var(--color-ink-muted); padding: var(--space-1) var(--space-3); cursor: pointer; transition: all var(--transition-fast); display: inline-flex; align-items: center; gap: 4px; }
+.sp-save-btn:hover { border-color: var(--color-ink); color: var(--color-ink); }
+.sp-save-btn.is-saved { background: var(--color-ink); color: var(--color-bg); border-color: var(--color-ink); }
+
 /* Results header */
 .sp-results-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-rule); margin-bottom: var(--space-4); font-family: var(--font-ui); font-size: var(--text-xs); color: var(--color-ink-faint); }
 .sp-section-counts { display: flex; flex-wrap: wrap; gap: var(--space-2); flex: 1; }
@@ -225,9 +244,10 @@ permalink: /search/
   var stDefault = $('sp-default'), stLoading = $('sp-loading'), stActive = $('sp-active'), stEmpty = $('sp-empty');
   var resultsEl = $('sp-results'), countEl = $('sp-count'), moreWrap = $('sp-more'), moreBtn = $('sp-more-btn');
   var sectionCountsEl = $('sp-section-counts'), sortSelect = $('sp-sort'), historyEl = $('sp-history');
+  var savedEl = $('sp-saved'), saveBtn = $('sp-save');
   var filterBtns = document.querySelectorAll('.sp-filter');
 
-  var pagefind, activeSection = '', allResults = [], shown = 0, PAGE = 15, HKEY = 'tft-search-history', focusIdx = -1;
+  var pagefind, activeSection = '', allResults = [], shown = 0, PAGE = 15, HKEY = 'tft-search-history', SKEY = 'tft-saved-searches', focusIdx = -1;
   var acEl = $('sp-autocomplete'), acIdx = -1, acDb;
 
   // URL params
@@ -253,6 +273,43 @@ permalink: /search/
     historyEl.querySelector('.sp-history__clear').onclick = function () { localStorage.removeItem(HKEY); historyEl.innerHTML = ''; };
   }
 
+  // Saved searches
+  function getS() { try { return JSON.parse(localStorage.getItem(SKEY)) || []; } catch (e) { return []; } }
+  function setS(arr) { try { localStorage.setItem(SKEY, JSON.stringify(arr)); } catch (e) {} }
+  function isCurrentSaved() {
+    var q = input.value.trim();
+    if (!q) return false;
+    return getS().some(function (s) { return s.q === q && s.section === activeSection; });
+  }
+  function updateSaveBtn() {
+    if (!saveBtn) return;
+    saveBtn.classList.toggle('is-saved', isCurrentSaved());
+    saveBtn.title = isCurrentSaved() ? 'Remove from saved searches' : 'Save this search';
+  }
+  function showSaved() {
+    if (!savedEl) return;
+    var list = getS();
+    if (!list.length) { savedEl.innerHTML = ''; return; }
+    savedEl.innerHTML = '<p class="sp-saved__label">Saved searches</p>' +
+      list.map(function (s, i) {
+        var label = esc(s.q) + (s.section ? ' <span class="sp-saved__meta">in ' + esc(s.section) + '</span>' : '');
+        return '<div class="sp-saved__item"><button class="sp-saved__link" type="button" data-idx="' + i + '">' + label + '</button><button class="sp-saved__del" type="button" data-idx="' + i + '" aria-label="Remove">&times;</button></div>';
+      }).join('');
+    savedEl.querySelectorAll('.sp-saved__link').forEach(function (b) {
+      b.onclick = function () {
+        var item = getS()[b.dataset.idx];
+        if (!item) return;
+        input.value = item.q;
+        activeSection = item.section || '';
+        filterBtns.forEach(function (f) { f.classList.toggle('is-active', (f.dataset.section || '') === activeSection); });
+        search();
+      };
+    });
+    savedEl.querySelectorAll('.sp-saved__del').forEach(function (b) {
+      b.onclick = function () { var list = getS(); list.splice(b.dataset.idx, 1); setS(list); showSaved(); updateSaveBtn(); };
+    });
+  }
+
   function renderResult(item) {
     var s = item.meta?.section || '';
     return '<a class="sp-result" href="' + item.url + '" data-section="' + esc(s) + '" tabindex="0">' +
@@ -266,7 +323,7 @@ permalink: /search/
     var q = input.value.trim();
     clearBtn.hidden = !q;
 
-    if (!q && !activeSection) { showState(stDefault); showHistory(); updateURL(q); return; }
+    if (!q && !activeSection) { showState(stDefault); showSaved(); showHistory(); updateURL(q); return; }
 
     hideAc();
     showState(stLoading);
@@ -301,6 +358,7 @@ permalink: /search/
     shown = 0;
     applySort();
     render(true);
+    updateSaveBtn();
   }
 
   function applySort() {
@@ -375,6 +433,18 @@ permalink: /search/
   moreBtn.onclick = function () { render(false); };
   sortSelect.onchange = function () { applySort(); shown = 0; render(true); };
   filterBtns.forEach(function (b) { b.onclick = function () { filterBtns.forEach(function (x) { x.classList.remove('is-active'); }); b.classList.add('is-active'); activeSection = b.dataset.section || ''; search(); }; });
+
+  if (saveBtn) saveBtn.onclick = function () {
+    var q = input.value.trim();
+    if (!q) return;
+    var list = getS();
+    var idx = list.findIndex(function (s) { return s.q === q && s.section === activeSection; });
+    if (idx >= 0) list.splice(idx, 1);
+    else list.unshift({ q: q, section: activeSection, ts: Date.now() });
+    setS(list);
+    updateSaveBtn();
+    showSaved();
+  };
   document.querySelectorAll('.sp-try__btn').forEach(function (b) { b.onclick = function () { input.value = b.textContent; search(); }; });
 
   // Keyboard nav
@@ -387,6 +457,6 @@ permalink: /search/
   });
 
   // Init
-  if (input.value || activeSection) search(); else { showState(stDefault); showHistory(); }
+  if (input.value || activeSection) search(); else { showState(stDefault); showSaved(); showHistory(); }
 })();
 </script>
