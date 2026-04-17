@@ -763,6 +763,14 @@ layout: layouts/base.njk
     <button class="library-panel__close" aria-label="Close panel">&times;</button>
   </div>
 
+  {# Quick-actions row: populated at load time by reader-panel-migrate.js
+     which moves #bookmark-btn, #tts-btn, #focus-btn into these slots. #}
+  <div class="library-panel__quick-actions">
+    <div id="reader-panel-slot-bookmark"></div>
+    <div id="reader-panel-slot-tts"></div>
+    <div id="reader-panel-slot-focus"></div>
+  </div>
+
   <div class="library-panel__tabs" role="tablist" style="justify-content:center;">
     <button class="library-panel__tab" role="tab" aria-selected="true" aria-label="Contents" title="Contents"
             data-target="article-panel-contents">
@@ -783,6 +791,18 @@ layout: layouts/base.njk
     <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Related" title="Related"
             data-target="article-panel-related">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    </button>
+    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Display settings" title="Display"
+            data-target="article-panel-display">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+    </button>
+    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Share and download" title="Share"
+            data-target="article-panel-share">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+    </button>
+    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Cite this article" title="Cite"
+            data-target="article-panel-cite-section">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.685.54-2.293.44-.6 1.05-1.05 1.83-1.343.78-.295 1.56-.43 2.34-.43v-1.52c-.976 0-1.94.16-2.886.48-.95.32-1.8.824-2.556 1.51-.755.685-1.347 1.54-1.78 2.563-.432 1.025-.65 2.218-.65 3.58 0 1.36.22 2.47.65 3.33.432.86 1.02 1.5 1.76 1.92.74.42 1.57.63 2.48.63.97 0 1.79-.22 2.46-.66.67-.44 1.17-1.03 1.5-1.77.33-.74.5-1.55.5-2.44zm9 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.132-1.54-.022-.16-.95.1-1.685.54-2.294.44-.606 1.05-1.056 1.83-1.35.78-.294 1.56-.43 2.34-.43v-1.52c-.976 0-1.94.16-2.886.48-.95.32-1.8.825-2.556 1.51-.755.686-1.347 1.54-1.78 2.565-.432 1.022-.65 2.216-.65 3.578 0 1.36.22 2.47.65 3.33.432.86 1.02 1.5 1.76 1.92.74.42 1.57.63 2.48.63.97 0 1.79-.22 2.46-.66.67-.44 1.17-1.03 1.5-1.77.33-.74.5-1.55.5-2.44z"/></svg>
     </button>
     <span style="flex:1;"></span>
     <div class="library-panel__export-wrap" style="position:relative;">
@@ -820,6 +840,16 @@ layout: layouts/base.njk
     <div id="article-panel-highlights" class="library-panel__section" aria-hidden="true"></div>
     <div id="article-panel-notes" class="library-panel__section" aria-hidden="true"></div>
     <div id="article-panel-bookmarks" class="library-panel__section" aria-hidden="true"></div>
+    <div id="article-panel-display" class="library-panel__section" aria-hidden="true">
+      <div id="reader-panel-slot-display"></div>
+    </div>
+    <div id="article-panel-share" class="library-panel__section" aria-hidden="true">
+      <div id="reader-panel-slot-share"></div>
+      <div id="reader-panel-slot-download" style="margin-top:var(--space-4);"></div>
+    </div>
+    <div id="article-panel-cite-section" class="library-panel__section" aria-hidden="true">
+      <div id="reader-panel-slot-cite"></div>
+    </div>
     <div id="article-panel-related" class="library-panel__section" aria-hidden="true">
       {% set relatedList = collections.allContent | relatedArticles({ tags: tags, section: section, title: title }, page.url, 4) %}
       {% if relatedList.length > 0 %}
@@ -837,6 +867,14 @@ layout: layouts/base.njk
       <p style="font-size:var(--text-xs);color:var(--color-ink-faint);font-style:italic;">No related articles found.</p>
       {% endif %}
     </div>
+  </div>
+
+  {# Footer links: populated at load time with the History / Comments / Feedback buttons
+     moved from the article header. #}
+  <div class="library-panel__footer-links">
+    <div id="reader-panel-slot-history"></div>
+    <div id="reader-panel-slot-comments"></div>
+    <div id="reader-panel-slot-feedback"></div>
   </div>
 </aside>
 

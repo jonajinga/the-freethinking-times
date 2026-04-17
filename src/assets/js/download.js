@@ -89,13 +89,20 @@
   }
 
   // ─── Panel toggle ─────────────────────────────────────────────
+  // Skip toggle/auto-close when panel has been relocated into the Reader panel.
+  function isInReaderPanel() {
+    return !!(panel.closest && panel.closest('.library-panel'));
+  }
+
   btn.addEventListener('click', function () {
+    if (isInReaderPanel()) return;
     var open = this.getAttribute('aria-expanded') === 'true';
     this.setAttribute('aria-expanded', String(!open));
     panel.hidden = open;
   });
 
   document.addEventListener('click', function (e) {
+    if (isInReaderPanel()) return;
     if (!btn.contains(e.target) && !panel.contains(e.target)) {
       btn.setAttribute('aria-expanded', 'false');
       panel.hidden = true;
@@ -103,6 +110,7 @@
   });
 
   document.addEventListener('keydown', function (e) {
+    if (isInReaderPanel()) return;
     if (e.key === 'Escape' && !panel.hidden) {
       panel.hidden = true;
       btn.setAttribute('aria-expanded', 'false');

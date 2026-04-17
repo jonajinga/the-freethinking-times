@@ -403,13 +403,24 @@
   };
 
   // ─── Panel toggle ─────────────────────────────────────────
+  // When the panel has been relocated into the Reader panel as a tab section,
+  // the tab system owns visibility via aria-hidden. Skip the dropdown toggle,
+  // document-click dismissal, and Escape handlers — all would interfere with
+  // the tab-based display. Checked at event time since reparenting happens
+  // after this script initializes.
+  function isInReaderPanel() {
+    return !!(panel.closest && panel.closest('.library-panel'));
+  }
+
   btn.addEventListener('click', function () {
+    if (isInReaderPanel()) return;
     var open = this.getAttribute('aria-expanded') === 'true';
     this.setAttribute('aria-expanded', String(!open));
     panel.hidden = open;
   });
 
   document.addEventListener('click', function (e) {
+    if (isInReaderPanel()) return;
     if (!btn.contains(e.target) && !panel.contains(e.target)) {
       btn.setAttribute('aria-expanded', 'false');
       panel.hidden = true;
@@ -417,6 +428,7 @@
   });
 
   document.addEventListener('keydown', function (e) {
+    if (isInReaderPanel()) return;
     if (e.key === 'Escape' && !panel.hidden) {
       panel.hidden = true;
       btn.setAttribute('aria-expanded', 'false');

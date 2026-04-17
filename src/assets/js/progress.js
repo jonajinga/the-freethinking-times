@@ -82,24 +82,34 @@
     if (masto) masto.href = 'https://mastodon.social/share?text=' + encodeURIComponent(shareTitle + '\n\n' + shareUrl);
     if (em)   em.href   = 'mailto:?subject=' + encTitle + '&body=' + encUrl;
 
+    // Skip toggle/auto-close when panel has been relocated into the Reader panel.
+    function isShareInReaderPanel() {
+      return !!(sharePanel.closest && sharePanel.closest('.library-panel'));
+    }
+
     function openSharePanel() {
+      if (isShareInReaderPanel()) return;
       sharePanel.hidden = false;
       shareBtn.setAttribute('aria-expanded', 'true');
     }
     function closeSharePanel() {
+      if (isShareInReaderPanel()) return;
       sharePanel.hidden = true;
       shareBtn.setAttribute('aria-expanded', 'false');
     }
 
     shareBtn.addEventListener('click', function(e) {
+      if (isShareInReaderPanel()) return;
       e.stopPropagation();
       if (!sharePanel.hidden) { closeSharePanel(); } else { openSharePanel(); }
     });
 
     document.addEventListener('click', function(e) {
+      if (isShareInReaderPanel()) return;
       if (!sharePanel.hidden && !sharePanel.contains(e.target)) closeSharePanel();
     });
     document.addEventListener('keydown', function(e) {
+      if (isShareInReaderPanel()) return;
       if (e.key === 'Escape' && !sharePanel.hidden) { closeSharePanel(); shareBtn.focus(); }
     });
 

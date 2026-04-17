@@ -774,10 +774,65 @@
   display: flex;
   border-bottom: 1px solid var(--color-rule);
   flex-shrink: 0;
-  overflow: visible;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 
 .library-panel__tabs::-webkit-scrollbar { display: none; }
+
+/* Quick-actions row at the top of the Reader panel — holds the Save,
+   Listen, and Focus buttons that were lifted out of the article header. */
+.library-panel__quick-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-rule);
+  flex-shrink: 0;
+}
+.library-panel__quick-actions:empty { display: none; }
+.library-panel__quick-actions > div {
+  display: flex;
+  align-items: center;
+}
+.library-panel__quick-actions .article-action-btn {
+  position: static;
+  min-width: 44px;
+  min-height: 44px;
+  padding: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Footer links at the bottom of the Reader panel — History, Comments,
+   Feedback buttons that were lifted out of the article header. */
+.library-panel__footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--color-rule);
+  flex-shrink: 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+}
+.library-panel__footer-links > div {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.library-panel__footer-links .article-action-btn {
+  position: static;
+  min-width: 44px;
+  min-height: 44px;
+  padding: var(--space-2);
+}
 
 .library-panel__tab {
   flex: 0 0 auto;

@@ -524,63 +524,11 @@
 }
 
 /* ── Article action buttons (copy link / print) ─────────────── */
+/* The article action bar is consolidated into the Reader panel.
+   Hide the original inline bar — its buttons are moved into the panel
+   at load time by reader-panel-migrate.js. */
 .article-header__actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-top: var(--space-4);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--color-rule);
-}
-
-/* Desktop (>=900px): lift the reader tools into a fixed vertical column on
-   the right of the prose area — same pattern as the glossary A-Z nav.
-   Below 900px it falls back to the horizontal scroll row (below). */
-@media (min-width: 900px) {
-  .article-header__actions {
-    position: fixed;
-    top: calc(var(--space-16) + var(--space-2));
-    left: calc(50% + var(--max-width-prose) / 2 + var(--space-4));
-    width: 52px;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: center;
-    justify-content: flex-start;
-    gap: var(--space-1);
-    margin: 0;
-    padding: var(--space-2) 0;
-    border: 1px solid var(--color-rule);
-    border-top: 1px solid var(--color-rule);
-    background: var(--color-bg);
-    box-shadow: var(--shadow-sm);
-    z-index: var(--z-nav);
-    max-height: calc(100vh - var(--space-20));
-    overflow-y: auto;
-    scrollbar-width: none;
-  }
-  .article-header__actions::-webkit-scrollbar { display: none; }
-
-  /* The article-header shouldn't reserve space for the lifted-out actions. */
-  .article-header { position: relative; }
-
-  /* Reading settings panel dropdown — anchor to the rail position when open */
-  .article-header__actions .reading-settings-wrap,
-  .article-header__actions .download-wrap {
-    position: static;
-  }
-  .article-header__actions .reading-settings-panel[data-rs-panel],
-  .article-header__actions #reading-settings-panel {
-    right: calc(100% + var(--space-2));
-    left: auto;
-    top: 0;
-  }
-  .article-header__actions #download-panel {
-    right: calc(100% + var(--space-2));
-    left: auto;
-    top: 0;
-  }
+  display: none;
 }
 
 .article-action-btn .btn-label,
@@ -588,16 +536,9 @@
   display: none;
 }
 
+/* Still style the selection toolbar + library reader actions on mobile —
+   those are independent of the article action bar. */
 @media (max-width: 768px) {
-  /* Mobile: reader-tools icon rows scroll horizontally in a single row
-     rather than wrapping to multiple lines. Matches the glossary A-Z
-     navigation pattern — swipe through the tools instead of vertical
-     space-stealing wrap. Applied to:
-       .article-header__actions   — article reader tools bar
-       .library-reader-actions    — library chapter reader tools
-       .annotation-toolbar        — selection toolbar at bottom
-  */
-  .article-header__actions,
   .library-reader-actions,
   .annotation-toolbar {
     flex-wrap: nowrap;
@@ -609,25 +550,42 @@
     scrollbar-width: none;
     padding-bottom: var(--space-1);
   }
-  .article-header__actions::-webkit-scrollbar,
   .library-reader-actions::-webkit-scrollbar,
   .annotation-toolbar::-webkit-scrollbar { display: none; }
 
-  .article-action-btn,
   .annotation-toolbar__btn {
     flex-shrink: 0;
   }
-  .article-action-btn {
-    min-width: 44px;
-    min-height: 44px;
-    width: auto;
-    height: auto;
-    padding: var(--space-2);
-  }
-  .article-action-btn svg {
-    width: 16px;
-    height: 16px;
-  }
+}
+
+/* When reading-settings, share, or download panels are relocated into a
+   Reader panel tab section, strip their dropdown/fixed positioning so
+   they render inline as tab content. */
+.library-panel__section #reading-settings-panel,
+.library-panel__section #share-panel,
+.library-panel__section #download-panel {
+  position: static;
+  top: auto;
+  right: auto;
+  left: auto;
+  bottom: auto;
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+  z-index: auto;
+  display: block !important;
+}
+
+.library-panel__section #reading-settings-panel .rs-panel-close {
+  display: none;
 }
 
 .article-action-btn {
