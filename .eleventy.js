@@ -288,13 +288,22 @@ module.exports = function (eleventyConfig) {
   });
 
   // Per-author productivity stats: [{ name, count, totalWords, avgWords, sections }]
+  // Reads raw Markdown source (strips front matter) to avoid templateContent
+  // being unavailable at the time this filter runs.
   eleventyConfig.addFilter("authorStats", (allContent) => {
     const stats = {};
     allContent.forEach(item => {
       const name = item.data.authorName || item.data.author || "Unknown";
       if (!stats[name]) stats[name] = { name, count: 0, totalWords: 0, sections: new Set() };
       stats[name].count++;
-      const words = (item.templateContent || "").replace(/<[^>]+>/g, "").split(/\s+/).filter(Boolean).length;
+      let words = 0;
+      try {
+        if (item.inputPath && fs.existsSync(item.inputPath)) {
+          const raw = fs.readFileSync(item.inputPath, "utf8");
+          const body = raw.replace(/^---[\s\S]*?---/, ""); // strip front matter
+          words = body.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
+        }
+      } catch (e) { /* ignore */ }
       stats[name].totalWords += words;
       if (item.data.section) stats[name].sections.add(item.data.section);
     });
