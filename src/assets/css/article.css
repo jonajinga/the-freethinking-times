@@ -1044,6 +1044,13 @@
   display: none;
 }
 
+/* Keep reading header visible in focus mode — gives readers a way out */
+[data-focus-mode="on"] .article-reading-header,
+[data-focus-mode="on"] .library-reading-header {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
 [data-focus-mode="on"] .site-footer {
   display: none;
 }
