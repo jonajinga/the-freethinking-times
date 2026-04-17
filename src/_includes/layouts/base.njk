@@ -73,7 +73,7 @@
   {% endif %}
 
   {# ── Site prefix for localStorage keys ── #}
-  <script>window.__PREFIX='{{ site.storagePrefix }}';</script>
+  <script>window.__PREFIX='{{ site.storagePrefix }}';{% if site.repo %}window.__repo={owner:"{{ site.repo.owner }}",name:"{{ site.repo.name }}",branch:"{{ site.repo.branch | default('main') }}"};{% endif %}</script>
 
   {# ── Inline theme script (prevents flash) ── #}
   <script>
@@ -140,6 +140,7 @@
   {% if site.forms and site.forms.accessKey %}
   <script src="https://web3forms.com/client/script.js" async defer></script>
   <script src="/assets/js/dictation.js" defer></script>
+  <script src="/assets/js/revision-history.js" defer></script>
   <script>
   document.addEventListener('DOMContentLoaded',function(){
     document.querySelectorAll('.w3f').forEach(function(f){

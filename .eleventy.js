@@ -1,12 +1,50 @@
 const pluginRss = require("@11ty/eleventy-plugin-rss");
+const eleventyImage = require("@11ty/eleventy-img");
 const { DateTime } = require("luxon");
 const fs = require("fs");
+const path = require("path");
 const { execSync } = require("child_process");
 
 module.exports = function (eleventyConfig) {
 
   // ─── Plugins ────────────────────────────────────────────────────────────────
   eleventyConfig.addPlugin(pluginRss);
+
+  // ─── Responsive image shortcode ────────────────────────────────────────────
+  // Usage in Markdown: {% image "src/assets/img/foo.jpg", "alt text", "(max-width: 768px) 100vw, 720px" %}
+  // Outputs <picture> with AVIF + WebP + fallback, lazy-loaded, with width/height.
+  async function imageShortcode(src, alt = "", sizes = "(max-width: 720px) 100vw, 720px", className = "") {
+    if (!src) return "";
+    // Allow authors to reference images as /assets/img/... — resolve to disk path
+    const diskSrc = src.startsWith("/")
+      ? path.join("./src", src)
+      : src.startsWith("src/") ? src : path.join("./src/assets/img", src);
+
+    let metadata;
+    try {
+      metadata = await eleventyImage(diskSrc, {
+        widths: [400, 800, 1200, null],
+        formats: ["avif", "webp", "jpeg"],
+        outputDir: "./_site/assets/img/opt/",
+        urlPath: "/assets/img/opt/"
+      });
+    } catch (e) {
+      console.warn("image shortcode: failed to process", src, "—", e.message);
+      return `<img src="${src}" alt="${alt}" loading="lazy">`;
+    }
+
+    return eleventyImage.generateHTML(metadata, {
+      alt,
+      sizes,
+      loading: "lazy",
+      decoding: "async",
+      class: className || undefined
+    });
+  }
+
+  eleventyConfig.addAsyncShortcode("image", imageShortcode);
+  eleventyConfig.addLiquidShortcode("image", imageShortcode);
+  eleventyConfig.addJavaScriptFunction("image", imageShortcode);
 
   // ─── Passthrough Copies ─────────────────────────────────────────────────────
   // Copy assets but exclude CSS (concatenated at build time below)
@@ -380,6 +418,40 @@ module.exports = function (eleventyConfig) {
       tags: item.data.tags || [],
       featured: !!item.data.featured
     }));
+  });
+
+  // Active assignments: articles with an `assignedTo` field that aren't yet published.
+  // Returns [{ title, url, assignedTo, dueDate, status, daysUntilDue, overdue }] sorted by due date.
+  eleventyConfig.addFilter("activeAssignments", (allContent) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return allContent
+      .filter(item => item.data.assignedTo)
+      .filter(item => {
+        const isPublished = !item.data.draft && item.data.status !== "draft" && item.data.status !== "review";
+        return !isPublished;
+      })
+      .map(item => {
+        const due = item.data.dueDate ? new Date(item.data.dueDate) : null;
+        const daysUntilDue = due ? Math.ceil((due - today) / 86400000) : null;
+        return {
+          title: item.data.title,
+          url: item.url,
+          assignedTo: item.data.assignedTo,
+          dueDate: due ? due.toISOString().slice(0, 10) : null,
+          status: item.data.draft ? "draft" : (item.data.status || "published"),
+          daysUntilDue,
+          overdue: due && daysUntilDue < 0
+        };
+      })
+      .sort((a, b) => {
+        // Overdue first, then earliest due, then no-due-date last
+        if (a.overdue !== b.overdue) return a.overdue ? -1 : 1;
+        if (a.dueDate && b.dueDate) return a.dueDate.localeCompare(b.dueDate);
+        if (a.dueDate) return -1;
+        if (b.dueDate) return 1;
+        return 0;
+      });
   });
 
   // Filter a collection by status (draft / review / published)

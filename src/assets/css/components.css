@@ -1359,6 +1359,85 @@ body:has(.music-bar:not([hidden])) .reading-floats {
   color: var(--color-bg-alt);
 }
 
+/* ── Revision history panel ────────────────────────────────── */
+.rh-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(420px, 100vw);
+  background: var(--color-bg);
+  border-left: 1px solid var(--color-rule);
+  box-shadow: var(--shadow-md);
+  z-index: var(--z-modal);
+  overflow-y: auto;
+  padding: var(--space-6);
+  font-family: var(--font-ui);
+}
+.rh-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--space-4);
+  border-bottom: 2px solid var(--color-ink);
+  margin-bottom: var(--space-4);
+}
+.rh-title {
+  font-family: var(--font-headline);
+  font-size: var(--text-lg);
+  margin: 0;
+}
+.rh-close {
+  background: none;
+  border: none;
+  font-size: var(--text-xl);
+  cursor: pointer;
+  color: var(--color-ink-muted);
+  padding: 0;
+  line-height: 1;
+}
+.rh-close:hover { color: var(--color-ink); }
+.rh-empty {
+  font-size: var(--text-sm);
+  color: var(--color-ink-faint);
+  font-style: italic;
+}
+.rh-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.rh-item {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-rule);
+}
+.rh-item__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-ink-faint);
+  margin-bottom: var(--space-1);
+}
+.rh-avatar {
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.rh-author { font-weight: 600; color: var(--color-ink-muted); }
+.rh-date { margin-left: auto; }
+.rh-message {
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  margin-bottom: var(--space-1);
+}
+.rh-sha {
+  font-family: monospace;
+  font-size: var(--text-xs);
+  color: var(--color-link);
+  text-decoration: none;
+}
+.rh-sha:hover { text-decoration: underline; }
+
 /* ── GTranslate in nav drawer ──────────────────────────────── */
 /* Old drawer classes no longer used */
 .nav-drawer__translate,

@@ -451,6 +451,18 @@ layout: layouts/base.njk
             <span class="btn-label">Cite</span>
           </button>
 
+          {# 7b. Revision history (only if repo configured) #}
+          {% if site.repo and site.repo.owner %}
+          <button class="article-action-btn" id="revision-history-btn" type="button"
+            aria-label="View revision history"
+            data-source-path="{{ page.inputPath }}">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/>
+            </svg>
+            <span class="btn-label">History</span>
+          </button>
+          {% endif %}
+
           {# 8. Comments #}
           {% if site.comments and site.comments.appId %}
           <button class="article-action-btn" type="button" aria-label="Comments"

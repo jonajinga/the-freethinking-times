@@ -68,6 +68,40 @@ eleventyExcludeFromCollections: true
       </table>
     </div>
 
+    {# ── Active Assignments ── #}
+    <div style="grid-column: span 2;">
+      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Active Assignments</h2>
+      {% set assignments = collections.allContent | activeAssignments %}
+      {% if assignments.length %}
+      <table {{ tbl | safe }}>
+        <thead>
+          <tr {{ headb | safe }}>
+            <th {{ th | safe }}>Article</th>
+            <th {{ th | safe }}>Assigned to</th>
+            <th {{ th | safe }}>Status</th>
+            <th {{ thr | safe }}>Due</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in assignments %}
+          <tr {{ rowb | safe }}>
+            <td {{ td | safe }}><a href="{{ a.url }}">{{ a.title }}</a></td>
+            <td {{ td | safe }}>{{ a.assignedTo }}</td>
+            <td {{ td | safe }}>{{ a.status }}</td>
+            <td {{ tdr | safe }}>
+              {% if a.overdue %}<strong style="color:var(--color-accent);">{{ a.dueDate }} ({{ a.daysUntilDue * -1 }}d late)</strong>
+              {% elif a.dueDate %}{{ a.dueDate }}{% if a.daysUntilDue <= 2 %} <span style="color:var(--color-history);">({{ a.daysUntilDue }}d)</span>{% endif %}
+              {% else %}<span style="color:var(--color-ink-faint);">no due date</span>{% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p style="font-family:var(--font-ui);font-size:var(--text-sm);color:var(--color-ink-faint);font-style:italic;">No active assignments. Add <code>assignedTo:</code> and <code>dueDate:</code> to article front matter to track work.</p>
+      {% endif %}
+    </div>
+
     {# ── Author Productivity ── #}
     <div style="grid-column: span 2;">
       <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Author Productivity</h2>
