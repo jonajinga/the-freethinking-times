@@ -136,11 +136,15 @@
   <script src="/assets/js/tippy.min.js" defer></script>
   <script src="/assets/js/glossary-tips.js" defer></script>
 
+  {# ── Revision history (opt-in via site.repo config) ── #}
+  {% if site.repo and site.repo.owner %}
+  <script src="/assets/js/revision-history.js" defer></script>
+  {% endif %}
+
   {# ── hCaptcha + dictation for Web3Forms pages ── #}
   {% if site.forms and site.forms.accessKey %}
   <script src="https://web3forms.com/client/script.js" async defer></script>
   <script src="/assets/js/dictation.js" defer></script>
-  <script src="/assets/js/revision-history.js" defer></script>
   <script>
   document.addEventListener('DOMContentLoaded',function(){
     document.querySelectorAll('.w3f').forEach(function(f){
