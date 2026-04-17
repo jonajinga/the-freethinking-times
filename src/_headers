@@ -1,0 +1,9 @@
+# Cloudflare Pages headers
+# Format: path / header: value
+
+# Public JSON API — enable CORS, cache for 1 hour
+/api/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, OPTIONS
+  Cache-Control: public, max-age=3600
+  Content-Type: application/json; charset=utf-8

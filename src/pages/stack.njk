@@ -85,6 +85,14 @@ permalink: /stack/
 
       <p>Editors use <strong>Pages CMS</strong>, a browser-based tool that reads and writes directly to the site's source files. There is no separate database or content management server.</p>
 
+      <h2>Public API</h2>
+
+      <p>Every piece of content on this site is also available as JSON through our <a href="/api/">public API</a>. Articles, quotes, glossary terms, events, timeline entries, and more are exposed as static JSON files on a global CDN. No authentication, no rate limits, CORS enabled. See the <a href="/api/">API index</a> for all endpoints.</p>
+
+      <h2>Scheduled publishing</h2>
+
+      <p>Articles can be scheduled to publish at a future date by setting the <code>date</code> field in the front matter. A GitHub Action runs daily and triggers a Cloudflare Pages rebuild, making scheduled content visible as soon as its publish date arrives.</p>
+
       <h2>Source code</h2>
 
       <p>The full source code is open and free to use under the MIT licence. Anyone can fork it and build their own publication. See <a href="/open-source/">open source</a> for details.</p>

@@ -44,6 +44,7 @@ module.exports = function (eleventyConfig) {
   });
   // robots.txt is now a Nunjucks template (robots.njk)
   eleventyConfig.addPassthroughCopy({ "src/_redirects": "_redirects" });
+  eleventyConfig.addPassthroughCopy({ "src/_headers": "_headers" });
 
   // ─── Watch Targets ──────────────────────────────────────────────────────────
   eleventyConfig.addWatchTarget("src/assets/css/");
@@ -178,11 +179,16 @@ module.exports = function (eleventyConfig) {
     key => !["thought-experiments", "trials-of-thought", "glossary", "bookshelf"].includes(key)
   );
 
+  // Scheduled publishing: exclude articles with future dates (unless SHOW_FUTURE env var set)
+  const NOW = new Date();
+  const SHOW_FUTURE = process.env.SHOW_FUTURE === "1";
+  const isNotFuture = (item) => SHOW_FUTURE || item.date <= NOW;
+
   // All content across every section, newest first
   eleventyConfig.addCollection("allContent", (collectionApi) => {
     return collectionApi
       .getFilteredByGlob("src/content/**/*.md")
-      .filter(item => !item.data.draft)
+      .filter(item => !item.data.draft && isNotFuture(item))
       .sort((a, b) => b.date - a.date);
   });
 
@@ -190,7 +196,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addCollection("featured", (collectionApi) => {
     return collectionApi
       .getFilteredByGlob("src/content/**/*.md")
-      .filter(item => item.data.featured && !item.data.draft)
+      .filter(item => item.data.featured && !item.data.draft && isNotFuture(item))
       .sort((a, b) => b.date - a.date);
   });
 
@@ -199,7 +205,7 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addCollection(section, (collectionApi) => {
       return collectionApi
         .getFilteredByGlob(`src/content/${section}/*.md`)
-        .filter(item => !item.data.draft)
+        .filter(item => !item.data.draft && isNotFuture(item))
         .sort((a, b) => b.date - a.date);
     });
   });
@@ -310,6 +316,39 @@ module.exports = function (eleventyConfig) {
       else counts.published++;
     });
     return counts;
+  });
+
+  // Serialize value as JSON (pretty-printed for readability)
+  eleventyConfig.addFilter("toJSON", (value) => JSON.stringify(value, null, 2));
+
+  // Transform a collection into API records — each item as { ...frontMatter, url }
+  // Strips Eleventy internals like `collections`, `eleventy`, `page`, etc.
+  eleventyConfig.addFilter("toApiItems", (items, baseUrl) => {
+    const strip = new Set(["collections", "eleventy", "page", "pagination", "pkg", "tags", "layout", "permalink", "eleventyComputed", "eleventyExcludeFromCollections", "site", "authors", "quotes", "videos", "events", "timeline", "feeds", "changelog", "gallery", "playlists", "songs", "library", "projects"]);
+    return items.map(item => {
+      const out = { url: (baseUrl || "") + (item.url || "") };
+      Object.keys(item.data || {}).forEach(k => {
+        if (!strip.has(k) && typeof item.data[k] !== "function") {
+          out[k] = item.data[k];
+        }
+      });
+      return out;
+    });
+  });
+
+  // Transform a content collection into API-ready article records
+  eleventyConfig.addFilter("toApiArticles", (items, baseUrl) => {
+    return items.map(item => ({
+      title: item.data.title || "",
+      description: item.data.description || "",
+      url: (baseUrl || "") + (item.url || ""),
+      slug: item.fileSlug || "",
+      section: item.data.section || "",
+      author: item.data.authorName || item.data.author || "",
+      date: item.date ? item.date.toISOString().slice(0, 10) : "",
+      tags: item.data.tags || [],
+      featured: !!item.data.featured
+    }));
   });
 
   // Filter a collection by status (draft / review / published)
