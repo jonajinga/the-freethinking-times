@@ -39,3 +39,7 @@ This is not the first time the agency has faced questions about the gap between 
 The Freethinking Times will continue to pursue this story. Readers with relevant documents or direct knowledge of these cases are encouraged to contact the newsroom.
 
 *This article is based on documents obtained through FOIA requests filed in April 2025. The documents are available in full on our document archive page.*
+
+---
+
+**Correction, April 17, 2026:** An earlier version of this article described the FOIA response as taking "ten months" to fulfill. The correct figure, per the dated agency correspondence on file, is eleven months. The text has been corrected.
