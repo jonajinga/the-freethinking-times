@@ -30,6 +30,8 @@ Legal experts contacted for this article said that phrasing is unusual. A formal
 
 The agency's budget justification submitted to Congress the same week included language touting "a record number of enforcement resolutions" in the fiscal year — a figure that, read alongside the investigation closures, raises questions about how the agency is counting its outcomes.
 
+After this article was sent to the agency for comment, a spokesperson responded by email stating that "the agency does not discuss the details of specific investigations" and that "resolutions take many forms, and the framing of 'closure without action' may reflect a misunderstanding of our case management process." The spokesperson declined to specify which forms of resolution applied to the cases described in the FOIA response.
+
 ## A Pattern Worth Watching
 
 This is not the first time the agency has faced questions about the gap between its public enforcement narrative and its actual case outcomes. A 2023 audit by the Government Accountability Office found that the agency's reported "enforcement actions" included a significant number of cases that resulted in no monetary penalty and no admission of wrongdoing.
