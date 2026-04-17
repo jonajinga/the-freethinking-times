@@ -782,12 +782,13 @@
 
 .library-panel__tabs::-webkit-scrollbar { display: none; }
 
-/* Quick-actions row at the top of the Reader panel — holds the Save,
-   Listen, and Focus buttons that were lifted out of the article header. */
+/* ── Reader panel: quick-actions row ──
+   Top band of the Reader panel. Holds Save, Listen, Focus — the
+   three most-used toggles. Each slot stretches evenly; buttons
+   show icon + label stacked for clarity. */
 .library-panel__quick-actions {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--color-rule);
@@ -795,27 +796,37 @@
 }
 .library-panel__quick-actions:empty { display: none; }
 .library-panel__quick-actions > div {
+  flex: 1;
   display: flex;
-  align-items: center;
 }
 .library-panel__quick-actions .article-action-btn {
   position: static;
-  min-width: 44px;
-  min-height: 44px;
+  width: 100%;
+  height: auto;
+  min-height: 56px;
   padding: var(--space-2);
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 4px;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 600;
 }
+.library-panel__quick-actions .article-action-btn .btn-label {
+  display: inline !important;
+}
+/* Tooltip hover-label is redundant when the label is already visible */
+.library-panel__quick-actions .article-action-btn::after { display: none; }
 
-/* Footer links at the bottom of the Reader panel — History, Comments,
-   Feedback buttons that were lifted out of the article header. */
+/* ── Reader panel: footer links ──
+   Bottom band with secondary actions (Cite, History, Comments,
+   Feedback). Rendered as compact text-style buttons in a row. */
 .library-panel__footer-links {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-3);
+  gap: var(--space-1);
   padding: var(--space-3) var(--space-4);
   border-top: 1px solid var(--color-rule);
   flex-shrink: 0;
@@ -823,15 +834,48 @@
   font-size: var(--text-xs);
 }
 .library-panel__footer-links > div {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
+  flex: 1 1 45%;
+  display: flex;
 }
+.library-panel__footer-links > div:empty { display: none; }
 .library-panel__footer-links .article-action-btn {
   position: static;
-  min-width: 44px;
-  min-height: 44px;
+  width: 100%;
+  height: auto;
+  min-height: 36px;
   padding: var(--space-2);
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-2);
+  border: none;
+  background: none;
+  color: var(--color-ink-muted);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  text-align: left;
+}
+.library-panel__footer-links .article-action-btn:hover,
+.library-panel__footer-links .article-action-btn:focus-visible {
+  color: var(--color-ink);
+  background: var(--color-bg-alt);
+}
+.library-panel__footer-links .article-action-btn .btn-label {
+  display: inline !important;
+}
+.library-panel__footer-links .article-action-btn::after { display: none; }
+
+/* Subheads inside tab sections (e.g. "Share" / "Download" in the Share tab) */
+.reader-panel-subhead {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+  margin: 0 0 var(--space-3);
 }
 
 .library-panel__tab {

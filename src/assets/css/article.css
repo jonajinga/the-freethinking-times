@@ -588,6 +588,36 @@
   display: none;
 }
 
+/* Strip the dropdown-row horizontal padding on share/download items when
+   they render inside a tab section (the section body already has padding). */
+.library-panel__section .share-panel__item,
+.library-panel__section .download-panel__item {
+  padding-left: var(--space-2);
+  padding-right: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+/* When the feedback popup is rendered inside the Reader panel footer,
+   its original position: absolute; top:100% would push it out of the
+   narrow panel. Render it as a centered fixed dialog instead. */
+.library-panel__footer-links .article-feedback-wrap {
+  position: static;
+  display: flex;
+  flex: 1;
+}
+.library-panel__footer-links .article-feedback-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, -50%);
+  width: min(440px, 92vw);
+  max-height: 85vh;
+  overflow-y: auto;
+  z-index: 1000;
+  padding: var(--space-6);
+}
+
 .article-action-btn {
   position: relative;
   display: inline-flex;

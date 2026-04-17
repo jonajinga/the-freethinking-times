@@ -179,9 +179,6 @@ layout: layouts/base.njk
     <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Share and download" title="Share" data-target="panel-share">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
     </button>
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Cite this work" title="Cite" data-target="panel-cite-section">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.685.54-2.293.44-.6 1.05-1.05 1.83-1.343.78-.295 1.56-.43 2.34-.43v-1.52c-.976 0-1.94.16-2.886.48-.95.32-1.8.824-2.556 1.51-.755.685-1.347 1.54-1.78 2.563-.432 1.025-.65 2.218-.65 3.58 0 1.36.22 2.47.65 3.33.432.86 1.02 1.5 1.76 1.92.74.42 1.57.63 2.48.63.97 0 1.79-.22 2.46-.66.67-.44 1.17-1.03 1.5-1.77.33-.74.5-1.55.5-2.44zm9 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.132-1.54-.022-.16-.95.1-1.685.54-2.294.44-.606 1.05-1.056 1.83-1.35.78-.294 1.56-.43 2.34-.43v-1.52c-.976 0-1.94.16-2.886.48-.95.32-1.8.825-2.556 1.51-.755.686-1.347 1.54-1.78 2.565-.432 1.022-.65 2.216-.65 3.578 0 1.36.22 2.47.65 3.33.432.86 1.02 1.5 1.76 1.92.74.42 1.57.63 2.48.63.97 0 1.79-.22 2.46-.66.67-.44 1.17-1.03 1.5-1.77.33-.74.5-1.55.5-2.44z"/></svg>
-    </button>
     <span style="flex:1;"></span>
     <div class="library-panel__export-wrap" style="position:relative;">
       <button class="library-panel__tab" type="button" aria-label="Export notes" title="Export" onclick="var m=this.nextElementSibling;m.hidden=!m.hidden;">
@@ -236,18 +233,16 @@ layout: layouts/base.njk
 
     {# Share tab — share-panel and download-panel moved here #}
     <div id="panel-share" class="library-panel__section" aria-hidden="true">
+      <p class="reader-panel-subhead">Share</p>
       <div id="reader-panel-slot-share"></div>
-      <div id="reader-panel-slot-download" style="margin-top:var(--space-4);"></div>
-    </div>
-
-    {# Cite tab — cite-btn moved here #}
-    <div id="panel-cite-section" class="library-panel__section" aria-hidden="true">
-      <div id="reader-panel-slot-cite"></div>
+      <p class="reader-panel-subhead" style="margin-top:var(--space-6);">Download</p>
+      <div id="reader-panel-slot-download"></div>
     </div>
   </div>
 
-  {# Footer links: history/comments/feedback slots #}
+  {# Footer links: cite/history/comments/feedback slots #}
   <div class="library-panel__footer-links">
+    <div id="reader-panel-slot-cite"></div>
     <div id="reader-panel-slot-history"></div>
     <div id="reader-panel-slot-comments"></div>
     <div id="reader-panel-slot-feedback"></div>
