@@ -210,12 +210,6 @@
     if (cb) cb.checked = on;
   }
 
-  function applyProofread(on) {
-    body.classList.toggle('rs-proofread', on);
-    var cb = document.getElementById('rs-proofread');
-    if (cb) cb.checked = on;
-  }
-
   var scrollAnim = null;
   function applyAutoscroll(on) {
     if (on) {
@@ -253,7 +247,6 @@
   // Ruler and para nums are session-only — don't auto-apply from localStorage
   // if (prefs.ruler) applyRuler(true);
   if (prefs.paraNums) applyParaNums(true);
-  if (prefs.proofread) applyProofread(true);
 
   var slider = document.getElementById('rs-font-size');
   if (slider) slider.value = prefs.fontSize;
@@ -353,15 +346,6 @@
     });
   }
 
-  var proofreadCb = document.getElementById('rs-proofread');
-  if (proofreadCb) {
-    proofreadCb.addEventListener('change', function () {
-      prefs.proofread = this.checked;
-      applyProofread(prefs.proofread);
-      save('proofread', prefs.proofread);
-    });
-  }
-
   var autoscrollCb = document.getElementById('rs-autoscroll');
   if (autoscrollCb) {
     autoscrollCb.addEventListener('change', function () {
@@ -399,11 +383,10 @@
     prefs.fontSize = 18; prefs.font = 'serif'; prefs.spacing = 'normal';
     prefs.width = 'normal'; prefs.wordspace = 'normal'; prefs.bg = 'default';
     prefs.ruler = false; prefs.rulerThick = '2'; prefs.rulerColor = 'accent'; prefs.rulerStyle = 'solid';
-    prefs.paraNums = false; prefs.proofread = false; prefs.autoscroll = false; prefs.scrollSpeed = 3;
+    prefs.paraNums = false; prefs.autoscroll = false; prefs.scrollSpeed = 3;
     body.style.fontSize = ''; body.style.lineHeight = ''; body.style.wordSpacing = '';
     body.removeAttribute('data-rs-font'); body.removeAttribute('data-rs-width');
-    body.classList.remove('rs-para-numbers'); body.classList.remove('rs-proofread');
-    var prc = document.getElementById('rs-proofread'); if (prc) prc.checked = false;
+    body.classList.remove('rs-para-numbers');
     applyRuler(false);
     applyAutoscroll(false);
     var s = document.getElementById('rs-font-size'); if (s) s.value = 18;
