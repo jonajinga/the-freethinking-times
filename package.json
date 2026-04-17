@@ -2,6 +2,20 @@
   "name": "freethinking-times",
   "version": "1.0.0",
   "description": "The Freethinking Times — Independent journalism built on Eleventy",
+  "license": "MIT",
+  "author": "Jon Ajinga",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jon-ajinga/freethinking-times"
+  },
+  "keywords": [
+    "eleventy",
+    "11ty",
+    "journalism",
+    "publishing",
+    "static-site",
+    "pages-cms"
+  ],
   "scripts": {
     "start": "npx @11ty/eleventy --quiet && npx pagefind --site _site --output-path _site/pagefind && npx @11ty/eleventy --serve --quiet",
     "dev": "npx @11ty/eleventy --quiet && npx pagefind --site _site --output-path _site/pagefind && npx @11ty/eleventy --serve --quiet",
@@ -14,6 +28,7 @@
     "@11ty/eleventy-fetch": "^5.1.2",
     "@11ty/eleventy-plugin-rss": "^2.0.2",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
+    "dotenv": "^16.6.1",
     "luxon": "^3.7.2",
     "markdown-it": "^14.1.1",
     "markdown-it-anchor": "^9.2.0",

@@ -1,5 +1,13 @@
 # Pages CMS Configuration
 # https://pagescms.org/docs/configuration/
+#
+# This file defines all content collections editable via Pages CMS. Each
+# collection maps to a folder under src/content/ (articles) or a top-level
+# project folder (glossary, bookshelf, thought-experiments, trials, library).
+#
+# For forks: the default `author` value below (`jon-ajinga`) must match an
+# entry in src/_data/authors.json — change it to your own author slug when
+# you set up your fork, or remove the default and make the field required.
 
 media:
   input: src/assets/img
@@ -17,7 +25,7 @@ content:
       - { name: title, type: string, required: true }
       - { name: description, type: text, required: true }
       - { name: section, type: string, default: News, hidden: true }
-      - { name: author, type: string, default: jon-ajinga }
+      - { name: author, type: string, default: jon-ajinga }  # forks: change to your own authors.json slug
       - { name: authorName, type: string, default: "Jon Ajinga" }
       - { name: date, type: date, required: true }
       - { name: tags, type: string, list: true }
