@@ -1399,8 +1399,15 @@
 .article-comments__header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: var(--space-4);
   margin-bottom: var(--space-4);
+}
+
+.article-comments__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
 }
 
 .article-comments__title {
@@ -1411,6 +1418,14 @@
   letter-spacing: 0.08em;
   color: var(--color-ink-faint);
 }
+
+.article-comments__guidelines {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-ink-faint);
+  text-decoration: none;
+}
+.article-comments__guidelines:hover { color: var(--color-link); text-decoration: underline; }
 
 .article-comments__toggle {
   font-family: var(--font-ui);

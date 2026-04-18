@@ -43,7 +43,7 @@ module.exports = {
   },
   comments: {
     provider: "cusdis",
-    appId: env.CUSDIS_APP_ID || "",
+    appId: env.CUSDIS_APP_ID || "2f9a4b07-2835-475d-98d5-90f6ac1087ae",
     host: "https://cusdis.com"
   },
   nav: [

@@ -176,33 +176,42 @@
     var menu    = wrap.querySelector('.library-panel__export-menu');
     if (!trigger || !menu) return;
 
-    // Replace the inline onclick (which was assuming absolute positioning)
+    // Strip the legacy inline onclick (assumed absolute positioning that
+    // got clipped by the tabs row's overflow-x:auto).
+    trigger.removeAttribute('onclick');
     trigger.onclick = null;
 
     function position() {
       var r = trigger.getBoundingClientRect();
-      var menuW = menu.offsetWidth || 200;
+      // offsetWidth is 0 while still hidden, so place first then measure
+      var menuW = menu.offsetWidth || 180;
       var top   = r.bottom + 6;
       var left  = Math.min(r.right - menuW, window.innerWidth - menuW - 8);
       menu.style.top  = Math.max(8, top)  + 'px';
       menu.style.left = Math.max(8, left) + 'px';
     }
-    function open()  { menu.hidden = false; position(); }
-    function close() { menu.hidden = true; }
+    function openMenu() {
+      menu.hidden = false;
+      // Two-pass positioning: first show, then measure, then re-position
+      position();
+      requestAnimationFrame(position);
+    }
+    function closeMenu() { menu.hidden = true; }
 
     trigger.addEventListener('click', function (e) {
       e.stopPropagation();
-      menu.hidden ? open() : close();
+      e.preventDefault();
+      menu.hidden ? openMenu() : closeMenu();
     });
     document.addEventListener('click', function (e) {
       if (menu.hidden) return;
-      if (!menu.contains(e.target) && e.target !== trigger) close();
+      if (!menu.contains(e.target) && e.target !== trigger && !trigger.contains(e.target)) closeMenu();
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && !menu.hidden) close();
+      if (e.key === 'Escape' && !menu.hidden) closeMenu();
     });
     menu.addEventListener('click', function (e) {
-      if (e.target.closest('button')) setTimeout(close, 50);
+      if (e.target.closest('button')) setTimeout(closeMenu, 50);
     });
     window.addEventListener('resize', function () {
       if (!menu.hidden) position();

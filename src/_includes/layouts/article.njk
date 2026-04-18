@@ -682,22 +682,20 @@ layout: layouts/base.njk
       {% endif %}
 
 
-      {# Comments — always rendered so the bar's Comments icon always
-         has somewhere to scroll to. Falls back to a placeholder when
-         the comments provider isn't configured. #}
+      {# Comments — always rendered, comments provider is always
+         configured (cusdis app id is set in site.js with a fallback). #}
       <div class="article-comments">
         <div class="article-comments__header">
-          <span class="article-comments__title">Comments</span>
-          <div style="display:flex;align-items:center;gap:var(--space-3);">
-            <a href="/community-guidelines/" style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);text-decoration:none;" onmouseover="this.style.color='var(--color-link)'" onmouseout="this.style.color='var(--color-ink-faint)'">Community guidelines</a>
-            <button type="button" class="article-comments__toggle" id="comments-toggle"
-              onclick="var el=document.getElementById('comments-body');el.hidden=!el.hidden;this.textContent=el.hidden?'Show comments':'Hide comments';">
-              Show comments
-            </button>
+          <div class="article-comments__heading">
+            <span class="article-comments__title">Comments</span>
+            <a class="article-comments__guidelines" href="/community-guidelines/">Community guidelines</a>
           </div>
+          <button type="button" class="article-comments__toggle" id="comments-toggle"
+            onclick="var el=document.getElementById('comments-body');el.hidden=!el.hidden;this.textContent=el.hidden?'Show comments':'Hide comments';">
+            Show comments
+          </button>
         </div>
         <div id="comments-body" hidden>
-          {% if site.comments and site.comments.appId %}
           <div id="cusdis_thread"
             data-host="{{ site.comments.host }}"
             data-app-id="{{ site.comments.appId }}"
@@ -725,9 +723,6 @@ layout: layouts/base.njk
             })();
           </script>
           <script async defer src="{{ site.comments.host }}/js/cusdis.es.js"></script>
-          {% else %}
-          <p class="article-comments__placeholder">Comments aren't enabled on this article yet.</p>
-          {% endif %}
         </div>
       </div>
 

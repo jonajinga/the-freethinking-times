@@ -1330,6 +1330,27 @@
   flex-shrink: 0;
 }
 
+/* When the feedback popup is rendered inside the bar's slot (it was
+   originally an absolute-positioned dropdown anchored to a button in
+   the article header), render it as a centered fixed dialog instead. */
+.annotation-toolbar .article-feedback-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  width: min(440px, 92vw);
+  max-height: 85vh;
+  overflow-y: auto;
+  z-index: 1000;
+  padding: var(--space-5) var(--space-6) var(--space-6);
+}
+.annotation-toolbar .article-feedback-wrap {
+  position: static;
+  display: inline-flex;
+}
+
 /* Migrated Save/Listen/Focus buttons (class="article-action-btn") need to
    blend into the dark toolbar; override their light-theme defaults. */
 .annotation-toolbar .article-action-btn {
