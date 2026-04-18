@@ -74,8 +74,11 @@
   }
 
   function applySpacing(v) {
-    var map = { tight: '1.3', normal: '', relaxed: '1.8', loose: '2.1' };
-    body.style.lineHeight = map[v] || '';
+    // Explicit values for every preset — the article-body's CSS default
+    // is --leading-loose (1.9), so leaving "normal" empty made it wider
+    // than "relaxed". Fixed ordering: tight < normal < relaxed < loose.
+    var map = { tight: '1.4', normal: '1.6', relaxed: '1.8', loose: '2.1' };
+    body.style.lineHeight = map[v] || '1.6';
     setActive('[data-rs-spacing]', v);
   }
 

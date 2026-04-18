@@ -681,7 +681,7 @@
   position: fixed;
   top: var(--space-16);
   right: 0;
-  width: min(340px, 85vw);
+  width: min(390px, 85vw);
   height: calc(100% - var(--space-16));
   background: var(--color-bg);
   border-left: 1px solid var(--color-rule);
@@ -725,17 +725,21 @@
 .library-panel__header-btn:hover { color: var(--color-ink); }
 
 .library-panel__export-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
+  /* Position fixed (not absolute) so the menu isn't clipped by the
+     tabs row's overflow-x: auto. JS in reader-panel-migrate positions
+     it next to the export button on click. */
+  position: fixed;
+  top: 0;
+  left: 0;
   background: var(--color-bg);
   border: 1px solid var(--color-rule);
   box-shadow: 0 4px 16px rgba(0,0,0,.15);
   padding: var(--space-2);
-  z-index: var(--z-modal);
+  z-index: calc(var(--z-overlay) + 30);
   min-width: 160px;
   border-radius: 6px;
 }
+.library-panel__export-menu[hidden] { display: none; }
 
 .library-panel__export-item {
   display: flex;
@@ -1281,6 +1285,39 @@
   pointer-events: none;
 }
 
+/* Hover / focus tooltip for every bar icon — sourced from aria-label.
+   Custom CSS instead of the browser's native (slow) title tooltip so
+   it appears reliably and matches the dark bar styling. */
+.annotation-toolbar__btn[aria-label]::after,
+.annotation-toolbar .article-action-btn[aria-label]::after {
+  content: attr(aria-label);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  color: #1a1a1a;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s 0.3s;
+  z-index: calc(var(--z-overlay) + 25);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.annotation-toolbar__btn[aria-label]:hover::after,
+.annotation-toolbar__btn[aria-label]:focus-visible::after,
+.annotation-toolbar .article-action-btn[aria-label]:hover::after,
+.annotation-toolbar .article-action-btn[aria-label]:focus-visible::after {
+  opacity: 1;
+}
+/* Suppress hover tooltip when an icon's popover is open. */
+.annotation-toolbar__btn[aria-expanded="true"]::after { display: none; }
+
 /* Legacy divider — flatten to a vertical rule. */
 .annotation-toolbar__divider {
   width: 1px;
@@ -1399,11 +1436,20 @@
   border-top: 1px solid var(--color-rule);
 }
 
-/* Migrated share-panel + download-panel render as simple lists inside. */
+/* Migrated share-panel + download-panel render as simple lists inside.
+   The original share-panel had position:absolute, top:100%, left:50%,
+   and transform:translateX(-50%) — without overriding the transform,
+   the panel was being shifted half its width to the left, off-screen. */
 .ann-share-popover #share-panel,
 .ann-share-popover #download-panel {
   position: static !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
   width: 100% !important;
+  min-width: 0 !important;
   max-width: none !important;
   max-height: none !important;
   margin: 0 !important;

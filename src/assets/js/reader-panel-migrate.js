@@ -106,22 +106,60 @@
     bindPopover('ann-share-btn', 'ann-share-popover');
   }
 
-  // ── Print popover: two options (article only / article with notes)
-  bindPopover('ann-print-btn', 'ann-print-popover');
-
-  var printPopover = document.getElementById('ann-print-popover');
-  if (printPopover) {
-    printPopover.addEventListener('click', function (e) {
+  // ── Print buttons inside the share popover
+  // (data-print is on items now combined into ann-share-popover)
+  if (sharePopover) {
+    sharePopover.addEventListener('click', function (e) {
       var btn = e.target.closest('[data-print]');
       if (!btn) return;
       var mode = btn.getAttribute('data-print');
       if (mode === 'article-with-notes') document.body.classList.add('print-include-notes');
       else document.body.classList.remove('print-include-notes');
-      // Print runs synchronously; clean up the marker class afterwards.
       setTimeout(function () {
         window.print();
         setTimeout(function () { document.body.classList.remove('print-include-notes'); }, 100);
       }, 0);
     });
   }
+
+  // ── Panel "Export notes" menu — position:fixed positioning, since
+  // the tabs row's overflow-x: auto clips absolutely-positioned children.
+  var exportWraps = document.querySelectorAll('.library-panel__export-wrap');
+  exportWraps.forEach(function (wrap) {
+    var trigger = wrap.querySelector('button');
+    var menu    = wrap.querySelector('.library-panel__export-menu');
+    if (!trigger || !menu) return;
+
+    // Replace the inline onclick (which was assuming absolute positioning)
+    trigger.onclick = null;
+
+    function position() {
+      var r = trigger.getBoundingClientRect();
+      var menuW = menu.offsetWidth || 200;
+      var top   = r.bottom + 6;
+      var left  = Math.min(r.right - menuW, window.innerWidth - menuW - 8);
+      menu.style.top  = Math.max(8, top)  + 'px';
+      menu.style.left = Math.max(8, left) + 'px';
+    }
+    function open()  { menu.hidden = false; position(); }
+    function close() { menu.hidden = true; }
+
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      menu.hidden ? open() : close();
+    });
+    document.addEventListener('click', function (e) {
+      if (menu.hidden) return;
+      if (!menu.contains(e.target) && e.target !== trigger) close();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !menu.hidden) close();
+    });
+    menu.addEventListener('click', function (e) {
+      if (e.target.closest('button')) setTimeout(close, 50);
+    });
+    window.addEventListener('resize', function () {
+      if (!menu.hidden) position();
+    }, { passive: true });
+  });
 })();

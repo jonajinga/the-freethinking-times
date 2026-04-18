@@ -1759,8 +1759,21 @@
   .article-body[data-rs-width="wide"] + * .sidenote,
   [data-rs-width="wide"] .sidenote { display: none; }
 
-  /* Disable sidenotes in focus mode (layout changes, positions are wrong) */
-  [data-focus-mode="on"] .sidenote { display: none; }
+  /* In focus mode the article centers and the wide aside disappears,
+     so sidenotes have no margin to live in. Convert them to inline
+     "expanded" boxes that flow with the prose so footnote content
+     stays visible. */
+  [data-focus-mode="on"] .sidenote {
+    position: static;
+    width: auto;
+    max-width: none;
+    margin: var(--space-4) 0;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg-alt);
+    border-left: 3px solid var(--color-accent);
+    font-size: 0.95rem;
+    color: var(--color-ink-muted);
+  }
 }
 
 /* ── Reading list page ──────────────────────────────────────── */

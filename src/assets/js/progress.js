@@ -535,68 +535,74 @@
     }
   }
 
-  var fnBtns = document.querySelectorAll('.fn-btn');
-  if (fnBtns.length) {
+  // Use event delegation on document so the handler survives SPA-nav
+  // content swaps (which destroy and rebuild the article body).
+  if (document.querySelector('.fn-btn')) {
     fnTooltip = makeFnTooltip();
     var fnBody = fnTooltip.querySelector('.fn-tooltip__body');
 
-    fnBtns.forEach(function (btn) {
-      btn.addEventListener('click', function (e) {
-        e.stopPropagation();
-
-        // On wide screens sidenote is already visible — just highlight it
-        if (btn.getAttribute('data-has-sidenote')) {
-          var snId = btn.getAttribute('aria-controls');
-          var sn = snId ? document.getElementById(snId) : null;
-          if (sn) {
-            sn.classList.add('sidenote--highlight');
-            setTimeout(function () { sn.classList.remove('sidenote--highlight'); }, 1200);
-          }
-          return;
-        }
-
-        var already = btn.getAttribute('aria-expanded') === 'true';
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('.fn-btn');
+      if (!btn) {
+        // Clicks inside the tooltip itself (e.g. links in footnote text)
+        // shouldn't close it.
+        if (e.target.closest('.fn-tooltip')) return;
         hideFnTooltip();
-        if (already) return;
+        return;
+      }
+      e.stopPropagation();
 
-        // Content stored in adjacent <span class="fn-content" hidden>
-        var contentEl = btn.parentElement.querySelector('.fn-content');
-        if (!contentEl) return;
-        fnBody.innerHTML = contentEl.innerHTML;
-
-        // Position above the button, centred
-        var rect   = btn.getBoundingClientRect();
-        var scrollY = window.scrollY;
-        fnTooltip.hidden = false;
-        var tipW = fnTooltip.offsetWidth;
-        var tipH = fnTooltip.offsetHeight;
-        var left = rect.left + rect.width / 2 - tipW / 2;
-        var top  = scrollY + rect.top - tipH - 10;
-
-        // Reserve space for the bottom annotation toolbar so we never
-        // place the tooltip behind it.
-        var bar = document.getElementById('annotation-toolbar');
-        var barH = bar ? bar.offsetHeight : 0;
-        var maxBottomPx = scrollY + window.innerHeight - barH - 10;
-
-        // Clamp to viewport
-        left = Math.max(8, Math.min(left, window.innerWidth - tipW - 8));
-        // Default: above the button. If clipped at the top of the viewport,
-        // try below; if that would land under the toolbar, keep it above.
-        if (top < scrollY + 8) {
-          var below = scrollY + rect.bottom + 10;
-          top = (below + tipH < maxBottomPx) ? below : Math.max(scrollY + 8, top);
+      // Wide-screen sidenote already visible — just highlight it.
+      if (btn.getAttribute('data-has-sidenote')) {
+        var snId = btn.getAttribute('aria-controls');
+        var sn = snId ? document.getElementById(snId) : null;
+        if (sn) {
+          sn.classList.add('sidenote--highlight');
+          setTimeout(function () { sn.classList.remove('sidenote--highlight'); }, 1200);
         }
-        // Last-resort: clamp upward so the tooltip stays clear of the toolbar.
-        if (top + tipH > maxBottomPx) top = Math.max(scrollY + 8, maxBottomPx - tipH);
+        return;
+      }
 
-        fnTooltip.style.left = left + 'px';
-        fnTooltip.style.top  = top  + 'px';
-        btn.setAttribute('aria-expanded', 'true');
-      });
+      var already = btn.getAttribute('aria-expanded') === 'true';
+      hideFnTooltip();
+      if (already) return;
+
+      // Content lives in <span class="fn-content" hidden> inside <sup class="fn-ref">.
+      var supEl = btn.closest('.fn-ref') || btn.parentElement;
+      var contentEl = supEl ? supEl.querySelector('.fn-content') : null;
+      if (!contentEl) return;
+      var content = (contentEl.innerHTML || '').trim();
+      if (!content) content = (contentEl.textContent || '').trim();
+      if (!content) content = '<em>Footnote content missing.</em>';
+      fnBody.innerHTML = content;
+
+      // Position above the button, centred.
+      var rect    = btn.getBoundingClientRect();
+      var scrollY = window.scrollY;
+      fnTooltip.hidden = false;
+      var tipW = fnTooltip.offsetWidth;
+      var tipH = fnTooltip.offsetHeight;
+      var left = rect.left + rect.width / 2 - tipW / 2;
+      var top  = scrollY + rect.top - tipH - 10;
+
+      // Reserve space for the bottom annotation toolbar so the tooltip
+      // never lands behind it.
+      var bar  = document.getElementById('annotation-toolbar');
+      var barH = bar ? bar.offsetHeight : 0;
+      var maxBottomPx = scrollY + window.innerHeight - barH - 10;
+
+      left = Math.max(8, Math.min(left, window.innerWidth - tipW - 8));
+      if (top < scrollY + 8) {
+        var below = scrollY + rect.bottom + 10;
+        top = (below + tipH < maxBottomPx) ? below : Math.max(scrollY + 8, top);
+      }
+      if (top + tipH > maxBottomPx) top = Math.max(scrollY + 8, maxBottomPx - tipH);
+
+      fnTooltip.style.left = left + 'px';
+      fnTooltip.style.top  = top  + 'px';
+      btn.setAttribute('aria-expanded', 'true');
     });
 
-    document.addEventListener('click', function () { hideFnTooltip(); });
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') hideFnTooltip();
     });
