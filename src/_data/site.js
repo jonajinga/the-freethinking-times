@@ -49,7 +49,7 @@ module.exports = {
   tipping: {
     // Publication-level tip URLs used by the byline and contributor pages.
     // First non-empty field wins at render time (Ko-fi > BMAC > Patreon).
-    kofi:    env.KOFI_URL    || "",
+    kofi:    env.KOFI_URL    || "https://ko-fi.com/thefreethinkingtimes",
     bmac:    env.BMAC_URL    || "",
     patreon: env.PATREON_URL || ""
   },

@@ -1,21 +1,16 @@
-{#
-  Tip CTA buttons. Renders up to two buttons — one for the author,
-  one for the publication — based on configured tipping URLs.
-
-  Usage:
-    {# Article byline: both buttons #}
-    {% set tipAuthor = authors[author] %}
-    {% include "partials/tip-buttons.njk" %}
-
-    {# Author page / card: just the author #}
-    {% set tipAuthor = authorData %}
-    {% set tipHidePublication = true %}
-    {% include "partials/tip-buttons.njk" %}
-
-  Precedence per entity: kofi > bmac > patreon.
-#}
-{% set authorTipUrl   = tipAuthor.tipping.kofi or tipAuthor.tipping.bmac or tipAuthor.tipping.patreon if tipAuthor and tipAuthor.tipping else "" %}
-{% set pubTipUrl      = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon if site.tipping else "" %}
+{# Tip CTA buttons. Renders up to two buttons (author + publication)
+   based on configured tipping URLs. Set tipAuthor to an author record;
+   set tipHidePublication = true on author-page/card surfaces where
+   the publication button would be redundant. Precedence per entity:
+   kofi then bmac then patreon. #}
+{% set authorTipUrl = "" %}
+{% if tipAuthor and tipAuthor.tipping %}
+  {% set authorTipUrl = tipAuthor.tipping.kofi or tipAuthor.tipping.bmac or tipAuthor.tipping.patreon %}
+{% endif %}
+{% set pubTipUrl = "" %}
+{% if site.tipping %}
+  {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
+{% endif %}
 {% if authorTipUrl or (pubTipUrl and not tipHidePublication) %}
 <div class="tip-buttons">
   {% if authorTipUrl %}
