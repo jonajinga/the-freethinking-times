@@ -193,22 +193,21 @@
     });
   }
 
-  // ── Panel "Export notes" menu — position:fixed positioning, since
-  // the tabs row's overflow-x: auto clips absolutely-positioned children.
+  // ── Panel "Export notes" menu.
+  // Self-contained: bind each menu item directly (no inline onclicks)
+  // and use position:fixed for the menu so it isn't clipped by the tabs
+  // row's overflow-x:auto. Each item carries data-export="txt|md|json|print".
   var exportWraps = document.querySelectorAll('.library-panel__export-wrap');
   exportWraps.forEach(function (wrap) {
     var trigger = wrap.querySelector('button');
     var menu    = wrap.querySelector('.library-panel__export-menu');
     if (!trigger || !menu) return;
 
-    // Strip the legacy inline onclick (assumed absolute positioning that
-    // got clipped by the tabs row's overflow-x:auto).
     trigger.removeAttribute('onclick');
     trigger.onclick = null;
 
     function position() {
       var r = trigger.getBoundingClientRect();
-      // offsetWidth is 0 while still hidden, so place first then measure
       var menuW = menu.offsetWidth || 180;
       var top   = r.bottom + 6;
       var left  = Math.min(r.right - menuW, window.innerWidth - menuW - 8);
@@ -217,7 +216,6 @@
     }
     function openMenu() {
       menu.hidden = false;
-      // Two-pass positioning: first show, then measure, then re-position
       position();
       requestAnimationFrame(position);
     }
@@ -235,11 +233,31 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && !menu.hidden) closeMenu();
     });
-    menu.addEventListener('click', function (e) {
-      if (e.target.closest('button')) setTimeout(closeMenu, 50);
-    });
     window.addEventListener('resize', function () {
       if (!menu.hidden) position();
     }, { passive: true });
+
+    // Bind each item directly so we don't depend on inline onclicks
+    // (which annotations.js may not have wired up yet, and which
+    // weren't firing reliably after the migrate pass).
+    menu.querySelectorAll('[data-export]').forEach(function (item) {
+      item.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var kind = item.getAttribute('data-export');
+        closeMenu();
+        // Wait one tick so the menu finishes closing before the browser
+        // opens the file dialog (otherwise some browsers swallow the
+        // click gesture when the originating element is detached).
+        setTimeout(function () {
+          try {
+            if (kind === 'print') {
+              if (typeof window.__printPanelNotes === 'function') window.__printPanelNotes();
+            } else {
+              if (typeof window.__exportPanelNotes === 'function') window.__exportPanelNotes(kind);
+            }
+          } catch (err) { /* swallow — silence is better than a broken download UX */ }
+        }, 10);
+      });
+    });
   });
 })();

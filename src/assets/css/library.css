@@ -1037,6 +1037,22 @@
   color: var(--color-ink-muted);
 }
 
+/* Tighten the panel tab icons a notch on phones so all tabs fit
+   without feeling bloated. */
+@media (max-width: 640px) {
+  .library-panel__tab {
+    padding: var(--space-2);
+  }
+  .library-panel__tab svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+  .library-panel__export-item svg {
+    width: 11px !important;
+    height: 11px !important;
+  }
+}
+
 .library-panel__body {
   flex: 1;
   overflow-y: auto;
@@ -1408,17 +1424,23 @@
 }
 
 /* Phone: tighten icon size + allow horizontal scroll if 10 icons don't
-   fit. Single-row scroll is preferable to wrapping into multiple rows. */
+   fit. Single-row scroll is preferable to wrapping into multiple rows.
+   IMPORTANT: keep native .annotation-toolbar__btn and migrated
+   .article-action-btn at the same size so the bar doesn't look
+   mismatched. */
 @media (max-width: 480px) {
   .annotation-toolbar__btn,
   .annotation-toolbar .article-action-btn {
-    width: 38px;
-    height: 38px;
+    width: 38px !important;
+    height: 38px !important;
+    padding: 0 !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
   }
   .annotation-toolbar__btn svg,
   .annotation-toolbar .article-action-btn svg {
-    width: 18px;
-    height: 18px;
+    width: 18px !important;
+    height: 18px !important;
   }
   .annotation-toolbar__main {
     overflow-x: auto;
@@ -2166,7 +2188,13 @@ html.is-library-reading[data-focus-mode="on"] .masthead {
   .annotation-toolbar,
   .ann-share-popover,
   .library-reading-progress,
-  .reading-settings-wrap {
+  .reading-settings-wrap,
+  /* Comments don't belong in a printed article. */
+  .article-comments,
+  /* Per-annotation action buttons (Copy / Share / Delete / Remove)
+     are UI chrome, never useful on paper. */
+  .library-annotation-item__actions,
+  .library-bookmark-item__delete {
     display: none !important;
   }
 
