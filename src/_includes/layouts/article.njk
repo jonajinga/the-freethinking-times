@@ -98,7 +98,7 @@ layout: layouts/base.njk
           <div class="article-header__byline-meta">
             {% if author %}
             <a class="article-header__author" href="/author/{{ author | slugify }}/"
-              {% if authors[author] and authors[author].bio %}data-tooltip="{{ authors[author].bio }}"{% endif %}>
+              {% if authors[author] and authors[author].bio %}data-tippy-content="{{ authors[author].bio }}" data-tippy-theme="author-bio"{% endif %}>
               By {{ authors[author].name or authorName or author }}
             </a>
             {% endif %}

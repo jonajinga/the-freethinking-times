@@ -63,7 +63,13 @@
       <span class="author-hero__inline-stats">
         <span>{{ authorArticles.length }} {{ "article" if authorArticles.length == 1 else "articles" }}</span>
         {% if sectionList.length %}<span class="author-hero__inline-sep">&middot;</span><span>{{ sectionList.length }} {{ "section" if sectionList.length == 1 else "sections" }}</span>{% endif %}
-        {% if totalWords > 0 %}<span class="author-hero__inline-sep">&middot;</span><span>{{ (totalWords / 1000) | round(1) }}k words</span>{% endif %}
+        {% if totalWords > 0 %}
+        {% set readMins = (totalWords / 200) | round %}
+        {% set listenMins = (totalWords / 130) | round %}
+        <span class="author-hero__inline-sep">&middot;</span><span>{{ (totalWords / 1000) | round(1) }}k words</span>
+        <span class="author-hero__inline-sep">&middot;</span><span>~{{ readMins }}m read</span>
+        <span class="author-hero__inline-sep">&middot;</span><span>~{{ listenMins }}m listen</span>
+        {% endif %}
       </span>
       <span class="author-hero__support-divider" aria-hidden="true"></span>
       {% endif %}
