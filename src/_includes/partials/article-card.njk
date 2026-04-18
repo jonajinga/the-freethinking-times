@@ -52,7 +52,7 @@
       {% if authors[article.data.author] and authors[article.data.author].bio %}data-tippy-content="{{ authors[article.data.author].bio }}" data-tippy-theme="author-bio"{% endif %}>{{ authors[article.data.author].name or article.data.authorName or article.data.author }}</a>
     {% endif %}
     {% if article.templateContent %}
-    <span class="article-card__reading-time">{{ article.templateContent | readingTime }}</span>
+    <span class="article-card__reading-time">{{ article.templateContent | readingTime }} &middot; {{ article.templateContent | wordCount }}</span>
     {% endif %}
   </p>
 

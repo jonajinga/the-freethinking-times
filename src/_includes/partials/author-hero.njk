@@ -5,14 +5,12 @@
 {% if authorData %}
 <div class="author-hero">
   <div class="author-hero__avatar">
+    <div class="author-hero__initials" aria-hidden="true">{{ authorData.name | initials }}</div>
     {% if authorData.photo %}
       {% set photoSrc = authorData.photo | replace("src", "") %}
       <img src="{{ photoSrc }}" alt="{{ authorData.name }}"
-           class="author-hero__photo" width="160" height="160" loading="eager" decoding="async">
-    {% else %}
-      <div class="author-hero__initials" aria-hidden="true">
-        {{ authorData.name | initials }}
-      </div>
+           class="author-hero__photo" width="160" height="160" loading="eager" decoding="async"
+           onerror="this.style.opacity=0">
     {% endif %}
   </div>
 
