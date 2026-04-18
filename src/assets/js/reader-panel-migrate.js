@@ -29,6 +29,16 @@
   move('tts-btn',      'ann-listen-slot');
   move('focus-btn',    'ann-focus-slot');
 
+  // Hide the panel-footer "Comments" button if the page has no comments
+  // section to scroll to (e.g. comments aren't configured for this site).
+  if (!document.getElementById('comments-body')) {
+    document.querySelectorAll('.library-panel__footer-btn').forEach(function (b) {
+      if ((b.getAttribute('aria-label') || '').toLowerCase().indexOf('comment') !== -1) {
+        b.hidden = true;
+      }
+    });
+  }
+
   // ── Reader panel footer slot for the Feedback button + popup
   // (bar gets too crowded on mobile when this lives inline; the panel
   // is a more natural home for "Send feedback" anyway)
@@ -106,18 +116,58 @@
     bindPopover('ann-share-btn', 'ann-share-popover');
   }
 
-  // ── Print buttons inside the share popover
-  // (data-print is on items now combined into ann-share-popover)
+  // For article+notes print: walk every .library-highlight--note <mark> in
+  // the article body and append its note text inline as a .print-inline-note
+  // span. CSS reveals these only in print + print-include-notes mode.
+  function injectInlineNotes() {
+    var key = (window.__PREFIX || 'tft') + '-annotations';
+    var ann = [];
+    try { ann = JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) {}
+    var byId = {};
+    ann.forEach(function (a) { if (a && a.id) byId[a.id] = a; });
+    document.querySelectorAll('mark.library-highlight--note').forEach(function (mark) {
+      if (mark.querySelector('.print-inline-note')) return;
+      var entry = byId[mark.dataset.annId];
+      if (!entry || !entry.note) return;
+      var span = document.createElement('span');
+      span.className = 'print-inline-note';
+      span.textContent = entry.note;
+      mark.appendChild(span);
+    });
+  }
+  function stripInlineNotes() {
+    document.querySelectorAll('.print-inline-note').forEach(function (n) { n.remove(); });
+  }
+
+  // ── Print buttons inside the share popover.
+  // Three modes:
+  //   article            → window.print() with the standard print stylesheet
+  //   article-with-notes → adds .print-include-notes; print CSS appends the
+  //                         Reader-panel sections as an appendix
+  //   notes-only         → defers to __printPanelNotes() (annotations.js),
+  //                         which opens a separate window with just the
+  //                         highlights / notes / bookmarks
   if (sharePopover) {
     sharePopover.addEventListener('click', function (e) {
       var btn = e.target.closest('[data-print]');
       if (!btn) return;
       var mode = btn.getAttribute('data-print');
-      if (mode === 'article-with-notes') document.body.classList.add('print-include-notes');
-      else document.body.classList.remove('print-include-notes');
+      if (mode === 'notes-only') {
+        if (typeof window.__printPanelNotes === 'function') window.__printPanelNotes();
+        return;
+      }
+      if (mode === 'article-with-notes') {
+        document.body.classList.add('print-include-notes');
+        injectInlineNotes();
+      } else {
+        document.body.classList.remove('print-include-notes');
+      }
       setTimeout(function () {
         window.print();
-        setTimeout(function () { document.body.classList.remove('print-include-notes'); }, 100);
+        setTimeout(function () {
+          document.body.classList.remove('print-include-notes');
+          stripInlineNotes();
+        }, 100);
       }, 0);
     });
   }

@@ -55,8 +55,23 @@ self.addEventListener('fetch', function (e) {
   var req = e.request;
   if (req.method !== 'GET') return;
 
-  // Static assets: cache-first
-  if (req.url.match(/\.(css|js|svg|png|jpg|woff2?)$/)) {
+  // CSS / JS — network-first so deploys are picked up immediately,
+  // falling back to cache when offline. Cache-first served stale JS
+  // for too long after deploys.
+  if (req.url.match(/\.(css|js)(\?|$)/)) {
+    e.respondWith(
+      fetch(req).then(function (res) {
+        var clone = res.clone();
+        caches.open(CACHE).then(function (c) { c.put(req, clone); });
+        return res;
+      }).catch(function () { return caches.match(req); })
+    );
+    return;
+  }
+
+  // Static binary assets: cache-first (these don't change between builds
+  // for the same URL — favicon / images / fonts).
+  if (req.url.match(/\.(svg|png|jpg|woff2?)(\?|$)/)) {
     e.respondWith(
       caches.match(req).then(function (cached) {
         return cached || fetch(req).then(function (res) {

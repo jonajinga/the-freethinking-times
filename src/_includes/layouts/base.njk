@@ -59,7 +59,7 @@
   <link rel="stylesheet" href="/assets/css/main.css?v={{ buildTime }}">
 
   {# ── Theme (must be in head to prevent flash) ── #}
-  <script src="/assets/js/theme.js"></script>
+  <script src="/assets/js/theme.js?v={{ buildTime }}"></script>
 
   {# ── BreadcrumbList structured data ── #}
   {% if page.url != "/" %}
@@ -121,46 +121,46 @@
   </div>{# /.site-wrapper #}
 
   {# ── Scripts ── #}
-  <script src="/assets/js/drawer.js" defer></script>
-  <script src="/assets/js/smart-header.js" defer></script>
-  <script src="/assets/js/search.js" defer></script>
-  <script src="/assets/js/subscribe.js" defer></script>
-  <script src="/assets/js/global-settings.js" defer></script>
-  <script src="/assets/js/spa-nav.js" defer></script>
+  <script src="/assets/js/drawer.js?v={{ buildTime }}" defer></script>
+  <script src="/assets/js/smart-header.js?v={{ buildTime }}" defer></script>
+  <script src="/assets/js/search.js?v={{ buildTime }}" defer></script>
+  <script src="/assets/js/subscribe.js?v={{ buildTime }}" defer></script>
+  <script src="/assets/js/global-settings.js?v={{ buildTime }}" defer></script>
+  <script src="/assets/js/spa-nav.js?v={{ buildTime }}" defer></script>
   <script src="https://www.youtube.com/iframe_api" defer></script>
-  <script src="/assets/js/music-player.js" defer></script>
+  <script src="/assets/js/music-player.js?v={{ buildTime }}" defer></script>
   {% block scripts %}{% endblock %}
 
   {# ── Glossary tooltips (Tippy.js) ── #}
   <script>
   window.__glossaryTerms=[{% for entry in collections.glossary %}{ term:"{{ entry.data.title | escape }}", def:"{{ entry.data.description | escape }}", url:"{{ entry.url }}" }{% if not loop.last %},{% endif %}{% endfor %}];
   </script>
-  <script src="/assets/js/popper.min.js" defer></script>
-  <script src="/assets/js/tippy.min.js" defer></script>
-  <script src="/assets/js/glossary-tips.js" defer></script>
+  <script src="/assets/js/popper.min.js?v={{ buildTime }}" defer></script>
+  <script src="/assets/js/tippy.min.js?v={{ buildTime }}" defer></script>
+  <script src="/assets/js/glossary-tips.js?v={{ buildTime }}" defer></script>
 
   {# ── Revision history (opt-in via site.repo config) ── #}
   {% if site.repo and site.repo.owner %}
-  <script src="/assets/js/revision-history.js" defer></script>
+  <script src="/assets/js/revision-history.js?v={{ buildTime }}" defer></script>
   {% endif %}
 
   {# ── Reader panel migration — re-parents article action buttons into the panel ── #}
-  <script src="/assets/js/reader-panel-migrate.js" defer></script>
+  <script src="/assets/js/reader-panel-migrate.js?v={{ buildTime }}" defer></script>
 
   {# ── Reader panel tab populators — Footnotes / Cite render lazily into their tabs ── #}
-  <script src="/assets/js/footnotes.js" defer></script>
-  <script src="/assets/js/cite-inline.js" defer></script>
+  <script src="/assets/js/footnotes.js?v={{ buildTime }}" defer></script>
+  <script src="/assets/js/cite-inline.js?v={{ buildTime }}" defer></script>
 
   {# ── Keyboard shortcuts for power readers ── #}
-  <script src="/assets/js/keyboard-shortcuts.js" defer></script>
+  <script src="/assets/js/keyboard-shortcuts.js?v={{ buildTime }}" defer></script>
 
   {# ── Per-article reading progress tracking + card indicators ── #}
-  <script src="/assets/js/reading-progress.js" defer></script>
+  <script src="/assets/js/reading-progress.js?v={{ buildTime }}" defer></script>
 
   {# ── hCaptcha + dictation for Web3Forms pages ── #}
   {% if site.forms and site.forms.accessKey %}
   <script src="https://web3forms.com/client/script.js" async defer></script>
-  <script src="/assets/js/dictation.js" defer></script>
+  <script src="/assets/js/dictation.js?v={{ buildTime }}" defer></script>
   <script>
   document.addEventListener('DOMContentLoaded',function(){
     document.querySelectorAll('.w3f').forEach(function(f){
@@ -195,7 +195,7 @@
   </script>
 
   {# ── Instant Page (prefetch on hover) ── #}
-  <script src="/assets/js/instant.page.js" type="module" defer></script>
+  <script src="/assets/js/instant.page.js?v={{ buildTime }}" type="module" defer></script>
 
   {# ── Service Worker Registration ── #}
   <script>

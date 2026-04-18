@@ -681,8 +681,8 @@
   position: fixed;
   top: var(--space-16);
   right: 0;
+  bottom: 56px; /* clear the bottom annotation toolbar so footer-links aren't hidden behind it */
   width: min(390px, 85vw);
-  height: calc(100% - var(--space-16));
   background: var(--color-bg);
   border-left: 1px solid var(--color-rule);
   box-shadow: var(--shadow-md);
@@ -696,6 +696,10 @@
   transition: transform var(--transition-normal);
   overflow: hidden;
   font-family: 'DM Sans', system-ui, sans-serif;
+}
+@media (max-width: 640px) {
+  /* Mobile: toolbar wraps to two rows when music plays — leave more clearance. */
+  .library-panel { bottom: 96px; }
 }
 
 .library-panel[aria-hidden="false"] {
@@ -2136,6 +2140,28 @@ html.is-library-reading[data-focus-mode="on"] .masthead {
   .reading-settings-wrap {
     display: none !important;
   }
+
+  /* In article+notes print, force the inline highlight backgrounds to
+     render so the marked passages stand out on paper too. */
+  body.print-include-notes .library-highlight {
+    background: #fff3a0 !important;
+    color: #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  body.print-include-notes .library-highlight--note {
+    background: #cfe7ff !important;
+  }
+  /* Reveal note text inline next to its highlight (added to the DOM by
+     reader-panel-migrate.js right before printing). */
+  body.print-include-notes .print-inline-note {
+    display: inline !important;
+    font-style: italic;
+    color: #555;
+    font-size: 0.9em;
+  }
+  body.print-include-notes .print-inline-note::before { content: ' [note: '; }
+  body.print-include-notes .print-inline-note::after  { content: ']'; }
 
   /* "Print with notes" mode (set on <body> by the Print popover handler):
      reveal the Reader panel inline as an appendix, but only the
