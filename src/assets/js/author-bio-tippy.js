@@ -9,11 +9,15 @@
   if (!els.length) return;
   tippy(els, {
     theme: 'author-bio',
-    placement: 'bottom-start',
+    placement: 'top-start',
     arrow: true,
     delay: [150, 0],
     maxWidth: 300,
     interactive: false,
-    appendTo: document.body
+    appendTo: function () { return document.body; },
+    zIndex: 9999,
+    popperOptions: {
+      strategy: 'fixed'
+    }
   });
 })();
