@@ -78,9 +78,23 @@
       .catch(function (e) { render([], e.message); });
   }
 
-  // Lazy-load: fetch only when the History tab is first activated, so we
-  // don't burn through the unauthenticated GitHub rate limit on pages
-  // where the user never opens the tab.
-  var tab = document.querySelector('[data-target="article-panel-history"]');
-  if (tab) tab.addEventListener('click', load);
+  // Lazy-load: fetch only when the History tab section becomes visible,
+  // so we don't burn through the unauthenticated GitHub rate limit on
+  // pages where the user never opens the tab. Watching aria-hidden on
+  // the section catches every activation path (click, keyboard, programmatic).
+  if (slot.getAttribute('aria-hidden') === 'false') {
+    load();
+  } else if (typeof MutationObserver === 'function') {
+    var mo = new MutationObserver(function (records) {
+      for (var i = 0; i < records.length; i++) {
+        if (records[i].attributeName === 'aria-hidden' &&
+            slot.getAttribute('aria-hidden') === 'false') {
+          load();
+          mo.disconnect();
+          break;
+        }
+      }
+    });
+    mo.observe(slot, { attributes: true, attributeFilter: ['aria-hidden'] });
+  }
 })();

@@ -61,11 +61,17 @@
     return '';
   }
 
+  var COPY_ICON  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+  var CHECK_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+
   function copy(text, btn) {
-    var orig = btn.textContent;
     function done() {
-      btn.textContent = 'Copied';
-      setTimeout(function () { btn.textContent = orig; }, 1500);
+      btn.innerHTML = CHECK_ICON;
+      btn.classList.add('is-copied');
+      setTimeout(function () {
+        btn.innerHTML = COPY_ICON;
+        btn.classList.remove('is-copied');
+      }, 1500);
     }
     if (navigator.clipboard) {
       navigator.clipboard.writeText(text).then(done);
@@ -96,7 +102,9 @@
       var btn = document.createElement('button');
       btn.className = 'cite-inline__copy';
       btn.type = 'button';
-      btn.textContent = 'Copy';
+      btn.setAttribute('aria-label', 'Copy ' + pair[0] + ' citation');
+      btn.title = 'Copy';
+      btn.innerHTML = COPY_ICON;
       btn.addEventListener('click', function () { copy(text.textContent, btn); });
       wrap.appendChild(label);
       wrap.appendChild(text);
@@ -105,11 +113,21 @@
     });
   }
 
-  // Render on first activation rather than on load so we don't waste
-  // work if the user never opens the Cite tab.
-  var tab = document.querySelector('[data-target="' + slot.id + '"]');
-  if (tab) tab.addEventListener('click', render);
-
-  // Also render if the tab is the active one on page load (unlikely but safe).
-  if (slot.getAttribute('aria-hidden') === 'false') render();
+  // Render lazily on first activation. Watching aria-hidden on the section
+  // catches every activation path (click, keyboard, programmatic).
+  if (slot.getAttribute('aria-hidden') === 'false') {
+    render();
+  } else if (typeof MutationObserver === 'function') {
+    var mo = new MutationObserver(function (records) {
+      for (var i = 0; i < records.length; i++) {
+        if (records[i].attributeName === 'aria-hidden' &&
+            slot.getAttribute('aria-hidden') === 'false') {
+          render();
+          mo.disconnect();
+          break;
+        }
+      }
+    });
+    mo.observe(slot, { attributes: true, attributeFilter: ['aria-hidden'] });
+  }
 })();

@@ -18,26 +18,48 @@
   function collect() {
     var items = [];
 
-    // markdown-it-footnote shape: <section class="footnotes"><ol><li id="fn1">…</li>…
+    // 1. The site's inline-footnote shortcode pattern:
+    //    <sup class="fn-ref">
+    //      <button class="fn-btn" data-fn-id="N">N</button>
+    //      <span class="fn-content" hidden>…body…</span>
+    //    </sup>
+    var fnRefs = document.querySelectorAll('.fn-ref');
+    if (fnRefs.length) {
+      fnRefs.forEach(function (sup, i) {
+        var btn  = sup.querySelector('.fn-btn');
+        var body = sup.querySelector('.fn-content');
+        var num  = (btn && btn.dataset.fnId) || (i + 1);
+        // Give the sup a stable id so panel→article jumps work
+        if (!sup.id) sup.id = 'fn-ref-' + num;
+        items.push({
+          id: sup.id,
+          num: num,
+          html: body ? body.innerHTML.trim() : ''
+        });
+      });
+      return items;
+    }
+
+    // 2. markdown-it-footnote shape: <section class="footnotes"><ol><li id="fn1">…
     var fnList = document.querySelector('.footnotes ol, section.footnotes ol');
     if (fnList) {
       fnList.querySelectorAll(':scope > li').forEach(function (li, i) {
         var id = li.id || ('fn' + (i + 1));
-        // Strip the "back" arrow link if present
         var clone = li.cloneNode(true);
         clone.querySelectorAll('.footnote-backref, a.footnote-backref').forEach(function (a) { a.remove(); });
         items.push({ id: id, num: i + 1, html: clone.innerHTML.trim() });
       });
-    } else {
-      // Fallback: any element with an id like "fn1", "fn2"
-      document.querySelectorAll('[id^="fn"]').forEach(function (el, i) {
-        if (!/^fn\d+$/.test(el.id)) return;
-        var n = parseInt(el.id.slice(2), 10);
-        var clone = el.cloneNode(true);
-        clone.querySelectorAll('.footnote-backref, a.footnote-backref').forEach(function (a) { a.remove(); });
-        items.push({ id: el.id, num: isNaN(n) ? (i + 1) : n, html: clone.innerHTML.trim() });
-      });
+      return items;
     }
+
+    // 3. Fallback: any element with an id like "fn1", "fn2"
+    document.querySelectorAll('[id^="fn"]').forEach(function (el, i) {
+      if (!/^fn\d+$/.test(el.id)) return;
+      var n = parseInt(el.id.slice(2), 10);
+      var clone = el.cloneNode(true);
+      clone.querySelectorAll('.footnote-backref, a.footnote-backref').forEach(function (a) { a.remove(); });
+      items.push({ id: el.id, num: isNaN(n) ? (i + 1) : n, html: clone.innerHTML.trim() });
+    });
 
     return items;
   }
@@ -75,8 +97,21 @@
     });
   }
 
-  // Render lazily on first activation, mirroring the Cite/History pattern.
-  var tab = document.querySelector('[data-target="' + slot.id + '"]');
-  if (tab) tab.addEventListener('click', render);
-  if (slot.getAttribute('aria-hidden') === 'false') render();
+  // Render lazily — watch the section's aria-hidden so we catch every
+  // activation path (mouse click, keyboard, programmatic).
+  if (slot.getAttribute('aria-hidden') === 'false') {
+    render();
+  } else if (typeof MutationObserver === 'function') {
+    var mo = new MutationObserver(function (records) {
+      for (var i = 0; i < records.length; i++) {
+        if (records[i].attributeName === 'aria-hidden' &&
+            slot.getAttribute('aria-hidden') === 'false') {
+          render();
+          mo.disconnect();
+          break;
+        }
+      }
+    });
+    mo.observe(slot, { attributes: true, attributeFilter: ['aria-hidden'] });
+  }
 })();

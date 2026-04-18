@@ -24,12 +24,16 @@
   var toolbar = document.getElementById('annotation-toolbar');
   if (!panel && !toolbar) return;
 
-  // ── Bottom toolbar slots
-  move('bookmark-btn',          'ann-save-slot');
-  move('tts-btn',               'ann-listen-slot');
-  move('focus-btn',             'ann-focus-slot');
-  move('article-feedback-btn',  'ann-feedback-slot');
-  move('article-feedback-popup','ann-feedback-slot');
+  // ── Bottom toolbar slots (Save / Listen / Focus stay here)
+  move('bookmark-btn', 'ann-save-slot');
+  move('tts-btn',      'ann-listen-slot');
+  move('focus-btn',    'ann-focus-slot');
+
+  // ── Reader panel footer slot for the Feedback button + popup
+  // (bar gets too crowded on mobile when this lives inline; the panel
+  // is a more natural home for "Send feedback" anyway)
+  move('article-feedback-btn',   'ann-feedback-slot');
+  move('article-feedback-popup', 'ann-feedback-slot');
 
   // ── Reader panel: Display tab
   move('reading-settings-panel', 'reader-panel-slot-display');

@@ -823,6 +823,101 @@
 /* Tooltip hover-label is redundant when the label is already visible */
 .library-panel__quick-actions .article-action-btn::after { display: none; }
 
+/* ── Reader panel: footer links band ──
+   Bottom of the panel — secondary actions that belong in the panel
+   context (bookmark current spot, jump to comments, send feedback).
+   Rendered as compact text-style buttons with a leading icon. */
+.library-panel__footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  padding-bottom: max(var(--space-3), env(safe-area-inset-bottom, 0));
+  border-top: 1px solid var(--color-rule);
+  flex-shrink: 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+}
+.library-panel__footer-links:empty { display: none; }
+
+.library-panel__footer-btn,
+.library-panel__footer-slot > button,
+.library-panel__footer-slot > .article-feedback-wrap > button {
+  position: relative;
+  flex: 1 1 30%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-2);
+  min-height: 36px;
+  padding: var(--space-2);
+  border: none;
+  background: none;
+  color: var(--color-ink-muted);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.library-panel__footer-btn:hover,
+.library-panel__footer-btn:focus-visible,
+.library-panel__footer-slot button:hover,
+.library-panel__footer-slot button:focus-visible {
+  background: var(--color-bg-alt);
+  color: var(--color-ink);
+  outline: none;
+}
+.library-panel__footer-btn svg,
+.library-panel__footer-slot svg {
+  flex-shrink: 0;
+  color: var(--color-ink-faint);
+}
+/* Migrated feedback button has class="article-action-btn" — strip the
+   square pill chrome so it looks like the other footer links. */
+.library-panel__footer-slot .article-action-btn::after { display: none; }
+.library-panel__footer-slot .article-action-btn .btn-label {
+  display: inline !important;
+}
+/* Feedback popup, when reparented into the panel footer, renders as a
+   centered fixed dialog instead of an absolute-positioned dropdown. */
+.library-panel__footer-slot .article-feedback-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, -50%);
+  width: min(440px, 92vw);
+  max-height: 85vh;
+  overflow-y: auto;
+  z-index: 1000;
+  padding: var(--space-6);
+}
+
+/* "Saved!" flash on the panel-bookmark button — renders the tooltip
+   above the button without nuking the SVG. */
+.library-panel__footer-btn.is-saved-flash::before,
+.annotation-toolbar__btn.is-saved-flash::before,
+.annotation-toolbar .article-action-btn.is-saved-flash::before {
+  content: 'Saved';
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-accent);
+  color: var(--color-bg);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+}
+
 /* Subheads inside tab sections (e.g. "Share" / "Download" in the Share tab) */
 .reader-panel-subhead {
   font-family: var(--font-ui);
@@ -1167,25 +1262,6 @@
   flex-shrink: 0;
 }
 
-/* "Saved!" flash — tooltip above the button without replacing the icon. */
-.annotation-toolbar__btn.is-saved-flash::before,
-.annotation-toolbar .article-action-btn.is-saved-flash::before {
-  content: 'Saved';
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--color-accent, #fff);
-  color: #000;
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 4px;
-  white-space: nowrap;
-  pointer-events: none;
-  z-index: 10;
-}
 
 .annotation-toolbar__btn:hover,
 .annotation-toolbar__btn:focus-visible {
@@ -1247,8 +1323,9 @@
   display: none;
 }
 
-/* Mobile: bar wraps so the music player gets its own row. Icon sizes
-   stay the same as desktop so the two contexts match. */
+/* Mobile: bar wraps so the music player gets its own row below the icons.
+   The icons themselves never scroll horizontally — they fit in one row
+   even on narrow screens because the bar carries 8 icons max. */
 @media (max-width: 640px) {
   .annotation-toolbar {
     flex-direction: column;
@@ -1256,25 +1333,33 @@
     padding: var(--space-2) var(--space-3);
     padding-bottom: max(var(--space-2), env(safe-area-inset-bottom, 0));
   }
+  .annotation-toolbar__main {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 2px;
+  }
   .annotation-toolbar__music {
     max-width: 100%;
     width: 100%;
     justify-content: center;
   }
-  .annotation-toolbar__music:not(:empty)::before {
-    display: none;
-  }
+  .annotation-toolbar__music:not(:empty)::before { display: none; }
 }
 
-/* Very narrow mobile: allow the icon row to scroll horizontally if it
-   still overflows, rather than wrapping to multiple icon rows. */
+/* Phone-narrow: tighten icon padding so all 8 fit comfortably without
+   horizontal scrolling. */
 @media (max-width: 420px) {
-  .annotation-toolbar__main {
-    overflow-x: auto;
-    scrollbar-width: none;
-    max-width: 100%;
+  .annotation-toolbar__btn,
+  .annotation-toolbar .article-action-btn {
+    width: 40px;
+    height: 40px;
   }
-  .annotation-toolbar__main::-webkit-scrollbar { display: none; }
+  .annotation-toolbar__btn svg,
+  .annotation-toolbar .article-action-btn svg {
+    width: 18px;
+    height: 18px;
+  }
 }
 
 /* ── Share / download / print popover ──
@@ -1284,8 +1369,9 @@
 .ann-share-popover {
   position: fixed;
   bottom: calc(var(--space-14, 3.5rem) + var(--space-2));
-  right: var(--space-4);
-  width: min(280px, 92vw);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(320px, 92vw);
   max-height: 70vh;
   overflow-y: auto;
   background: var(--color-bg);
@@ -1369,8 +1455,7 @@
 
 @media (max-width: 640px) {
   .ann-share-popover {
-    right: 50%;
-    transform: translateX(50%);
+    width: min(320px, 92vw);
   }
 }
 

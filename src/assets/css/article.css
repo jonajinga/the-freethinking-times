@@ -2976,19 +2976,20 @@
   color: var(--color-bg) !important;
 }
 
-/* Ruler colour swatches — override btngroup border/overflow */
+/* Ruler colour swatches — sized to keep all 7 swatches on a single row
+   inside the ~280px Reader-panel Display tab. */
 .rs-btngroup:has(.rs-swatch) {
   border: none;
   border-radius: 0;
   overflow: visible;
-  gap: var(--space-3);
-  justify-content: center;
-  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: flex-start;
+  flex-wrap: nowrap;
 }
 
 .rs-swatch {
-  width: 32px;
-  height: 32px;
+  width: 22px;
+  height: 22px;
   border: 2px solid transparent;
   border-radius: 50%;
   cursor: pointer;
@@ -2999,10 +3000,10 @@
 
 .rs-swatch.is-active {
   border-color: var(--color-ink);
-  transform: scale(1.2);
+  transform: scale(1.15);
 }
 
-.rs-swatch:hover { transform: scale(1.15); }
+.rs-swatch:hover { transform: scale(1.1); }
 
 .rs-icon-btn {
   display: inline-flex;
