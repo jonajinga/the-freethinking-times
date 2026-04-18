@@ -2237,7 +2237,7 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   background: var(--color-bg-alt);
   border: 1px solid var(--color-rule);
   border-top: 3px solid var(--color-ink);
-  padding: var(--space-6);
+  padding: var(--space-7);
   display: flex;
   flex-direction: column;
 }
@@ -2248,27 +2248,33 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--color-ink-faint);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-rule);
 }
 .support-block__heading {
   font-family: var(--font-headline);
-  font-size: var(--text-lg);
+  font-size: var(--text-xl);
   font-weight: 700;
-  margin-bottom: var(--space-3);
+  margin: var(--space-4) 0 var(--space-3);
   color: var(--color-ink);
+  line-height: var(--leading-snug);
 }
 .support-block__body {
   font-size: var(--text-sm);
   color: var(--color-ink-muted);
   line-height: var(--leading-normal);
-  margin-bottom: var(--space-5);
+  margin-bottom: 0;
   flex: 1;
 }
 .support-block__actions {
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   gap: var(--space-3);
-  flex-wrap: wrap;
-  align-items: center;
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-rule);
 }
 .support-block__learn {
   font-family: var(--font-ui);
@@ -2283,6 +2289,9 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-rule);
 }
 
 /* ── GTranslate dropdown widget — match drawer action button style ── */
@@ -2948,6 +2957,8 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
 
 .author-card__body {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 .author-card__role {
   font-family: var(--font-ui);
@@ -2956,14 +2967,14 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--color-ink-faint);
-  margin: 0 0 var(--space-1);
+  margin: 0 0 var(--space-2);
 }
 .author-card__name {
   font-family: var(--font-headline);
   font-size: var(--text-lg);
   font-weight: 700;
   line-height: var(--leading-snug);
-  margin: 0 0 var(--space-2);
+  margin: 0 0 var(--space-3);
 }
 .author-card__name a {
   color: var(--color-ink);
@@ -2975,13 +2986,19 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   font-size: var(--text-sm);
   line-height: var(--leading-normal);
   color: var(--color-ink-muted);
-  margin: 0 0 var(--space-3);
+  margin: 0 0 var(--space-4);
+}
+/* social icons within a card: tighter bottom margin */
+.author-card .social-icons {
+  margin-bottom: var(--space-4);
 }
 .author-card__stats {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-3);
-  margin: 0 0 var(--space-3);
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--color-rule);
 }
 .author-card__stat {
   font-family: var(--font-ui);
@@ -2997,7 +3014,7 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   align-items: center;
   flex-wrap: wrap;
   gap: var(--space-3);
-  margin-top: var(--space-4);
+  margin-top: auto;
   padding-top: var(--space-4);
   border-top: 1px solid var(--color-rule);
 }
