@@ -2242,6 +2242,12 @@ html.is-library-reading[data-focus-mode="on"] .masthead {
   body.print-include-notes #panel-cite-inline {
     display: none !important;
   }
+  /* Skip sections that have no user content (just the "No X yet"
+     placeholder from annotations.js / footnotes.js, or literally empty). */
+  body.print-include-notes .library-panel__section:has(.library-panel__empty),
+  body.print-include-notes .library-panel__section:empty {
+    display: none !important;
+  }
 
   /* "Notes & highlights only" mode: hide the article entirely and only
      reveal the panel sections containing the user's annotations. */
@@ -2294,6 +2300,10 @@ html.is-library-reading[data-focus-mode="on"] .masthead {
   body.print-notes-only #panel-toc,
   body.print-notes-only #panel-display,
   body.print-notes-only #panel-cite-inline {
+    display: none !important;
+  }
+  body.print-notes-only .library-panel__section:has(.library-panel__empty),
+  body.print-notes-only .library-panel__section:empty {
     display: none !important;
   }
 

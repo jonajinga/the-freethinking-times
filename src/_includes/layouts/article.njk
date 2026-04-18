@@ -904,7 +904,7 @@ layout: layouts/base.njk
        section at the bottom of the article. Hides itself in JS if the
        comments-body element isn't on the page. #}
     <button id="ann-comments-btn" class="annotation-toolbar__btn" type="button" aria-label="Jump to comments" title="Comments"
-      onclick="var el=document.getElementById('comments-body');if(!el)return;el.hidden=false;var t=el.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:t,behavior:'smooth'});">
+      onclick="var el=document.getElementById('comments-body');if(!el)return;el.hidden=false;var b=document.getElementById('comments-toggle');if(b)b.textContent='Hide comments';var t=el.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:t,behavior:'smooth'});">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
     </button>
     {# Feedback — slot populated by reader-panel-migrate.js with the

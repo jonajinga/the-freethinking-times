@@ -149,6 +149,28 @@
     document.body.classList.remove('print-include-notes', 'print-notes-only');
     stripInlineNotes();
   }
+  // Populate panel sections that render lazily (highlights / notes /
+  // bookmarks via annotations.js, footnotes via footnotes.js), so print
+  // captures them even when the user never opened the panel/tabs.
+  function populatePanelForPrint() {
+    if (typeof window.__refreshReaderPanel === 'function') {
+      try { window.__refreshReaderPanel(); } catch (e) {}
+    }
+    // Force the lazy tab populators to run by flipping aria-hidden to
+    // "false" for a tick — our populators observe that attribute.
+    ['article-panel-footnotes', 'panel-footnotes', 'article-panel-cite-inline', 'panel-cite-inline'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      if (el.dataset.rendered !== 'true') {
+        var prev = el.getAttribute('aria-hidden');
+        el.setAttribute('aria-hidden', 'false');
+        setTimeout(function () {
+          if (prev !== null) el.setAttribute('aria-hidden', prev);
+        }, 0);
+      }
+    });
+  }
+
   if (sharePopover) {
     sharePopover.addEventListener('click', function (e) {
       var btn = e.target.closest('[data-print]');
@@ -157,14 +179,17 @@
       clearPrintMode();
       if (mode === 'article-with-notes') {
         document.body.classList.add('print-include-notes');
+        populatePanelForPrint();
         injectInlineNotes();
       } else if (mode === 'notes-only') {
         document.body.classList.add('print-notes-only');
+        populatePanelForPrint();
       }
+      // Give the populators a tick to finish before opening the print dialog.
       setTimeout(function () {
         window.print();
         setTimeout(clearPrintMode, 100);
-      }, 0);
+      }, 80);
     });
   }
 
