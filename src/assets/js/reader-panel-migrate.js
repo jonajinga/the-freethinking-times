@@ -92,29 +92,14 @@
     return { open: open, close: close };
   }
 
-  // ── Share button: native share on mobile, popover on desktop
+  // ── Share button — always opens the popover (on mobile and desktop).
+  // Earlier we handed off to navigator.share() on touch devices, but the
+  // popover gives users access to specific networks, copy-link, download,
+  // and print — all of which the system share sheet doesn't cover.
   var shareBtn = document.getElementById('ann-share-btn');
   var sharePopover = document.getElementById('ann-share-popover');
   if (shareBtn) shareBtn.classList.remove('annotation-toolbar__btn--needs-selection');
-
-  // Coarse pointer = touch device (phones, most tablets). Desktop with
-  // a mouse always sees the popover so the user can pick a specific
-  // network or copy the link.
-  var isCoarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-  var hasNativeShare  = typeof navigator !== 'undefined' && typeof navigator.share === 'function';
-
-  if (shareBtn && sharePopover && isCoarsePointer && hasNativeShare) {
-    // Mobile: hand off to the system share sheet, skip the popover entirely.
-    shareBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var src = document.getElementById('share-btn');
-      var title = (src && src.dataset.title) || document.title;
-      var url   = (src && src.dataset.url)   || window.location.href;
-      navigator.share({ title: title, url: url }).catch(function () { /* user cancelled */ });
-    }, { capture: true });
-  } else {
-    bindPopover('ann-share-btn', 'ann-share-popover');
-  }
+  bindPopover('ann-share-btn', 'ann-share-popover');
 
   // For article+notes print: walk every .library-highlight--note <mark> in
   // the article body and append its note text inline as a .print-inline-note
@@ -193,71 +178,24 @@
     });
   }
 
-  // ── Panel "Export notes" menu.
-  // Self-contained: bind each menu item directly (no inline onclicks)
-  // and use position:fixed for the menu so it isn't clipped by the tabs
-  // row's overflow-x:auto. Each item carries data-export="txt|md|json|print".
-  var exportWraps = document.querySelectorAll('.library-panel__export-wrap');
-  exportWraps.forEach(function (wrap) {
-    var trigger = wrap.querySelector('button');
-    var menu    = wrap.querySelector('.library-panel__export-menu');
-    if (!trigger || !menu) return;
-
-    trigger.removeAttribute('onclick');
-    trigger.onclick = null;
-
-    function position() {
-      var r = trigger.getBoundingClientRect();
-      var menuW = menu.offsetWidth || 180;
-      var top   = r.bottom + 6;
-      var left  = Math.min(r.right - menuW, window.innerWidth - menuW - 8);
-      menu.style.top  = Math.max(8, top)  + 'px';
-      menu.style.left = Math.max(8, left) + 'px';
-    }
-    function openMenu() {
-      menu.hidden = false;
-      position();
-      requestAnimationFrame(position);
-    }
-    function closeMenu() { menu.hidden = true; }
-
-    trigger.addEventListener('click', function (e) {
-      e.stopPropagation();
-      e.preventDefault();
-      menu.hidden ? openMenu() : closeMenu();
-    });
-    document.addEventListener('click', function (e) {
-      if (menu.hidden) return;
-      if (!menu.contains(e.target) && e.target !== trigger && !trigger.contains(e.target)) closeMenu();
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && !menu.hidden) closeMenu();
-    });
-    window.addEventListener('resize', function () {
-      if (!menu.hidden) position();
-    }, { passive: true });
-
-    // Bind each item directly so we don't depend on inline onclicks
-    // (which annotations.js may not have wired up yet, and which
-    // weren't firing reliably after the migrate pass).
-    menu.querySelectorAll('[data-export]').forEach(function (item) {
-      item.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var kind = item.getAttribute('data-export');
-        closeMenu();
-        // Wait one tick so the menu finishes closing before the browser
-        // opens the file dialog (otherwise some browsers swallow the
-        // click gesture when the originating element is detached).
-        setTimeout(function () {
-          try {
-            if (kind === 'print') {
-              if (typeof window.__printPanelNotes === 'function') window.__printPanelNotes();
-            } else {
-              if (typeof window.__exportPanelNotes === 'function') window.__exportPanelNotes(kind);
-            }
-          } catch (err) { /* swallow — silence is better than a broken download UX */ }
-        }, 10);
-      });
-    });
+  // ── Export tab — buttons live as panel section content now (they used
+  // to be a popover, which was cramped and positioned poorly on mobile).
+  // Each button carries data-export="txt|md|json|print" and is wired via
+  // document-level delegation so migrated/re-rendered buttons work too.
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.reader-export-btn, [data-export]');
+    if (!btn) return;
+    // Print/download data-export buttons also appear inside ann-share-popover;
+    // those are already handled above. Skip them here.
+    if (btn.closest('#ann-share-popover, #ann-print-popover')) return;
+    var kind = btn.getAttribute('data-export');
+    if (!kind) return;
+    try {
+      if (kind === 'print') {
+        if (typeof window.__printPanelNotes === 'function') window.__printPanelNotes();
+      } else {
+        if (typeof window.__exportPanelNotes === 'function') window.__exportPanelNotes(kind);
+      }
+    } catch (err) { /* silence */ }
   });
 })();

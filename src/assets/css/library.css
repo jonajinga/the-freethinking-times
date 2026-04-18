@@ -926,6 +926,58 @@
   z-index: 10;
 }
 
+/* ── Export tab — list of format buttons inside the panel ── */
+.reader-export-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.reader-export-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-rule);
+  border-radius: 6px;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-ui);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+.reader-export-btn:hover,
+.reader-export-btn:focus-visible {
+  border-color: var(--color-accent);
+  background: var(--color-bg-alt);
+  outline: none;
+}
+.reader-export-btn > svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--color-ink-faint);
+}
+.reader-export-btn > span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.3;
+}
+.reader-export-btn strong {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-ink);
+}
+.reader-export-btn em {
+  font-style: normal;
+  font-size: var(--text-xs);
+  color: var(--color-ink-faint);
+}
+
 /* Subheads inside tab sections (e.g. "Share" / "Download" in the Share tab) */
 .reader-panel-subhead {
   font-family: var(--font-ui);
@@ -1423,35 +1475,51 @@
   .annotation-toolbar__music:not(:empty)::before { display: none; }
 }
 
-/* Phone: tighten icon size + allow horizontal scroll if 10 icons don't
-   fit. Single-row scroll is preferable to wrapping into multiple rows.
-   IMPORTANT: keep native .annotation-toolbar__btn and migrated
-   .article-action-btn at the same size so the bar doesn't look
-   mismatched. */
+/* Phone: shrink icons so all 10 fit in a single row on 360px+ phones
+   without horizontal scrolling. Sizes are !important so article.css's
+   own .article-action-btn rules can't enlarge the migrated buttons. */
 @media (max-width: 480px) {
+  .annotation-toolbar {
+    padding: var(--space-1) var(--space-1);
+    padding-bottom: max(var(--space-1), env(safe-area-inset-bottom, 0));
+  }
   .annotation-toolbar__btn,
   .annotation-toolbar .article-action-btn {
-    width: 38px !important;
-    height: 38px !important;
+    width: 32px !important;
+    height: 32px !important;
     padding: 0 !important;
-    min-width: 38px !important;
-    min-height: 38px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    border-radius: 4px;
   }
   .annotation-toolbar__btn svg,
   .annotation-toolbar .article-action-btn svg {
-    width: 18px !important;
-    height: 18px !important;
+    width: 16px !important;
+    height: 16px !important;
   }
   .annotation-toolbar__main {
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    max-width: 100%;
-    justify-content: flex-start;
-    padding: 0 var(--space-1);
+    gap: 2px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    /* No overflow-x: auto — user doesn't want the bar to scroll. */
   }
-  .annotation-toolbar__main::-webkit-scrollbar { display: none; }
+}
+
+/* Extra-narrow (iPhone SE 320px): even tighter so 10 icons still fit. */
+@media (max-width: 360px) {
+  .annotation-toolbar__btn,
+  .annotation-toolbar .article-action-btn {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+  }
+  .annotation-toolbar__btn svg,
+  .annotation-toolbar .article-action-btn svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+  .annotation-toolbar__main { gap: 1px; }
 }
 
 /* ── Share / download / print popover ──
