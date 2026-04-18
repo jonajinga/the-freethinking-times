@@ -8,7 +8,7 @@ permalink: /support/
 {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
 {% set authors_with_tipping = [] %}
 {% for slug, a in authors %}
-  {% if a.tipping and (a.tipping.kofi or a.tipping.bmac or a.tipping.patreon) %}
+  {% if slug != "staff" and a.tipping and (a.tipping.kofi or a.tipping.bmac or a.tipping.patreon) %}
     {% set authors_with_tipping = (authors_with_tipping.push({slug: slug, name: a.name, url: a.tipping.kofi or a.tipping.bmac or a.tipping.patreon}), authors_with_tipping) %}
   {% endif %}
 {% endfor %}
