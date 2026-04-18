@@ -13,6 +13,20 @@
           <p style="font-size: var(--text-sm); color: var(--color-ink-muted); max-width: 42ch; line-height: var(--leading-normal);">
             Founded {{ site.founded }}. Investigative. Philosophical. Adversarial to power.
           </p>
+          {% if site.tipping %}
+          {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
+          {% if pubTipUrl %}
+          <div style="margin-top: var(--space-3);">
+            <a class="tip-badge tip-badge--pub" href="{{ pubTipUrl }}" target="_blank" rel="noopener noreferrer"
+               aria-label="Support {{ site.title }}"
+               data-tippy-content="Support {{ site.title }}. Reader contributions keep us independent, ad-free, and able to pay our contributors fairly."
+               data-tippy-theme="badge"
+               data-tippy-placement="top">
+              <span class="tip-badge__label">support</span><span class="tip-badge__value">{{ site.shortTitle or site.title }}</span>
+            </a>
+          </div>
+          {% endif %}
+          {% endif %}
         </div>
         <div class="site-footer__brand-newsletter">
           {% set subscribeVariant = "footer" %}
@@ -40,20 +54,6 @@
           <li><a href="/submit/" title="Pitch an article for publication">Submit an Article</a></li>
           <li><a href="/letters/submit/" title="Respond to something we published">Write a Letter</a></li>
           <li><a href="/support/" title="Help keep us independent">Support Us</a></li>
-          {% if site.tipping %}
-          {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
-          {% if pubTipUrl %}
-          <li style="padding-top: var(--space-2);">
-            <a class="tip-badge tip-badge--pub" href="{{ pubTipUrl }}" target="_blank" rel="noopener noreferrer"
-               aria-label="Support {{ site.title }}"
-               data-tippy-content="Support {{ site.title }}. Reader contributions keep us independent, ad-free, and able to pay our contributors fairly."
-               data-tippy-theme="badge"
-               data-tippy-placement="top">
-              <span class="tip-badge__label">support</span><span class="tip-badge__value">{{ site.shortTitle or site.title }}</span>
-            </a>
-          </li>
-          {% endif %}
-          {% endif %}
         </ul>
       </div>
 
