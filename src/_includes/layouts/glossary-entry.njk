@@ -6,8 +6,12 @@ layout: layouts/base.njk
   <div class="container--prose" data-pagefind-body>
     <span data-pagefind-filter="section" hidden>Glossary</span>
 
-    <nav style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);margin-bottom:var(--space-6);">
-      <a href="/glossary/" style="color:var(--color-link);">Glossary</a> &rarr; {{ title }}
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol class="breadcrumbs__list">
+        <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/">Home</a></li>
+        <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/glossary/">Glossary</a></li>
+        <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">{{ title }}</li>
+      </ol>
     </nav>
 
     <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3rem); margin-bottom: var(--space-4);">{{ title }}</h1>

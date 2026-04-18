@@ -230,7 +230,7 @@ permalink: /archives/
       if (section && entry.dataset.section !== section) show = false;
       if (author  && entry.dataset.author  !== author)  show = false;
       if (year    && entry.dataset.year    !== year)     show = false;
-      if (month   && String(parseInt(entry.dataset.month, 10)) !== month) show = false;
+      if (month   && entry.dataset.month !== month) show = false;
 
       entry.hidden = !show;
       if (show) visible++;

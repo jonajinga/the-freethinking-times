@@ -6,7 +6,13 @@ layout: layouts/base.njk
   <div class="doc-layout">
 
     <header class="doc-header">
-      <a href="/documents/" class="doc-back">← Document Library</a>
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ol class="breadcrumbs__list">
+          <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/">Home</a></li>
+          <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/documents/">Documents</a></li>
+          <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">{{ title }}</li>
+        </ol>
+      </nav>
 
       <div class="doc-header__eyebrow">
         {% if docType %}<span class="doc-type-badge">{{ docType }}</span>{% endif %}
