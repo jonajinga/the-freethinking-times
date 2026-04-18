@@ -1674,15 +1674,18 @@
 
 .fn-tooltip {
   position: absolute;
-  z-index: var(--z-overlay);
-  max-width: 300px;
+  /* Sits above the bottom annotation toolbar (which is at --z-overlay)
+     so footnote popups near the bottom of the viewport aren't covered. */
+  z-index: calc(var(--z-overlay) + 20);
+  max-width: 320px;
   width: max-content;
   background: var(--color-bg);
   border: 1px solid var(--color-rule-heavy);
   border-top: 2px solid var(--color-accent);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
   padding: var(--space-3) var(--space-4);
 }
+.fn-tooltip[hidden] { display: none; }
 
 .fn-tooltip__close {
   float: right;

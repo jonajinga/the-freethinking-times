@@ -573,9 +573,22 @@
         var left = rect.left + rect.width / 2 - tipW / 2;
         var top  = scrollY + rect.top - tipH - 10;
 
+        // Reserve space for the bottom annotation toolbar so we never
+        // place the tooltip behind it.
+        var bar = document.getElementById('annotation-toolbar');
+        var barH = bar ? bar.offsetHeight : 0;
+        var maxBottomPx = scrollY + window.innerHeight - barH - 10;
+
         // Clamp to viewport
         left = Math.max(8, Math.min(left, window.innerWidth - tipW - 8));
-        if (top < scrollY + 8) top = scrollY + rect.bottom + 10;
+        // Default: above the button. If clipped at the top of the viewport,
+        // try below; if that would land under the toolbar, keep it above.
+        if (top < scrollY + 8) {
+          var below = scrollY + rect.bottom + 10;
+          top = (below + tipH < maxBottomPx) ? below : Math.max(scrollY + 8, top);
+        }
+        // Last-resort: clamp upward so the tooltip stays clear of the toolbar.
+        if (top + tipH > maxBottomPx) top = Math.max(scrollY + 8, maxBottomPx - tipH);
 
         fnTooltip.style.left = left + 'px';
         fnTooltip.style.top  = top  + 'px';
