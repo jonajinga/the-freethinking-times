@@ -2717,18 +2717,6 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   gap: var(--space-3);
   flex-wrap: wrap;
 }
-.author-hero__learn-more {
-  font-family: var(--font-ui);
-  font-size: 0.7rem;
-  color: var(--color-ink-faint);
-  text-decoration: none;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-}
-.author-hero__learn-more:hover {
-  color: var(--color-ink-muted);
-  text-decoration: underline;
-}
 .author-hero__socials {
   display: flex;
   align-items: center;
@@ -3031,6 +3019,13 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
 }
 .tip-badge--pub .tip-badge__value {
   background: var(--color-accent);
+  color: #fff;
+}
+.tip-badge--info .tip-badge__label {
+  background: #374151;
+}
+.tip-badge--info .tip-badge__value {
+  background: #4b5563;
   color: #fff;
 }
 
