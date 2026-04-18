@@ -63,10 +63,10 @@ permalink: /contributors/
         {% endif %}
 
         <div class="author-card__footer">
-          <a class="author-card__link" href="/author/{{ slug }}/">View articles &rarr;</a>
           {% set tipAuthor = authorData %}
           {% set tipHidePublication = true %}
           {% include "partials/tip-buttons.njk" %}
+          <a class="author-card__link" href="/author/{{ slug }}/">View articles &rarr;</a>
         </div>
       </div>
     </article>

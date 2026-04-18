@@ -1,293 +1,658 @@
 ---
 layout: base
 title: Style Guide
-description: Brand identity, typography, colour palette, and UI patterns for The Freethinking Times.
+description: Design tokens, typography, colour palette, components, and interaction patterns for The Freethinking Times.
 permalink: /style-guide/
 ---
 
-<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
-  <div class="container--prose">
+<div class="container">
+  <div class="sg-layout">
 
-    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
-      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Style Guide</h1>
-      <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic;">
-        The visual language of {{ site.title }}.
-      </p>
-    </header>
+    {# ── Sticky TOC ───────────────────────────────────────── #}
+    <aside class="sg-nav" aria-label="Style guide sections">
+      <a href="#brand">Brand</a>
+      <a href="#colors">Colors</a>
+      <a href="#typography">Typography</a>
+      <a href="#scale">Type scale</a>
+      <a href="#spacing">Spacing</a>
+      <a href="#buttons">Buttons</a>
+      <a href="#badges">Badges</a>
+      <a href="#section-badges">Section badges</a>
+      <a href="#article-cards">Article cards</a>
+      <a href="#author-cards">Author cards</a>
+      <a href="#forms">Forms</a>
+      <a href="#tables">Tables</a>
+      <a href="#icons">Icons</a>
+      <a href="#a11y">Accessibility</a>
+      <a href="#contrast">Contrast</a>
+      <a href="#naming">Naming</a>
+    </aside>
 
-    <div class="article-body">
+    {# ── Content ──────────────────────────────────────────── #}
+    <div>
 
-      <h2>Brand Identity</h2>
+      <header style="margin-bottom: var(--space-12); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+        <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-3);">Style Guide</h1>
+        <p style="font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-relaxed); max-width: 60ch; font-style: italic; margin: 0;">
+          Every design token, typographic specimen, component, and interaction pattern for {{ site.title }}.
+        </p>
+      </header>
 
-      <p>The publication name is always written as <strong>The Freethinking Times</strong> — capitalised, no abbreviation. The icon is a serif "F" on a dark square. The pansy flower — a historical symbol of freethought (from the French <em>pens&eacute;e</em>, meaning "thought") — is the publication's mascot and will replace the favicon in a future update.</p>
+      {# ── Brand ── #}
+      <section class="sg-section" id="brand">
+        <h2>Brand</h2>
+        <p class="lead">The publication name is always written in full — <strong>The Freethinking Times</strong> — capitalised, never abbreviated to "TFT" in reader-facing copy. The icon is a serif "F" on a dark square.</p>
 
-      <div style="display:flex;align-items:center;gap:var(--space-4);padding:var(--space-6);background:var(--color-bg-alt);border:1px solid var(--color-rule);margin:var(--space-6) 0;">
-        <img src="/assets/favicon.svg" alt="The Freethinking Times icon" width="48" height="48">
-        <span style="font-family:var(--font-masthead);font-size:var(--text-xl);font-weight:700;">{{ site.title }}</span>
-      </div>
-
-      <p><strong>Tagline:</strong> {{ site.description }}</p>
-
-      <h2>Typography</h2>
-
-      <p>Four font families, each with a specific role. All loaded from <a href="https://fonts.bunny.net" target="_blank" rel="noopener noreferrer">Bunny Fonts</a> (privacy-friendly, no tracking).</p>
-
-      <table style="width:100%;border-collapse:collapse;margin:var(--space-6) 0;">
-        <thead>
-          <tr style="border-bottom:2px solid var(--color-ink);text-align:left;">
-            <th style="padding:var(--space-2);">Role</th>
-            <th style="padding:var(--space-2);">Font</th>
-            <th style="padding:var(--space-2);">Sample</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="border-bottom:1px solid var(--color-rule);">
-            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">Masthead</td>
-            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">Playfair Display</td>
-            <td style="padding:var(--space-3);font-family:var(--font-masthead);font-size:var(--text-lg);">The Freethinking Times</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--color-rule);">
-            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">Headlines</td>
-            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">Lora</td>
-            <td style="padding:var(--space-3);font-family:var(--font-headline);font-size:var(--text-md);font-weight:700;">Reason Against Orthodoxy</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--color-rule);">
-            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">Body text</td>
-            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">Source Serif 4</td>
-            <td style="padding:var(--space-3);font-family:var(--font-body);font-size:var(--text-base);">The examined life is the only one worth living.</td>
-          </tr>
-          <tr>
-            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">UI / Labels</td>
-            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">DM Sans</td>
-            <td style="padding:var(--space-3);font-family:var(--font-ui);font-size:var(--text-sm);">ANALYSIS &middot; 8 MIN READ</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h3>Type scale</h3>
-      <p>Major Third ratio (1.25). Base size is 16px (1rem).</p>
-
-      <div style="margin:var(--space-6) 0;">
-        <p style="font-size:var(--text-xs);color:var(--color-ink-faint);margin:var(--space-1) 0;">text-xs &mdash; {{ "0.75rem / ~12px" }}</p>
-        <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin:var(--space-1) 0;">text-sm &mdash; 0.875rem / ~14px</p>
-        <p style="font-size:var(--text-base);margin:var(--space-1) 0;">text-base &mdash; 1rem / 16px</p>
-        <p style="font-size:var(--text-md);margin:var(--space-1) 0;">text-md &mdash; 1.25rem / ~20px</p>
-        <p style="font-size:var(--text-lg);margin:var(--space-1) 0;">text-lg &mdash; 1.563rem / ~25px</p>
-        <p style="font-size:var(--text-xl);margin:var(--space-1) 0;">text-xl &mdash; 1.953rem / ~31px</p>
-      </div>
-
-      <h2>Colour Palette</h2>
-
-      <h3>Core colours</h3>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:var(--space-3);margin:var(--space-6) 0;">
-        <div style="text-align:center;">
-          <div style="width:100%;height:64px;background:#F4F1EB;border:1px solid var(--color-rule);margin-bottom:var(--space-2);"></div>
-          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Background<br><code>#F4F1EB</code></p>
+        <div class="sg-subsection">
+          <h4>Logotype</h4>
+          <div class="sg-demo sg-demo--row">
+            <img src="/assets/favicon.svg" alt="The Freethinking Times icon" width="48" height="48">
+            <span style="font-family: var(--font-masthead); font-size: var(--text-xl); font-weight: 700;">{{ site.title }}</span>
+          </div>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:64px;background:#1A1A1A;margin-bottom:var(--space-2);"></div>
-          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Ink<br><code>#1A1A1A</code></p>
+
+        <div class="sg-subsection">
+          <h4>Tagline</h4>
+          <div class="sg-demo">
+            <p style="font-family: var(--font-body); font-style: italic; font-size: var(--text-md); margin: 0; color: var(--color-ink-muted);">{{ site.description }}</p>
+          </div>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:64px;background:#C0392B;margin-bottom:var(--space-2);"></div>
-          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Accent<br><code>#C0392B</code></p>
+
+        <div class="sg-subsection">
+          <h4>Mascot</h4>
+          <p>The pansy flower — a historical symbol of freethought (from the French <em>pensée</em>, meaning "thought") — is the publication's mascot.</p>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:64px;background:#2C5F8A;margin-bottom:var(--space-2);"></div>
-          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Link<br><code>#2C5F8A</code></p>
+      </section>
+
+      {# ── Colors ── #}
+      <section class="sg-section" id="colors">
+        <h2>Colors</h2>
+        <p class="lead">A warm newsprint palette in light mode; deep charcoal in dark mode. Every value is a CSS custom property in <code>tokens.css</code> — change once, retheme everywhere.</p>
+
+        <div class="sg-subsection">
+          <h4>Surfaces — light mode</h4>
+          <div class="sg-color-grid">
+            <div class="sg-color">
+              <div class="sg-color__swatch" style="background: #F4F1EB;"></div>
+              <div class="sg-color__body">
+                <span class="sg-color__name">Background</span>
+                <span class="sg-color__value">--color-bg · #F4F1EB</span>
+                <span class="sg-color__note">Primary page background</span>
+              </div>
+            </div>
+            <div class="sg-color">
+              <div class="sg-color__swatch" style="background: #EAE6DE; border: 1px solid #C8C2B6;"></div>
+              <div class="sg-color__body">
+                <span class="sg-color__name">Background alt</span>
+                <span class="sg-color__value">--color-bg-alt · #EAE6DE</span>
+                <span class="sg-color__note">Cards, panels, footer</span>
+              </div>
+            </div>
+            <div class="sg-color">
+              <div class="sg-color__swatch" style="background: #E0DBCF; border: 1px solid #C8C2B6;"></div>
+              <div class="sg-color__body">
+                <span class="sg-color__name">Background inset</span>
+                <span class="sg-color__value">--color-bg-inset · #E0DBCF</span>
+                <span class="sg-color__note">Code blocks, sunken areas</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:64px;background:#6A1B9A;margin-bottom:var(--space-2);"></div>
-          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Selection<br><code>#6A1B9A</code></p>
+
+        <div class="sg-subsection">
+          <h4>Text</h4>
+          <div class="sg-color-grid">
+            <div class="sg-color">
+              <div class="sg-color__swatch" style="background: #1A1A1A;"></div>
+              <div class="sg-color__body">
+                <span class="sg-color__name">Ink</span>
+                <span class="sg-color__value">--color-ink · #1A1A1A</span>
+                <span class="sg-color__note">Primary text. 15.6:1 on bg</span>
+              </div>
+            </div>
+            <div class="sg-color">
+              <div class="sg-color__swatch" style="background: #4A4845;"></div>
+              <div class="sg-color__body">
+                <span class="sg-color__name">Ink muted</span>
+                <span class="sg-color__value">--color-ink-muted · #4A4845</span>
+                <span class="sg-color__note">Secondary text, datelines</span>
+              </div>
+            </div>
+            <div class="sg-color">
+              <div class="sg-color__swatch" style="background: #888380;"></div>
+              <div class="sg-color__body">
+                <span class="sg-color__name">Ink faint</span>
+                <span class="sg-color__value">--color-ink-faint · #888380</span>
+                <span class="sg-color__note">Captions, metadata</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:64px;background:#C8C2B6;margin-bottom:var(--space-2);"></div>
-          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Rule<br><code>#C8C2B6</code></p>
+
+        <div class="sg-subsection">
+          <h4>Accents &amp; UI</h4>
+          <div class="sg-color-grid">
+            <div class="sg-color">
+              <div class="sg-color__swatch" style="background: #C0392B;"></div>
+              <div class="sg-color__body">
+                <span class="sg-color__name">Accent (Vermillion)</span>
+                <span class="sg-color__value">--color-accent · #C0392B</span>
+                <span class="sg-color__note">Breaking news, labels. 5.2:1</span>
+              </div>
+            </div>
+            <div class="sg-color">
+              <div class="sg-color__swatch" style="background: #2C5F8A;"></div>
+              <div class="sg-color__body">
+                <span class="sg-color__name">Link</span>
+                <span class="sg-color__value">--color-link · #2C5F8A</span>
+                <span class="sg-color__note">Body links. 6.8:1 on bg</span>
+              </div>
+            </div>
+            <div class="sg-color">
+              <div class="sg-color__swatch" style="background: #C8C2B6; border: 1px solid #8A847A;"></div>
+              <div class="sg-color__body">
+                <span class="sg-color__name">Rule</span>
+                <span class="sg-color__value">--color-rule · #C8C2B6</span>
+                <span class="sg-color__note">Borders, horizontal rules</span>
+              </div>
+            </div>
+            <div class="sg-color">
+              <div class="sg-color__swatch" style="background: #8A847A;"></div>
+              <div class="sg-color__body">
+                <span class="sg-color__name">Rule heavy</span>
+                <span class="sg-color__value">--color-rule-heavy · #8A847A</span>
+                <span class="sg-color__note">Strong dividers</span>
+              </div>
+            </div>
+            <div class="sg-color">
+              <div class="sg-color__swatch" style="background: #6A1B9A;"></div>
+              <div class="sg-color__body">
+                <span class="sg-color__name">Selection</span>
+                <span class="sg-color__value">--color-selection · #6A1B9A</span>
+                <span class="sg-color__note">Text selection highlight</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <h3>Section colours</h3>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:var(--space-3);margin:var(--space-6) 0;">
-        <div style="text-align:center;">
-          <div style="width:100%;height:48px;background:#C0392B;margin-bottom:var(--space-1);"></div>
-          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">News</p>
+        <div class="sg-subsection">
+          <h4>Section colors</h4>
+          <div class="sg-color-grid">
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#C0392B;"></div><div class="sg-color__body"><span class="sg-color__name">News</span><span class="sg-color__value">#C0392B</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#2C5F8A;"></div><div class="sg-color__body"><span class="sg-color__name">Opinion</span><span class="sg-color__value">#2C5F8A</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#5D4037;"></div><div class="sg-color__body"><span class="sg-color__name">Analysis</span><span class="sg-color__value">#5D4037</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#6A1B9A;"></div><div class="sg-color__body"><span class="sg-color__name">Arts &amp; Culture</span><span class="sg-color__value">#6A1B9A</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#1B5E20;"></div><div class="sg-color__body"><span class="sg-color__name">Science</span><span class="sg-color__value">#1B5E20</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#BF8C00;"></div><div class="sg-color__body"><span class="sg-color__name">History</span><span class="sg-color__value">#BF8C00</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#37474F;"></div><div class="sg-color__body"><span class="sg-color__name">Letters</span><span class="sg-color__value">#37474F</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#8B6914;"></div><div class="sg-color__body"><span class="sg-color__name">Reviews</span><span class="sg-color__value">#8B6914</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#1D5C6E;"></div><div class="sg-color__body"><span class="sg-color__name">Thought Experiments</span><span class="sg-color__value">#1D5C6E</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#6B2A2A;"></div><div class="sg-color__body"><span class="sg-color__name">Trials</span><span class="sg-color__value">#6B2A2A</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#3D5A47;"></div><div class="sg-color__body"><span class="sg-color__name">Glossary</span><span class="sg-color__value">#3D5A47</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#7A5232;"></div><div class="sg-color__body"><span class="sg-color__name">Bookshelf</span><span class="sg-color__value">#7A5232</span></div></div>
+          </div>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:48px;background:#2C5F8A;margin-bottom:var(--space-1);"></div>
-          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">Opinion</p>
+
+        <div class="sg-subsection">
+          <h4>Dark mode surfaces</h4>
+          <div class="sg-color-grid">
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#141414; border: 1px solid #303030;"></div><div class="sg-color__body"><span class="sg-color__name">Background</span><span class="sg-color__value">#141414</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#1E1E1E;"></div><div class="sg-color__body"><span class="sg-color__name">Background alt</span><span class="sg-color__value">#1E1E1E</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#252525;"></div><div class="sg-color__body"><span class="sg-color__name">Background inset</span><span class="sg-color__value">#252525</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#E8E4DC;"></div><div class="sg-color__body"><span class="sg-color__name">Ink</span><span class="sg-color__value">#E8E4DC</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#A8A49C;"></div><div class="sg-color__body"><span class="sg-color__name">Ink muted</span><span class="sg-color__value">#A8A49C</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#E05545;"></div><div class="sg-color__body"><span class="sg-color__name">Accent</span><span class="sg-color__value">#E05545</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#6B9EC7;"></div><div class="sg-color__body"><span class="sg-color__name">Link</span><span class="sg-color__value">#6B9EC7</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#B87ACC;"></div><div class="sg-color__body"><span class="sg-color__name">Selection</span><span class="sg-color__value">#B87ACC</span></div></div>
+          </div>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:48px;background:#5D4037;margin-bottom:var(--space-1);"></div>
-          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">Analysis</p>
+      </section>
+
+      {# ── Typography ── #}
+      <section class="sg-section" id="typography">
+        <h2>Typography</h2>
+        <p class="lead">Four typefaces do all the work. All served from <a href="https://fonts.bunny.net" target="_blank" rel="noopener noreferrer">Bunny Fonts</a> — privacy-friendly, no tracking — with system-font fallbacks.</p>
+
+        <div class="sg-subsection">
+          <h4>Families</h4>
+          <div class="sg-type-specimen">
+            <div class="sg-type-specimen__meta">--font-masthead · Playfair Display 900</div>
+            <div class="sg-type-specimen__sample" style="font-family: var(--font-masthead); font-weight: 900; font-size: var(--text-3xl); line-height: 1.05;">The Freethinking Times</div>
+            <p style="color: var(--color-ink-faint); font-size: 0.82rem; margin-top: 0.4rem;">Hero titles, masthead, page titles, decorative numerals.</p>
+          </div>
+          <div class="sg-type-specimen">
+            <div class="sg-type-specimen__meta">--font-headline · Lora 700</div>
+            <div class="sg-type-specimen__sample" style="font-family: var(--font-headline); font-weight: 700; font-size: var(--text-xl); line-height: 1.2;">Reason Against Orthodoxy</div>
+            <p style="color: var(--color-ink-faint); font-size: 0.82rem; margin-top: 0.4rem;">Article headlines, section headers, card titles.</p>
+          </div>
+          <div class="sg-type-specimen">
+            <div class="sg-type-specimen__meta">--font-body · Source Serif 4</div>
+            <div class="sg-type-specimen__sample" style="font-family: var(--font-body); font-size: var(--text-base); line-height: var(--leading-relaxed); max-width: 48rem;">The examined life is the only one worth living. The Freethinking Times covers ideas, reason, and the long history of human beings trying to think their way past the official story — whatever the official story happens to be at the time.</div>
+            <p style="color: var(--color-ink-faint); font-size: 0.82rem; margin-top: 0.4rem;">Article and page body copy. 16px base, 1.7 line-height.</p>
+          </div>
+          <div class="sg-type-specimen">
+            <div class="sg-type-specimen__meta">--font-ui · DM Sans</div>
+            <div class="sg-type-specimen__sample" style="font-family: var(--font-ui); font-size: var(--text-base);">Navigation · Buttons · Labels · Metadata · Bylines</div>
+            <p style="color: var(--color-ink-faint); font-size: 0.82rem; margin-top: 0.4rem;">All UI chrome: nav, buttons, form labels, section badges, reading time.</p>
+          </div>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:48px;background:#6A1B9A;margin-bottom:var(--space-1);"></div>
-          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">Arts & Culture</p>
+      </section>
+
+      {# ── Type scale ── #}
+      <section class="sg-section" id="scale">
+        <h2>Type scale</h2>
+        <p class="lead">Major Third ratio (1.25×). Base size is 16px (1rem). Tokens are defined in <code>tokens.css</code> — never use raw pixel values in templates.</p>
+
+        <div class="sg-demo" style="gap: 0.25rem; padding: var(--space-4);">
+          <div class="sg-scale-row"><span class="sg-scale-row__token">--text-xs</span><span class="sg-scale-row__value">0.75rem / ~12px</span><div class="sg-scale-row__bar" style="height: 0.75rem;"></div></div>
+          <div class="sg-scale-row"><span class="sg-scale-row__token">--text-sm</span><span class="sg-scale-row__value">0.875rem / ~14px</span><div class="sg-scale-row__bar" style="height: 0.875rem;"></div></div>
+          <div class="sg-scale-row"><span class="sg-scale-row__token">--text-base</span><span class="sg-scale-row__value">1rem / 16px</span><div class="sg-scale-row__bar" style="height: 1rem;"></div></div>
+          <div class="sg-scale-row"><span class="sg-scale-row__token">--text-md</span><span class="sg-scale-row__value">1.25rem / ~20px</span><div class="sg-scale-row__bar" style="height: 1.25rem;"></div></div>
+          <div class="sg-scale-row"><span class="sg-scale-row__token">--text-lg</span><span class="sg-scale-row__value">1.563rem / ~25px</span><div class="sg-scale-row__bar" style="height: 1.563rem;"></div></div>
+          <div class="sg-scale-row"><span class="sg-scale-row__token">--text-xl</span><span class="sg-scale-row__value">1.953rem / ~31px</span><div class="sg-scale-row__bar" style="height: 1.953rem;"></div></div>
+          <div class="sg-scale-row"><span class="sg-scale-row__token">--text-2xl</span><span class="sg-scale-row__value">2.441rem / ~39px</span><div class="sg-scale-row__bar" style="height: 2.441rem;"></div></div>
+          <div class="sg-scale-row"><span class="sg-scale-row__token">--text-3xl</span><span class="sg-scale-row__value">3.052rem / ~49px</span><div class="sg-scale-row__bar" style="height: 3.052rem;"></div></div>
+          <div class="sg-scale-row"><span class="sg-scale-row__token">--text-4xl</span><span class="sg-scale-row__value">3.815rem / ~61px</span><div class="sg-scale-row__bar" style="height: 3.815rem;"></div></div>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:48px;background:#1B5E20;margin-bottom:var(--space-1);"></div>
-          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">Science</p>
+      </section>
+
+      {# ── Spacing ── #}
+      <section class="sg-section" id="spacing">
+        <h2>Spacing</h2>
+        <p class="lead">A consistent rhythm from 4px to 6rem. Always use spacing tokens — never hardcode values in templates. The scale lives in <code>tokens.css</code>.</p>
+
+        <div class="sg-demo" style="gap: 0.25rem; padding: var(--space-4);">
+          <div class="sg-space-row"><span class="sg-scale-row__token">--space-1</span><span class="sg-scale-row__value">0.25rem / 4px</span><div class="sg-space-row__bar" style="width: 0.25rem;"></div></div>
+          <div class="sg-space-row"><span class="sg-scale-row__token">--space-2</span><span class="sg-scale-row__value">0.5rem / 8px</span><div class="sg-space-row__bar" style="width: 0.5rem;"></div></div>
+          <div class="sg-space-row"><span class="sg-scale-row__token">--space-3</span><span class="sg-scale-row__value">0.75rem / 12px</span><div class="sg-space-row__bar" style="width: 0.75rem;"></div></div>
+          <div class="sg-space-row"><span class="sg-scale-row__token">--space-4</span><span class="sg-scale-row__value">1rem / 16px</span><div class="sg-space-row__bar" style="width: 1rem;"></div></div>
+          <div class="sg-space-row"><span class="sg-scale-row__token">--space-6</span><span class="sg-scale-row__value">1.5rem / 24px</span><div class="sg-space-row__bar" style="width: 1.5rem;"></div></div>
+          <div class="sg-space-row"><span class="sg-scale-row__token">--space-8</span><span class="sg-scale-row__value">2rem / 32px</span><div class="sg-space-row__bar" style="width: 2rem;"></div></div>
+          <div class="sg-space-row"><span class="sg-scale-row__token">--space-10</span><span class="sg-scale-row__value">2.5rem / 40px</span><div class="sg-space-row__bar" style="width: 2.5rem;"></div></div>
+          <div class="sg-space-row"><span class="sg-scale-row__token">--space-12</span><span class="sg-scale-row__value">3rem / 48px</span><div class="sg-space-row__bar" style="width: 3rem;"></div></div>
+          <div class="sg-space-row"><span class="sg-scale-row__token">--space-16</span><span class="sg-scale-row__value">4rem / 64px</span><div class="sg-space-row__bar" style="width: 4rem;"></div></div>
+          <div class="sg-space-row"><span class="sg-scale-row__token">--space-20</span><span class="sg-scale-row__value">5rem / 80px</span><div class="sg-space-row__bar" style="width: 5rem;"></div></div>
+          <div class="sg-space-row"><span class="sg-scale-row__token">--space-24</span><span class="sg-scale-row__value">6rem / 96px</span><div class="sg-space-row__bar" style="width: 6rem;"></div></div>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:48px;background:#BF8C00;margin-bottom:var(--space-1);"></div>
-          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">History</p>
+      </section>
+
+      {# ── Buttons ── #}
+      <section class="sg-section" id="buttons">
+        <h2>Buttons</h2>
+        <p class="lead">Square corners (<code>border-radius: 0</code>). All buttons meet the 44×44px minimum touch target. Hover states have explicit <code>color</code> set to override parent link rules.</p>
+
+        <div class="sg-subsection">
+          <h4>Variants</h4>
+          <div class="sg-demo sg-demo--row">
+            <a href="#buttons" class="btn" onclick="return false;">Default</a>
+            <a href="#buttons" class="btn btn--accent" onclick="return false;">Accent</a>
+          </div>
+          <pre class="sg-code">&lt;a class="btn"&gt;Default&lt;/a&gt;
+&lt;a class="btn btn--accent"&gt;Accent&lt;/a&gt;</pre>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:48px;background:#37474F;margin-bottom:var(--space-1);"></div>
-          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">Letters</p>
+
+        <div class="sg-subsection">
+          <h4>On dark backgrounds</h4>
+          <div class="sg-demo sg-demo--row sg-demo--dark">
+            <a href="#buttons" class="btn btn--accent" onclick="return false;">Accent on dark</a>
+          </div>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:48px;background:#8B6914;margin-bottom:var(--space-1);"></div>
-          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">Reviews</p>
+      </section>
+
+      {# ── Support Badges ── #}
+      <section class="sg-section" id="badges">
+        <h2>Support badges</h2>
+        <p class="lead">Shields.io-style two-part flat badges used for reader support CTAs. Height is fixed at 20px with vertically centered text. Tippy.js tooltips provide context on hover.</p>
+
+        <div class="sg-subsection">
+          <h4>Variants</h4>
+          <div class="sg-demo sg-demo--row">
+            <a class="tip-badge" href="#badges" onclick="return false;"><span class="tip-badge__label">support</span><span class="tip-badge__value">Author Name</span></a>
+            <a class="tip-badge tip-badge--pub" href="#badges" onclick="return false;"><span class="tip-badge__label">support</span><span class="tip-badge__value">The Freethinking Times</span></a>
+            <a class="tip-badge tip-badge--info" href="#badges" onclick="return false;"><span class="tip-badge__label">transparency</span><span class="tip-badge__value">how we're funded</span></a>
+          </div>
+          <pre class="sg-code">&lt;a class="tip-badge" href="..."&gt;
+  &lt;span class="tip-badge__label"&gt;support&lt;/span&gt;
+  &lt;span class="tip-badge__value"&gt;Author Name&lt;/span&gt;
+&lt;/a&gt;</pre>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:48px;background:#1D5C6E;margin-bottom:var(--space-1);"></div>
-          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">Thought Experiments</p>
+
+        <div class="sg-subsection">
+          <h4>With Tippy tooltip</h4>
+          <div class="sg-demo sg-demo--row">
+            <a class="tip-badge"
+               href="#badges"
+               onclick="return false;"
+               data-tippy-content="Support the author directly. Your tip goes entirely to them via their own payment processor."
+               data-tippy-theme="badge"
+               data-tippy-placement="top">
+              <span class="tip-badge__label">support</span><span class="tip-badge__value">Author Name</span>
+            </a>
+          </div>
+          <pre class="sg-code">data-tippy-content="..."
+data-tippy-theme="badge"
+data-tippy-placement="top"</pre>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:48px;background:#6B2A2A;margin-bottom:var(--space-1);"></div>
-          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">Trials</p>
+      </section>
+
+      {# ── Section badges ── #}
+      <section class="sg-section" id="section-badges">
+        <h2>Section badges</h2>
+        <p class="lead">Small pill-style section labels used in article cards and eyebrows. Background color comes from the section-specific CSS custom property.</p>
+
+        <div class="sg-demo sg-demo--row">
+          <a href="/news/" class="section-badge section-badge--news">News</a>
+          <a href="/opinion/" class="section-badge section-badge--opinion">Opinion</a>
+          <a href="/analysis/" class="section-badge section-badge--analysis">Analysis</a>
+          <a href="/history/" class="section-badge section-badge--history">History</a>
+          <a href="/science/" class="section-badge section-badge--science">Science</a>
+          <a href="/arts-culture/" class="section-badge section-badge--arts-culture">Arts &amp; Culture</a>
+          <a href="/letters/" class="section-badge section-badge--letters">Letters</a>
+          <a href="/reviews/" class="section-badge section-badge--reviews">Reviews</a>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:48px;background:#3D5A47;margin-bottom:var(--space-1);"></div>
-          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">Glossary</p>
+        <pre class="sg-code">&lt;a class="section-badge section-badge--news" href="/news/"&gt;News&lt;/a&gt;</pre>
+      </section>
+
+      {# ── Article cards ── #}
+      <section class="sg-section" id="article-cards">
+        <h2>Article cards</h2>
+        <p class="lead">Used in all section feeds, homepage grids, and related-posts modules. Size variant (<code>lg</code>, <code>md</code>, <code>sm</code>, <code>xs</code>) controls headline scale. The byline carries reading time and word count.</p>
+
+        <div class="sg-subsection">
+          <h4>Medium card (default)</h4>
+          <div class="sg-demo" style="max-width: 360px;">
+            <article class="article-card">
+              <div class="article-card__eyebrow">
+                <a href="/news/" class="section-badge section-badge--news">News</a>
+                <a href="/archives/#2026-04-18" class="dateline"><time datetime="2026-04-18">April 18, 2026</time></a>
+              </div>
+              <a class="article-card__headline article-card__headline--md" href="#article-cards">How the Language of Authority Shapes What We Believe</a>
+              <p class="article-card__dek">An examination of the rhetorical strategies used to manufacture consensus and suppress dissent.</p>
+              <p class="article-card__byline">
+                By <a href="/author/example/">Author Name</a>
+                <span class="article-card__reading-time">6 min read · 1.3k words</span>
+              </p>
+            </article>
+          </div>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:48px;background:#7A5232;margin-bottom:var(--space-1);"></div>
-          <p style="font-family:var(--font-ui);font-size:10px;margin:0;">Bookshelf</p>
+
+        <div class="sg-subsection">
+          <h4>Sizes</h4>
+          <ul style="font-family: var(--font-ui); font-size: var(--text-sm); color: var(--color-ink-muted); list-style: disc; padding-left: 1.5rem; line-height: 2;">
+            <li><code>article-card__headline--lg</code> — feature slot, homepage lead</li>
+            <li><code>article-card__headline--md</code> — standard feed card</li>
+            <li><code>article-card__headline--sm</code> — sidebar, related posts</li>
+            <li><code>article-card__headline--xs</code> — compact lists (dek suppressed)</li>
+          </ul>
         </div>
-      </div>
+      </section>
 
-      <h3>Dark mode</h3>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:var(--space-3);margin:var(--space-6) 0;">
-        <div style="text-align:center;">
-          <div style="width:100%;height:64px;background:#141414;border:1px solid #303030;margin-bottom:var(--space-2);"></div>
-          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Background<br><code>#141414</code></p>
+      {# ── Author cards ── #}
+      <section class="sg-section" id="author-cards">
+        <h2>Author cards</h2>
+        <p class="lead">Used on the Contributors page. Centered column layout: avatar on top, body below. The avatar uses a stacked pattern — initials always rendered, photo absolutely positioned on top with <code>onerror</code> fallback.</p>
+
+        <div class="sg-demo">
+          <div style="max-width: 280px; margin: 0 auto;">
+            <article class="author-card">
+              <div class="author-card__avatar">
+                <div class="author-card__initials" aria-hidden="true">JA</div>
+              </div>
+              <div class="author-card__body">
+                <p class="author-card__role">Founding Editor</p>
+                <h2 class="author-card__name"><a href="/author/jon-ajinga/">Jon Ajinga</a></h2>
+                <p class="author-card__bio">Covering regulation, institutional power, and the life of ideas.</p>
+                <div class="author-card__stats">
+                  <span class="author-card__stat"><strong>15</strong> articles</span>
+                  <span class="author-card__stat"><strong>7.8k</strong> words</span>
+                  <span class="author-card__stat"><strong>~47m</strong> reading</span>
+                </div>
+                <div class="author-card__footer">
+                  <a class="author-card__link" href="/author/jon-ajinga/">View articles &rarr;</a>
+                </div>
+              </div>
+            </article>
+          </div>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:64px;background:#E8E4DC;margin-bottom:var(--space-2);"></div>
-          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Ink<br><code>#E8E4DC</code></p>
+
+        <div class="sg-subsection">
+          <h4>Avatar stacking pattern</h4>
+          <pre class="sg-code">&lt;div class="author-card__avatar"&gt;
+  &lt;div class="author-card__initials" aria-hidden="true"&gt;JA&lt;/div&gt;
+  &lt;img src="photo.jpg" class="author-card__photo"
+       onerror="this.style.opacity=0"&gt;
+&lt;/div&gt;</pre>
+          <p>Initials always render. Photo is <code>position: absolute</code> on top. <code>onerror</code> hides the photo if it fails to load, revealing initials underneath.</p>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:64px;background:#8A8580;margin-bottom:var(--space-2);"></div>
-          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Ink Faint<br><code>#8A8580</code></p>
+      </section>
+
+      {# ── Forms ── #}
+      <section class="sg-section" id="forms">
+        <h2>Forms</h2>
+        <p class="lead">All inputs are minimum 44px tall, set in the UI typeface, and show a distinct focus ring. Forms are handled by embedded third-party providers (Web3Forms, Fillout, Zite) — never custom backends.</p>
+
+        <div class="sg-demo">
+          <form class="form" onsubmit="event.preventDefault();">
+            <div class="form__row">
+              <label class="form__label form__label--required" for="sg-name">Name</label>
+              <input class="form__input" id="sg-name" type="text" placeholder="Your name" required>
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="sg-email">Email</label>
+              <input class="form__input" id="sg-email" type="email" placeholder="you@example.com">
+              <p class="form__hint">We'll never share this.</p>
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="sg-select">Section</label>
+              <select class="form__select" id="sg-select">
+                <option>Pick one</option>
+                <option>News</option>
+                <option>Opinion</option>
+                <option>Analysis</option>
+              </select>
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="sg-textarea">Message</label>
+              <textarea class="form__textarea" id="sg-textarea" placeholder="Say something…"></textarea>
+            </div>
+            <div class="form__actions">
+              <button type="submit" class="btn btn--accent">Submit</button>
+              <button type="button" class="btn">Cancel</button>
+            </div>
+          </form>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:64px;background:#E05545;margin-bottom:var(--space-2);"></div>
-          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Accent<br><code>#E05545</code></p>
+      </section>
+
+      {# ── Tables ── #}
+      <section class="sg-section" id="tables">
+        <h2>Tables</h2>
+        <p class="lead">Data tables wrap in <code>.table-wrap</code> for horizontal scroll on narrow viewports. Use <code>scope="col"</code> on header cells and <code>scope="row"</code> on row headers.</p>
+
+        <div class="sg-demo" style="padding: 0;">
+          <div class="table-wrap">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th scope="col">Criterion</th>
+                  <th scope="col">{{ site.title }}<small>independent</small></th>
+                  <th scope="col">Ad-funded outlet<small>commercial</small></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Revenue model</th><td>Reader-funded</td><td>Advertisers</td></tr>
+                <tr><th scope="row">Editorial control</th><td>Full</td><td>Partial</td></tr>
+                <tr><th scope="row">Paywall</th><td>None</td><td>Often</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:64px;background:#6B9EC7;margin-bottom:var(--space-2);"></div>
-          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Link<br><code>#6B9EC7</code></p>
+        <pre class="sg-code">&lt;div class="table-wrap"&gt;
+  &lt;table class="compare-table"&gt;…&lt;/table&gt;
+&lt;/div&gt;</pre>
+      </section>
+
+      {# ── Icons ── #}
+      <section class="sg-section" id="icons">
+        <h2>Icons</h2>
+        <p class="lead">Icons are inline SVG, 24×24 viewBox, <code>stroke-width: 2</code>, <code>fill: none</code>, <code>currentColor</code> — they inherit text color automatically in light and dark modes.</p>
+
+        <div class="sg-demo">
+          <div class="sg-icon-grid">
+            <div class="sg-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M3 6h18M3 12h18M3 18h18"/></svg><span class="sg-icon__name">menu</span></div>
+            <div class="sg-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M6 6l12 12M18 6l-12 12"/></svg><span class="sg-icon__name">close</span></div>
+            <div class="sg-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M6 9l6 6 6-6"/></svg><span class="sg-icon__name">chevron</span></div>
+            <div class="sg-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24" height="24"><path d="M12 19V5M6 11l6-6 6 6"/></svg><span class="sg-icon__name">arrow-up</span></div>
+            <div class="sg-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/></svg><span class="sg-icon__name">sun</span></div>
+            <div class="sg-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><span class="sg-icon__name">moon</span></div>
+            <div class="sg-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><span class="sg-icon__name">search</span></div>
+            <div class="sg-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><circle cx="5" cy="19" r="2"/><path d="M4 4a16 16 0 0 1 16 16h-3A13 13 0 0 0 4 7V4z"/><path d="M4 11a9 9 0 0 1 9 9H10a6 6 0 0 0-6-6v-3z"/></svg><span class="sg-icon__name">rss</span></div>
+          </div>
         </div>
-        <div style="text-align:center;">
-          <div style="width:100%;height:64px;background:#B87ACC;margin-bottom:var(--space-2);"></div>
-          <p style="font-family:var(--font-ui);font-size:var(--text-xs);margin:0;">Selection<br><code>#B87ACC</code></p>
+        <pre class="sg-code">&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+     stroke-width="2" aria-hidden="true"&gt;…&lt;/svg&gt;</pre>
+      </section>
+
+      {# ── Accessibility ── #}
+      <section class="sg-section" id="a11y">
+        <h2>Accessibility patterns</h2>
+        <p class="lead">WCAG 2.2 Level AA minimum across all pages. Most patterns exceed AA and reach AAA.</p>
+
+        <div class="sg-subsection">
+          <h4>Skip link</h4>
+          <p>Press <kbd>Tab</kbd> on any page. The first focusable element is a "Skip to content" link that jumps past navigation to <code>#main</code>.</p>
         </div>
-      </div>
 
-      <h2>UI Patterns</h2>
+        <div class="sg-subsection">
+          <h4>Focus ring</h4>
+          <p>Every interactive element shows a 2px vermillion outline with 3px offset on keyboard focus.</p>
+          <div class="sg-demo sg-demo--row">
+            <button type="button" class="btn">Tab to focus me</button>
+            <a class="btn" href="#a11y">Tab to focus me</a>
+          </div>
+        </div>
 
-      <h3>Buttons</h3>
-      <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:center;margin:var(--space-4) 0;">
-        <a href="#" class="btn" onclick="return false;">Default Button</a>
-        <a href="#" class="btn btn--accent" onclick="return false;">Accent Button</a>
-      </div>
-      <p style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);">Square corners. DM Sans. Uppercase is optional. Border on default, filled on hover.</p>
+        <div class="sg-subsection">
+          <h4>Screen-reader-only content</h4>
+          <p>Use <code>.sr-only</code> to hide content visually while keeping it accessible to assistive technology.</p>
+          <pre class="sg-code">&lt;span class="sr-only"&gt;Opens in new tab&lt;/span&gt;</pre>
+        </div>
 
-      <h3>Cards</h3>
-      <p>Content cards use <code>background: var(--color-bg-alt)</code> with a <code>1px solid var(--color-rule)</code> border. Article-style cards get a left accent border (3px). Hover lifts with shadow.</p>
+        <div class="sg-subsection">
+          <h4>Reduced motion</h4>
+          <p>All animations and scroll behavior honor <code>prefers-reduced-motion: reduce</code>. Duration drops to near-zero; auto-advance stops.</p>
+        </div>
 
-      <h3>Section badges</h3>
-      <div style="display:flex;gap:var(--space-2);flex-wrap:wrap;margin:var(--space-4) 0;">
-        <span style="font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:var(--space-1) var(--space-3);background:var(--color-news);color:#fff;">News</span>
-        <span style="font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:var(--space-1) var(--space-3);background:var(--color-opinion);color:#fff;">Opinion</span>
-        <span style="font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:var(--space-1) var(--space-3);background:var(--color-analysis);color:#fff;">Analysis</span>
-        <span style="font-family:var(--font-ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:var(--space-1) var(--space-3);background:var(--color-history);color:#fff;">History</span>
-      </div>
+        <div class="sg-subsection">
+          <h4>ARIA landmarks &amp; labels</h4>
+          <ul style="list-style: disc; padding-left: 1.5rem; font-size: var(--text-sm); line-height: 2; color: var(--color-ink-muted);">
+            <li><code>role="banner"</code> on site header, <code>role="contentinfo"</code> on footer</li>
+            <li><code>aria-label</code> on every icon-only button and every navigation region</li>
+            <li><code>aria-current="page"</code> on the active nav link</li>
+            <li><code>aria-hidden="true"</code> on all decorative SVGs and avatar initials</li>
+            <li><code>&lt;main id="main"&gt;</code> as the skip-link target</li>
+          </ul>
+        </div>
 
-      <h3>Spacing</h3>
-      <p>All spacing uses a consistent scale from <code>--space-1</code> (0.25rem) to <code>--space-20</code> (5rem). No magic numbers.</p>
+        <div class="sg-subsection">
+          <h4>Touch targets</h4>
+          <p>Every interactive element is a minimum of 44×44 CSS pixels — buttons, nav links, form inputs, theme toggle, hamburger, back-to-top, tip badges.</p>
+        </div>
 
-      <h3>Border radius</h3>
-      <p>Default to <strong>square corners</strong> (<code>border-radius: 0</code>) for a professional, authoritative feel. Rounded corners used only where softness is intentional (pills, toggles).</p>
+        <div class="sg-subsection">
+          <h4>Glossary tooltips</h4>
+          <p>Glossary terms detected in article text receive a <span class="glossary-tip" data-tippy-content="This is how a glossary definition appears on hover or focus." tabindex="0">dotted underline</span>. Powered by Tippy.js. Keyboard accessible.</p>
+        </div>
+      </section>
 
-      <h2>Interactive Elements</h2>
+      {# ── Contrast ── #}
+      <section class="sg-section" id="contrast">
+        <h2>Contrast reference</h2>
+        <p class="lead">All pairings target WCAG AA: <strong>4.5:1 for normal text</strong>, <strong>3:1 for large text and UI</strong>. Ratios shown for light mode; dark mode verified independently.</p>
 
-      <h3>Glossary tooltips</h3>
-      <p>Glossary terms detected in article and library text receive a <span class="glossary-tip" data-tippy-content="This is an example tooltip showing how glossary definitions appear on hover." tabindex="0">dotted underline</span>. Hover or focus shows the definition. Powered by Tippy.js.</p>
+        <div class="sg-demo" style="padding: 0;">
+          <div class="table-wrap">
+            <table class="sg-contrast-table">
+              <thead>
+                <tr><th>Pairing</th><th>Ratio</th><th>AA normal</th><th>AA large</th><th>AAA</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Ink on Background</th><td>15.6 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+                <tr><th scope="row">Ink muted on Background</th><td>8.2 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+                <tr><th scope="row">Ink faint on Background</th><td>4.6 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td>—</td></tr>
+                <tr><th scope="row">Accent on Background</th><td>5.2 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td>—</td></tr>
+                <tr><th scope="row">Link on Background</th><td>6.8 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+                <tr><th scope="row">White on Accent</th><td>5.4 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td>—</td></tr>
+                <tr><th scope="row">Background on Ink (inverted)</th><td>15.6 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
 
-      <h3>Highlight colours</h3>
-      <div style="display:flex;gap:var(--space-2);flex-wrap:wrap;margin:var(--space-4) 0;">
-        <span style="display:inline-block;padding:var(--space-1) var(--space-3);background:rgba(250,204,21,0.3);font-size:var(--text-sm);">Yellow</span>
-        <span style="display:inline-block;padding:var(--space-1) var(--space-3);background:rgba(219,39,119,0.18);font-size:var(--text-sm);">Pink</span>
-        <span style="display:inline-block;padding:var(--space-1) var(--space-3);background:rgba(37,99,235,0.15);font-size:var(--text-sm);">Blue</span>
-        <span style="display:inline-block;padding:var(--space-1) var(--space-3);background:rgba(22,163,74,0.18);font-size:var(--text-sm);">Green</span>
-        <span style="display:inline-block;padding:var(--space-1) var(--space-3);background:rgba(234,88,12,0.18);font-size:var(--text-sm);">Orange</span>
-        <span style="display:inline-block;padding:var(--space-1) var(--space-3);background:rgba(124,58,237,0.15);font-size:var(--text-sm);">Purple</span>
-      </div>
-      <p style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);">Six highlight colours for reader annotations. Opacity adapts per theme (light, dark, sepia, cream).</p>
+      {# ── Naming ── #}
+      <section class="sg-section" id="naming">
+        <h2>Naming conventions</h2>
+        <p class="lead">Consistent naming avoids confusion across templates, CSS, and JavaScript. These rules apply to every file in the project.</p>
 
-      <h3>Timeline cards</h3>
-      <p>Timeline events use alternating left/right cards with a central vertical line, accent-coloured dots, and horizontal connectors. Cards have a left (or right) accent border, <code>var(--color-bg-alt)</code> background, and hover lift.</p>
+        <div class="sg-subsection">
+          <h4>Publication name</h4>
+          <ul style="list-style: disc; padding-left: 1.5rem; font-size: var(--text-sm); line-height: 2; color: var(--color-ink-muted);">
+            <li>Always written as <strong>The Freethinking Times</strong> — full, capitalised</li>
+            <li>Never abbreviated to "TFT" in reader-facing copy</li>
+            <li>Short context only: "The Times" is acceptable in conversational UI</li>
+          </ul>
+        </div>
 
-      <h3>Showcase pages</h3>
-      <p>Full-screen screensaver-style displays for quotes, timeline events, trials, glossary terms, bookshelf, and thought experiments. Dark background uses <code>var(--color-bg)</code> and <code>var(--color-ink)</code> to respect theme. Auto-advance with progress bar, keyboard navigation, pause/play.</p>
+        <div class="sg-subsection">
+          <h4>CSS class convention</h4>
+          <p>BEM-style: <code>.block__element--modifier</code>. No utility classes except where explicitly defined in <code>utilities.css</code>.</p>
+          <pre class="sg-code">.article-card__byline          /* element */
+.article-card__headline--lg    /* element + modifier */
+.section-badge--news           /* block + modifier */</pre>
+        </div>
 
-      <h2>Page Layouts</h2>
+        <div class="sg-subsection">
+          <h4>JavaScript</h4>
+          <ul style="list-style: disc; padding-left: 1.5rem; font-size: var(--text-sm); line-height: 2; color: var(--color-ink-muted);">
+            <li>One file per feature, deferred, no bundler</li>
+            <li>LocalStorage key prefix: <code>tft-</code> (e.g. <code>tft-theme</code>, <code>tft-reading-list</code>)</li>
+            <li>No inline event listeners on elements with custom <code>display</code> CSS — tinyHTML can mangle them. Use <code>onclick=""</code> as a fallback alongside deferred listeners.</li>
+          </ul>
+        </div>
 
-      <h3>Standard page</h3>
-      <p>Container with <code>padding-top: var(--space-10)</code>, <code>padding-bottom: var(--space-20)</code>. Header uses <code>font-masthead</code> h1 with <code>clamp(1.8rem, 5vw, 3.815rem)</code>, italic subtitle, and <code>border-bottom: 3px solid var(--color-ink)</code>.</p>
+        <div class="sg-subsection">
+          <h4>Design tokens</h4>
+          <p>All tokens live in <code>src/assets/css/tokens.css</code>. Never use raw hex values or pixel sizes in templates or component CSS — always reference a token. Dark mode overrides are declared in the same file under <code>[data-theme="dark"]</code>.</p>
+        </div>
 
-      <h3>Hub page</h3>
-      <p>Card grid with <code>grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))</code>. Cards link to sub-pages with title, description, and optional arrow indicator.</p>
+        <div class="sg-subsection">
+          <h4>Content naming</h4>
+          <ul style="list-style: disc; padding-left: 1.5rem; font-size: var(--text-sm); line-height: 2; color: var(--color-ink-muted);">
+            <li>The bookshelf project: <strong>Recommended Freethought Reading</strong> (compact: <em>Recommended Reading</em>)</li>
+            <li>The music feature: <strong>Freethought Music</strong> (never "Music Player")</li>
+            <li>Layouts directory: <code>src/_includes/layouts/</code></li>
+            <li>Partials directory: <code>src/_includes/partials/</code></li>
+          </ul>
+        </div>
+      </section>
 
-      <h3>Article page</h3>
-      <p>Single-column centred layout. Action button bar below the article header. Reader panel on the right (icon-only tabs). Annotation toolbar fixed at the bottom.</p>
+    </div>{# /.content #}
+  </div>{# /.sg-layout #}
+</div>{# /.container #}
 
-      <h2>Site Structure</h2>
-
-      <p>The footer and site map organise the site into these sections:</p>
-
-      <ul>
-        <li><strong>Sections</strong> — 8 editorial sections (News, Opinion, Analysis, Arts & Culture, Science & Tech, History, Letters, Reviews)</li>
-        <li><strong>Freethought Projects</strong> — Library, Quotes, Videos, Timeline, Glossary, Recommended Reading, Thought Experiments, Trials of Thought, Freethought Music, Photo Gallery, Resources</li>
-        <li><strong>Freethought Community</strong> — Community Directory, Events Calendar, Community Guidelines, Newsletter, RSS Reader, Suggest a Group</li>
-        <li><strong>Contribute to Our Projects</strong> — submission forms for quotes, timeline entries, books, library texts, glossary terms, trials, thought experiments, events, photos, songs</li>
-        <li><strong>Contribute</strong> — Write for Us, Submit an Article, Write a Letter, Support Us</li>
-        <li><strong>Contact</strong> — Contact Us, Send Feedback, Tip Line, Report a Correction</li>
-        <li><strong>Reader Tools</strong> — Search, Start Here, Notes & Highlights, Reading List, Archives, Editions, Your Data, RSS Feed</li>
-        <li><strong>About</strong> — About Us, Masthead, Contributors, Editorial Ethics, Editorial Handbook, Editorial Dashboard</li>
-        <li><strong>Transparency</strong> — Features, How It's Built, Changelog, Open Source, Style Guide, Public Analytics</li>
-        <li><strong>Legal</strong> — Privacy Policy, Terms of Use, Cookies Policy, Accessibility, Site Map</li>
-      </ul>
-
-      <h2>Naming</h2>
-
-      <ul>
-        <li>Publication name: <strong>The Freethinking Times</strong> (always full, always capitalised)</li>
-        <li>Never abbreviated to "TFT" in reader-facing copy</li>
-        <li>The bookshelf project is called <strong>Recommended Freethought Reading</strong> (or <strong>Recommended Reading</strong> in compact contexts)</li>
-        <li>The music feature is called <strong>Freethought Music</strong> (not "Music Player")</li>
-        <li>Prefix for localStorage keys: <code>tft</code></li>
-        <li>CSS class convention: BEM-style (<code>.block__element--modifier</code>)</li>
-        <li>Design tokens live in <code>tokens.css</code> — edit once, retheme everywhere</li>
-        <li>JS files: one per feature, deferred, no bundler</li>
-        <li>Layouts: <code>src/_includes/layouts/</code> — base, article, library-chapter, library-short, glossary-entry, etc.</li>
-      </ul>
-
-      <h2>Accessibility Standards</h2>
-
-      <ul>
-        <li>WCAG 2.2 Level AA minimum</li>
-        <li>4.5:1 contrast for normal text, 3:1 for large text</li>
-        <li>44 &times; 44px minimum touch targets</li>
-        <li>Skip-to-main link on every page</li>
-        <li>Visible focus rings on all interactive elements</li>
-        <li>ARIA labels on all icon-only buttons</li>
-        <li><code>prefers-reduced-motion</code> respected globally</li>
-      </ul>
-
-    </div>
-  </div>
-</div>
+<script>
+(function () {
+  var links = document.querySelectorAll('.sg-nav a');
+  var sections = Array.from(links).map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function onScroll() {
+    var scrollY = window.scrollY + 100;
+    var current = sections[0];
+    sections.forEach(function (s) { if (s && s.offsetTop <= scrollY) current = s; });
+    links.forEach(function (a) {
+      a.classList.toggle('sg-active', current && a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
