@@ -539,6 +539,22 @@
     <li><a class="nav-drawer__link nav-drawer__link--small" href="/legal/">Legal</a></li>
   </ul>
 
+  {# ── Publication support badge ── #}
+  {% if site.tipping %}
+  {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
+  {% if pubTipUrl %}
+  <div class="nav-drawer__support">
+    <a class="tip-badge tip-badge--pub" href="{{ pubTipUrl }}" target="_blank" rel="noopener noreferrer"
+       aria-label="Support {{ site.title }}"
+       data-tippy-content="Support {{ site.title }}. Reader contributions keep us independent, ad-free, and able to pay our contributors fairly."
+       data-tippy-theme="badge"
+       data-tippy-placement="top">
+      <span class="tip-badge__label">support</span><span class="tip-badge__value">{{ site.shortTitle or site.title }}</span>
+    </a>
+  </div>
+  {% endif %}
+  {% endif %}
+
   {# ── Bottom toolbar ── #}
   <div class="nav-drawer__toolbar">
     <a href="/notes/" title="Notes"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></a>

@@ -1447,6 +1447,33 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   color: var(--color-bg-alt);
 }
 
+.tippy-box[data-theme~='badge'] {
+  background: var(--color-ink);
+  color: var(--color-bg);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  padding: var(--space-2) var(--space-3);
+  border-radius: 4px;
+  max-width: min(260px, 85vw);
+  text-align: left;
+}
+.tippy-box[data-theme~='badge'] .tippy-arrow {
+  color: var(--color-ink);
+}
+[data-theme="dark"] .tippy-box[data-theme~='badge'] {
+  background: var(--color-bg-alt);
+  color: var(--color-ink);
+}
+[data-theme="dark"] .tippy-box[data-theme~='badge'] .tippy-arrow {
+  color: var(--color-bg-alt);
+}
+
+/* ── Nav drawer support badge ───────────────────────────────── */
+.nav-drawer__support {
+  padding: var(--space-4) var(--space-5);
+}
+
 /* ── Per-article reading progress on cards ─────────────────── */
 .article-card { position: relative; }
 .article-card__progress {
@@ -2982,15 +3009,17 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   outline: none;
 }
 
-/* ── Tip badges (shields.io style, byline + author hero + card) */
+/* ── Tip badges (shields.io style) ─────────────────────────── */
 .tip-buttons {
   display: inline-flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: var(--space-2);
 }
 .tip-badge {
   display: inline-flex;
-  align-items: stretch;
+  align-items: center;
+  vertical-align: middle;
   border-radius: 3px;
   overflow: hidden;
   font-family: var(--font-ui);
@@ -2999,6 +3028,8 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   letter-spacing: 0.02em;
   text-decoration: none;
   line-height: 1;
+  height: 20px;
+  flex-shrink: 0;
   opacity: 0.85;
   transition: opacity var(--transition-fast);
 }
@@ -3007,15 +3038,21 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   opacity: 1;
   outline: none;
 }
+.tip-badge__label,
+.tip-badge__value {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 7px;
+  white-space: nowrap;
+}
 .tip-badge__label {
   background: #555;
   color: #fff;
-  padding: 4px 7px;
 }
 .tip-badge__value {
   background: #2563eb;
   color: #fff;
-  padding: 4px 7px;
 }
 .tip-badge--pub .tip-badge__value {
   background: var(--color-accent);
@@ -3027,12 +3064,6 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
 .tip-badge--info .tip-badge__value {
   background: #4b5563;
   color: #fff;
-}
-
-/* Tip buttons beneath the article byline shouldn't collide with
-   existing meta text. */
-.article-header__byline-block .tip-buttons {
-  margin-top: var(--space-3);
 }
 
 /* ── Print: don't print tip / social UI chrome ────────────── */

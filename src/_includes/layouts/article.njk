@@ -134,7 +134,10 @@ layout: layouts/base.njk
           {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
           {% if authorTipUrl or pubTipUrl %}
           <div class="article-header__support-row">
-            <a class="tip-badge tip-badge--info" href="/support/" aria-label="Learn how we are funded">
+            <a class="tip-badge tip-badge--info" href="/support/" aria-label="Learn how we are funded"
+               data-tippy-content="We fund our journalism entirely through reader support — no ads, no paywalls. Learn how we operate and how contributors are compensated."
+               data-tippy-theme="badge"
+               data-tippy-placement="top">
               <span class="tip-badge__label">transparency</span><span class="tip-badge__value">how we're funded</span>
             </a>
             <span class="article-header__support-divider" aria-hidden="true"></span>

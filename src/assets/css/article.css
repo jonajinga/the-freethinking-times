@@ -117,6 +117,7 @@
   flex-wrap: wrap;
   padding-top: var(--space-3);
   border-top: 1px solid var(--color-rule);
+  min-height: 28px;
 }
 .article-header__support-divider {
   display: inline-block;
