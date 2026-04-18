@@ -9,8 +9,12 @@ permalink: /library/submit/
   <div class="container--prose">
 
     <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
-      <nav style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);margin-bottom:var(--space-4);">
-        <a href="/library/" style="color:var(--color-link);">Library</a> &rarr; Suggest a Text
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ol class="breadcrumbs__list">
+          <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/">Home</a></li>
+          <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/library/">Library</a></li>
+          <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">Suggest a Text</li>
+        </ol>
       </nav>
       <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Suggest a Public Domain Text</h1>
       <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 60ch;">

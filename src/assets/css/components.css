@@ -2678,7 +2678,7 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
 .author-hero {
   display: grid;
   grid-template-columns: 160px 1fr;
-  gap: var(--space-6);
+  gap: var(--space-10);
   align-items: start;
   margin-bottom: var(--space-10);
   padding-bottom: var(--space-8);

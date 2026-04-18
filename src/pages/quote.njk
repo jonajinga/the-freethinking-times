@@ -14,8 +14,12 @@ permalink: /quotes/{{ q | quoteSlug }}/
 <div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
   <div style="max-width: var(--max-width-prose); margin: 0 auto;">
 
-    <nav style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);margin-bottom:var(--space-6);">
-      <a href="/quotes/" style="color:var(--color-link);">Quotes</a> &rarr; {{ q.author }}
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol class="breadcrumbs__list">
+        <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/">Home</a></li>
+        <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/quotes/">Quotes</a></li>
+        <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">{{ q.author }}</li>
+      </ol>
     </nav>
 
     <article data-pagefind-body>
