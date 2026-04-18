@@ -139,35 +139,31 @@
     document.querySelectorAll('.print-inline-note').forEach(function (n) { n.remove(); });
   }
 
-  // ── Print buttons inside the share popover.
-  // Three modes:
-  //   article            → window.print() with the standard print stylesheet
-  //   article-with-notes → adds .print-include-notes; print CSS appends the
-  //                         Reader-panel sections as an appendix
-  //   notes-only         → defers to __printPanelNotes() (annotations.js),
-  //                         which opens a separate window with just the
-  //                         highlights / notes / bookmarks
+  // ── Print buttons inside the share popover (all standardized: each
+  // calls window.print() with a body class controlling which sections
+  // appear in the printout).
+  //   article             → no class, just the article
+  //   article-with-notes  → .print-include-notes (article + appendix)
+  //   notes-only          → .print-notes-only (only the appendix)
+  function clearPrintMode() {
+    document.body.classList.remove('print-include-notes', 'print-notes-only');
+    stripInlineNotes();
+  }
   if (sharePopover) {
     sharePopover.addEventListener('click', function (e) {
       var btn = e.target.closest('[data-print]');
       if (!btn) return;
       var mode = btn.getAttribute('data-print');
-      if (mode === 'notes-only') {
-        if (typeof window.__printPanelNotes === 'function') window.__printPanelNotes();
-        return;
-      }
+      clearPrintMode();
       if (mode === 'article-with-notes') {
         document.body.classList.add('print-include-notes');
         injectInlineNotes();
-      } else {
-        document.body.classList.remove('print-include-notes');
+      } else if (mode === 'notes-only') {
+        document.body.classList.add('print-notes-only');
       }
       setTimeout(function () {
         window.print();
-        setTimeout(function () {
-          document.body.classList.remove('print-include-notes');
-          stripInlineNotes();
-        }, 100);
+        setTimeout(clearPrintMode, 100);
       }, 0);
     });
   }

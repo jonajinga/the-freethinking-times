@@ -682,7 +682,7 @@
   top: var(--space-16);
   right: 0;
   bottom: 56px; /* clear the bottom annotation toolbar so footer-links aren't hidden behind it */
-  width: min(390px, 85vw);
+  width: min(460px, 90vw);
   background: var(--color-bg);
   border-left: 1px solid var(--color-rule);
   box-shadow: var(--shadow-md);
@@ -1388,19 +1388,29 @@
   .annotation-toolbar__music:not(:empty)::before { display: none; }
 }
 
-/* Phone-narrow: tighten icon padding so all 8 fit comfortably without
-   horizontal scrolling. */
-@media (max-width: 420px) {
+/* Phone: tighten icon size + allow horizontal scroll if 10 icons don't
+   fit. Single-row scroll is preferable to wrapping into multiple rows. */
+@media (max-width: 480px) {
   .annotation-toolbar__btn,
   .annotation-toolbar .article-action-btn {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
   }
   .annotation-toolbar__btn svg,
   .annotation-toolbar .article-action-btn svg {
     width: 18px;
     height: 18px;
   }
+  .annotation-toolbar__main {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    max-width: 100%;
+    justify-content: flex-start;
+    padding: 0 var(--space-1);
+  }
+  .annotation-toolbar__main::-webkit-scrollbar { display: none; }
 }
 
 /* ── Share / download / print popover ──
@@ -2211,6 +2221,60 @@ html.is-library-reading[data-focus-mode="on"] .masthead {
   body.print-include-notes #panel-toc,
   body.print-include-notes #panel-display,
   body.print-include-notes #panel-cite-inline {
+    display: none !important;
+  }
+
+  /* "Notes & highlights only" mode: hide the article entirely and only
+     reveal the panel sections containing the user's annotations. */
+  body.print-notes-only .article-layout,
+  body.print-notes-only .library-body-wrapper,
+  body.print-notes-only .article-footnotes,
+  body.print-notes-only .article-comments,
+  body.print-notes-only .article-feedback-popup {
+    display: none !important;
+  }
+  body.print-notes-only .library-panel {
+    display: block !important;
+    position: static !important;
+    transform: none !important;
+    width: 100% !important;
+    height: auto !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  body.print-notes-only .library-panel__header,
+  body.print-notes-only .library-panel__tabs,
+  body.print-notes-only .library-panel__quick-actions,
+  body.print-notes-only .library-panel__footer-links {
+    display: none !important;
+  }
+  body.print-notes-only .library-panel__body {
+    overflow: visible !important;
+    height: auto !important;
+    padding: 0 !important;
+  }
+  body.print-notes-only .library-panel__section {
+    display: block !important;
+    margin-bottom: 2em;
+  }
+  body.print-notes-only .library-panel__section::before {
+    content: attr(data-print-label);
+    display: block;
+    font-family: var(--font-headline);
+    font-size: 14pt;
+    font-weight: 700;
+    margin-bottom: 0.5em;
+    border-bottom: 1px solid #000;
+    padding-bottom: 0.25em;
+  }
+  body.print-notes-only #article-panel-contents,
+  body.print-notes-only #article-panel-display,
+  body.print-notes-only #article-panel-cite-inline,
+  body.print-notes-only #article-panel-history,
+  body.print-notes-only #article-panel-related,
+  body.print-notes-only #panel-toc,
+  body.print-notes-only #panel-display,
+  body.print-notes-only #panel-cite-inline {
     display: none !important;
   }
 

@@ -429,8 +429,10 @@
       }
     });
 
-    // ── Panel tabs ──
-    var tabs = document.querySelectorAll('.library-panel__tab');
+    // ── Panel tabs ── (skip the export/print buttons that share the
+    // .library-panel__tab class but have no data-target — they handle
+    // their own clicks via reader-panel-migrate.js)
+    var tabs = document.querySelectorAll('.library-panel__tab[data-target]');
     tabs.forEach(function (tab) {
       tab.addEventListener('click', function () {
         tabs.forEach(function (t) {

@@ -445,6 +445,19 @@
   .article-footnotes { display: none !important; }
 }
 
+/* Comments placeholder (shown when comments provider isn't configured) */
+.article-comments__placeholder {
+  margin: 0;
+  padding: var(--space-6);
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-ink-faint);
+  font-style: italic;
+  background: var(--color-bg-alt);
+  border-radius: var(--radius-md);
+}
+
 /* ── Article feedback popup ─────────────────────────────────── */
 .article-feedback-wrap { position: relative; }
 .article-feedback-popup {
