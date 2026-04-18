@@ -19,6 +19,14 @@ permalink: /contributors/
     {% set authorArticles = collections.allContent | where("author", slug) %}
     {% set lastArticle = authorArticles | first %}
     {% set firstArticle = authorArticles | last %}
+    {% set totalWords = 0 %}
+    {% set totalReadMins = 0 %}
+    {% for item in authorArticles %}
+      {% if item.templateContent %}
+        {% set totalWords = totalWords + (item.templateContent | wordCountRaw) %}
+        {% set totalReadMins = totalReadMins + (item.templateContent | readingMins) %}
+      {% endif %}
+    {% endfor %}
     <article class="author-card">
       <div class="author-card__avatar">
         <div class="author-card__initials" aria-hidden="true">{{ authorData.name | initials }}</div>
@@ -45,6 +53,8 @@ permalink: /contributors/
         {% if authorArticles.length %}
         <div class="author-card__stats">
           <span class="author-card__stat"><strong>{{ authorArticles.length }}</strong> {{ "article" if authorArticles.length == 1 else "articles" }}</span>
+          {% if totalWords > 0 %}<span class="author-card__stat"><strong>{{ (totalWords / 1000) | round(1) }}k</strong> words</span>{% endif %}
+          {% if totalReadMins > 0 %}<span class="author-card__stat"><strong>~{{ totalReadMins }}m</strong> reading</span>{% endif %}
           {% if lastArticle and lastArticle.date %}
           <span class="author-card__stat">Last published <strong>{{ lastArticle.date | readableDate }}</strong></span>
           {% endif %}

@@ -1472,6 +1472,8 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
 /* ── Nav drawer support badge ───────────────────────────────── */
 .nav-drawer__support {
   padding: var(--space-4) var(--space-5);
+  display: flex;
+  justify-content: center;
 }
 
 /* ── Per-article reading progress on cards ─────────────────── */
@@ -2911,7 +2913,7 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
 .author-card {
   display: grid;
   grid-template-columns: 88px 1fr;
-  gap: var(--space-5);
+  gap: var(--space-7);
   padding: var(--space-6);
   border: 1px solid var(--color-rule);
   background: var(--color-bg);
