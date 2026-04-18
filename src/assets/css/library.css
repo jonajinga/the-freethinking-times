@@ -2333,9 +2333,11 @@ html.is-library-reading[data-focus-mode="on"] .masthead {
   body.print-include-notes #article-panel-cite-inline,
   body.print-include-notes #article-panel-history,
   body.print-include-notes #article-panel-related,
+  body.print-include-notes #article-panel-export,
   body.print-include-notes #panel-toc,
   body.print-include-notes #panel-display,
-  body.print-include-notes #panel-cite-inline {
+  body.print-include-notes #panel-cite-inline,
+  body.print-include-notes #panel-export {
     display: none !important;
   }
   /* Skip sections that have no user content (just the "No X yet"
@@ -2393,9 +2395,19 @@ html.is-library-reading[data-focus-mode="on"] .masthead {
   body.print-notes-only #article-panel-cite-inline,
   body.print-notes-only #article-panel-history,
   body.print-notes-only #article-panel-related,
+  body.print-notes-only #article-panel-export,
   body.print-notes-only #panel-toc,
   body.print-notes-only #panel-display,
-  body.print-notes-only #panel-cite-inline {
+  body.print-notes-only #panel-cite-inline,
+  body.print-notes-only #panel-export {
+    display: none !important;
+  }
+
+  /* Belt + suspenders: the Export tab is pure UI — never print it in
+     any mode, regardless of which panel section is active. */
+  .reader-export-list,
+  #article-panel-export,
+  #panel-export {
     display: none !important;
   }
   body.print-notes-only .library-panel__section:has(.library-panel__empty),
