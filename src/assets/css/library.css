@@ -823,53 +823,6 @@
 /* Tooltip hover-label is redundant when the label is already visible */
 .library-panel__quick-actions .article-action-btn::after { display: none; }
 
-/* ── Reader panel: footer links ──
-   Bottom band with secondary actions (Cite, History, Comments,
-   Feedback). Rendered as compact text-style buttons in a row. */
-.library-panel__footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-1);
-  padding: var(--space-3) var(--space-4);
-  border-top: 1px solid var(--color-rule);
-  flex-shrink: 0;
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-}
-.library-panel__footer-links > div {
-  flex: 1 1 45%;
-  display: flex;
-}
-.library-panel__footer-links > div:empty { display: none; }
-.library-panel__footer-links .article-action-btn {
-  position: static;
-  width: 100%;
-  height: auto;
-  min-height: 36px;
-  padding: var(--space-2);
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  gap: var(--space-2);
-  border: none;
-  background: none;
-  color: var(--color-ink-muted);
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 500;
-  text-align: left;
-}
-.library-panel__footer-links .article-action-btn:hover,
-.library-panel__footer-links .article-action-btn:focus-visible {
-  color: var(--color-ink);
-  background: var(--color-bg-alt);
-}
-.library-panel__footer-links .article-action-btn .btn-label {
-  display: inline !important;
-}
-.library-panel__footer-links .article-action-btn::after { display: none; }
-
 /* Subheads inside tab sections (e.g. "Share" / "Download" in the Share tab) */
 .reader-panel-subhead {
   font-family: var(--font-ui);
@@ -879,6 +832,81 @@
   text-transform: uppercase;
   color: var(--color-ink-faint);
   margin: 0 0 var(--space-3);
+}
+
+/* ── Cite tab inline content ── */
+.cite-inline__entry {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-rule);
+}
+.cite-inline__entry:last-child { border-bottom: none; }
+.cite-inline__label {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+  margin: 0 0 var(--space-2);
+}
+.cite-inline__text {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+  margin: 0 0 var(--space-2);
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+.cite-inline__copy {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  background: none;
+  border: 1px solid var(--color-rule);
+  border-radius: 4px;
+  padding: 4px 10px;
+  color: var(--color-ink-muted);
+  cursor: pointer;
+}
+.cite-inline__copy:hover { background: var(--color-bg-alt); color: var(--color-ink); }
+
+/* ── Footnotes tab ── */
+.footnotes-panel__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: none;
+}
+.footnotes-panel__item {
+  display: grid;
+  grid-template-columns: 2.25rem 1fr;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-rule);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+}
+.footnotes-panel__item:last-child { border-bottom: none; }
+.footnotes-panel__num {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-accent);
+  text-decoration: none;
+  align-self: start;
+}
+.footnotes-panel__num:hover { text-decoration: underline; }
+.footnotes-panel__text p { margin: 0 0 var(--space-2); }
+.footnotes-panel__text p:last-child { margin-bottom: 0; }
+
+/* Brief highlight of an in-text footnote target after panel jump */
+.footnote-flash {
+  background: var(--color-bg-alt);
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  transition: background var(--transition-fast), outline-color var(--transition-fast);
 }
 
 .library-panel__tab {
@@ -1076,6 +1104,9 @@
   background: #1a1a1a;
   border-top: 1px solid rgba(255,255,255,0.1);
   padding: var(--space-2) var(--space-4);
+  /* Respect mobile browser's bottom chrome (address bar, home indicator)
+     so the bar isn't hidden behind it. */
+  padding-bottom: max(var(--space-2), env(safe-area-inset-bottom, 0));
   box-shadow: 0 -4px 16px rgba(0,0,0,0.25);
   z-index: var(--z-overlay);
   min-height: 52px;
@@ -1120,6 +1151,7 @@
 }
 
 .annotation-toolbar__btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1133,6 +1165,26 @@
   border-radius: 6px;
   transition: background var(--transition-fast), color var(--transition-fast);
   flex-shrink: 0;
+}
+
+/* "Saved!" flash — tooltip above the button without replacing the icon. */
+.annotation-toolbar__btn.is-saved-flash::before,
+.annotation-toolbar .article-action-btn.is-saved-flash::before {
+  content: 'Saved';
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-accent, #fff);
+  color: #000;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
 }
 
 .annotation-toolbar__btn:hover,
@@ -1195,23 +1247,14 @@
   display: none;
 }
 
-@media (max-width: 640px) {
-  .annotation-toolbar .article-action-btn {
-    width: 46px;
-    height: 46px;
-  }
-  .annotation-toolbar .article-action-btn svg {
-    width: 22px;
-    height: 22px;
-  }
-}
-
-/* Mobile: icons bigger, bar can wrap so the music player gets its own row. */
+/* Mobile: bar wraps so the music player gets its own row. Icon sizes
+   stay the same as desktop so the two contexts match. */
 @media (max-width: 640px) {
   .annotation-toolbar {
     flex-direction: column;
     gap: var(--space-2);
     padding: var(--space-2) var(--space-3);
+    padding-bottom: max(var(--space-2), env(safe-area-inset-bottom, 0));
   }
   .annotation-toolbar__music {
     max-width: 100%;
@@ -1220,14 +1263,6 @@
   }
   .annotation-toolbar__music:not(:empty)::before {
     display: none;
-  }
-  .annotation-toolbar__btn {
-    width: 46px;
-    height: 46px;
-  }
-  .annotation-toolbar__btn svg {
-    width: 22px;
-    height: 22px;
   }
 }
 
@@ -1965,8 +2000,60 @@ html.is-library-reading[data-focus-mode="on"] .masthead {
   .library-panel-toggle,
   .library-chapter-nav,
   .annotation-toolbar,
+  .ann-share-popover,
   .library-reading-progress,
   .reading-settings-wrap {
+    display: none !important;
+  }
+
+  /* "Print with notes" mode (set on <body> by the Print popover handler):
+     reveal the Reader panel inline as an appendix, but only the
+     highlights / notes / bookmarks / footnotes sections — strip the
+     sidebar chrome and unrelated tabs. */
+  body.print-include-notes .library-panel {
+    display: block !important;
+    position: static !important;
+    transform: none !important;
+    width: 100% !important;
+    height: auto !important;
+    margin-top: 2em;
+    border: none !important;
+    box-shadow: none !important;
+    page-break-before: always;
+  }
+  body.print-include-notes .library-panel__header,
+  body.print-include-notes .library-panel__tabs,
+  body.print-include-notes .library-panel__quick-actions,
+  body.print-include-notes .library-panel__footer-links {
+    display: none !important;
+  }
+  body.print-include-notes .library-panel__body {
+    overflow: visible !important;
+    height: auto !important;
+    padding: 0 !important;
+  }
+  body.print-include-notes .library-panel__section {
+    display: block !important;
+    margin-bottom: 2em;
+  }
+  body.print-include-notes .library-panel__section::before {
+    content: attr(data-print-label);
+    display: block;
+    font-family: var(--font-headline);
+    font-size: 14pt;
+    font-weight: 700;
+    margin-bottom: 0.5em;
+    border-bottom: 1px solid #000;
+    padding-bottom: 0.25em;
+  }
+  body.print-include-notes #article-panel-contents,
+  body.print-include-notes #article-panel-display,
+  body.print-include-notes #article-panel-cite-inline,
+  body.print-include-notes #article-panel-history,
+  body.print-include-notes #article-panel-related,
+  body.print-include-notes #panel-toc,
+  body.print-include-notes #panel-display,
+  body.print-include-notes #panel-cite-inline {
     display: none !important;
   }
 

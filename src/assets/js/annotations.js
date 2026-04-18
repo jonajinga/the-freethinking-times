@@ -934,9 +934,11 @@
           Bookmarks.add(pagePct, context, bodyOffset, bmSection);
           lastRange = null;
           renderBookmarkIndicators();
-          var orig = bookmarkBtn.textContent;
-          bookmarkBtn.textContent = 'Saved!';
-          setTimeout(function () { bookmarkBtn.textContent = orig; }, 1200);
+          // The button is icon-only now; show the confirmation via a
+          // short-lived class that drives a CSS tooltip, so the SVG
+          // stays put instead of being replaced by text.
+          bookmarkBtn.classList.add('is-saved-flash');
+          setTimeout(function () { bookmarkBtn.classList.remove('is-saved-flash'); }, 1200);
         });
       }
 

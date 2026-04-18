@@ -3068,9 +3068,13 @@
 .article-body[data-rs-font="literata"] { font-family: 'Literata', Georgia, serif; }
 .article-body[data-rs-font="atkinson"] { font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; }
 
-/* Width */
+/* Width — also expand/contract the layout container so the prose
+   actually changes width. The layout's --max-width-prose constraint
+   would otherwise dominate. */
 .article-body[data-rs-width="narrow"] { max-width: 560px; }
-.article-body[data-rs-width="wide"] { max-width: 100%; }
+.article-body[data-rs-width="wide"]   { max-width: 100%; }
+.article-layout__inner:has(.article-body[data-rs-width="narrow"]) { max-width: 600px; }
+.article-layout__inner:has(.article-body[data-rs-width="wide"])   { max-width: min(1100px, 92vw); }
 
 /* Background presets */
 [data-rs-bg="sepia"] { --color-bg: #f4ecd8; --color-bg-alt: #ede4cc; --color-ink: #5b4636; }

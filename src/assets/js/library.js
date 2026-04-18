@@ -600,9 +600,8 @@
           var pct = ReadingPosition.getScrollPct();
           Bookmarks.add(chapterTitle || chapterSlug, pct);
           afterAction();
-          var orig = toolbarBmBtn.textContent;
-          toolbarBmBtn.textContent = 'Saved!';
-          setTimeout(function () { toolbarBmBtn.textContent = orig; }, 1200);
+          toolbarBmBtn.classList.add('is-saved-flash');
+          setTimeout(function () { toolbarBmBtn.classList.remove('is-saved-flash'); }, 1200);
         });
       }
 
