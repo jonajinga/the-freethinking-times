@@ -599,11 +599,20 @@
     };
 
     function dl(blob, name) {
+      var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
+      a.href = url;
       a.download = name;
+      a.rel = 'noopener';
+      // Some browsers (Firefox) require the anchor to be in the DOM
+      // for programmatic .click() to trigger a download.
+      a.style.display = 'none';
+      document.body.appendChild(a);
       a.click();
-      URL.revokeObjectURL(a.href);
+      setTimeout(function () {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 200);
     }
 
     // Print — highlights and notes separated

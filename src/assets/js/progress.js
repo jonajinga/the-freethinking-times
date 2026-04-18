@@ -226,10 +226,23 @@
         setTimeout(loadVoices, 1000);
       }
 
-      /* — TTS highlight tracking — */
+      /* — TTS highlight tracking —
+         Chrome doesn't fire `onboundary` for the default local voices
+         (it's gated behind secure contexts + specific voice engines),
+         and Edge fires it but with noticeable audio lag. So we run a
+         word-advancing timer and let `onboundary` correct it when it
+         fires — giving every browser a highlight, synced to the audio
+         as closely as the platform allows. */
       var ttsHighlightEl = null;
+      var ttsWords = [];        // [{ text, charStart, node, nodeOffset }]
+      var ttsWordIdx = 0;
+      var ttsTimer = null;
+      var ttsStartAt = 0;
+      var ttsCharsPerSec = 0;
+      var _ttsBoundaryFired = false;
 
       function clearTtsHighlight() {
+        if (ttsTimer) { clearInterval(ttsTimer); ttsTimer = null; }
         if (ttsHighlightEl) {
           ttsHighlightEl.classList.remove('tts-word-active');
           ttsHighlightEl = null;
@@ -239,6 +252,104 @@
         });
       }
 
+      // Walk the article body text nodes, recording each word's position
+      // so both onboundary (charIdx) and the timer (ordinal word index)
+      // can map back to a DOM range quickly.
+      function buildWordIndex(text) {
+        ttsWords = [];
+        var body = document.querySelector('.article-body');
+        if (!body) return;
+
+        // Map: absolute charIndex (within text) → { node, localOffset }
+        var nodeMap = [];
+        var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null, false);
+        var offset = 0;
+        var node;
+        while ((node = walker.nextNode())) {
+          nodeMap.push({ node: node, start: offset, end: offset + node.nodeValue.length });
+          offset += node.nodeValue.length;
+        }
+
+        // Locate the utterance text inside the concatenated node text so
+        // boundary char indices line up even when innerText inserts newlines.
+        var joined = nodeMap.map(function (e) { return e.node.nodeValue; }).join('');
+        var base   = joined.indexOf((text || '').substring(0, 40));
+        if (base < 0) base = 0;
+
+        // Simple word split on whitespace
+        var re = /\S+/g;
+        var m;
+        while ((m = re.exec(text))) {
+          var absStart = base + m.index;
+          // Find which nodeMap entry contains this absolute offset
+          for (var i = 0; i < nodeMap.length; i++) {
+            var e = nodeMap[i];
+            if (e.start <= absStart && absStart < e.end) {
+              ttsWords.push({
+                text: m[0],
+                charStart: m.index,   // utterance-text char index (for onboundary)
+                node: e.node,
+                nodeOffset: absStart - e.start
+              });
+              break;
+            }
+          }
+        }
+      }
+
+      function highlightWord(i) {
+        if (i < 0 || i >= ttsWords.length) return;
+        var w = ttsWords[i];
+        if (!w || !w.node) return;
+        if (ttsHighlightEl) {
+          ttsHighlightEl.classList.remove('tts-word-active');
+          ttsHighlightEl = null;
+        }
+        try {
+          var range = document.createRange();
+          range.setStart(w.node, w.nodeOffset);
+          range.setEnd(w.node, Math.min(w.nodeOffset + w.text.length, w.node.nodeValue.length));
+          var span = document.createElement('span');
+          span.className = 'tts-word-active';
+          range.surroundContents(span);
+          ttsHighlightEl = span;
+          var rect = span.getBoundingClientRect();
+          if (rect.top < 80 || rect.bottom > window.innerHeight - 80) {
+            span.scrollIntoView({ block: 'center', behavior: 'smooth' });
+          }
+        } catch (e) { /* range crossed an element boundary — skip this word */ }
+      }
+
+      function findWordIndexByChar(charIdx) {
+        // Binary-ish search: ttsWords is ordered by charStart ascending
+        var lo = 0, hi = ttsWords.length - 1, found = 0;
+        while (lo <= hi) {
+          var mid = (lo + hi) >> 1;
+          if (ttsWords[mid].charStart <= charIdx) { found = mid; lo = mid + 1; }
+          else hi = mid - 1;
+        }
+        return found;
+      }
+
+      function startTimerAdvance() {
+        if (ttsTimer) clearInterval(ttsTimer);
+        ttsStartAt = Date.now();
+        // Rough estimate: average English word ≈ 5 chars + space = 6 chars.
+        // Default TTS ≈ 3 words/sec at rate 1. Scale by the utterance rate.
+        var wps = 3 * (ttsRate || 1);
+        var interval = Math.max(140, Math.round(1000 / wps));
+        ttsTimer = setInterval(function () {
+          if (!ttsSpeaking || ttsPaused) return;
+          ttsWordIdx++;
+          if (ttsWordIdx >= ttsWords.length) {
+            clearInterval(ttsTimer);
+            ttsTimer = null;
+            return;
+          }
+          highlightWord(ttsWordIdx);
+        }, interval);
+      }
+
       /* — Helpers — */
       function buildUtterance(text) {
         var utt = new SpeechSynthesisUtterance(text);
@@ -246,41 +357,26 @@
         utt.voice = ttsVoice;
         utt.onend = function () { clearTtsHighlight(); stopTts(); };
 
-        // Synced highlighting via onboundary (Chrome, Edge)
+        utt.onstart = function () {
+          _ttsBoundaryFired = false;
+          buildWordIndex(text);
+          ttsWordIdx = 0;
+          if (ttsWords.length) {
+            highlightWord(0);
+            startTimerAdvance();
+          }
+        };
+
+        // If onboundary does fire (Edge, cloud voices on Chrome), resync the
+        // highlight + timer to the actual audio position.
         utt.onboundary = function (e) {
           if (e.name !== 'word') return;
-          clearTtsHighlight();
-          var charIdx = e.charIndex;
-          var wordLen = e.charLength || 1;
-          // Find the text node at this character offset in article body
-          var body = document.querySelector('.article-body');
-          if (!body) return;
-          var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null, false);
-          var offset = 0;
-          var node;
-          while ((node = walker.nextNode())) {
-            var len = node.nodeValue.length;
-            if (offset + len > charIdx) {
-              // Found the node — find the word
-              var localIdx = charIdx - offset;
-              var range = document.createRange();
-              try {
-                range.setStart(node, localIdx);
-                range.setEnd(node, Math.min(localIdx + wordLen, len));
-                var span = document.createElement('span');
-                span.className = 'tts-word-active';
-                range.surroundContents(span);
-                ttsHighlightEl = span;
-                // Auto-scroll to keep word visible
-                var rect = span.getBoundingClientRect();
-                if (rect.top < 80 || rect.bottom > window.innerHeight - 80) {
-                  span.scrollIntoView({ block: 'center', behavior: 'smooth' });
-                }
-              } catch (ex) {}
-              break;
-            }
-            offset += len;
-          }
+          _ttsBoundaryFired = true;
+          var i = findWordIndexByChar(e.charIndex);
+          if (i === ttsWordIdx) return;
+          ttsWordIdx = i;
+          highlightWord(i);
+          startTimerAdvance();
         };
 
         return utt;

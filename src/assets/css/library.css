@@ -1340,11 +1340,11 @@
   right: auto;
   bottom: auto;
   transform: translate(-50%, -50%);
-  width: min(440px, 92vw);
+  width: min(460px, 92vw);
   max-height: 85vh;
   overflow-y: auto;
   z-index: 1000;
-  padding: var(--space-5) var(--space-6) var(--space-6);
+  padding: 0;
 }
 .annotation-toolbar .article-feedback-wrap {
   position: static;
@@ -1352,9 +1352,11 @@
 }
 
 /* Migrated Save/Listen/Focus buttons (class="article-action-btn") need to
-   blend into the dark toolbar; override their light-theme defaults. */
+   blend into the dark toolbar; override their light-theme defaults.
+   Keep position: relative so the tooltip ::after (added further down)
+   can be positioned against the button. */
 .annotation-toolbar .article-action-btn {
-  position: static;
+  position: relative;
   width: 44px;
   height: 44px;
   padding: 0;
@@ -1379,10 +1381,6 @@
 .annotation-toolbar .article-action-btn svg {
   width: 20px;
   height: 20px;
-}
-.annotation-toolbar .article-action-btn::after {
-  /* Tooltip pseudo-element from the rail version — suppress inside the bar */
-  display: none;
 }
 
 /* Mobile: bar wraps so the music player gets its own row below the icons.
