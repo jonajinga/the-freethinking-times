@@ -19,57 +19,6 @@ layout: layouts/base.njk
 
   {% include "partials/author-hero.njk" %}
 
-  {# ── Stats strip (near the short bio) ─────────────────────── #}
-  {% if authorArticles.length %}
-  {% set sectionList = [] %}
-  {% for item in authorArticles %}
-    {% if item.data.section and item.data.section not in sectionList %}
-      {% set sectionList = (sectionList.push(item.data.section), sectionList) %}
-    {% endif %}
-  {% endfor %}
-  {% set totalWords = 0 %}
-  {% for item in authorArticles %}
-    {% if item.data.wordCount %}{% set totalWords = totalWords + item.data.wordCount %}{% endif %}
-  {% endfor %}
-  {% set lastArticle = authorArticles | first %}
-  {% set firstArticle = authorArticles | last %}
-  <div class="author-stats">
-    <div class="author-stat">
-      <span class="author-stat__value">{{ authorArticles.length }}</span>
-      <span class="author-stat__label">{{ "Article" if authorArticles.length == 1 else "Articles" }}</span>
-    </div>
-    {% if sectionList.length %}
-    <div class="author-stat">
-      <span class="author-stat__value">{{ sectionList.length }}</span>
-      <span class="author-stat__label">{{ "Section" if sectionList.length == 1 else "Sections" }}</span>
-    </div>
-    {% endif %}
-    {% if totalWords > 0 %}
-    <div class="author-stat">
-      <span class="author-stat__value">{{ (totalWords / 1000) | round(1) }}k</span>
-      <span class="author-stat__label">Words Written</span>
-    </div>
-    {% set readMins = (totalWords / 200) | round %}
-    <div class="author-stat">
-      <span class="author-stat__value">~{{ readMins }} min</span>
-      <span class="author-stat__label">Reading Time</span>
-    </div>
-    {% endif %}
-    {% if firstArticle and firstArticle.date %}
-    <div class="author-stat">
-      <span class="author-stat__value">{{ firstArticle.date | readableDate }}</span>
-      <span class="author-stat__label">First Published</span>
-    </div>
-    {% endif %}
-    {% if lastArticle and lastArticle.date %}
-    <div class="author-stat">
-      <span class="author-stat__value">{{ lastArticle.date | readableDate }}</span>
-      <span class="author-stat__label">Last Published</span>
-    </div>
-    {% endif %}
-  </div>
-  {% endif %}
-
   {# ── Long bio ─────────────────────────────────────────────── #}
   {% if authorData.bioLong %}
   <div class="author-bio-long">

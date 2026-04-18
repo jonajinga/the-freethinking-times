@@ -1,6 +1,6 @@
 {#
-  Author hero block — photo + name + role + bio + socials + tip badge + RSS.
-  Used on /author/{slug}/ and could be reused elsewhere.
+  Author hero block — photo + name + role + bio + socials + stats + tip badges.
+  Used on /author/{slug}/.
 #}
 {% if authorData %}
 <div class="author-hero">
@@ -47,10 +47,32 @@
       {% endif %}
     </div>
 
-    <div class="author-hero__actions">
-      {% set tipAuthor = authorData %}
-      {% set tipHidePublication = true %}
-      {% include "partials/tip-buttons.njk" %}
+    {# ── Support row: inline stats · separator · learn more + tip badges #}
+    <div class="author-hero__support-row">
+      {% if authorArticles is defined and authorArticles.length %}
+      {% set sectionList = [] %}
+      {% for item in authorArticles %}
+        {% if item.data.section and item.data.section not in sectionList %}
+          {% set sectionList = (sectionList.push(item.data.section), sectionList) %}
+        {% endif %}
+      {% endfor %}
+      {% set totalWords = 0 %}
+      {% for item in authorArticles %}
+        {% if item.data.wordCount %}{% set totalWords = totalWords + item.data.wordCount %}{% endif %}
+      {% endfor %}
+      <span class="author-hero__inline-stats">
+        <span>{{ authorArticles.length }} {{ "article" if authorArticles.length == 1 else "articles" }}</span>
+        {% if sectionList.length %}<span class="author-hero__inline-sep">&middot;</span><span>{{ sectionList.length }} {{ "section" if sectionList.length == 1 else "sections" }}</span>{% endif %}
+        {% if totalWords > 0 %}<span class="author-hero__inline-sep">&middot;</span><span>{{ (totalWords / 1000) | round(1) }}k words</span>{% endif %}
+      </span>
+      <span class="author-hero__support-divider" aria-hidden="true"></span>
+      {% endif %}
+      <div class="author-hero__support-badges">
+        <a class="author-hero__learn-more" href="/support/">How we're funded</a>
+        {% set tipAuthor = authorData %}
+        {% set tipHidePublication = true %}
+        {% include "partials/tip-buttons.njk" %}
+      </div>
     </div>
   </div>
 </div>

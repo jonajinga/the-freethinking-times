@@ -95,41 +95,50 @@ layout: layouts/base.njk
         {% endif %}
 
         <div class="article-header__byline-block">
-          {% if author %}
-          <a class="article-header__author" href="/author/{{ author | slugify }}/"
-            {% if authors[author] and authors[author].bio %}data-tooltip="{{ authors[author].bio }}"{% endif %}>
-            By {{ authors[author].name or authorName or author }}
-          </a>
-          {% endif %}
-          {% set sameDateArticles = collections.allContent | sameDate(page.date, page.url) %}
-          <span class="date-popover-wrap">
-            <a class="article-header__date" href="/archives/#{{ page.date | htmlDateString }}">
-              <time datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time>
+          <div class="article-header__byline-meta">
+            {% if author %}
+            <a class="article-header__author" href="/author/{{ author | slugify }}/"
+              {% if authors[author] and authors[author].bio %}data-tooltip="{{ authors[author].bio }}"{% endif %}>
+              By {{ authors[author].name or authorName or author }}
             </a>
-            {% if sameDateArticles.length %}
-            <span class="date-popover" role="tooltip">
-              <span class="date-popover__label">Also published this day</span>
-              <ul class="date-popover__list">
-                {% for item in sameDateArticles %}
-                <li><a href="{{ item.url }}">{{ item.data.title }}</a></li>
-                {% endfor %}
-              </ul>
-            </span>
             {% endif %}
-          </span>
-          {% set updatedDate = updated or lastUpdated %}
-          {% if updatedDate %}
-          <span class="article-header__updated">Updated: <time datetime="{{ updatedDate | htmlDateString }}">{{ updatedDate | readableDate }}</time></span>
-          {% endif %}
-          {% if location %}
-          <span class="dateline">{{ location }}</span>
-          {% endif %}
+            {% set sameDateArticles = collections.allContent | sameDate(page.date, page.url) %}
+            <span class="date-popover-wrap">
+              <a class="article-header__date" href="/archives/#{{ page.date | htmlDateString }}">
+                <time datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time>
+              </a>
+              {% if sameDateArticles.length %}
+              <span class="date-popover" role="tooltip">
+                <span class="date-popover__label">Also published this day</span>
+                <ul class="date-popover__list">
+                  {% for item in sameDateArticles %}
+                  <li><a href="{{ item.url }}">{{ item.data.title }}</a></li>
+                  {% endfor %}
+                </ul>
+              </span>
+              {% endif %}
+            </span>
+            {% set updatedDate = updated or lastUpdated %}
+            {% if updatedDate %}
+            <span class="article-header__updated">Updated: <time datetime="{{ updatedDate | htmlDateString }}">{{ updatedDate | readableDate }}</time></span>
+            {% endif %}
+            {% if location %}
+            <span class="dateline">{{ location }}</span>
+            {% endif %}
+          </div>
 
-          {# Tip CTAs — one for the author (if configured), one for the
-             publication (if configured). Either/both/neither render. #}
+          {# Support row — clearly separated from the byline meta above #}
           {% if author and authors[author] %}
-            {% set tipAuthor = authors[author] %}
+          {% set tipAuthor = authors[author] %}
+          {% set authorTipUrl = tipAuthor.tipping.kofi or tipAuthor.tipping.bmac or tipAuthor.tipping.patreon %}
+          {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
+          {% if authorTipUrl or pubTipUrl %}
+          <div class="article-header__support-row">
+            <a class="article-header__support-learn" href="/support/">How we're funded</a>
+            <span class="article-header__support-divider" aria-hidden="true"></span>
             {% include "partials/tip-buttons.njk" %}
+          </div>
+          {% endif %}
           {% endif %}
         </div>
 

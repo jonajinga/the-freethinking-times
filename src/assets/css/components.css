@@ -2659,12 +2659,52 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   max-width: 60ch;
   margin: 0 0 var(--space-4);
 }
-.author-hero__actions {
+.author-hero__support-row {
   display: flex;
   align-items: center;
+  gap: var(--space-4);
   flex-wrap: wrap;
-  gap: var(--space-3);
   margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-rule);
+}
+.author-hero__inline-stats {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-ink-faint);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.author-hero__inline-sep {
+  opacity: 0.4;
+}
+.author-hero__support-divider {
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  background: var(--color-rule);
+  flex-shrink: 0;
+}
+.author-hero__support-badges {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.author-hero__learn-more {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  color: var(--color-ink-faint);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.author-hero__learn-more:hover {
+  color: var(--color-ink-muted);
+  text-decoration: underline;
 }
 .author-hero__socials {
   display: flex;
