@@ -16,16 +16,17 @@ permalink: /contributors/
 
   <div class="contributors-grid">
     {% for slug, authorData in authors %}
+    {% set authorArticles = collections.allContent | where("author", slug) %}
+    {% set lastArticle = authorArticles | first %}
+    {% set firstArticle = authorArticles | last %}
     <article class="author-card">
       <div class="author-card__avatar">
+        <div class="author-card__initials" aria-hidden="true">{{ authorData.name | initials }}</div>
         {% if authorData.photo %}
           {% set photoSrc = authorData.photo | replace("src", "") %}
           <img src="{{ photoSrc }}" alt="{{ authorData.name }}"
-               class="author-card__photo" width="96" height="96" loading="lazy" decoding="async">
-        {% else %}
-          <div class="author-card__initials" aria-hidden="true">
-            {{ authorData.name | initials }}
-          </div>
+               class="author-card__photo" width="88" height="88" loading="lazy" decoding="async"
+               onerror="this.style.opacity=0">
         {% endif %}
       </div>
 
@@ -40,6 +41,15 @@ permalink: /contributors/
 
         {% set social = authorData.social %}
         {% include "partials/social-icons.njk" %}
+
+        {% if authorArticles.length %}
+        <div class="author-card__stats">
+          <span class="author-card__stat"><strong>{{ authorArticles.length }}</strong> {{ "article" if authorArticles.length == 1 else "articles" }}</span>
+          {% if lastArticle and lastArticle.date %}
+          <span class="author-card__stat">Last published <strong>{{ lastArticle.date | readableDate }}</strong></span>
+          {% endif %}
+        </div>
+        {% endif %}
 
         <div class="author-card__footer">
           <a class="author-card__link" href="/author/{{ slug }}/">View articles &rarr;</a>

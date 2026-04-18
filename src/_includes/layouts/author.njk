@@ -2,22 +2,25 @@
 layout: layouts/base.njk
 ---
 
-<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-16);" data-pagefind-body>
+<div class="container" style="padding-top: var(--space-8); padding-bottom: var(--space-16);" data-pagefind-body>
   <span data-pagefind-filter="section" hidden>Authors</span>
 
+  {# ── Breadcrumbs ──────────────────────────────────────────── #}
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol class="breadcrumbs__list">
+      <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/">Home</a></li>
+      <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/contributors/">Contributors</a></li>
+      <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">{{ title }}</li>
+    </ol>
+  </nav>
+
   {% set authorData = authors[authorSlug] %}
+  {% set authorArticles = collections.allContent | where("author", authorSlug) %}
+
   {% include "partials/author-hero.njk" %}
 
-  {% if authorData.bioLong %}
-  <div class="author-bio-long">
-    {{ authorData.bioLong | safe }}
-  </div>
-  {% endif %}
-
-  {# ── Stats strip ──────────────────────────────────────────── #}
-  {% set authorArticles = collections.allContent | where("author", authorSlug) %}
+  {# ── Stats strip (near the short bio) ─────────────────────── #}
   {% if authorArticles.length %}
-  {% set ns = {} %}
   {% set sectionList = [] %}
   {% for item in authorArticles %}
     {% if item.data.section and item.data.section not in sectionList %}
@@ -28,6 +31,8 @@ layout: layouts/base.njk
   {% for item in authorArticles %}
     {% if item.data.wordCount %}{% set totalWords = totalWords + item.data.wordCount %}{% endif %}
   {% endfor %}
+  {% set lastArticle = authorArticles | first %}
+  {% set firstArticle = authorArticles | last %}
   <div class="author-stats">
     <div class="author-stat">
       <span class="author-stat__value">{{ authorArticles.length }}</span>
@@ -44,73 +49,70 @@ layout: layouts/base.njk
       <span class="author-stat__value">{{ (totalWords / 1000) | round(1) }}k</span>
       <span class="author-stat__label">Words Written</span>
     </div>
-    {% endif %}
-    {% set firstDate = authorArticles | last %}
-    {% if firstDate and firstDate.date %}
+    {% set readMins = (totalWords / 200) | round %}
     <div class="author-stat">
-      <span class="author-stat__value">{{ firstDate.date | readableDate }}</span>
+      <span class="author-stat__value">~{{ readMins }} min</span>
+      <span class="author-stat__label">Reading Time</span>
+    </div>
+    {% endif %}
+    {% if firstArticle and firstArticle.date %}
+    <div class="author-stat">
+      <span class="author-stat__value">{{ firstArticle.date | readableDate }}</span>
       <span class="author-stat__label">First Published</span>
+    </div>
+    {% endif %}
+    {% if lastArticle and lastArticle.date %}
+    <div class="author-stat">
+      <span class="author-stat__value">{{ lastArticle.date | readableDate }}</span>
+      <span class="author-stat__label">Last Published</span>
     </div>
     {% endif %}
   </div>
   {% endif %}
 
-  <div class="section-grid">
-    <div class="section-grid__main">
-
-      {# ── Filter bar ───────────────────────────────────────────── #}
-      <div class="author-filter">
-        <input class="author-filter__search" type="search" placeholder="Search articles…" aria-label="Filter articles">
-        <select class="author-filter__select" aria-label="Filter by section">
-          <option value="">All sections</option>
-          {% for item in authorArticles %}
-            {% if item.data.section %}
-          <option value="{{ item.data.section | lower }}">{{ item.data.section }}</option>
-            {% endif %}
-          {% endfor %}
-        </select>
-      </div>
-
-      <p class="author-articles-heading">
-        Articles by {{ title }}{% if authorArticles.length %} <span class="author-articles-heading__count">({{ authorArticles.length }})</span>{% endif %}
-      </p>
-
-      {% if authorArticles.length == 0 %}
-      <p style="color: var(--color-ink-muted); font-style: italic;">No articles published yet.</p>
-      {% else %}
-      <ul class="article-list" role="list" id="author-article-list">
-        {% for item in authorArticles %}
-        <li class="article-list__item"
-            data-title="{{ item.data.title | lower }}"
-            data-section="{{ item.data.section | lower if item.data.section else '' }}">
-          {% set article = item %}
-          {% set size = "sm" %}
-          {% include "partials/article-card.njk" %}
-        </li>
-        {% endfor %}
-      </ul>
-      <p class="author-filter__empty" hidden>No articles match your filter.</p>
-      {% endif %}
-
-    </div>
-
-    <aside class="section-grid__sidebar">
-      <div class="sidebar-widget">
-        <p class="sidebar-widget__title">All Contributors</p>
-        <ul style="list-style: none; padding: 0;">
-          {% for slug, a in authors %}
-          <li style="padding: var(--space-2) 0; border-bottom: 1px solid var(--color-rule);">
-            <a href="/author/{{ slug }}/"
-               style="font-family: var(--font-ui); font-size: var(--text-sm); {% if slug == authorSlug %}color: var(--color-ink); font-weight: 700;{% else %}color: var(--color-ink-muted);{% endif %} text-decoration: none;">
-              {{ a.name }}
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-    </aside>
-
+  {# ── Long bio ─────────────────────────────────────────────── #}
+  {% if authorData.bioLong %}
+  <div class="author-bio-long">
+    {{ authorData.bioLong | safe }}
   </div>
+  {% endif %}
+
+  {# ── Filter bar ───────────────────────────────────────────── #}
+  {% if authorArticles.length %}
+  <div class="author-filter">
+    <input class="author-filter__search" type="search" placeholder="Search articles…" aria-label="Filter articles">
+    <select class="author-filter__select" aria-label="Filter by section">
+      <option value="">All sections</option>
+      {% for item in authorArticles %}
+        {% if item.data.section %}
+      <option value="{{ item.data.section | lower }}">{{ item.data.section }}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+  </div>
+  {% endif %}
+
+  <p class="author-articles-heading">
+    Articles by {{ title }}{% if authorArticles.length %} <span class="author-articles-heading__count">({{ authorArticles.length }})</span>{% endif %}
+  </p>
+
+  {% if authorArticles.length == 0 %}
+  <p style="color: var(--color-ink-muted); font-style: italic;">No articles published yet.</p>
+  {% else %}
+  <ul class="article-list" role="list" id="author-article-list">
+    {% for item in authorArticles %}
+    <li class="article-list__item"
+        data-title="{{ item.data.title | lower }}"
+        data-section="{{ item.data.section | lower if item.data.section else '' }}">
+      {% set article = item %}
+      {% set size = "sm" %}
+      {% include "partials/article-card.njk" %}
+    </li>
+    {% endfor %}
+  </ul>
+  <p class="author-filter__empty" hidden>No articles match your filter.</p>
+  {% endif %}
+
 </div>
 
 <script>
@@ -121,7 +123,6 @@ layout: layouts/base.njk
   var empty = document.querySelector('.author-filter__empty');
   if (!search || !list) return;
 
-  // Deduplicate section options
   var seen = {};
   select.querySelectorAll('option').forEach(function (opt) {
     if (opt.value && seen[opt.value]) { opt.remove(); }
@@ -134,9 +135,7 @@ layout: layouts/base.njk
     var items = list.querySelectorAll('.article-list__item');
     var visible = 0;
     items.forEach(function (li) {
-      var titleMatch = !q || li.dataset.title.includes(q);
-      var secMatch = !sec || li.dataset.section === sec;
-      var show = titleMatch && secMatch;
+      var show = (!q || li.dataset.title.includes(q)) && (!sec || li.dataset.section === sec);
       li.hidden = !show;
       if (show) visible++;
     });

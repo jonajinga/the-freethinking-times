@@ -107,7 +107,7 @@ module.exports = function (eleventyConfig) {
     const dt = typeof dateObj === "string"
       ? DateTime.fromISO(dateObj, { zone: "utc" })
       : DateTime.fromJSDate(dateObj, { zone: "utc" });
-    return dt.toFormat("LLL d");
+    return dt.toFormat("LLLL d, yyyy");
   });
 
   eleventyConfig.addFilter("isoDate", (dateObj) => {
