@@ -42,7 +42,8 @@ permalink: /contributors/
         {% if authorData.role %}
         <p class="author-card__role">{{ authorData.role }}</p>
         {% endif %}
-        <h2 class="author-card__name"><a href="/author/{{ slug }}/">{{ authorData.name }}</a></h2>
+        <h2 class="author-card__name"><a href="/author/{{ slug }}/"
+          {% if authorData.bio %}data-tippy-content="{{ authorData.bio }}" data-tippy-theme="author-bio"{% endif %}>{{ authorData.name }}</a></h2>
         {% if authorData.bio %}
         <p class="author-card__bio">{{ authorData.bio }}</p>
         {% endif %}
