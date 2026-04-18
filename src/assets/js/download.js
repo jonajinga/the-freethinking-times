@@ -89,9 +89,12 @@
   }
 
   // ─── Panel toggle ─────────────────────────────────────────────
-  // Skip toggle/auto-close when panel has been relocated into the Reader panel.
+  // Skip toggle/auto-close when the download-panel has been relocated —
+  // either into the Reader panel's Share tab (older layout) or into the
+  // share popover above the annotation toolbar (current).
   function isInReaderPanel() {
-    return !!(panel.closest && panel.closest('.library-panel'));
+    if (!panel.closest) return false;
+    return !!(panel.closest('.library-panel') || panel.closest('#ann-share-popover'));
   }
 
   btn.addEventListener('click', function () {

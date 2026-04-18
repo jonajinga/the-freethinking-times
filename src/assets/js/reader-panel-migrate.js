@@ -1,17 +1,18 @@
 /**
- * Move article reader tools out of the article header and into the Reader panel.
+ * Reader-panel migration + share-popover wiring.
  *
- * Background: the page HTML still renders the original .article-header__actions
- * block with all its buttons, dropdowns, and data attributes — this keeps every
- * existing JS handler (reading-settings.js, download.js, progress.js, etc) wired
- * up exactly as before, no changes required.
+ * The page HTML still renders the original .article-header__actions block
+ * (hidden via CSS) with all its buttons, dropdowns, and data attributes so
+ * every existing JS handler (reading-settings.js, download.js, progress.js)
+ * stays wired without changes. This script reparents those elements at load
+ * time into three destinations:
  *
- * This script runs at load time and physically re-parents those elements into
- * empty slots inside the Reader panel. Since the elements are moved (not cloned),
- * the JS listeners follow them, so every feature continues to work.
+ *   - annotation toolbar at the bottom of the page (Save / Listen / Focus)
+ *   - share popover above the share icon (share-panel + download-panel)
+ *   - Reader panel tabs / footer (Display / Cite / History / Feedback)
  *
- * A CSS rule hides the now-empty .article-header__actions so the old bar no
- * longer appears above the article.
+ * Moving (not cloning) preserves the existing event listeners on the
+ * migrated elements so every feature keeps working in its new home.
  */
 (function () {
   'use strict';
@@ -22,28 +23,29 @@
     if (src && slot) slot.appendChild(src);
   }
 
-  // Find the Reader panel; bail out if we're not on an article/library page
   var panel = document.getElementById('article-notes-panel') || document.getElementById('library-panel');
-  if (!panel) return;
+  var toolbar = document.getElementById('annotation-toolbar');
+  if (!panel && !toolbar) return;
 
-  // Quick-action row (panel header): Save, Listen, Focus
-  move('bookmark-btn', 'reader-panel-slot-bookmark');
-  move('tts-btn',      'reader-panel-slot-tts');
-  move('focus-btn',    'reader-panel-slot-focus');
+  // ── Bottom toolbar: Save / Listen / Focus
+  move('bookmark-btn', 'ann-save-slot');
+  move('tts-btn',      'ann-listen-slot');
+  move('focus-btn',    'ann-focus-slot');
 
-  // Tab sections (panel body)
+  // ── Share popover: social links + download formats
+  move('share-panel',    'ann-share-slot');
+  move('download-panel', 'ann-download-slot');
+
+  // ── Reader panel: Display tab
   move('reading-settings-panel', 'reader-panel-slot-display');
-  move('share-panel',            'reader-panel-slot-share');
-  move('download-panel',         'reader-panel-slot-download');
-  move('cite-btn',               'reader-panel-slot-cite');
 
-  // Footer links (panel bottom)
-  move('revision-history-btn', 'reader-panel-slot-history');
-  move('article-feedback-btn', 'reader-panel-slot-feedback');
+  // ── Reader panel footer: Cite / History / Feedback
+  move('cite-btn',               'reader-panel-slot-cite');
+  move('revision-history-btn',   'reader-panel-slot-history');
+  move('article-feedback-btn',   'reader-panel-slot-feedback');
   move('article-feedback-popup', 'reader-panel-slot-feedback');
 
-  // Comments: find the commenting button by its onclick-content. It's the only
-  // button inside .article-header__actions without an id that sets comments-body.
+  // Comments button has no id — find by onclick signature
   var actions = document.querySelector('.article-header__actions');
   if (actions) {
     var commentsSlot = document.getElementById('reader-panel-slot-comments');
@@ -55,13 +57,52 @@
     }
   }
 
-  // The reading-settings-panel and others have a `hidden` attribute to start —
-  // clear it so the tab system (which uses aria-hidden) controls visibility.
+  // Relocated panels had [hidden] to start; clear it so tab/popover visibility
+  // is controlled by the containers we just moved them into.
   ['reading-settings-panel', 'share-panel', 'download-panel'].forEach(function (id) {
     var el = document.getElementById(id);
-    if (el) {
-      el.hidden = false;
-      el.classList.add('is-in-panel');
-    }
+    if (el) { el.hidden = false; el.classList.add('is-in-panel'); }
   });
+
+  // ── Ann share popover: wire ann-share-btn to toggle it
+  var shareTrigger = document.getElementById('ann-share-btn');
+  var sharePopover = document.getElementById('ann-share-popover');
+  if (shareTrigger && sharePopover) {
+    // Force-enable — it was marked "needs-selection" in earlier revisions
+    // but the popover now offers article-level share/download actions that
+    // are always available.
+    shareTrigger.classList.remove('annotation-toolbar__btn--needs-selection');
+
+    function openPopover() {
+      sharePopover.hidden = false;
+      shareTrigger.setAttribute('aria-expanded', 'true');
+    }
+    function closePopover() {
+      sharePopover.hidden = true;
+      shareTrigger.setAttribute('aria-expanded', 'false');
+    }
+
+    shareTrigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (sharePopover.hidden) openPopover(); else closePopover();
+    });
+
+    document.addEventListener('click', function (e) {
+      if (sharePopover.hidden) return;
+      if (!sharePopover.contains(e.target) && e.target !== shareTrigger) closePopover();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !sharePopover.hidden) {
+        closePopover();
+        shareTrigger.focus();
+      }
+    });
+
+    // Close after picking any share/download/print option
+    sharePopover.addEventListener('click', function (e) {
+      var hit = e.target.closest('a, button');
+      if (hit && hit !== sharePopover) setTimeout(closePopover, 50);
+    });
+  }
 })();

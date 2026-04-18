@@ -82,9 +82,14 @@
     if (masto) masto.href = 'https://mastodon.social/share?text=' + encodeURIComponent(shareTitle + '\n\n' + shareUrl);
     if (em)   em.href   = 'mailto:?subject=' + encTitle + '&body=' + encUrl;
 
-    // Skip toggle/auto-close when panel has been relocated into the Reader panel.
+    // Skip toggle/auto-close when panel has been relocated out of the
+    // original header rail (into the Reader panel, or into the share
+    // popover above the annotation toolbar). Those containers own the
+    // visibility of the share-panel; this script only needs to keep
+    // share-panel's social links populated.
     function isShareInReaderPanel() {
-      return !!(sharePanel.closest && sharePanel.closest('.library-panel'));
+      if (!sharePanel.closest) return false;
+      return !!(sharePanel.closest('.library-panel') || sharePanel.closest('#ann-share-popover'));
     }
 
     function openSharePanel() {
@@ -312,6 +317,12 @@
         var body = document.querySelector('.article-body');
         if (!body) return;
         ttsText = body.innerText;
+        // Stop background music — two audio sources simultaneously would
+        // be incomprehensible. The reader can restart music from the
+        // music slot after TTS ends.
+        if (window.musicPlayer && typeof window.musicPlayer.stop === 'function') {
+          try { window.musicPlayer.stop(); } catch (e) {}
+        }
         // Cancel then speak immediately (setTimeout breaks user gesture chain in Chrome)
         window.speechSynthesis.cancel();
         window.speechSynthesis.speak(buildUtterance(ttsText));
