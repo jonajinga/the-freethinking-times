@@ -1,0 +1,48 @@
+{#
+  Tip CTA buttons. Renders up to two buttons — one for the author,
+  one for the publication — based on configured tipping URLs.
+
+  Usage:
+    {# Article byline: both buttons #}
+    {% set tipAuthor = authors[author] %}
+    {% include "partials/tip-buttons.njk" %}
+
+    {# Author page / card: just the author #}
+    {% set tipAuthor = authorData %}
+    {% set tipHidePublication = true %}
+    {% include "partials/tip-buttons.njk" %}
+
+  Precedence per entity: kofi > bmac > patreon.
+#}
+{% set authorTipUrl   = tipAuthor.tipping.kofi or tipAuthor.tipping.bmac or tipAuthor.tipping.patreon if tipAuthor and tipAuthor.tipping else "" %}
+{% set pubTipUrl      = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon if site.tipping else "" %}
+{% if authorTipUrl or (pubTipUrl and not tipHidePublication) %}
+<div class="tip-buttons">
+  {% if authorTipUrl %}
+  <a class="tip-btn" href="{{ authorTipUrl }}" target="_blank" rel="noopener noreferrer"
+     aria-label="Tip {{ tipAuthor.name }}">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+      <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+      <line x1="6" y1="1" x2="6" y2="4"/>
+      <line x1="10" y1="1" x2="10" y2="4"/>
+      <line x1="14" y1="1" x2="14" y2="4"/>
+    </svg>
+    <span>Support {{ tipAuthor.name }}</span>
+  </a>
+  {% endif %}
+  {% if pubTipUrl and not tipHidePublication %}
+  <a class="tip-btn tip-btn--muted" href="{{ pubTipUrl }}" target="_blank" rel="noopener noreferrer"
+     aria-label="Tip {{ site.title }}">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+      <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+      <line x1="6" y1="1" x2="6" y2="4"/>
+      <line x1="10" y1="1" x2="10" y2="4"/>
+      <line x1="14" y1="1" x2="14" y2="4"/>
+    </svg>
+    <span>Support {{ site.title }}</span>
+  </a>
+  {% endif %}
+</div>
+{% endif %}

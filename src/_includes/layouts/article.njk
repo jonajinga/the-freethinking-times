@@ -124,6 +124,13 @@ layout: layouts/base.njk
           {% if location %}
           <span class="dateline">{{ location }}</span>
           {% endif %}
+
+          {# Tip CTAs — one for the author (if configured), one for the
+             publication (if configured). Either/both/neither render. #}
+          {% if author and authors[author] %}
+            {% set tipAuthor = authors[author] %}
+            {% include "partials/tip-buttons.njk" %}
+          {% endif %}
         </div>
 
         <div class="article-header__meta-row">

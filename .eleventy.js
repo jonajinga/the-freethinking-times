@@ -140,6 +140,15 @@ module.exports = function (eleventyConfig) {
     return count.toLocaleString('en-US');
   });
 
+  // Initials — "Jon Ajinga" → "JA". Used as an avatar fallback when
+  // an author / contributor has no photo set.
+  eleventyConfig.addFilter("initials", (name) => {
+    if (!name) return "";
+    const parts = String(name).trim().split(/\s+/);
+    if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+  });
+
   // Related articles sorted by number of shared tags, excluding current URL
   eleventyConfig.addFilter("relatedByTags", (allContent, currentTags, currentUrl, limit = 3) => {
     const tags = (currentTags || []).filter(t => t !== "post" && t !== "all");

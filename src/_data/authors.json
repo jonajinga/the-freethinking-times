@@ -2,15 +2,53 @@
   "jon-ajinga": {
     "name": "Jon Ajinga",
     "slug": "jon-ajinga",
-    "bio": "Jon Ajinga is the founding editor of The Freethinking Times.",
     "role": "Founding Editor",
-    "avatar": ""
+    "title": "",
+    "location": "",
+    "bio": "Jon Ajinga is the founding editor of The Freethinking Times.",
+    "bioLong": "",
+    "photo": "src/assets/img/authors/jon-ajinga.jpg",
+    "social": {
+      "x": "",
+      "bluesky": "",
+      "mastodon": "",
+      "linkedin": "",
+      "github": "",
+      "threads": "",
+      "instagram": "",
+      "website": "",
+      "email": ""
+    },
+    "tipping": {
+      "kofi": "",
+      "bmac": "",
+      "patreon": ""
+    }
   },
   "staff": {
     "name": "The Freethinking Times",
     "slug": "staff",
-    "bio": "Editorial and research staff of The Freethinking Times.",
     "role": "Staff",
-    "avatar": ""
+    "title": "",
+    "location": "",
+    "bio": "Editorial and research staff of The Freethinking Times.",
+    "bioLong": "",
+    "photo": "",
+    "social": {
+      "x": "",
+      "bluesky": "",
+      "mastodon": "",
+      "linkedin": "",
+      "github": "",
+      "threads": "",
+      "instagram": "",
+      "website": "",
+      "email": ""
+    },
+    "tipping": {
+      "kofi": "",
+      "bmac": "",
+      "patreon": ""
+    }
   }
 }

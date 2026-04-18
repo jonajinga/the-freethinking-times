@@ -46,6 +46,13 @@ module.exports = {
     appId: env.CUSDIS_APP_ID || "2f9a4b07-2835-475d-98d5-90f6ac1087ae",
     host: "https://cusdis.com"
   },
+  tipping: {
+    // Publication-level tip URLs used by the byline and contributor pages.
+    // First non-empty field wins at render time (Ko-fi > BMAC > Patreon).
+    kofi:    env.KOFI_URL    || "",
+    bmac:    env.BMAC_URL    || "",
+    patreon: env.PATREON_URL || ""
+  },
   nav: [
     { label: "News",           url: "/news/",               key: "news",         collection: "news" },
     { label: "Opinion",        url: "/opinion/",            key: "opinion",      collection: "opinion" },

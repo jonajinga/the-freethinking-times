@@ -1,0 +1,66 @@
+{#
+  Author hero block — photo + name + role + bio + socials + tip button + RSS.
+  Used on /author/{slug}/ and could be reused elsewhere.
+
+  Usage:
+    {% set authorData = authors[authorSlug] %}
+    {% include "partials/author-hero.njk" %}
+
+  Expects `authorData` (one entry from authors.json) and, optionally,
+  `authorSlug` (used to build the RSS link).
+#}
+{% if authorData %}
+<div class="author-hero">
+  <div class="author-hero__avatar">
+    {% if authorData.photo %}
+      {# image shortcode would handle this, but the stored path is relative
+         to the repo root, not to the runtime URL — fall back to a plain <img>
+         pointing at the built copy under /assets/img/authors/. #}
+      {% set photoSrc = authorData.photo | replace("src", "") %}
+      <img src="{{ photoSrc }}" alt="{{ authorData.name }}"
+           class="author-hero__photo" width="160" height="160" loading="eager" decoding="async">
+    {% else %}
+      <div class="author-hero__initials" aria-hidden="true">
+        {{ authorData.name | initials }}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="author-hero__body">
+    {% if authorData.role %}
+    <p class="author-hero__role">{{ authorData.role }}</p>
+    {% endif %}
+    <h1 class="author-hero__name">{{ authorData.name }}</h1>
+    {% if authorData.title or authorData.location %}
+    <p class="author-hero__meta">
+      {% if authorData.title %}{{ authorData.title }}{% endif %}
+      {% if authorData.title and authorData.location %} &middot; {% endif %}
+      {% if authorData.location %}{{ authorData.location }}{% endif %}
+    </p>
+    {% endif %}
+    {% if authorData.bio %}
+    <p class="author-hero__bio">{{ authorData.bio }}</p>
+    {% endif %}
+
+    {% set social = authorData.social %}
+    {% include "partials/social-icons.njk" %}
+
+    <div class="author-hero__actions">
+      {% set tipAuthor = authorData %}
+      {% set tipHidePublication = true %}
+      {% include "partials/tip-buttons.njk" %}
+      {% if authorSlug %}
+      <a class="author-hero__rss" href="/feeds/{{ authorSlug }}.xml"
+         aria-label="RSS feed for {{ authorData.name }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <circle cx="5" cy="19" r="2"/>
+          <path d="M4 4a16 16 0 0 1 16 16h-3A13 13 0 0 0 4 7V4z"/>
+          <path d="M4 11a9 9 0 0 1 9 9H10a6 6 0 0 0-6-6v-3z"/>
+        </svg>
+        <span>RSS feed</span>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}
