@@ -18,6 +18,7 @@ permalink: /style-guide/
       <a href="#buttons">Buttons</a>
       <a href="#badges">Badges</a>
       <a href="#section-badges">Section badges</a>
+      <a href="#breadcrumbs">Breadcrumbs</a>
       <a href="#article-cards">Article cards</a>
       <a href="#author-cards">Author cards</a>
       <a href="#forms">Forms</a>
@@ -351,6 +352,29 @@ data-tippy-placement="top"</pre>
           <a href="/reviews/" class="section-badge section-badge--reviews">Reviews</a>
         </div>
         <pre class="sg-code">&lt;a class="section-badge section-badge--news" href="/news/"&gt;News&lt;/a&gt;</pre>
+      </section>
+
+      {# ── Breadcrumbs ── #}
+      <section class="sg-section" id="breadcrumbs">
+        <h2>Breadcrumbs</h2>
+        <p class="lead">Used on all sub-pages. Links render in the accent color; the current page is ink-faint. The <code>/</code> separator is injected via CSS <code>::before</code>.</p>
+
+        <div class="sg-demo">
+          <nav class="breadcrumbs" aria-label="Breadcrumb example">
+            <ol class="breadcrumbs__list">
+              <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="#breadcrumbs">Home</a></li>
+              <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="#breadcrumbs">Contributors</a></li>
+              <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">Jon Ajinga</li>
+            </ol>
+          </nav>
+        </div>
+        <pre class="sg-code">&lt;nav class="breadcrumbs" aria-label="Breadcrumb"&gt;
+  &lt;ol class="breadcrumbs__list"&gt;
+    &lt;li class="breadcrumbs__item"&gt;&lt;a class="breadcrumbs__link" href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="breadcrumbs__item"&gt;&lt;a class="breadcrumbs__link" href="/contributors/"&gt;Contributors&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page"&gt;Jon Ajinga&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;</pre>
       </section>
 
       {# ── Article cards ── #}

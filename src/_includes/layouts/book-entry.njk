@@ -14,8 +14,12 @@ layout: base
 
 <div class="container" style="padding-top: var(--space-12); padding-bottom: var(--space-20);">
 
-  <nav>
-    <a href="/bookshelf/" class="project-back">← The Freethinker's Bookshelf</a>
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol class="breadcrumbs__list">
+      <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/">Home</a></li>
+      <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/bookshelf/">Bookshelf</a></li>
+      <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">{{ title }}</li>
+    </ol>
   </nav>
 
   <div class="book-layout">

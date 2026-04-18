@@ -134,10 +134,10 @@ module.exports = function (eleventyConfig) {
 
   // Word count — formatted with thousands separator
   eleventyConfig.addFilter("wordCount", (content) => {
-    if (!content) return '0';
+    if (!content) return '0 words';
     const text = content.replace(/(<([^>]+)>)/gi, "");
     const count = text.trim().split(/\s+/).filter(w => w.length > 0).length;
-    return count.toLocaleString('en-US');
+    return count.toLocaleString('en-US') + ' words';
   });
 
   // Initials — "Jon Ajinga" → "JA". Used as an avatar fallback when

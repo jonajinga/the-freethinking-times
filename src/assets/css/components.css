@@ -24,11 +24,10 @@
   opacity: 0.4;
 }
 .breadcrumbs__link {
-  color: var(--color-ink-muted);
+  color: var(--color-accent);
   text-decoration: none;
 }
 .breadcrumbs__link:hover {
-  color: var(--color-accent);
   text-decoration: underline;
 }
 .breadcrumbs__item--current {
@@ -2694,23 +2693,23 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
 }
 
 .author-hero__avatar {
-  width: 160px;
-  height: 160px;
+  width: 184px;
+  height: 184px;
   position: relative;
 }
 .author-hero__photo {
   position: absolute;
   inset: 0;
-  width: 160px;
-  height: 160px;
+  width: 184px;
+  height: 184px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--color-bg-alt);
   background: var(--color-bg-alt);
 }
 .author-hero__initials {
-  width: 160px;
-  height: 160px;
+  width: 184px;
+  height: 184px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -2932,8 +2931,8 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
    If photo 404s, initials show through. */
 .author-card__avatar {
   position: relative;
-  width: 88px;
-  height: 88px;
+  width: 101px;
+  height: 101px;
   flex-shrink: 0;
   margin-bottom: var(--space-6);
 }
@@ -2955,8 +2954,8 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
 .author-card__photo {
   position: relative;
   z-index: 1;
-  width: 88px;
-  height: 88px;
+  width: 101px;
+  height: 101px;
   border-radius: 50%;
   object-fit: cover;
 }

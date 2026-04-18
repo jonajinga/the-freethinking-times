@@ -9,7 +9,7 @@
     {% if authorData.photo %}
       {% set photoSrc = authorData.photo | replace("src", "") %}
       <img src="{{ photoSrc }}" alt="{{ authorData.name }}"
-           class="author-hero__photo" width="160" height="160" loading="eager" decoding="async"
+           class="author-hero__photo" width="184" height="184" loading="eager" decoding="async"
            onerror="this.style.opacity=0">
     {% endif %}
   </div>
