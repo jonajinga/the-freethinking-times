@@ -14,26 +14,82 @@ layout: layouts/base.njk
   </div>
   {% endif %}
 
+  {# ── Stats strip ──────────────────────────────────────────── #}
+  {% set authorArticles = collections.allContent | where("author", authorSlug) %}
+  {% if authorArticles.length %}
+  {% set ns = {} %}
+  {% set sectionList = [] %}
+  {% for item in authorArticles %}
+    {% if item.data.section and item.data.section not in sectionList %}
+      {% set sectionList = (sectionList.push(item.data.section), sectionList) %}
+    {% endif %}
+  {% endfor %}
+  {% set totalWords = 0 %}
+  {% for item in authorArticles %}
+    {% if item.data.wordCount %}{% set totalWords = totalWords + item.data.wordCount %}{% endif %}
+  {% endfor %}
+  <div class="author-stats">
+    <div class="author-stat">
+      <span class="author-stat__value">{{ authorArticles.length }}</span>
+      <span class="author-stat__label">{{ "Article" if authorArticles.length == 1 else "Articles" }}</span>
+    </div>
+    {% if sectionList.length %}
+    <div class="author-stat">
+      <span class="author-stat__value">{{ sectionList.length }}</span>
+      <span class="author-stat__label">{{ "Section" if sectionList.length == 1 else "Sections" }}</span>
+    </div>
+    {% endif %}
+    {% if totalWords > 0 %}
+    <div class="author-stat">
+      <span class="author-stat__value">{{ (totalWords / 1000) | round(1) }}k</span>
+      <span class="author-stat__label">Words Written</span>
+    </div>
+    {% endif %}
+    {% set firstDate = authorArticles | last %}
+    {% if firstDate and firstDate.date %}
+    <div class="author-stat">
+      <span class="author-stat__value">{{ firstDate.date | readableDate }}</span>
+      <span class="author-stat__label">First Published</span>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
   <div class="section-grid">
     <div class="section-grid__main">
 
-      {% set authorArticles = collections.allContent | where("author", authorSlug) %}
-      <p style="font-family: var(--font-ui); font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-faint); border-bottom: 1px solid var(--color-rule); padding-bottom: var(--space-3); margin-bottom: var(--space-6);">
-        Articles by {{ title }}{% if authorArticles.length %} ({{ authorArticles.length }}){% endif %}
+      {# ── Filter bar ───────────────────────────────────────────── #}
+      <div class="author-filter">
+        <input class="author-filter__search" type="search" placeholder="Search articles…" aria-label="Filter articles">
+        <select class="author-filter__select" aria-label="Filter by section">
+          <option value="">All sections</option>
+          {% for item in authorArticles %}
+            {% if item.data.section %}
+          <option value="{{ item.data.section | lower }}">{{ item.data.section }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+
+      <p class="author-articles-heading">
+        Articles by {{ title }}{% if authorArticles.length %} <span class="author-articles-heading__count">({{ authorArticles.length }})</span>{% endif %}
       </p>
 
       {% if authorArticles.length == 0 %}
       <p style="color: var(--color-ink-muted); font-style: italic;">No articles published yet.</p>
       {% else %}
-      <ul class="article-list" role="list">
+      <ul class="article-list" role="list" id="author-article-list">
         {% for item in authorArticles %}
-        <li class="article-list__item">
+        <li class="article-list__item"
+            data-title="{{ item.data.title | lower }}"
+            data-section="{{ item.data.section | lower if item.data.section else '' }}">
           {% set article = item %}
           {% set size = "sm" %}
           {% include "partials/article-card.njk" %}
         </li>
         {% endfor %}
       </ul>
+      <p class="author-filter__empty" hidden>No articles match your filter.</p>
       {% endif %}
 
     </div>
@@ -56,3 +112,38 @@ layout: layouts/base.njk
 
   </div>
 </div>
+
+<script>
+(function () {
+  var search = document.querySelector('.author-filter__search');
+  var select = document.querySelector('.author-filter__select');
+  var list = document.getElementById('author-article-list');
+  var empty = document.querySelector('.author-filter__empty');
+  if (!search || !list) return;
+
+  // Deduplicate section options
+  var seen = {};
+  select.querySelectorAll('option').forEach(function (opt) {
+    if (opt.value && seen[opt.value]) { opt.remove(); }
+    else if (opt.value) { seen[opt.value] = true; }
+  });
+
+  function filter() {
+    var q = search.value.trim().toLowerCase();
+    var sec = select.value.toLowerCase();
+    var items = list.querySelectorAll('.article-list__item');
+    var visible = 0;
+    items.forEach(function (li) {
+      var titleMatch = !q || li.dataset.title.includes(q);
+      var secMatch = !sec || li.dataset.section === sec;
+      var show = titleMatch && secMatch;
+      li.hidden = !show;
+      if (show) visible++;
+    });
+    if (empty) empty.hidden = visible > 0;
+  }
+
+  search.addEventListener('input', filter);
+  select.addEventListener('change', filter);
+})();
+</script>

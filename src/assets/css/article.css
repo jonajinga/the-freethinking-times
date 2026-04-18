@@ -127,6 +127,11 @@
   font-weight: 400;
   line-height: var(--leading-normal);
   max-width: 24ch;
+  max-height: 4.5em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
   white-space: normal;
   padding: 0.35rem 0.6rem;
   border-radius: var(--radius-sm);

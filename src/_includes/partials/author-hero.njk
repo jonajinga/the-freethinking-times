@@ -1,21 +1,11 @@
 {#
-  Author hero block — photo + name + role + bio + socials + tip button + RSS.
+  Author hero block — photo + name + role + bio + socials + tip badge + RSS.
   Used on /author/{slug}/ and could be reused elsewhere.
-
-  Usage:
-    {% set authorData = authors[authorSlug] %}
-    {% include "partials/author-hero.njk" %}
-
-  Expects `authorData` (one entry from authors.json) and, optionally,
-  `authorSlug` (used to build the RSS link).
 #}
 {% if authorData %}
 <div class="author-hero">
   <div class="author-hero__avatar">
     {% if authorData.photo %}
-      {# image shortcode would handle this, but the stored path is relative
-         to the repo root, not to the runtime URL — fall back to a plain <img>
-         pointing at the built copy under /assets/img/authors/. #}
       {% set photoSrc = authorData.photo | replace("src", "") %}
       <img src="{{ photoSrc }}" alt="{{ authorData.name }}"
            class="author-hero__photo" width="160" height="160" loading="eager" decoding="async">
@@ -42,24 +32,25 @@
     <p class="author-hero__bio">{{ authorData.bio }}</p>
     {% endif %}
 
-    {% set social = authorData.social %}
-    {% include "partials/social-icons.njk" %}
+    <div class="author-hero__socials">
+      {% set social = authorData.social %}
+      {% include "partials/social-icons.njk" %}
+      {% if authorSlug %}
+      <a class="social-icons__link" href="/feeds/{{ authorSlug }}.xml"
+         aria-label="RSS feed for {{ authorData.name }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <circle cx="5" cy="19" r="2"/>
+          <path d="M4 4a16 16 0 0 1 16 16h-3A13 13 0 0 0 4 7V4z"/>
+          <path d="M4 11a9 9 0 0 1 9 9H10a6 6 0 0 0-6-6v-3z"/>
+        </svg>
+      </a>
+      {% endif %}
+    </div>
 
     <div class="author-hero__actions">
       {% set tipAuthor = authorData %}
       {% set tipHidePublication = true %}
       {% include "partials/tip-buttons.njk" %}
-      {% if authorSlug %}
-      <a class="author-hero__rss" href="/feeds/{{ authorSlug }}.xml"
-         aria-label="RSS feed for {{ authorData.name }}">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <circle cx="5" cy="19" r="2"/>
-          <path d="M4 4a16 16 0 0 1 16 16h-3A13 13 0 0 0 4 7V4z"/>
-          <path d="M4 11a9 9 0 0 1 9 9H10a6 6 0 0 0-6-6v-3z"/>
-        </svg>
-        <span>RSS feed</span>
-      </a>
-      {% endif %}
     </div>
   </div>
 </div>
