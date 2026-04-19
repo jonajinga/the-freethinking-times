@@ -18,7 +18,7 @@ module.exports = {
   description: s.description,
   url: env.SITE_URL || "https://thefreethinkingtimes.com",
   author: s.author,
-  email: env.SITE_EMAIL || "hello@thefreethinkingtimes.com",
+  email: env.SITE_EMAIL || s.email,
   language: "en",
   founded: s.founded,
   gtranslate: s.gtranslate,
