@@ -3149,8 +3149,8 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   color: #fff;
 }
 .tip-badge--pub .tip-badge__value {
-  background: #C0392B;  /* hardcoded — avoids dark mode accent (#E05545) which fails 4.5:1 with white */
-  color: #fff;
+  background: #1A1A1A;
+  color: #F4F1EB;
 }
 .tip-badge--info .tip-badge__label {
   background: #374151;

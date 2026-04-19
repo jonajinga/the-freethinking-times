@@ -60,8 +60,12 @@
   <link rel="preload" href="{{ site.fontsUrl }}" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="{{ site.fontsUrl }}" crossorigin></noscript>
 
-  {# ── Styles ── #}
-  <link rel="stylesheet" href="/assets/css/main.css?v={{ buildTime }}">
+  {# ── Critical CSS: tokens + body baseline — inlined to prevent FOUC while main.css loads async ── #}
+  <style>:root{--color-bg:#F4F1EB;--color-bg-alt:#EAE6DE;--color-bg-inset:#E0DBCF;--color-ink:#1A1A1A;--color-ink-muted:#4A4845;--color-ink-faint:#5E5856;--color-rule:#C8C2B6;--color-rule-heavy:#8A847A;--color-accent:#C0392B;--color-link:#2C5F8A;--color-selection:#6A1B9A;--color-selection-ink:#fff;--font-masthead:'Playfair Display',Georgia,serif;--font-headline:'Lora',Georgia,serif;--font-body:'Source Serif 4',Georgia,serif;--font-ui:'DM Sans',system-ui,sans-serif}[data-theme="dark"]{--color-bg:#141414;--color-bg-alt:#1E1E1E;--color-bg-inset:#252525;--color-ink:#E8E4DC;--color-ink-muted:#A8A49C;--color-ink-faint:#9E9A96;--color-rule:#303030;--color-rule-heavy:#484440;--color-accent:#E05545;--color-link:#6B9EC7}@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--color-bg:#141414;--color-bg-alt:#1E1E1E;--color-bg-inset:#252525;--color-ink:#E8E4DC;--color-ink-muted:#A8A49C;--color-ink-faint:#9E9A96;--color-rule:#303030;--color-rule-heavy:#484440;--color-accent:#E05545;--color-link:#6B9EC7}}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{color-scheme:light dark}body{background:var(--color-bg);color:var(--color-ink);font-family:var(--font-body)}.site-wrapper{min-height:100vh;display:flex;flex-direction:column}</style>
+
+  {# ── Styles (async — non-render-blocking) ── #}
+  <link rel="preload" href="/assets/css/main.css?v={{ buildTime }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/main.css?v={{ buildTime }}"></noscript>
 
   {# ── Theme: removed external script — inlined below after __PREFIX is set ── #}
 
