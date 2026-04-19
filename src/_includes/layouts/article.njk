@@ -94,7 +94,7 @@ layout: layouts/base.njk
         <p class="article-header__dek">{{ description }}</p>
         {% endif %}
 
-        <div class="article-header__byline-block">
+        <div class="article-header__byline-block" data-pagefind-ignore>
           <div class="article-header__byline-meta">
             {% if author %}
             <a class="article-header__author" href="/author/{{ author | slugify }}/"
@@ -147,7 +147,7 @@ layout: layouts/base.njk
           {% endif %}
         </div>
 
-        <div class="article-header__meta-row">
+        <div class="article-header__meta-row" data-pagefind-ignore>
           <span>{{ content | wordCount }} words</span>
           <span>{{ content | readingTime }}</span>
           <span>Listen ~{{ (content | readingMins * 1.3) | round }}m</span>
@@ -156,7 +156,7 @@ layout: layouts/base.njk
         <div class="article-header__meta-tags">{% for tag in tags %}{% if tag != "post" %}<a href="/topics/{{ tag | slugify }}/">{{ tag }}</a>{% endif %}{% endfor %}</div>
         {% endif %}
 
-        <div class="article-header__actions">
+        <div class="article-header__actions" data-pagefind-ignore>
 
           {# 1. Reader panel #}
           <button class="article-action-btn article-notes-toggle" type="button"
