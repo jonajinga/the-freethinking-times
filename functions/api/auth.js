@@ -40,15 +40,18 @@ export async function onRequest(context) {
 
 function html(script) {
   return new Response(`<!DOCTYPE html><html><body>
+<pre id="log" style="font-family:monospace;padding:2rem;white-space:pre-wrap"></pre>
 <script>
+function log(s) { document.getElementById('log').textContent += s + '\\n'; }
 function sendMsg(msg) {
+  log('opener: ' + (window.opener ? 'present' : 'NULL'));
+  log('msg prefix: ' + msg.slice(0, 40));
   if (window.opener) {
     window.opener.postMessage(msg, '*');
-    setTimeout(function() { window.close(); }, 100);
+    log('postMessage sent — closing in 3s');
+    setTimeout(function() { window.close(); }, 3000);
   } else {
-    // opener lost — store token in sessionStorage for the parent to poll
-    sessionStorage.setItem('decap-oauth-msg', msg);
-    document.body.innerHTML = '<p style="font-family:sans-serif;padding:2rem">Authentication complete. You may close this window.</p>';
+    log('opener lost — cannot deliver token');
   }
 }
 ${script}
