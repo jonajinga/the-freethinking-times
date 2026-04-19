@@ -120,11 +120,11 @@ permalink: /style-guide/
               </div>
             </div>
             <div class="sg-color">
-              <div class="sg-color__swatch" style="background: #888380;"></div>
+              <div class="sg-color__swatch" style="background: #5E5856;"></div>
               <div class="sg-color__body">
                 <span class="sg-color__name">Ink faint</span>
-                <span class="sg-color__value">--color-ink-faint · #888380</span>
-                <span class="sg-color__note">Captions, metadata</span>
+                <span class="sg-color__value">--color-ink-faint · #5E5856</span>
+                <span class="sg-color__note">Captions, metadata. 5.1:1 on card bg</span>
               </div>
             </div>
           </div>
@@ -184,7 +184,7 @@ permalink: /style-guide/
             <div class="sg-color"><div class="sg-color__swatch" style="background:#5D4037;"></div><div class="sg-color__body"><span class="sg-color__name">Analysis</span><span class="sg-color__value">#5D4037</span></div></div>
             <div class="sg-color"><div class="sg-color__swatch" style="background:#6A1B9A;"></div><div class="sg-color__body"><span class="sg-color__name">Arts &amp; Culture</span><span class="sg-color__value">#6A1B9A</span></div></div>
             <div class="sg-color"><div class="sg-color__swatch" style="background:#1B5E20;"></div><div class="sg-color__body"><span class="sg-color__name">Science</span><span class="sg-color__value">#1B5E20</span></div></div>
-            <div class="sg-color"><div class="sg-color__swatch" style="background:#BF8C00;"></div><div class="sg-color__body"><span class="sg-color__name">History</span><span class="sg-color__value">#BF8C00</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#75540A;"></div><div class="sg-color__body"><span class="sg-color__name">History</span><span class="sg-color__value">#75540A</span></div></div>
             <div class="sg-color"><div class="sg-color__swatch" style="background:#37474F;"></div><div class="sg-color__body"><span class="sg-color__name">Letters</span><span class="sg-color__value">#37474F</span></div></div>
             <div class="sg-color"><div class="sg-color__swatch" style="background:#8B6914;"></div><div class="sg-color__body"><span class="sg-color__name">Reviews</span><span class="sg-color__value">#8B6914</span></div></div>
             <div class="sg-color"><div class="sg-color__swatch" style="background:#1D5C6E;"></div><div class="sg-color__body"><span class="sg-color__name">Thought Experiments</span><span class="sg-color__value">#1D5C6E</span></div></div>
@@ -202,7 +202,8 @@ permalink: /style-guide/
             <div class="sg-color"><div class="sg-color__swatch" style="background:#252525;"></div><div class="sg-color__body"><span class="sg-color__name">Background inset</span><span class="sg-color__value">#252525</span></div></div>
             <div class="sg-color"><div class="sg-color__swatch" style="background:#E8E4DC;"></div><div class="sg-color__body"><span class="sg-color__name">Ink</span><span class="sg-color__value">#E8E4DC</span></div></div>
             <div class="sg-color"><div class="sg-color__swatch" style="background:#A8A49C;"></div><div class="sg-color__body"><span class="sg-color__name">Ink muted</span><span class="sg-color__value">#A8A49C</span></div></div>
-            <div class="sg-color"><div class="sg-color__swatch" style="background:#E05545;"></div><div class="sg-color__body"><span class="sg-color__name">Accent</span><span class="sg-color__value">#E05545</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#9E9A96;"></div><div class="sg-color__body"><span class="sg-color__name">Ink faint</span><span class="sg-color__value">#9E9A96 · 5.5:1 on card bg</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#E05545;"></div><div class="sg-color__body"><span class="sg-color__name">Accent (text)</span><span class="sg-color__value">#E05545 — use as text only; #C0392B for bg+white text</span></div></div>
             <div class="sg-color"><div class="sg-color__swatch" style="background:#6B9EC7;"></div><div class="sg-color__body"><span class="sg-color__name">Link</span><span class="sg-color__value">#6B9EC7</span></div></div>
             <div class="sg-color"><div class="sg-color__swatch" style="background:#B87ACC;"></div><div class="sg-color__body"><span class="sg-color__name">Selection</span><span class="sg-color__value">#B87ACC</span></div></div>
           </div>
@@ -420,7 +421,10 @@ data-tippy-placement="top"</pre>
             </article>
           </div>
           <pre class="sg-code">{% set article = item %}{% set size = "lg" %}{% set showImage = true %}
-{% include "partials/article-card.njk" %}</pre>
+{% set priority = true %}
+{% include "partials/article-card.njk" %}
+{% set priority = false %}</pre>
+          <p style="font-size: var(--text-sm); color: var(--color-ink-muted); margin-top: var(--space-2);"><code>priority = true</code> sets <code>fetchpriority="high"</code> and <code>loading="eager"</code> on the image. Use only for the single above-fold hero card to improve LCP.</p>
         </div>
 
         <div class="sg-subsection">
@@ -707,7 +711,7 @@ data-tippy-placement="top"</pre>
       {# ── Contrast ── #}
       <section class="sg-section" id="contrast">
         <h2>Contrast reference</h2>
-        <p class="lead">All pairings target WCAG AA: <strong>4.5:1 for normal text</strong>, <strong>3:1 for large text and UI</strong>. Ratios shown for light mode; dark mode verified independently.</p>
+        <p class="lead">All pairings target WCAG AA: <strong>4.5:1 for normal text</strong>, <strong>3:1 for large text and UI</strong>. Light mode has two relevant backgrounds — page (#F4F1EB) and card (#E0DBCF). The card bg is the binding constraint and is used below. Dark mode verified independently.</p>
 
         <div class="sg-demo" style="padding: 0;">
           <div class="table-wrap">
@@ -716,17 +720,20 @@ data-tippy-placement="top"</pre>
                 <tr><th>Pairing</th><th>Ratio</th><th>AA normal</th><th>AA large</th><th>AAA</th></tr>
               </thead>
               <tbody>
-                <tr><th scope="row">Ink on Background</th><td>15.6 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
-                <tr><th scope="row">Ink muted on Background</th><td>8.2 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
-                <tr><th scope="row">Ink faint on Background</th><td>4.6 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td>—</td></tr>
-                <tr><th scope="row">Accent on Background</th><td>5.2 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td>—</td></tr>
-                <tr><th scope="row">Link on Background</th><td>6.8 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
-                <tr><th scope="row">White on Accent</th><td>5.4 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td>—</td></tr>
-                <tr><th scope="row">Background on Ink (inverted)</th><td>15.6 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+                <tr><th scope="row">Ink on page bg (#F4F1EB)</th><td>15.6 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+                <tr><th scope="row">Ink muted on page bg</th><td>8.2 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+                <tr><th scope="row">Ink faint on card bg (#E0DBCF)</th><td>5.1 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td>—</td></tr>
+                <tr><th scope="row">Ink faint on page bg</th><td>6.3 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+                <tr><th scope="row">Accent on page bg</th><td>5.2 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td>—</td></tr>
+                <tr><th scope="row">Link on page bg</th><td>6.8 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+                <tr><th scope="row">White on Accent (#C0392B)</th><td>5.4 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td>—</td></tr>
+                <tr><th scope="row">Dark mode: Ink faint on card (#252525)</th><td>5.5 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td>—</td></tr>
+                <tr><th scope="row">Dark mode: Ink muted on page (#141414)</th><td>7.4 : 1</td><td class="pass">Pass</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
               </tbody>
             </table>
           </div>
         </div>
+        <p style="font-size: var(--text-sm); color: var(--color-ink-muted); margin-top: var(--space-4);">Note: dark mode accent (#E05545) is intentionally lighter for readability as text on dark backgrounds. When used as a background with white text (e.g. publication badge), the CSS overrides to #C0392B to maintain 5.4:1.</p>
       </section>
 
       {# ── Naming ── #}
