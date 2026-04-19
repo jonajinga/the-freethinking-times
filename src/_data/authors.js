@@ -1,17 +1,9 @@
-const fs = require('fs');
-const path = require('path');
+const authorsArray = require('./authors.json');
 
+// Convert array to object keyed by slug so templates can use authors[slug]
 module.exports = function () {
-  const dir = path.join(__dirname, 'authorProfiles');
-  const result = {};
-  if (!fs.existsSync(dir)) return result;
-  fs.readdirSync(dir)
-    .filter(f => f.endsWith('.json'))
-    .forEach(file => {
-      const slug = file.replace('.json', '');
-      try {
-        result[slug] = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
-      } catch (e) { /* skip malformed files */ }
-    });
-  return result;
+  return authorsArray.reduce((obj, author) => {
+    obj[author.slug] = author;
+    return obj;
+  }, {});
 };

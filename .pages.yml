@@ -558,12 +558,12 @@ content:
 
   - name: authors
     label: Authors
-    path: src/_data/authorProfiles
-    type: collection
-    filename: "{fields.slug}.json"
+    path: src/_data/authors.json
+    type: file
     format: json
+    list: true
     fields:
-      - { name: slug, type: string, required: true, label: "Slug (e.g. jane-doe — becomes the file name and URL)" }
+      - { name: slug, type: string, required: true, label: "Slug (e.g. jane-doe — used in article front matter and author URL)" }
       - { name: name, type: string, required: true, label: "Display name" }
       - { name: role, type: string, label: "Role (e.g. Founding Editor, Staff Reporter)" }
       - { name: title, type: string, label: "Professional title" }
