@@ -396,7 +396,7 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addCollection(section, (collectionApi) => {
       return collectionApi
         .getFilteredByGlob(`src/content/${section}/*.md`)
-        .filter(item => !item.data.draft && isNotFuture(item))
+        .filter(item => (!item.data.draft || process.env.SHOW_DRAFTS === "1") && isNotFuture(item))
         .sort((a, b) => b.date - a.date);
     });
   });
