@@ -1,24 +1,27 @@
 // Site-wide configuration.
 //
+// Editor-facing settings (title, description, tipping URLs, etc.) live in
+// src/_data/site-settings.json and are managed via Pages CMS.
+//
 // Secrets and environment-specific values (URL, email, API keys) are read
 // from environment variables — see `.env.example` for the full list. Local
 // development loads them from `.env` via dotenv; in CI / Cloudflare Pages
-// set them in the dashboard.
-//
-// Non-secret values (nav, sections, fonts) are inlined below.
+// set them in the dashboard. Env vars always override site-settings.json.
 
 try { require('dotenv').config(); } catch (_) { /* dotenv is optional in prod */ }
 
 const env = process.env;
+const s = require('./site-settings.json');
 
 module.exports = {
-  title: "The Freethinking Times",
-  description: "Independent journalism. Investigative. Philosophical. Adversarial to power.",
+  title: s.title,
+  description: s.description,
   url: env.SITE_URL || "https://thefreethinkingtimes.com",
-  author: "The Freethinking Times",
+  author: s.author,
   email: env.SITE_EMAIL || "hello@thefreethinkingtimes.com",
   language: "en",
-  founded: 2025,
+  founded: s.founded,
+  gtranslate: s.gtranslate,
   storagePrefix: "tft",
   repo: {
     owner: "jonajinga",
@@ -30,7 +33,6 @@ module.exports = {
     provider: "web3forms",
     accessKey: env.WEB3FORMS_ACCESS_KEY || ""
   },
-  gtranslate: true,
   analytics: {
     provider: "umami",
     websiteId: env.UMAMI_WEBSITE_ID || "",
@@ -38,8 +40,8 @@ module.exports = {
     dashboardUrl: env.UMAMI_DASHBOARD_URL || ""
   },
   newsletter: {
-    provider: "buttondown",
-    username: env.BUTTONDOWN_USERNAME || ""
+    provider: s.newsletter.provider,
+    username: env.BUTTONDOWN_USERNAME || s.newsletter.username || ""
   },
   comments: {
     provider: "cusdis",
@@ -47,12 +49,12 @@ module.exports = {
     host: "https://cusdis.com"
   },
   tipping: {
-    // Publication-level tip URLs used by the byline and contributor pages.
-    // First non-empty field wins at render time (Ko-fi > BMAC > Patreon).
-    kofi:    env.KOFI_URL    || "https://ko-fi.com/thefreethinkingtimes",
-    bmac:    env.BMAC_URL    || "",
-    patreon: env.PATREON_URL || ""
+    // Env vars override CMS values so secrets stay out of the repo.
+    kofi:    env.KOFI_URL    || s.tipping.kofi    || "",
+    bmac:    env.BMAC_URL    || s.tipping.bmac    || "",
+    patreon: env.PATREON_URL || s.tipping.patreon || ""
   },
+  social: s.social,
   nav: [
     { label: "News",           url: "/news/",               key: "news",         collection: "news" },
     { label: "Opinion",        url: "/opinion/",            key: "opinion",      collection: "opinion" },
@@ -64,11 +66,6 @@ module.exports = {
     { label: "Reviews",        url: "/reviews/",            key: "reviews",      collection: "reviews" },
     { label: "More",           url: "/more/",               key: "more",         type: "more" }
   ],
-  social: {
-    twitter: "",
-    mastodon: "",
-    rss: "/feed.xml"
-  },
   sections: {
     "news": {
       label: "News",

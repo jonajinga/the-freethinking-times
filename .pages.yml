@@ -746,6 +746,38 @@ content:
           - { name: label, type: string, required: true, label: "Section label (e.g. Added, Fixed, Changed)" }
           - { name: entries, type: string, list: true, label: "Changes" }
 
+  - name: site-settings
+    label: Site Settings
+    path: src/_data/site-settings.json
+    type: file
+    format: json
+    fields:
+      - { name: title, type: string, required: true, label: "Publication name" }
+      - { name: description, type: text, required: true, label: "Site description (shown in SEO and social previews)" }
+      - { name: author, type: string, required: true, label: "Publication byline (used in RSS, JSON-LD, etc.)" }
+      - { name: founded, type: number, label: "Year founded" }
+      - { name: gtranslate, type: boolean, label: "Enable Google Translate widget" }
+      - name: tipping
+        type: object
+        label: "Reader support links (Ko-fi, BMAC, or Patreon — first non-empty wins)"
+        fields:
+          - { name: kofi, type: string, label: "Ko-fi URL" }
+          - { name: bmac, type: string, label: "Buy Me A Coffee URL" }
+          - { name: patreon, type: string, label: "Patreon URL" }
+      - name: newsletter
+        type: object
+        label: "Newsletter (Buttondown)"
+        fields:
+          - { name: provider, type: string, label: "Provider (buttondown)" }
+          - { name: username, type: string, label: "Buttondown username" }
+      - name: social
+        type: object
+        label: "Social media links"
+        fields:
+          - { name: twitter, type: string, label: "Twitter / X URL" }
+          - { name: mastodon, type: string, label: "Mastodon URL" }
+          - { name: rss, type: string, label: "RSS feed path (default: /feed.xml)" }
+
   - name: profiles
     label: Content Profiles
     path: src/_data/profiles.json
@@ -767,4 +799,4 @@ content:
       - { name: title, type: string, required: true }
       - { name: description, type: text }
       - { name: permalink, type: string }
-      - { name: body, type: code }
+      - { name: body, type: text }
