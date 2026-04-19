@@ -3157,6 +3157,12 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   background: #4b5563;
   color: #fff;
 }
+.tip-badge--correction .tip-badge__value { background: #b45309; }
+[data-theme="dark"] .tip-badge--correction .tip-badge__value { background: #d97706; }
+.tip-badge--license .tip-badge__value { background: #166534; }
+[data-theme="dark"] .tip-badge--license .tip-badge__value { background: #16a34a; }
+.tip-badge--updated .tip-badge__value { background: #374151; }
+[data-theme="dark"] .tip-badge--updated .tip-badge__value { background: #6b7280; }
 
 /* ── Print: don't print tip / social UI chrome ────────────── */
 @media print {

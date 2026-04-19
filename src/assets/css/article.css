@@ -296,6 +296,9 @@
   padding-top: var(--space-8);
   border-top: 3px double var(--color-rule-heavy);
 }
+.article-license {
+  margin-bottom: var(--space-6);
+}
 
 .article-footer__tags {
   margin-bottom: var(--space-6);

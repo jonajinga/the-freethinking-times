@@ -30,6 +30,8 @@ module.exports = {
     provider: "web3forms",
     accessKey: env.WEB3FORMS_ACCESS_KEY || ""
   },
+  defaultLicense: "CC BY 4.0",
+  defaultLicenseUrl: "https://creativecommons.org/licenses/by/4.0/",
   gtranslate: true,
   analytics: {
     provider: "umami",
