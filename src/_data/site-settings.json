@@ -1,21 +1,16 @@
 {
   "title": "The Freethinking Times",
-  "description": "Independent journalism. Investigative. Philosophical. Adversarial to power.",
+  "description": "Freethought for the world.",
   "author": "The Freethinking Times",
   "founded": 2025,
   "gtranslate": true,
   "tipping": {
-    "kofi": "https://ko-fi.com/thefreethinkingtimes",
-    "bmac": "",
-    "patreon": ""
+    "kofi": "https://ko-fi.com/thefreethinkingtimes"
   },
   "newsletter": {
-    "provider": "buttondown",
-    "username": ""
+    "provider": "buttondown"
   },
   "social": {
-    "twitter": "",
-    "mastodon": "",
     "rss": "/feed.xml"
   }
 }
