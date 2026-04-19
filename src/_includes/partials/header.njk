@@ -528,17 +528,6 @@
     <li><a class="nav-drawer__link" href="/submit/">Submit</a></li>
   </ul>
 
-  <div class="nav-drawer__divider"></div>
-
-  {# ── About & more ── #}
-  <ul class="nav-drawer__list" role="list">
-    <li><a class="nav-drawer__link nav-drawer__link--small" href="/about/">About</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--small" href="/contact/">Contact</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--small" href="/reader-tools/">Reader Tools</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--small" href="/transparency/">Transparency</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--small" href="/legal/">Legal</a></li>
-  </ul>
-
   {# ── Publication support badge ── #}
   {% if site.tipping %}
   {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
@@ -554,6 +543,17 @@
   </div>
   {% endif %}
   {% endif %}
+
+  <div class="nav-drawer__divider"></div>
+
+  {# ── About & more ── #}
+  <ul class="nav-drawer__list" role="list">
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/about/">About</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/contact/">Contact</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/reader-tools/">Reader Tools</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/transparency/">Transparency</a></li>
+    <li><a class="nav-drawer__link nav-drawer__link--small" href="/legal/">Legal</a></li>
+  </ul>
 
   {# ── Bottom toolbar ── #}
   <div class="nav-drawer__toolbar">
