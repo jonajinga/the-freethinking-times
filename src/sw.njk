@@ -55,6 +55,9 @@ self.addEventListener('fetch', function (e) {
   var req = e.request;
   if (req.method !== 'GET') return;
 
+  // Never intercept CMS admin — let it talk to the network directly
+  if (new URL(req.url).pathname.startsWith('/admin/')) return;
+
   // CSS / JS — network-first so deploys are picked up immediately,
   // falling back to cache when offline. Cache-first served stale JS
   // for too long after deploys.
