@@ -698,6 +698,17 @@ data-tippy-placement="top"</pre>
         </div>
 
         <div class="sg-subsection">
+          <h4>Repeated link text</h4>
+          <p>When multiple links share the same visible text but go to different destinations — e.g. "View All →" buttons in section strips — add <code>aria-label</code> to give each a distinct accessible name:</p>
+          <pre class="sg-code">{# home.njk — section strip loop #}
+&lt;a href="/{{ sectionKey }}/" class="btn"
+   aria-label="View all {{ sectionKey | replace('-', ' ') | title }} articles"&gt;
+  View All →
+&lt;/a&gt;</pre>
+          <p style="font-size: var(--text-sm); color: var(--color-ink-muted); margin-top: var(--space-2);">This satisfies Lighthouse's "Links do not have descriptive text" audit and WCAG 2.4.6. The visible text stays short; the accessible name is descriptive.</p>
+        </div>
+
+        <div class="sg-subsection">
           <h4>Touch targets</h4>
           <p>Every interactive element is a minimum of 44×44 CSS pixels — buttons, nav links, form inputs, theme toggle, hamburger, back-to-top, tip badges.</p>
         </div>
