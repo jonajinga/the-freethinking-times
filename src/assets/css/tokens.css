@@ -108,7 +108,7 @@
   --color-bg-inset:     #252525;
   --color-ink:          #E8E4DC;
   --color-ink-muted:    #A8A49C;
-  --color-ink-faint:    #8A8580;
+  --color-ink-faint:    #9E9A96;   /* raised from #8A8580 — 5.5:1 on card bg (#252525) */
   --color-rule:         #303030;
   --color-rule-heavy:   #484440;
   --color-accent:       #E05545;
@@ -142,7 +142,7 @@
     --color-bg-inset:     #252525;
     --color-ink:          #E8E4DC;
     --color-ink-muted:    #A8A49C;
-    --color-ink-faint:    #8A8580;
+    --color-ink-faint:    #9E9A96;   /* raised from #8A8580 — 5.5:1 on card bg (#252525) */
     --color-rule:         #303030;
     --color-rule-heavy:   #484440;
     --color-accent:       #E05545;

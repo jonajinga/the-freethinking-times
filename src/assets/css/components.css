@@ -2098,6 +2098,7 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   font-size: var(--text-sm);
   border-radius: var(--radius-sm) 0 0 var(--radius-sm);
   min-width: 0;
+  min-height: 44px;
   transition: border-color var(--transition-fast);
 }
 
@@ -2123,6 +2124,7 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   cursor: pointer;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   white-space: nowrap;
+  min-height: 44px;
   transition: all var(--transition-fast);
 }
 

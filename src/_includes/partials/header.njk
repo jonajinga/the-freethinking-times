@@ -208,6 +208,7 @@
               class="site-nav__link"
               href="{{ item.url }}"
               {% if hasDropdown %}id="nav-{{ item.key }}" aria-haspopup="true" aria-expanded="false"{% endif %}
+              {% if item.type == "more" %}aria-label="More sections and features"{% endif %}
               {% if page.url == item.url %}aria-current="page"{% endif %}>
               {{ item.label }}
             </a>
