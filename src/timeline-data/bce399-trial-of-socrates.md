@@ -1,0 +1,6 @@
+---
+year: -399
+title: Trial of Socrates
+description: Socrates condemned to death in Athens for impiety and corrupting the youth. Chose hemlock over exile.
+era: Ancient
+---

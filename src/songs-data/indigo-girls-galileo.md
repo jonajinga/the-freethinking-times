@@ -1,0 +1,12 @@
+---
+title: Galileo
+artist: Indigo Girls
+album: Rites of Passage
+year: 1992
+genre: Folk Rock
+tags:
+  - science
+  - history
+  - questioning
+url: https://www.youtube.com/watch?v=WuSFAlFjFSQ
+---

@@ -607,10 +607,10 @@ content:
 
   - name: timeline
     label: Timeline
-    path: src/_data/timeline.json
-    type: file
-    format: json
-    list: true
+    path: src/timeline-data
+    type: collection
+    filename: "{fields.year}-{fields.title|slugify}.md"
+    format: frontmatter
     fields:
       - { name: title, type: string, required: true }
       - { name: year, type: number, required: true, label: "Year (use negative for BCE, e.g. -399)" }
@@ -619,30 +619,30 @@ content:
 
   - name: events
     label: Events
-    path: src/_data/events.json
-    type: file
-    format: json
-    list: true
+    path: src/events-data
+    type: collection
+    filename: "{fields.date}-{fields.name|slugify}.md"
+    format: frontmatter
     fields:
       - { name: name, type: string, required: true }
       - { name: date, type: date, required: true }
       - { name: endDate, type: date, label: "End date (optional)" }
       - { name: location, type: string }
       - { name: region, type: select, options: [National, Northeast, Southeast, Midwest, Southwest, West, Pacific, International, Online] }
-      - { name: type, type: select, options: [convention, conference, meetup, observance, workshop, lecture] }
+      - { name: type, type: select, options: [convention, conference, meetup, observance, workshop, lecture, online] }
       - { name: url, type: string, label: "Event website URL" }
       - { name: description, type: text }
-      - { name: recurrence, type: select, options: ["", annual], label: "Recurrence" }
+      - { name: recurrence, type: select, options: ["", annual, monthly, weekly], label: "Recurrence" }
       - { name: recurrenceMonth, type: number, label: "Recurrence month (1–12)" }
       - { name: recurrenceWeek, type: number, label: "Recurrence week (1–5, 0 = any)" }
       - { name: recurrenceDay, type: number, label: "Recurrence day (0=Sun … 6=Sat)" }
 
   - name: videos
     label: Videos
-    path: src/_data/videos.json
-    type: file
-    format: json
-    list: true
+    path: src/videos-data
+    type: collection
+    filename: "{fields.speaker|slugify}-{fields.title|slugify}.md"
+    format: frontmatter
     fields:
       - { name: title, type: string, required: true }
       - { name: url, type: string, required: true, label: "YouTube URL" }
@@ -655,10 +655,10 @@ content:
 
   - name: feeds
     label: RSS Feeds
-    path: src/_data/feeds.json
-    type: file
-    format: json
-    list: true
+    path: src/feeds-data
+    type: collection
+    filename: "{fields.name|slugify}.md"
+    format: frontmatter
     fields:
       - { name: name, type: string, required: true }
       - { name: url, type: string, required: true, label: "Feed URL" }
@@ -666,10 +666,10 @@ content:
 
   - name: gallery
     label: Gallery
-    path: src/_data/gallery.json
-    type: file
-    format: json
-    list: true
+    path: src/gallery-data
+    type: collection
+    filename: "{fields.alt|slugify}.md"
+    format: frontmatter
     fields:
       - { name: src, type: string, required: true, label: "Image path (e.g. /assets/img/gallery/photo.jpg)" }
       - { name: alt, type: string, required: true, label: "Alt text (required for accessibility)" }
@@ -679,10 +679,10 @@ content:
 
   - name: playlists
     label: Music Playlists
-    path: src/_data/playlists.json
-    type: file
-    format: json
-    list: true
+    path: src/playlists-data
+    type: collection
+    filename: "{fields.name|slugify}.md"
+    format: frontmatter
     fields:
       - { name: name, type: string, required: true }
       - { name: description, type: text }
@@ -691,10 +691,10 @@ content:
 
   - name: songs
     label: Songs
-    path: src/_data/songs.json
-    type: file
-    format: json
-    list: true
+    path: src/songs-data
+    type: collection
+    filename: "{fields.artist|slugify}-{fields.title|slugify}.md"
+    format: frontmatter
     fields:
       - { name: title, type: string, required: true }
       - { name: artist, type: string, required: true }
@@ -706,10 +706,10 @@ content:
 
   - name: games
     label: Games
-    path: src/_data/games.json
-    type: file
-    format: json
-    list: true
+    path: src/games-data
+    type: collection
+    filename: "{fields.slug}.md"
+    format: frontmatter
     fields:
       - { name: slug, type: string, required: true, label: "URL slug (e.g. fifteen-puzzle)" }
       - { name: title, type: string, required: true }
@@ -719,10 +719,10 @@ content:
 
   - name: changelog
     label: Changelog
-    path: src/_data/changelog.json
-    type: file
-    format: json
-    list: true
+    path: src/changelog-data
+    type: collection
+    filename: "{fields.date}-{fields.title|slugify}.md"
+    format: frontmatter
     fields:
       - { name: title, type: string, required: true }
       - { name: date, type: date, required: true }

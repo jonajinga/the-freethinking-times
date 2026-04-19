@@ -1,0 +1,7 @@
+---
+slug: trivia
+title: Freethinking Trivia
+description: Ten questions spanning philosophy, science, and the history of ideas. Answer carefully.
+icon: 🧠
+url: /games/trivia/
+---

@@ -1,0 +1,7 @@
+---
+slug: word-scramble
+title: Word Scramble
+description: Reconstruct a famous freethinking quote from its scrambled words.
+icon: 📜
+url: /games/word-scramble/
+---

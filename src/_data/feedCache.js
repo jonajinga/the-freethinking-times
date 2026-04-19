@@ -2,7 +2,7 @@
 const EleventyFetch = require("@11ty/eleventy-fetch");
 const Parser = require("rss-parser");
 const parser = new Parser({ timeout: 10000 });
-const feeds = require("./feeds.json");
+const feeds = require("./feeds.js")();
 
 module.exports = async function () {
   const results = {};

@@ -1,0 +1,13 @@
+---
+title: Take Me to Church
+artist: Hozier
+album: Hozier
+year: 2013
+genre: Indie Rock
+tags:
+  - humanism
+  - sexuality
+  - religion
+  - freedom
+url: https://www.youtube.com/watch?v=PVjiKRfKpPI
+---

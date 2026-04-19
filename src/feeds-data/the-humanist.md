@@ -1,0 +1,5 @@
+---
+name: The Humanist
+url: https://thehumanist.com/feed/
+category: Publications
+---

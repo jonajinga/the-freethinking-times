@@ -1,0 +1,8 @@
+---
+year: 1517
+title: Luther's 95 Theses
+description: >-
+  Martin Luther challenges the Catholic Church's authority, inadvertently opening the door to centuries of religious
+  questioning — though Luther himself would have condemned freethought.
+era: Early Modern
+---
