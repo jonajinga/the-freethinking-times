@@ -40,6 +40,7 @@ permalink: /search/
       <button class="sp-filter" data-section="Glossary" type="button">Glossary</button>
       <button class="sp-filter" data-section="Bookshelf" type="button">Bookshelf</button>
       <button class="sp-filter" data-section="Library" type="button">Library</button>
+      <button class="sp-filter" data-section="Authors" type="button">Authors</button>
       <button class="sp-filter" data-section="Thought Experiments" type="button">Thought Experiments</button>
       <button class="sp-filter" data-section="Trials of Thought" type="button">Trials</button>
     </div>
@@ -367,7 +368,7 @@ permalink: /search/
 
     // Section counts (only for unfiltered searches)
     if (q && !activeSection) {
-      var secs = ['News','Opinion','Analysis','Arts & Culture','Science & Technology','History','Letters','Reviews','Quotes','Videos','Timeline','Glossary','Bookshelf','Library','Thought Experiments','Trials of Thought'];
+      var secs = ['News','Opinion','Analysis','Arts & Culture','Science & Technology','History','Letters','Reviews','Quotes','Videos','Timeline','Glossary','Bookshelf','Library','Authors','Thought Experiments','Trials of Thought'];
       var counts = await Promise.all(secs.map(async function (sec) {
         var r = await pagefind.search(q, { filters: { section: sec } });
         return { s: sec, c: r.results.length };
