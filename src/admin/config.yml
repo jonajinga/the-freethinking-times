@@ -213,7 +213,74 @@ collections:
       - name: profiles
         label: Content Profiles
         file: src/_data/profiles.json
-        fields: []
+        fields:
+          - name: standard
+            widget: object
+            label: "Standard Article"
+            fields:
+              - { name: label, widget: string, label: "Label" }
+              - { name: description, widget: text, label: "Description" }
+              - { name: icon, widget: string, label: "Icon" }
+          - name: interview
+            widget: object
+            label: "Interview / Q&A"
+            fields:
+              - { name: label, widget: string, label: "Label" }
+              - { name: description, widget: text, label: "Description" }
+              - { name: icon, widget: string, label: "Icon" }
+              - { name: badge, widget: string, label: "Badge" }
+          - name: longread
+            widget: object
+            label: "Long-form Investigation"
+            fields:
+              - { name: label, widget: string, label: "Label" }
+              - { name: description, widget: text, label: "Description" }
+              - { name: icon, widget: string, label: "Icon" }
+              - { name: badge, widget: string, label: "Badge" }
+              - { name: minReadingMinutes, widget: number, label: "Minimum Reading Minutes" }
+          - name: photoessay
+            widget: object
+            label: "Photo Essay"
+            fields:
+              - { name: label, widget: string, label: "Label" }
+              - { name: description, widget: text, label: "Description" }
+              - { name: icon, widget: string, label: "Icon" }
+              - { name: badge, widget: string, label: "Badge" }
+              - { name: fullBleed, widget: boolean, label: "Full Bleed" }
+          - name: podcast
+            widget: object
+            label: "Podcast Episode"
+            fields:
+              - { name: label, widget: string, label: "Label" }
+              - { name: description, widget: text, label: "Description" }
+              - { name: icon, widget: string, label: "Icon" }
+              - { name: badge, widget: string, label: "Badge" }
+              - { name: requiresAudio, widget: boolean, label: "Requires Audio" }
+          - name: datavisualization
+            widget: object
+            label: "Data Visualization"
+            fields:
+              - { name: label, widget: string, label: "Label" }
+              - { name: description, widget: text, label: "Description" }
+              - { name: icon, widget: string, label: "Icon" }
+              - { name: badge, widget: string, label: "Badge" }
+          - name: brief
+            widget: object
+            label: "Brief"
+            fields:
+              - { name: label, widget: string, label: "Label" }
+              - { name: description, widget: text, label: "Description" }
+              - { name: icon, widget: string, label: "Icon" }
+              - { name: badge, widget: string, label: "Badge" }
+              - { name: maxReadingMinutes, widget: number, label: "Maximum Reading Minutes" }
+          - name: explainer
+            widget: object
+            label: "Explainer"
+            fields:
+              - { name: label, widget: string, label: "Label" }
+              - { name: description, widget: text, label: "Description" }
+              - { name: icon, widget: string, label: "Icon" }
+              - { name: badge, widget: string, label: "Badge" }
 
   # ── Group 2: Authors ─────────────────────────────────────────────────────────
 
