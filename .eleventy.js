@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
 const CleanCSS = require("clean-css");
+const { PurgeCSS } = require("purgecss");
 
 module.exports = function (eleventyConfig) {
 
@@ -61,23 +62,112 @@ module.exports = function (eleventyConfig) {
     compile: function (inputContent, inputPath) {
       // Only process the entry point; skip partials
       if (!inputPath.endsWith("main.css")) return;
-      return function () {
-        const cssDir = require("path").dirname(inputPath);
+      return async function () {
+        const cssDir = path.dirname(inputPath);
         const order = [
           "tokens.css", "base.css", "layout.css", "components.css",
           "article.css", "projects.css", "library.css", "calendar.css"
         ];
-        let output = "";
+        let combined = "";
         for (const file of order) {
           try {
-            output += fs.readFileSync(require("path").join(cssDir, file), "utf8") + "\n";
+            combined += fs.readFileSync(path.join(cssDir, file), "utf8") + "\n";
           } catch (e) {
             console.warn("CSS file not found:", file);
           }
         }
         // Append main.css content (print styles etc.) minus the @import lines
-        output += inputContent.replace(/@import\s+['"][^'"]+['"];?\s*/g, "");
-        return new CleanCSS({ level: 2 }).minify(output).styles;
+        combined += inputContent.replace(/@import\s+['"][^'"]+['"];?\s*/g, "");
+
+        // ── PurgeCSS: strip rules unused across all templates + content ──────
+        const [purged] = await new PurgeCSS().purge({
+          content: [
+            "src/**/*.njk",
+            "src/**/*.md",
+            "src/**/*.html",
+            "src/assets/js/**/*.js",
+          ],
+          css: [{ raw: combined }],
+          safelist: {
+            // ── Explicitly named classes toggled by JS at runtime ────────────
+            standard: [
+              // Theme init
+              "js-enabled",
+              // State flags
+              "is-open", "is-active", "is-visible", "is-copied", "is-saved",
+              "is-saved-flash", "is-listening", "is-replaced", "is-speaking",
+              "is-disabled", "is-in-panel", "is-pending", "is-success", "is-error",
+              // Header/nav
+              "site-header--pinned", "site-header--hidden", "site-header--scrolled",
+              // Overlay / drawer
+              "overlay--visible", "no-transition",
+              // Calendar
+              "cal-detail--open", "cal-detail-backdrop--open",
+              // Article features
+              "footnote-flash", "tts-word-active", "sidenote--highlight",
+              "print-include-notes", "print-notes-only", "rs-para-numbers",
+              "article-card--read", "article-card--in-progress",
+              // Subscribe form states
+              "subscribe-status",
+              // Style guide TOC active link
+              "sg-active",
+              // Dynamically created DOM nodes (JS innerHTML / createElement)
+              "ann-note-overlay", "ann-note-modal",
+              "hl-color-picker", "hl-color-btn", "bookmark-indicator",
+              "glossary-tip", "w3f__dictate",
+              "cite-inline__entry", "cite-inline__label",
+              "cite-inline__text", "cite-inline__copy",
+              "music-bar", "article-action-btn", "search-filter-btn",
+              "rs-ruler-line", "heading-anchor",
+              "toc-list", "toc-list__link",
+              "fn-tooltip", "fn-tooltip__close", "fn-tooltip__body",
+              "sidenote", "pullquote-share",
+              "article-card__read-pill", "article-card__progress",
+              "article-card__progress-fill",
+              "reading-list", "reading-list__item",
+            ],
+            // ── Keep any rule whose selector contains these patterns ─────────
+            deep: [
+              /\[data-theme/,        // dark mode token overrides
+              /\[data-gs-/,          // global settings (font, bg, spacing…)
+              /\[data-focus-mode/,   // reader focus mode
+              /\[data-rs-/,          // reading settings
+              /\[data-has-sidenote/, // sidenote presence
+              /\[data-page-/,        // page-level metadata attributes
+              /\[aria-/,             // aria state selectors (aria-expanded, aria-current…)
+              /\[hidden\]/,
+              /\[disabled\]/,
+              /:root/,               // CSS custom property declarations
+            ],
+            // ── Keep any rule where the selector string contains these ───────
+            greedy: [
+              // Third-party injected classes
+              /tippy/,      // Tippy.js tooltip UI
+              /pagefind/,   // Pagefind search UI
+              /hljs/,       // highlight.js code blocks
+              /language-/,  // PrismJS / highlight.js language classes
+              /token/,      // syntax highlight tokens
+              // Dynamic Nunjucks modifier classes (template variable expands at runtime)
+              /section-badge--/,          // --news, --opinion, --history…
+              /article-card__headline--/, // --lg, --md, --sm, --xs
+              /toc-list__item--/,         // --h1 through --h6
+              /tip-badge--/,              // --pub, --info
+              // JS-built DOM node class patterns
+              /print-citations/,
+              /print-footnotes/,
+              /print-inline-note/,
+              /annotation-toolbar/,
+              /library-annotation/,
+              /library-bookmark/,
+              /library-highlight/,
+            ],
+          },
+          variables: false,  // never strip CSS custom property declarations
+          keyframes: true,   // keep all @keyframes
+          fontFace: false,   // keep @font-face rules
+        });
+
+        return new CleanCSS({ level: 2 }).minify(purged.css).styles;
       };
     },
   });
