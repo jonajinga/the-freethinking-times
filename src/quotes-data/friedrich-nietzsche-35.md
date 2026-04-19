@@ -1,0 +1,10 @@
+---
+quote: "Faith means not wanting to know what is true."
+author: "Friedrich Nietzsche"
+source: "The Antichrist (1888)"
+tags:
+  - faith
+  - religion
+  - philosophy
+era: "19th Century"
+---

@@ -1,0 +1,10 @@
+---
+quote: "Extraordinary claims require extraordinary evidence."
+author: "Carl Sagan"
+source: "Cosmos (1980)"
+tags:
+  - skepticism
+  - science
+  - reason
+era: "20th Century"
+---

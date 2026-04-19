@@ -1,0 +1,9 @@
+---
+quote: "Those who can make you believe absurdities can make you commit atrocities."
+author: "Voltaire"
+source: "Questions sur les miracles (1765)"
+tags:
+  - liberty
+  - religion
+era: "18th Century"
+---

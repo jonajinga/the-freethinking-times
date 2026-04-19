@@ -558,10 +558,10 @@ content:
 
   - name: authors
     label: Authors
-    path: src/_data/authors.json
-    type: file
-    format: json
-    list: true
+    path: src/authors-data
+    type: collection
+    filename: "{fields.slug}.md"
+    format: frontmatter
     fields:
       - { name: slug, type: string, required: true, label: "Slug (e.g. jane-doe — used in article front matter and author URL)" }
       - { name: name, type: string, required: true, label: "Display name" }
@@ -594,10 +594,10 @@ content:
 
   - name: quotes
     label: Quotes
-    path: src/_data/quotes.json
-    type: file
-    format: json
-    list: true
+    path: src/quotes-data
+    type: collection
+    filename: "{fields.author|slugify}-{fields.quote|truncate(20)|slugify}.md"
+    format: frontmatter
     fields:
       - { name: author, type: string, required: true }
       - { name: quote, type: text, required: true }

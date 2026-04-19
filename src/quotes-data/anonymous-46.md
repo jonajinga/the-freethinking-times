@@ -1,0 +1,10 @@
+---
+quote: "Philosophy is questions that may never be answered. Religion is answers that may never be questioned."
+author: "Anonymous"
+source: "attributed"
+tags:
+  - philosophy
+  - religion
+  - freethought
+era: "20th Century"
+---

@@ -1,0 +1,9 @@
+---
+quote: "These are the times that try men's souls."
+author: "Thomas Paine"
+source: "The American Crisis (1776)"
+tags:
+  - liberty
+  - religion
+era: "18th Century"
+---

@@ -1,0 +1,9 @@
+---
+quote: "An honest God is the noblest work of man."
+author: "Robert G. Ingersoll"
+source: "The Gods (1872)"
+tags:
+  - freethought
+  - religion
+era: "19th Century"
+---
