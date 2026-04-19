@@ -1,0 +1,52 @@
+[
+  {
+    "heading": "Explore",
+    "links": [
+      { "title": "Public Domain Library", "url": "/library/",  "desc": "Full texts from the freethought tradition" },
+      { "title": "Quotes",                "url": "/quotes/",   "desc": "Curated freethought quotes" },
+      { "title": "Videos",                "url": "/videos/",   "desc": "Lectures, debates, and documentaries" },
+      { "title": "Timeline",              "url": "/timeline/", "desc": "2,400 years of freethought history" }
+    ]
+  },
+  {
+    "heading": "Projects",
+    "links": [
+      { "title": "Glossary",            "url": "/glossary/",            "desc": "Philosophical terms and definitions" },
+      { "title": "Bookshelf",           "url": "/bookshelf/",           "desc": "Reading recommendations" },
+      { "title": "Thought Experiments", "url": "/thought-experiments/", "desc": "Classic experiments examined" },
+      { "title": "Trials of Thought",   "url": "/trials/",              "desc": "Landmark trials of ideas" },
+      { "title": "Games",               "url": "/games/",               "desc": "Trivia, puzzles, and word games" }
+    ]
+  },
+  {
+    "heading": "Community",
+    "links": [
+      { "title": "Community Hub", "url": "/community/",  "desc": "Organizations worldwide" },
+      { "title": "Events",        "url": "/events/",     "desc": "Conferences and meetups" },
+      { "title": "Resources",     "url": "/resources/",  "desc": "Education, legal, and support" },
+      { "title": "Contribute",    "url": "/contribute/", "desc": "Support and participate" },
+      { "title": "Newsletter",    "url": "/newsletter/", "desc": "Free, no tracking" }
+    ]
+  },
+  {
+    "heading": "About",
+    "links": [
+      { "title": "About Us",    "url": "/about/",       "desc": "What we are and why" },
+      { "title": "Contact",     "url": "/contact/",     "desc": "Get in touch" },
+      { "title": "Support",     "url": "/support/",     "desc": "Keep us independent" },
+      { "title": "Features",    "url": "/features/",    "desc": "What this site can do" },
+      { "title": "Open Source", "url": "/open-source/", "desc": "Fork our codebase" }
+    ]
+  },
+  {
+    "heading": "Reader Tools",
+    "links": [
+      { "title": "Search",            "url": "/search/",       "desc": "Full search page" },
+      { "title": "Start Here",        "url": "/start-here/",   "desc": "New to the site?" },
+      { "title": "Notes & Highlights","url": "/notes/",        "desc": "Your saved annotations" },
+      { "title": "Reading List",      "url": "/reading-list/", "desc": "Saved articles" },
+      { "title": "RSS Reader",        "url": "/reader/",       "desc": "Freethought feeds" },
+      { "title": "Archives",          "url": "/archives/",     "desc": "All articles by date" }
+    ]
+  }
+]

@@ -11,7 +11,7 @@
             <img src="/assets/favicon.svg" alt="" aria-hidden="true" width="24" height="24">{{ site.title }}
           </p>
           <p style="font-size: var(--text-sm); color: var(--color-ink-muted); max-width: 42ch; line-height: var(--leading-normal);">
-            Founded {{ site.founded }}. Investigative. Philosophical. Adversarial to power.
+            Founded {{ site.founded }}. {{ site.tagline }}
           </p>
           {% if site.tipping %}
           {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
@@ -38,7 +38,7 @@
       <div>
         <p class="site-footer__heading">Sections</p>
         <ul class="site-footer__nav">
-          {% for item in site.nav %}
+          {% for item in nav %}
           {% if item.collection %}
           <li><a href="{{ item.url }}">{{ item.label }}</a></li>
           {% endif %}
@@ -46,133 +46,22 @@
         </ul>
       </div>
 
-      {# Column 2: Contribute #}
+      {# Columns 2–10: from footerLinks.json (editable via Pages CMS) #}
+      {% for col in footerLinks %}
       <div>
-        <p class="site-footer__heading"><a href="/contribute/" style="color:inherit;text-decoration:none;">Contribute</a></p>
+        <p class="site-footer__heading">
+          {% if col.headingUrl %}<a href="{{ col.headingUrl }}" style="color:inherit;text-decoration:none;">{{ col.heading }}</a>{% else %}{{ col.heading }}{% endif %}
+        </p>
         <ul class="site-footer__nav">
-          <li><a href="/contribute/" title="Guidelines for writing for us">Write for Us</a></li>
-          <li><a href="/submit/" title="Pitch an article for publication">Submit an Article</a></li>
-          <li><a href="/letters/submit/" title="Respond to something we published">Write a Letter</a></li>
-          <li><a href="/support/" title="Help keep us independent">Support Us</a></li>
+          {% for link in col.links %}
+          <li><a href="{{ link.url }}"{% if link.title %} title="{{ link.title }}"{% endif %}>{{ link.label }}</a></li>
+          {% endfor %}
+          {% if col.heading == "Transparency" and site.analytics and site.analytics.dashboardUrl %}
+          <li><a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer" title="See the same data we see">Public Analytics</a></li>
+          {% endif %}
         </ul>
       </div>
-
-      {# Column 3: Freethought Community #}
-      <div>
-        <p class="site-footer__heading">Freethought Community</p>
-        <ul class="site-footer__nav">
-          <li><a href="/community/" title="Freethought groups worldwide">Community Directory</a></li>
-          <li><a href="/events/" title="Conferences, meetups, and observances">Events Calendar</a></li>
-          <li><a href="/community-guidelines/" title="Standards for respectful conversation">Community Guidelines</a></li>
-          <li><a href="/newsletter/" title="New articles delivered by email">Newsletter</a></li>
-          <li><a href="/reader/" title="Follow freethought publications">RSS Reader</a></li>
-          <li><a href="/community/submit/" title="Suggest a group for the directory">Suggest a Group</a></li>
-        </ul>
-      </div>
-
-      {# Column 4: Freethought Projects #}
-      <div>
-        <p class="site-footer__heading"><a href="/projects/" style="color:inherit;text-decoration:none;">Freethought Projects</a></p>
-        <ul class="site-footer__nav">
-          <li><a href="/music/" title="Curated playlists for reading and thinking">Freethought Music</a></li>
-          <li><a href="/glossary/" title="86 terms defined clearly">Glossary of Terms</a></li>
-          <li><a href="/timeline/" title="2,500 years of freethought history">Historical Timeline</a></li>
-          <li><a href="/gallery/" title="Natural world photography">Photo Gallery</a></li>
-          <li><a href="/library/" title="Read classic freethought texts online">Public Domain Library</a></li>
-          <li><a href="/quotes/" title="Curated quotes from the freethought tradition">Quotes Collection</a></li>
-          <li><a href="/bookshelf/" title="Annotated reading recommendations">Recommended Reading</a></li>
-          <li><a href="/resources/" title="Education, legal, support, and tools">Resources</a></li>
-          <li><a href="/thought-experiments/" title="Classic thought experiments examined">Thought Experiments</a></li>
-          <li><a href="/trials/" title="Landmark trials where ideas were the defendant">Trials of Thought</a></li>
-          <li><a href="/videos/" title="Lectures, debates, and documentaries">Video Library</a></li>
-        </ul>
-      </div>
-
-      {# Column 5: Contribute to Our Projects #}
-      <div>
-        <p class="site-footer__heading">Contribute to Our Projects</p>
-        <ul class="site-footer__nav">
-          <li><a href="/bookshelf/submit/" title="Recommend a book for the reading list">Recommend a Book</a></li>
-          <li><a href="/music/submit/" title="Recommend a song for our playlists">Recommend a Song</a></li>
-          <li><a href="/glossary/submit/" title="Suggest a term worth defining">Suggest a Glossary Term</a></li>
-          <li><a href="/library/submit/" title="Suggest a public domain text for the library">Suggest a Library Text</a></li>
-          <li><a href="/thought-experiments/submit/" title="Suggest a thought experiment to cover">Suggest a Thought Experiment</a></li>
-          <li><a href="/trials/submit/" title="Suggest a trial where ideas were the defendant">Suggest a Trial</a></li>
-          <li><a href="/events/submit/" title="Add an event to the calendar">Submit an Event</a></li>
-          <li><a href="/gallery/submit/" title="Contribute a photo to the gallery">Submit a Photo</a></li>
-          <li><a href="/quotes/submit/" title="Suggest a quote for the collection">Submit a Quote</a></li>
-          <li><a href="/timeline/submit/" title="Suggest a pivotal moment in freethought history">Submit a Timeline Entry</a></li>
-        </ul>
-      </div>
-
-      {# Column 6: Contact #}
-      <div>
-        <p class="site-footer__heading">Contact</p>
-        <ul class="site-footer__nav">
-          <li><a href="/contact/" title="General enquiries">Contact Us</a></li>
-          <li><a href="/feedback/" title="Report bugs, suggest features">Send Feedback</a></li>
-          <li><a href="/tips/" title="Anonymous tip submissions">Tip Line</a></li>
-          <li><a href="/corrections/report/" title="Report a factual error">Report a Correction</a></li>
-        </ul>
-      </div>
-
-      {# Column 7: Reader Tools #}
-      <div>
-        <p class="site-footer__heading"><a href="/reader-tools/" style="color:inherit;text-decoration:none;">Reader Tools</a></p>
-        <ul class="site-footer__nav">
-          <li><a href="/archives/" title="Every article indexed by date">Archives</a></li>
-          <li><a href="/editions/" title="Articles grouped into numbered editions">Editions</a></li>
-          <li><a href="/notes/" title="Your highlights, notes, and bookmarks">Notes & Highlights</a></li>
-          <li><a href="/reading-list/" title="Articles you've saved to read later">Reading List</a></li>
-          <li><a href="/feed.xml" title="Subscribe in any RSS reader">RSS Feed</a></li>
-          <li><a href="/api/" title="Public JSON API for developers">API</a></li>
-          <li><a href="/search/" title="Full-text search across the site">Search</a></li>
-          <li><a href="/start-here/" title="A curated introduction for new readers">Start Here</a></li>
-          <li><a href="/your-data/" title="Export, import, or clear your data">Your Data</a></li>
-        </ul>
-      </div>
-
-      {# Column 8: About The Freethinking Times #}
-      <div>
-        <p class="site-footer__heading">About</p>
-        <ul class="site-footer__nav">
-          <li><a href="/about/" title="What we are and why we exist">About Us</a></li>
-          <li><a href="/masthead/" title="Who runs this publication">Masthead</a></li>
-          <li><a href="/contributors/" title="Writers and contributors">Contributors</a></li>
-          <li><a href="/ethics/" title="Our editorial standards">Editorial Ethics</a></li>
-          <li><a href="/editorial/" title="Public editorial handbook">Editorial Handbook</a></li>
-          <li><a href="/dashboard/" title="Content counts and recent articles">Editorial Dashboard</a></li>
-          <li><a href="/editorial/board/" title="Kanban view of articles by status">Editorial Board</a></li>
-          <li><a href="/templates/" title="Pre-filled markdown templates for common article types">Content Templates</a></li>
-          <li><a href="/abbreviations/" title="Personal abbreviation dictionary">Abbreviations</a></li>
-        </ul>
-      </div>
-
-      {# Column 9: Transparency #}
-      <div>
-        <p class="site-footer__heading"><a href="/transparency/" style="color:inherit;text-decoration:none;">Transparency</a></p>
-        <ul class="site-footer__nav">
-          <li><a href="/features/" title="Complete inventory of site features">Features</a></li>
-          <li><a href="/stack/" title="The technology behind every page">How It's Built</a></li>
-          <li><a href="/changelog/" title="Public record of every site change">Changelog</a></li>
-          <li><a href="/costs/" title="What it costs to run this site">Costs</a></li>
-          <li><a href="/open-source/" title="Fork this site on GitHub">Open Source</a></li>
-          <li><a href="/style-guide/" title="Brand identity, typography, colours">Style Guide</a></li>
-          {% if site.analytics and site.analytics.dashboardUrl %}<li><a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer" title="See the same data we see">Public Analytics</a></li>{% endif %}
-        </ul>
-      </div>
-
-      {# Column 10: Legal #}
-      <div>
-        <p class="site-footer__heading"><a href="/legal/" style="color:inherit;text-decoration:none;">Legal</a></p>
-        <ul class="site-footer__nav">
-          <li><a href="/privacy/" title="What data we collect and don't collect">Privacy Policy</a></li>
-          <li><a href="/terms/" title="Terms for using this site">Terms of Use</a></li>
-          <li><a href="/cookies/" title="How we use cookies and browser storage">Cookies Policy</a></li>
-          <li><a href="/accessibility/" title="Our WCAG 2.2 AA commitment">Accessibility</a></li>
-          <li><a href="/site-map/" title="Directory of every page">Site Map</a></li>
-        </ul>
-      </div>
+      {% endfor %}
 
     </div>
 

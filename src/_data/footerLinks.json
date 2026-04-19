@@ -1,0 +1,116 @@
+[
+  {
+    "heading": "Contribute",
+    "headingUrl": "/contribute/",
+    "links": [
+      { "label": "Write for Us",      "url": "/contribute/",         "title": "Guidelines for writing for us" },
+      { "label": "Submit an Article", "url": "/submit/",             "title": "Pitch an article for publication" },
+      { "label": "Write a Letter",    "url": "/letters/submit/",     "title": "Respond to something we published" },
+      { "label": "Support Us",        "url": "/support/",            "title": "Help keep us independent" }
+    ]
+  },
+  {
+    "heading": "Freethought Community",
+    "links": [
+      { "label": "Community Directory", "url": "/community/",            "title": "Freethought groups worldwide" },
+      { "label": "Events Calendar",     "url": "/events/",               "title": "Conferences, meetups, and observances" },
+      { "label": "Community Guidelines","url": "/community-guidelines/", "title": "Standards for respectful conversation" },
+      { "label": "Newsletter",          "url": "/newsletter/",           "title": "New articles delivered by email" },
+      { "label": "RSS Reader",          "url": "/reader/",               "title": "Follow freethought publications" },
+      { "label": "Suggest a Group",     "url": "/community/submit/",     "title": "Suggest a group for the directory" }
+    ]
+  },
+  {
+    "heading": "Freethought Projects",
+    "headingUrl": "/projects/",
+    "links": [
+      { "label": "Freethought Music",   "url": "/music/",               "title": "Curated playlists for reading and thinking" },
+      { "label": "Glossary of Terms",   "url": "/glossary/",            "title": "86 terms defined clearly" },
+      { "label": "Historical Timeline", "url": "/timeline/",            "title": "2,500 years of freethought history" },
+      { "label": "Photo Gallery",       "url": "/gallery/",             "title": "Natural world photography" },
+      { "label": "Public Domain Library","url": "/library/",            "title": "Read classic freethought texts online" },
+      { "label": "Quotes Collection",   "url": "/quotes/",              "title": "Curated quotes from the freethought tradition" },
+      { "label": "Recommended Reading", "url": "/bookshelf/",           "title": "Annotated reading recommendations" },
+      { "label": "Resources",           "url": "/resources/",           "title": "Education, legal, support, and tools" },
+      { "label": "Thought Experiments", "url": "/thought-experiments/", "title": "Classic thought experiments examined" },
+      { "label": "Trials of Thought",   "url": "/trials/",              "title": "Landmark trials where ideas were the defendant" },
+      { "label": "Video Library",       "url": "/videos/",              "title": "Lectures, debates, and documentaries" }
+    ]
+  },
+  {
+    "heading": "Contribute to Our Projects",
+    "links": [
+      { "label": "Recommend a Book",          "url": "/bookshelf/submit/",          "title": "Recommend a book for the reading list" },
+      { "label": "Recommend a Song",          "url": "/music/submit/",              "title": "Recommend a song for our playlists" },
+      { "label": "Suggest a Glossary Term",   "url": "/glossary/submit/",           "title": "Suggest a term worth defining" },
+      { "label": "Suggest a Library Text",    "url": "/library/submit/",            "title": "Suggest a public domain text for the library" },
+      { "label": "Suggest a Thought Experiment","url": "/thought-experiments/submit/","title": "Suggest a thought experiment to cover" },
+      { "label": "Suggest a Trial",           "url": "/trials/submit/",             "title": "Suggest a trial where ideas were the defendant" },
+      { "label": "Submit an Event",           "url": "/events/submit/",             "title": "Add an event to the calendar" },
+      { "label": "Submit a Photo",            "url": "/gallery/submit/",            "title": "Contribute a photo to the gallery" },
+      { "label": "Submit a Quote",            "url": "/quotes/submit/",             "title": "Suggest a quote for the collection" },
+      { "label": "Submit a Timeline Entry",   "url": "/timeline/submit/",           "title": "Suggest a pivotal moment in freethought history" }
+    ]
+  },
+  {
+    "heading": "Contact",
+    "links": [
+      { "label": "Contact Us",         "url": "/contact/",           "title": "General enquiries" },
+      { "label": "Send Feedback",       "url": "/feedback/",          "title": "Report bugs, suggest features" },
+      { "label": "Tip Line",            "url": "/tips/",              "title": "Anonymous tip submissions" },
+      { "label": "Report a Correction","url": "/corrections/report/","title": "Report a factual error" }
+    ]
+  },
+  {
+    "heading": "Reader Tools",
+    "headingUrl": "/reader-tools/",
+    "links": [
+      { "label": "Archives",      "url": "/archives/",      "title": "Every article indexed by date" },
+      { "label": "Editions",      "url": "/editions/",      "title": "Articles grouped into numbered editions" },
+      { "label": "Notes & Highlights","url": "/notes/",     "title": "Your highlights, notes, and bookmarks" },
+      { "label": "Reading List",  "url": "/reading-list/",  "title": "Articles you've saved to read later" },
+      { "label": "RSS Feed",      "url": "/feed.xml",       "title": "Subscribe in any RSS reader" },
+      { "label": "API",           "url": "/api/",           "title": "Public JSON API for developers" },
+      { "label": "Search",        "url": "/search/",        "title": "Full-text search across the site" },
+      { "label": "Start Here",    "url": "/start-here/",    "title": "A curated introduction for new readers" },
+      { "label": "Your Data",     "url": "/your-data/",     "title": "Export, import, or clear your data" }
+    ]
+  },
+  {
+    "heading": "About",
+    "links": [
+      { "label": "About Us",            "url": "/about/",        "title": "What we are and why we exist" },
+      { "label": "Masthead",            "url": "/masthead/",     "title": "Who runs this publication" },
+      { "label": "Contributors",        "url": "/contributors/", "title": "Writers and contributors" },
+      { "label": "Editorial Ethics",    "url": "/ethics/",       "title": "Our editorial standards" },
+      { "label": "Editorial Handbook",  "url": "/editorial/",    "title": "Public editorial handbook" },
+      { "label": "Editorial Dashboard", "url": "/dashboard/",    "title": "Content counts and recent articles" },
+      { "label": "Editorial Board",     "url": "/editorial/board/","title": "Kanban view of articles by status" },
+      { "label": "Content Templates",   "url": "/templates/",    "title": "Pre-filled markdown templates for common article types" },
+      { "label": "Abbreviations",       "url": "/abbreviations/","title": "Personal abbreviation dictionary" }
+    ]
+  },
+  {
+    "heading": "Transparency",
+    "headingUrl": "/transparency/",
+    "links": [
+      { "label": "Features",          "url": "/features/",    "title": "Complete inventory of site features" },
+      { "label": "How It's Built",    "url": "/stack/",       "title": "The technology behind every page" },
+      { "label": "Changelog",         "url": "/changelog/",   "title": "Public record of every site change" },
+      { "label": "Costs",             "url": "/costs/",       "title": "What it costs to run this site" },
+      { "label": "Open Source",       "url": "/open-source/", "title": "Fork this site on GitHub" },
+      { "label": "Style Guide",       "url": "/style-guide/", "title": "Brand identity, typography, colours" }
+    ]
+  },
+  {
+    "heading": "Legal",
+    "headingUrl": "/legal/",
+    "links": [
+      { "label": "Privacy Policy",  "url": "/privacy/",       "title": "What data we collect and don't collect" },
+      { "label": "Terms of Use",    "url": "/terms/",         "title": "Terms for using this site" },
+      { "label": "Cookies Policy",  "url": "/cookies/",       "title": "How we use cookies and browser storage" },
+      { "label": "Accessibility",   "url": "/accessibility/", "title": "Our WCAG 2.2 AA commitment" },
+      { "label": "Site Map",        "url": "/site-map/",      "title": "Directory of every page" }
+    ]
+  }
+]

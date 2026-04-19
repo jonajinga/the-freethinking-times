@@ -39,11 +39,9 @@ permalink: /contact/
         <div class="w3f__group">
           <label class="w3f__label" for="contact-subject">Subject</label>
           <select class="w3f__select" name="subject_line" id="contact-subject">
-            <option value="General inquiry">General inquiry</option>
-            <option value="Question about the site">Question about the site</option>
-            <option value="Partnership or collaboration">Partnership or collaboration</option>
-            <option value="Press inquiry">Press inquiry</option>
-            <option value="Other">Other</option>
+            {% for subject in site.contactSubjects %}
+            <option value="{{ subject }}">{{ subject }}</option>
+            {% endfor %}
           </select>
         </div>
 

@@ -16,6 +16,7 @@ const s = require('./site-settings.json');
 module.exports = {
   title: s.title,
   description: s.description,
+  tagline: s.tagline,
   url: env.SITE_URL || "https://thefreethinkingtimes.com",
   author: s.author,
   email: env.SITE_EMAIL || s.email,
@@ -55,17 +56,9 @@ module.exports = {
     patreon: env.PATREON_URL || s.tipping.patreon || ""
   },
   social: s.social,
-  nav: [
-    { label: "News",           url: "/news/",               key: "news",         collection: "news" },
-    { label: "Opinion",        url: "/opinion/",            key: "opinion",      collection: "opinion" },
-    { label: "Analysis",       url: "/analysis/",           key: "analysis",     collection: "analysis" },
-    { label: "Arts & Culture", url: "/arts-culture/",       key: "arts-culture", collection: "arts-culture" },
-    { label: "Science & Tech", url: "/science-technology/", key: "science-tech", collection: "science-technology" },
-    { label: "History",        url: "/history/",            key: "history",      collection: "history" },
-    { label: "Letters",        url: "/letters/",            key: "letters",      collection: "letters" },
-    { label: "Reviews",        url: "/reviews/",            key: "reviews",      collection: "reviews" },
-    { label: "More",           url: "/more/",               key: "more",         type: "more" }
-  ],
+  subscribe: s.subscribe,
+  contactSubjects: s.contactSubjects,
+  // nav items live in src/_data/nav.json — accessible as `nav` in templates
   sections: {
     "news": {
       label: "News",

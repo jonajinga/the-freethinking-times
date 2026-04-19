@@ -18,28 +18,20 @@ permalink: /support/
 
     <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
       <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">
-        Reader-Funded. Always.
+        {{ supportContent.headerHeading }}
       </h1>
       <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic; max-width: 55ch; line-height: var(--leading-normal);">
-        The Freethinking Times has no parent company, no institutional backer,
-        and no advertising — not now, not ever. Every article you read here
-        exists because readers chose to support it.
+        {{ supportContent.headerSubtitle }}
       </p>
     </header>
 
     <div class="article-body">
 
       <h2>How We're Funded</h2>
-
-      <p>We accept no advertising, no sponsored content, no brand partnerships, and no funding from organizations with interests in our coverage areas. The Freethinking Times is supported entirely by readers — people who read what we publish and decide it's worth keeping alive.</p>
-
-      <p>That's the whole model. No tiers, no paywalls, no members-only content. Everything published here is free to read. Reader support is not a transaction — it's a decision that independent, adversarial, intellectually serious journalism is worth existing in the world.</p>
+      {% for p in supportContent.howFunded %}<p>{{ p }}</p>{% endfor %}
 
       <h2>Where Your Support Goes</h2>
-
-      <p>Support given to the publication goes directly toward the publication's future: the time required for investigative work, access to documents and databases, and the ability to pursue stories without worrying about whether they're commercially convenient. A small, consistent readership willing to contribute is what makes it possible to turn down anything that would compromise editorial independence.</p>
-
-      <p>Support given directly to individual authors goes entirely to those authors. Authors manage their own reader support through their own accounts — the publication does not take a cut. If a piece of writing mattered to you and you want the person who wrote it to be able to write more, supporting them directly is the most efficient way to do that.</p>
+      {% for p in supportContent.whereSupportGoes %}<p>{{ p }}</p>{% endfor %}
 
       <h2>Two Ways to Support</h2>
 
@@ -55,12 +47,7 @@ permalink: /support/
         <div class="support-block">
           <div class="support-block__eyebrow">The Publication</div>
           <h3 class="support-block__heading">Support {{ site.title }}</h3>
-          <p class="support-block__body">
-            Contributions to the publication fund its ongoing work — investigative
-            reporting, platform costs, and the editorial independence to pursue
-            stories on their own terms. No portion goes to individual authors;
-            this is the publication's operating fund.
-          </p>
+          <p class="support-block__body">{{ supportContent.publicationBlockBody }}</p>
           {% if pubTipUrl %}
           <div class="support-block__actions">
             <a class="tip-badge tip-badge--pub"
@@ -78,12 +65,7 @@ permalink: /support/
         <div class="support-block">
           <div class="support-block__eyebrow">Individual Authors</div>
           <h3 class="support-block__heading">Support a Contributor</h3>
-          <p class="support-block__body">
-            Authors who accept reader support do so through their own accounts.
-            The publication receives nothing from author tips — 100% goes directly
-            to the writer. Look for the support badge on any article byline or
-            author page.
-          </p>
+          <p class="support-block__body">{{ supportContent.authorBlockBody }}</p>
           {% if authors_with_tipping.length %}
           <div class="support-block__author-list">
             {% for a in authors_with_tipping %}
@@ -107,11 +89,10 @@ permalink: /support/
     {# Email subscribe #}
     <div style="margin-bottom: var(--space-10);">
       <h2 style="font-family: var(--font-headline); font-size: var(--text-xl); margin-bottom: var(--space-3);">
-        No budget right now? Subscribe instead.
+        {{ supportContent.nobudgetHeading }}
       </h2>
       <p style="color: var(--color-ink-muted); font-size: var(--text-base); max-width: 55ch; margin-bottom: var(--space-6); line-height: var(--leading-normal);">
-        A larger readership makes this publication more visible and more sustainable.
-        Subscribing by email is free and genuinely useful.
+        {{ supportContent.nobudgetBody }}
       </p>
       {% set subscribeVariant = "inline" %}
       {% include "partials/subscribe.njk" %}
@@ -134,10 +115,7 @@ permalink: /support/
     {# Closing note #}
     <div style="border-top: 1px solid var(--color-rule); padding-top: var(--space-8); margin-top: var(--space-10);">
       <p style="font-family: var(--font-ui); font-size: var(--text-sm); color: var(--color-ink-faint); font-style: italic;">
-        The Freethinking Times does not accept advertising, sponsored content, affiliate fees,
-        or funding from organizations with interests in our coverage areas. Reader support
-        is the only kind we take. Individual authors process their own support independently;
-        the publication does not take a percentage.
+        {{ supportContent.closingNote }}
       </p>
     </div>
 

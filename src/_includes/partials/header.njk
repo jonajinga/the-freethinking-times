@@ -200,7 +200,7 @@
     <nav class="site-nav" aria-label="Main navigation">
       <div class="site-nav__inner">
         <ul class="site-nav__list" role="list">
-          {% for item in site.nav %}
+          {% for item in nav %}
           {% set sectionItems = collections[item.collection] if item.collection %}
           {% set hasDropdown = item.type == "library" or item.type == "more" or (sectionItems and sectionItems.length) %}
           <li class="site-nav__item{% if hasDropdown %} site-nav__item--has-dropdown{% endif %}">
@@ -217,128 +217,24 @@
       </div>
 
       {# ── Nav Dropdowns — siblings of .site-nav__inner so they escape overflow:hidden ── #}
-      {% for item in site.nav %}
+      {% for item in nav %}
       {% set sectionItems = collections[item.collection] if item.collection %}
       {% set hasDropdown = item.type == "library" or item.type == "more" or (sectionItems and sectionItems.length) %}
       {% if hasDropdown %}
       <div class="nav-dropdown" id="dropdown-{{ item.key }}" aria-label="{{ item.label }}">
         {% if item.type == "more" %}
           <div class="nav-mega">
+            {% for col in megaMenu %}
             <div class="nav-mega__col">
-              <p class="nav-mega__heading">Explore</p>
-              <a href="/library/" class="nav-mega__link">
-                <span class="nav-mega__title">Public Domain Library</span>
-                <span class="nav-mega__desc">Full texts from the freethought tradition</span>
+              <p class="nav-mega__heading">{{ col.heading }}</p>
+              {% for link in col.links %}
+              <a href="{{ link.url }}" class="nav-mega__link">
+                <span class="nav-mega__title">{{ link.title }}</span>
+                <span class="nav-mega__desc">{{ link.desc }}</span>
               </a>
-              <a href="/quotes/" class="nav-mega__link">
-                <span class="nav-mega__title">Quotes</span>
-                <span class="nav-mega__desc">Curated freethought quotes</span>
-              </a>
-              <a href="/videos/" class="nav-mega__link">
-                <span class="nav-mega__title">Videos</span>
-                <span class="nav-mega__desc">Lectures, debates, and documentaries</span>
-              </a>
-              <a href="/timeline/" class="nav-mega__link">
-                <span class="nav-mega__title">Timeline</span>
-                <span class="nav-mega__desc">2,400 years of freethought history</span>
-              </a>
+              {% endfor %}
             </div>
-            <div class="nav-mega__col">
-              <p class="nav-mega__heading">Projects</p>
-              <a href="/glossary/" class="nav-mega__link">
-                <span class="nav-mega__title">Glossary</span>
-                <span class="nav-mega__desc">Philosophical terms and definitions</span>
-              </a>
-              <a href="/bookshelf/" class="nav-mega__link">
-                <span class="nav-mega__title">Bookshelf</span>
-                <span class="nav-mega__desc">Reading recommendations</span>
-              </a>
-              <a href="/thought-experiments/" class="nav-mega__link">
-                <span class="nav-mega__title">Thought Experiments</span>
-                <span class="nav-mega__desc">Classic experiments examined</span>
-              </a>
-              <a href="/trials/" class="nav-mega__link">
-                <span class="nav-mega__title">Trials of Thought</span>
-                <span class="nav-mega__desc">Landmark trials of ideas</span>
-              </a>
-              <a href="/games/" class="nav-mega__link">
-                <span class="nav-mega__title">Games</span>
-                <span class="nav-mega__desc">Trivia, puzzles, and word games</span>
-              </a>
-            </div>
-            <div class="nav-mega__col">
-              <p class="nav-mega__heading">Community</p>
-              <a href="/community/" class="nav-mega__link">
-                <span class="nav-mega__title">Community Hub</span>
-                <span class="nav-mega__desc">Organizations worldwide</span>
-              </a>
-              <a href="/events/" class="nav-mega__link">
-                <span class="nav-mega__title">Events</span>
-                <span class="nav-mega__desc">Conferences and meetups</span>
-              </a>
-              <a href="/resources/" class="nav-mega__link">
-                <span class="nav-mega__title">Resources</span>
-                <span class="nav-mega__desc">Education, legal, and support</span>
-              </a>
-              <a href="/contribute/" class="nav-mega__link">
-                <span class="nav-mega__title">Contribute</span>
-                <span class="nav-mega__desc">Support and participate</span>
-              </a>
-              <a href="/newsletter/" class="nav-mega__link">
-                <span class="nav-mega__title">Newsletter</span>
-                <span class="nav-mega__desc">Free, no tracking</span>
-              </a>
-            </div>
-            <div class="nav-mega__col">
-              <p class="nav-mega__heading">About</p>
-              <a href="/about/" class="nav-mega__link">
-                <span class="nav-mega__title">About Us</span>
-                <span class="nav-mega__desc">What we are and why</span>
-              </a>
-              <a href="/contact/" class="nav-mega__link">
-                <span class="nav-mega__title">Contact</span>
-                <span class="nav-mega__desc">Get in touch</span>
-              </a>
-              <a href="/support/" class="nav-mega__link">
-                <span class="nav-mega__title">Support</span>
-                <span class="nav-mega__desc">Keep us independent</span>
-              </a>
-              <a href="/features/" class="nav-mega__link">
-                <span class="nav-mega__title">Features</span>
-                <span class="nav-mega__desc">What this site can do</span>
-              </a>
-              <a href="/open-source/" class="nav-mega__link">
-                <span class="nav-mega__title">Open Source</span>
-                <span class="nav-mega__desc">Fork our codebase</span>
-              </a>
-            </div>
-            <div class="nav-mega__col">
-              <p class="nav-mega__heading">Reader Tools</p>
-              <a href="/search/" class="nav-mega__link">
-                <span class="nav-mega__title">Search</span>
-                <span class="nav-mega__desc">Full search page</span>
-              </a>
-              <a href="/start-here/" class="nav-mega__link">
-                <span class="nav-mega__title">Start Here</span>
-                <span class="nav-mega__desc">New to the site?</span>
-              </a>
-              <a href="/notes/" class="nav-mega__link">
-                <span class="nav-mega__title">Notes & Highlights</span>
-                <span class="nav-mega__desc">Your saved annotations</span>
-              </a>
-              <a href="/reading-list/" class="nav-mega__link">
-                <span class="nav-mega__title">Reading List</span>
-                <span class="nav-mega__desc">Saved articles</span>
-              </a>
-              <a href="/reader/" class="nav-mega__link">
-                <span class="nav-mega__title">RSS Reader</span>
-                <span class="nav-mega__desc">Freethought feeds</span>
-              </a>
-              <a href="/archives/" class="nav-mega__link">
-                <span class="nav-mega__title">Archives</span>
-                <span class="nav-mega__desc">All articles by date</span>
-              </a>
-            </div>
+            {% endfor %}
           </div>
         {% elif item.type == "library" %}
           {% for w in library.works %}
@@ -490,7 +386,7 @@
   {# ── Sections ── #}
   <p class="nav-drawer__section-label">Sections</p>
   <ul class="nav-drawer__list" role="list">
-    {% for item in site.nav %}
+    {% for item in nav %}
     {% if item.collection %}
     <li><a class="nav-drawer__link nav-drawer__link--primary" href="{{ item.url }}" {% if page.url == item.url %}aria-current="page"{% endif %}>{{ item.label }}</a></li>
     {% endif %}
@@ -499,37 +395,18 @@
 
   <div class="nav-drawer__divider"></div>
 
-  {# ── Projects ── #}
-  <p class="nav-drawer__section-label">Projects</p>
-  <ul class="nav-drawer__list" role="list">
-    <li><a class="nav-drawer__link" href="/library/">Public Domain Library</a></li>
-    <li><a class="nav-drawer__link" href="/quotes/">Freethought Quotes</a></li>
-    <li><a class="nav-drawer__link" href="/videos/">Freethought Videos</a></li>
-    <li><a class="nav-drawer__link" href="/timeline/">Freethought Timeline</a></li>
-    <li><a class="nav-drawer__link" href="/resources/">Freethought Resources</a></li>
-    <li><a class="nav-drawer__link" href="/glossary/">Freethought Glossary</a></li>
-    <li><a class="nav-drawer__link" href="/bookshelf/">Freethinker's Bookshelf</a></li>
-    <li><a class="nav-drawer__link" href="/thought-experiments/">Thought Experiments</a></li>
-    <li><a class="nav-drawer__link" href="/trials/">Trials of Thought</a></li>
-    <li><a class="nav-drawer__link" href="/music/">Freethought Music</a></li>
-    <li><a class="nav-drawer__link" href="/gallery/">Gallery</a></li>
-    <li><a class="nav-drawer__link" href="/games/">Games</a></li>
-  </ul>
-
+  {# ── Additional nav groups (from drawerLinks.json — editable via Pages CMS) ── #}
+  {% for group in drawerLinks %}
   <div class="nav-drawer__divider"></div>
-
-  {# ── Community ── #}
-  <p class="nav-drawer__section-label">Community</p>
+  {% if group.heading %}
+  <p class="nav-drawer__section-label">{{ group.heading }}</p>
+  {% endif %}
   <ul class="nav-drawer__list" role="list">
-    <li><a class="nav-drawer__link" href="/community/">Community Hub</a></li>
-    <li><a class="nav-drawer__link" href="/events/">Events Calendar</a></li>
-    <li><a class="nav-drawer__link" href="/newsletter/">Newsletter</a></li>
-    <li><a class="nav-drawer__link" href="/contribute/">Contribute</a></li>
-    <li><a class="nav-drawer__link" href="/submit/">Submit</a></li>
+    {% for link in group.links %}
+    <li><a class="nav-drawer__link{% if group.small %} nav-drawer__link--small{% endif %}" href="{{ link.url }}">{{ link.label }}</a></li>
+    {% endfor %}
   </ul>
-
-  {# ── Publication support badge ── #}
-  {% if site.tipping %}
+  {% if group.showSupportBadgeAfter and site.tipping %}
   {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
   {% if pubTipUrl %}
   <div class="nav-drawer__support">
@@ -543,17 +420,7 @@
   </div>
   {% endif %}
   {% endif %}
-
-  <div class="nav-drawer__divider"></div>
-
-  {# ── About & more ── #}
-  <ul class="nav-drawer__list" role="list">
-    <li><a class="nav-drawer__link nav-drawer__link--small" href="/about/">About</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--small" href="/contact/">Contact</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--small" href="/reader-tools/">Reader Tools</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--small" href="/transparency/">Transparency</a></li>
-    <li><a class="nav-drawer__link nav-drawer__link--small" href="/legal/">Legal</a></li>
-  </ul>
+  {% endfor %}
 
   {# ── Bottom toolbar ── #}
   <div class="nav-drawer__toolbar">

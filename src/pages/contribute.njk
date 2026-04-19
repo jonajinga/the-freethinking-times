@@ -46,32 +46,25 @@ permalink: /contribute/
       <h2 id="contributor-tiers">Contributor tiers</h2>
 
       <ul>
-        <li><strong>Guest Writer</strong> — One-off or occasional pieces. Full editorial support provided.</li>
-        <li><strong>Contributing Writer</strong> — Regular contributors with an established track record. Byline page and author RSS feed.</li>
-        <li><strong>Contributing Editor</strong> — Section-level editorial input. Helps shape coverage in their area of expertise.</li>
+        {% for tier in contributeContent.tiers %}
+        <li><strong>{{ tier.name }}</strong> — {{ tier.desc }}</li>
+        {% endfor %}
       </ul>
 
       <h2 id="what-we-look-for">What we look for</h2>
 
       <ul>
-        <li>Clear, direct prose — no jargon, no academic obscurantism</li>
-        <li>Original thinking — not just summaries of existing debates</li>
-        <li>Evidence and sourcing — claims backed by references</li>
-        <li>Intellectual honesty — engage the strongest version of opposing arguments</li>
-        <li>Relevance to the freethought tradition — broadly construed</li>
+        {% for item in contributeContent.lookingFor %}
+        <li>{{ item }}</li>
+        {% endfor %}
       </ul>
 
       <h2 id="topics">Topics of particular interest</h2>
 
       <ul>
-        <li>Church-state separation cases and policy</li>
-        <li>History of freethought and secularism</li>
-        <li>Philosophy of religion and ethics</li>
-        <li>Science communication and scientific literacy</li>
-        <li>Religious influence on education, healthcare, and law</li>
-        <li>Profiles of freethinkers past and present</li>
-        <li>Book reviews and literary criticism</li>
-        <li>Personal deconversion narratives (if they illuminate broader themes)</li>
+        {% for item in contributeContent.topics %}
+        <li>{{ item }}</li>
+        {% endfor %}
       </ul>
 
       <h2 id="before-you-pitch">Before you pitch</h2>
@@ -141,16 +134,9 @@ permalink: /contribute/
       <p>Writing articles is not the only way to contribute. You can also:</p>
 
       <ul>
-        <li><a href="/quotes/submit/">Submit a freethought quote</a></li>
-        <li><a href="/timeline/submit/">Suggest a timeline entry</a></li>
-        <li><a href="/bookshelf/submit/">Recommend a book</a></li>
-        <li><a href="/glossary/submit/">Suggest a glossary term</a></li>
-        <li><a href="/trials/submit/">Suggest a trial</a></li>
-        <li><a href="/thought-experiments/submit/">Suggest a thought experiment</a></li>
-        <li><a href="/music/submit/">Suggest a song</a></li>
-        <li><a href="/gallery/submit/">Submit a photo</a></li>
-        <li><a href="/community/submit/">Suggest a community</a></li>
-        <li><a href="/events/submit/">Submit an event</a></li>
+        {% for item in contributeContent.otherWays %}
+        <li><a href="{{ item.url }}">{{ item.label }}</a></li>
+        {% endfor %}
       </ul>
 
       <p>See all submission options at <a href="/submit/">/submit/</a>.</p>
@@ -158,13 +144,9 @@ permalink: /contribute/
       <h2 id="writing-style">Writing style</h2>
 
       <ul>
-        <li>Write in the first person when appropriate — this is a publication with a voice</li>
-        <li>Lead with the argument, not the background</li>
-        <li>Use short paragraphs and clear topic sentences</li>
-        <li>Avoid passive voice unless it serves clarity</li>
-        <li>Cite sources inline or in footnotes — we use tooltip footnotes, not endnotes</li>
-        <li>No clickbait headlines — say what the piece argues</li>
-        <li>No emoji in headings or body text</li>
+        {% for item in contributeContent.writingStyle %}
+        <li>{{ item }}</li>
+        {% endfor %}
       </ul>
 
       <p>For full visual and brand guidelines, see the <a href="/style-guide/">style guide</a>.</p>

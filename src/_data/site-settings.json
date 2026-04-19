@@ -1,6 +1,7 @@
 {
   "title": "The Freethinking Times",
   "description": "Freethought for the world.",
+  "tagline": "Investigative. Philosophical. Adversarial to power.",
   "author": "The Freethinking Times",
   "email": "hello@thefreethinkingtimes.com",
   "founded": 2026,
@@ -13,5 +14,21 @@
   },
   "social": {
     "rss": "/feed.xml"
-  }
+  },
+  "subscribe": {
+    "eyebrow": "Free. Independent. No spam.",
+    "heading": "Get new pieces in your inbox",
+    "body": "Every article from The Freethinking Times, delivered when it publishes. No algorithms. No digest curation. Just the work, direct.",
+    "notice": "Unsubscribe at any time. We don't share your address.",
+    "sidebarBody": "Free. No spam. Unsubscribe anytime.",
+    "footerHeading": "Get new pieces by email",
+    "footerBody": "Independent journalism delivered directly. Free, always. Unsubscribe at any time."
+  },
+  "contactSubjects": [
+    "General inquiry",
+    "Question about the site",
+    "Partnership or collaboration",
+    "Press inquiry",
+    "Other"
+  ]
 }

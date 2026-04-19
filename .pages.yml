@@ -67,8 +67,8 @@ content:
         list: true
         label: "Corrections"
         fields:
+          - { name: description, type: text, required: true, label: "Description (what was corrected)" }
           - { name: date, type: date, required: true }
-          - { name: description, type: text, required: true }
       - name: attachments
         type: object
         list: true
@@ -115,8 +115,8 @@ content:
         list: true
         label: "Corrections"
         fields:
+          - { name: description, type: text, required: true, label: "Description (what was corrected)" }
           - { name: date, type: date, required: true }
-          - { name: description, type: text, required: true }
       - name: attachments
         type: object
         list: true
@@ -163,8 +163,8 @@ content:
         list: true
         label: "Corrections"
         fields:
+          - { name: description, type: text, required: true, label: "Description (what was corrected)" }
           - { name: date, type: date, required: true }
-          - { name: description, type: text, required: true }
       - name: attachments
         type: object
         list: true
@@ -211,8 +211,8 @@ content:
         list: true
         label: "Corrections"
         fields:
+          - { name: description, type: text, required: true, label: "Description (what was corrected)" }
           - { name: date, type: date, required: true }
-          - { name: description, type: text, required: true }
       - name: attachments
         type: object
         list: true
@@ -259,8 +259,8 @@ content:
         list: true
         label: "Corrections"
         fields:
+          - { name: description, type: text, required: true, label: "Description (what was corrected)" }
           - { name: date, type: date, required: true }
-          - { name: description, type: text, required: true }
       - name: attachments
         type: object
         list: true
@@ -307,8 +307,8 @@ content:
         list: true
         label: "Corrections"
         fields:
+          - { name: description, type: text, required: true, label: "Description (what was corrected)" }
           - { name: date, type: date, required: true }
-          - { name: description, type: text, required: true }
       - name: attachments
         type: object
         list: true
@@ -355,8 +355,8 @@ content:
         list: true
         label: "Corrections"
         fields:
+          - { name: description, type: text, required: true, label: "Description (what was corrected)" }
           - { name: date, type: date, required: true }
-          - { name: description, type: text, required: true }
       - name: attachments
         type: object
         list: true
@@ -405,8 +405,8 @@ content:
         list: true
         label: "Corrections"
         fields:
+          - { name: description, type: text, required: true, label: "Description (what was corrected)" }
           - { name: date, type: date, required: true }
-          - { name: description, type: text, required: true }
       - name: attachments
         type: object
         list: true
@@ -611,8 +611,8 @@ content:
     format: json
     list: true
     fields:
-      - { name: quote, type: text, required: true }
       - { name: author, type: string, required: true }
+      - { name: quote, type: text, required: true }
       - { name: source, type: string }
       - { name: tags, type: string, list: true }
       - { name: era, type: select, options: ["Ancient", "Early Modern", "Enlightenment", "18th Century", "19th Century", "20th Century", "21st Century"] }
@@ -624,8 +624,8 @@ content:
     format: json
     list: true
     fields:
-      - { name: year, type: number, required: true, label: "Year (use negative for BCE, e.g. -399)" }
       - { name: title, type: string, required: true }
+      - { name: year, type: number, required: true, label: "Year (use negative for BCE, e.g. -399)" }
       - { name: description, type: text, required: true }
       - { name: era, type: select, options: [Ancient, "Early Modern", Enlightenment, "19th Century", "20th Century", "21st Century"], required: true }
 
@@ -736,8 +736,8 @@ content:
     format: json
     list: true
     fields:
-      - { name: date, type: date, required: true }
       - { name: title, type: string, required: true }
+      - { name: date, type: date, required: true }
       - name: sections
         type: object
         list: true
@@ -754,6 +754,7 @@ content:
     fields:
       - { name: title, type: string, required: true, label: "Publication name" }
       - { name: description, type: text, required: true, label: "Site description (shown in SEO and social previews)" }
+      - { name: tagline, type: text, label: "Footer tagline (shown below publication name in the footer)" }
       - { name: author, type: string, required: true, label: "Publication byline (used in RSS, JSON-LD, etc.)" }
       - { name: email, type: string, label: "Contact email address" }
       - { name: founded, type: number, label: "Year founded" }
@@ -778,6 +779,135 @@ content:
           - { name: twitter, type: string, label: "Twitter / X URL" }
           - { name: mastodon, type: string, label: "Mastodon URL" }
           - { name: rss, type: string, label: "RSS feed path (default: /feed.xml)" }
+      - name: subscribe
+        type: object
+        label: "Newsletter subscribe block copy"
+        fields:
+          - { name: eyebrow,       type: string, label: "Eyebrow line (inline block)" }
+          - { name: heading,       type: string, label: "Heading (inline block)" }
+          - { name: body,          type: text,   label: "Body copy (inline block)" }
+          - { name: notice,        type: string, label: "Notice line below form (inline block)" }
+          - { name: sidebarBody,   type: string, label: "Sidebar widget body copy" }
+          - { name: footerHeading, type: string, label: "Footer block heading" }
+          - { name: footerBody,    type: string, label: "Footer block body copy" }
+      - { name: contactSubjects, type: string, list: true, label: "Contact form subject dropdown options" }
+
+  - name: nav
+    label: Main Navigation
+    path: src/_data/nav.json
+    type: file
+    format: json
+    list: true
+    fields:
+      - { name: label, type: string, required: true, label: "Link label" }
+      - { name: url, type: string, required: true, label: "URL" }
+      - { name: key, type: string, required: true, label: "Unique key (slug, no spaces — used for dropdown IDs)" }
+      - { name: collection, type: string, label: "Eleventy collection name (e.g. news, opinion) — enables section dropdown" }
+      - { name: type, type: string, label: "Special type: 'more' (mega-menu) or 'library'" }
+
+  - name: footerLinks
+    label: Footer Navigation
+    path: src/_data/footerLinks.json
+    type: file
+    format: json
+    list: true
+    fields:
+      - { name: heading, type: string, required: true, label: "Column heading" }
+      - { name: headingUrl, type: string, label: "Heading URL (optional — makes the heading a link)" }
+      - name: links
+        type: object
+        list: true
+        label: "Links"
+        fields:
+          - { name: label, type: string, required: true, label: "Link text" }
+          - { name: url, type: string, required: true, label: "URL" }
+          - { name: title, type: string, label: "Tooltip (title attribute)" }
+
+  - name: megaMenu
+    label: "More" Mega Menu
+    path: src/_data/megaMenu.json
+    type: file
+    format: json
+    list: true
+    fields:
+      - { name: heading, type: string, required: true, label: "Column heading" }
+      - name: links
+        type: object
+        list: true
+        label: "Links"
+        fields:
+          - { name: title, type: string, required: true, label: "Link title" }
+          - { name: url, type: string, required: true, label: "URL" }
+          - { name: desc, type: string, required: true, label: "Short description (shown below title)" }
+
+  - name: drawerLinks
+    label: Mobile Drawer Navigation
+    path: src/_data/drawerLinks.json
+    type: file
+    format: json
+    list: true
+    fields:
+      - { name: heading, type: string, label: "Section heading (leave blank for no heading)" }
+      - { name: showSupportBadgeAfter, type: boolean, label: "Show support badge after this group" }
+      - { name: small, type: boolean, label: "Use small link style" }
+      - name: links
+        type: object
+        list: true
+        label: "Links"
+        fields:
+          - { name: label, type: string, required: true, label: "Link text" }
+          - { name: url, type: string, required: true, label: "URL" }
+
+  - name: contributeContent
+    label: Contribute Page Content
+    path: src/_data/contributeContent.json
+    type: file
+    format: json
+    fields:
+      - name: tiers
+        type: object
+        list: true
+        label: "Contributor tiers"
+        fields:
+          - { name: name, type: string, required: true, label: "Tier name" }
+          - { name: desc, type: text, required: true, label: "Description" }
+      - { name: lookingFor, type: string, list: true, label: "What we look for (list)" }
+      - { name: topics, type: string, list: true, label: "Topics of particular interest (list)" }
+      - name: otherWays
+        type: object
+        list: true
+        label: "Other ways to contribute"
+        fields:
+          - { name: label, type: string, required: true, label: "Link text" }
+          - { name: url, type: string, required: true, label: "URL" }
+      - { name: writingStyle, type: string, list: true, label: "Writing style guidelines (list)" }
+
+  - name: aboutContent
+    label: About Page Content
+    path: src/_data/aboutContent.json
+    type: file
+    format: json
+    fields:
+      - { name: whatWeAre,      type: text, list: true, label: "What We Are (paragraphs)" }
+      - { name: whyWeExist,     type: text, list: true, label: "Why We Exist (paragraphs)" }
+      - { name: whatWeStandFor, type: text, list: true, label: "What We Stand For (paragraphs)" }
+      - { name: whatWeWillNotDo, type: text, list: true, label: "What We Will Not Do (paragraphs)" }
+
+  - name: supportContent
+    label: Support Page Content
+    path: src/_data/supportContent.json
+    type: file
+    format: json
+    fields:
+      - { name: headerHeading,        type: string, required: true, label: "Page heading" }
+      - { name: headerSubtitle,       type: text,   required: true, label: "Header subtitle (italic intro)" }
+      - { name: howFunded,            type: text,   list: true,     label: "How We're Funded (paragraphs)" }
+      - { name: whereSupportGoes,     type: text,   list: true,     label: "Where Your Support Goes (paragraphs)" }
+      - { name: publicationBlockBody, type: text,   required: true, label: "Publication support block body" }
+      - { name: authorBlockBody,      type: text,   required: true, label: "Author support block body" }
+      - { name: nobudgetHeading,      type: string, required: true, label: "Subscribe-instead heading" }
+      - { name: nobudgetBody,         type: text,   required: true, label: "Subscribe-instead body" }
+      - { name: closingNote,          type: text,   required: true, label: "Footer closing note (italic)" }
 
   - name: profiles
     label: Content Profiles
