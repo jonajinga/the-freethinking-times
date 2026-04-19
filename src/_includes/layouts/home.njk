@@ -48,7 +48,8 @@ layout: layouts/base.njk
       <p style="font-size: var(--text-sm); color: var(--color-ink-muted); font-style: italic; line-height: var(--leading-normal);">
         {{ site.sections[sectionKey].description }}
       </p>
-      <a href="/{{ sectionKey }}/" class="btn" style="margin-top: var(--space-4); font-size: var(--text-xs);">
+      <a href="/{{ sectionKey }}/" class="btn" style="margin-top: var(--space-4); font-size: var(--text-xs);"
+         aria-label="View all {{ sectionKey | replace('-', ' ') | title }} articles">
         View All →
       </a>
     </div>
