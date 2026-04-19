@@ -4,6 +4,7 @@ const { DateTime } = require("luxon");
 const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
+const CleanCSS = require("clean-css");
 
 module.exports = function (eleventyConfig) {
 
@@ -76,7 +77,7 @@ module.exports = function (eleventyConfig) {
         }
         // Append main.css content (print styles etc.) minus the @import lines
         output += inputContent.replace(/@import\s+['"][^'"]+['"];?\s*/g, "");
-        return output;
+        return new CleanCSS({ level: 2 }).minify(output).styles;
       };
     },
   });
