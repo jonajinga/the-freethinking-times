@@ -10,7 +10,7 @@ backend:
   repo: jonajinga/the-freethinking-times
   branch: main
   auth_type: pkce
-  app_id: YOUR_GITHUB_OAUTH_APP_CLIENT_ID  # replace with your GitHub OAuth App Client ID
+  app_id: Ov23limo9Z5DswFU6WRa
 
 publish_mode: editorial_workflow
 
