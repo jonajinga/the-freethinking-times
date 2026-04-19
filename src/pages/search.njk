@@ -288,7 +288,10 @@ permalink: /search/
   }
 
   function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
-  function showState(el) { [stDefault, stLoading, stActive, stEmpty].forEach(function (s) { s.hidden = s !== el; }); }
+  function showState(el) {
+    [stDefault, stLoading, stActive, stEmpty].forEach(function (s) { s.hidden = s !== el; });
+    if (el === stActive || el === stEmpty) hideAc();
+  }
 
   // History
   function getH() { try { return JSON.parse(localStorage.getItem(HKEY)) || []; } catch (e) { return []; } }
@@ -357,7 +360,6 @@ permalink: /search/
 
     if (!q && !activeSection) { showState(stDefault); showSaved(); showHistory(); updateURL(q); return; }
 
-    hideAc();
     showState(stLoading);
     updateURL(q);
     if (q) saveH(q);
