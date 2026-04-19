@@ -6,14 +6,23 @@ permalink: /costs/
 ---
 
 <div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
-  <div class="container--prose">
 
-    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
-      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">What It Costs to Run This Site</h1>
-      <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic; max-width: 55ch;">
-        We have no advertising, no investors, and no paywall. Here is exactly where the money goes.
-      </p>
-    </header>
+  <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">What It Costs to Run This Site</h1>
+    <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic; max-width: 55ch;">
+      We have no advertising, no investors, and no paywall. Here is exactly where the money goes.
+    </p>
+  </header>
+
+  <div class="sg-layout">
+
+    <aside class="sg-nav" aria-label="Page sections">
+      <a href="#monthly-costs">Monthly costs</a>
+      <a href="#annual-costs">Annual costs</a>
+      <a href="#real-cost">The real cost</a>
+      <a href="#what-could-change">What could change</a>
+      <a href="#how-this-compares">How this compares</a>
+    </aside>
 
     <div class="article-body">
 
@@ -21,7 +30,7 @@ permalink: /costs/
 
       <p>This page is updated whenever our costs change.</p>
 
-      <h2>Monthly costs</h2>
+      <h2 id="monthly-costs">Monthly costs</h2>
 
       <table style="width:100%;font-size:var(--text-sm);border-collapse:collapse;margin:var(--space-6) 0;">
         <thead>
@@ -106,7 +115,7 @@ permalink: /costs/
         </tfoot>
       </table>
 
-      <h2>Annual costs</h2>
+      <h2 id="annual-costs">Annual costs</h2>
 
       <table style="width:100%;font-size:var(--text-sm);border-collapse:collapse;margin:var(--space-6) 0;">
         <thead>
@@ -131,7 +140,7 @@ permalink: /costs/
         </tfoot>
       </table>
 
-      <h2>The real cost</h2>
+      <h2 id="real-cost">The real cost</h2>
 
       <p>The dollar cost of running this site is negligible. The real cost is time.</p>
 
@@ -139,7 +148,7 @@ permalink: /costs/
 
       <p>This is a deliberate architectural choice. By building on open-source tools and free-tier services, we ensure that this publication can survive on reader support alone, without ever needing to introduce advertising, paywalls, or sponsored content.</p>
 
-      <h2>What could change</h2>
+      <h2 id="what-could-change">What could change</h2>
 
       <p>If the site grows significantly, some free tiers may need to be upgraded:</p>
 
@@ -154,7 +163,7 @@ permalink: /costs/
 
       <p>If and when we upgrade any service, this page will be updated to reflect the new costs.</p>
 
-      <h2>How this compares</h2>
+      <h2 id="how-this-compares">How this compares</h2>
 
       <p>For context, here is what comparable publications typically pay:</p>
 
@@ -174,3 +183,20 @@ permalink: /costs/
     </div>
   </div>
 </div>
+
+<script>
+(function () {
+  var links = document.querySelectorAll('.sg-nav a');
+  var sections = Array.from(links).map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function onScroll() {
+    var scrollY = window.scrollY + 100;
+    var current = sections[0];
+    sections.forEach(function (s) { if (s && s.offsetTop <= scrollY) current = s; });
+    links.forEach(function (a) {
+      a.classList.toggle('sg-active', current && a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>

@@ -6,18 +6,32 @@ permalink: /contribute/
 ---
 
 <div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
-  <div class="container--prose">
 
-    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
-      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Contribute</h1>
-      <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 60ch;">
-        We welcome contributions from writers who share our commitment to reason, evidence, and intellectual honesty.
-      </p>
-    </header>
+  <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Contribute</h1>
+    <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 60ch;">
+      We welcome contributions from writers who share our commitment to reason, evidence, and intellectual honesty.
+    </p>
+  </header>
+
+  <div class="sg-layout">
+
+    <aside class="sg-nav" aria-label="Page sections">
+      <a href="#what-we-publish">What we publish</a>
+      <a href="#contributor-tiers">Contributor tiers</a>
+      <a href="#what-we-look-for">What we look for</a>
+      <a href="#topics">Topics of interest</a>
+      <a href="#before-you-pitch">Before you pitch</a>
+      <a href="#how-to-pitch">How to pitch</a>
+      <a href="#other-ways">Other ways to contribute</a>
+      <a href="#writing-style">Writing style</a>
+      <a href="#rights">Rights and compensation</a>
+      <a href="#editorial-standards">Editorial standards</a>
+    </aside>
 
     <div class="article-body">
 
-      <h2>What we publish</h2>
+      <h2 id="what-we-publish">What we publish</h2>
 
       <p>{{ site.title }} publishes original writing across seven sections:</p>
 
@@ -29,7 +43,7 @@ permalink: /contribute/
         {% endfor %}
       </ul>
 
-      <h2>Contributor tiers</h2>
+      <h2 id="contributor-tiers">Contributor tiers</h2>
 
       <ul>
         <li><strong>Guest Writer</strong> — One-off or occasional pieces. Full editorial support provided.</li>
@@ -37,7 +51,7 @@ permalink: /contribute/
         <li><strong>Contributing Editor</strong> — Section-level editorial input. Helps shape coverage in their area of expertise.</li>
       </ul>
 
-      <h2>What we look for</h2>
+      <h2 id="what-we-look-for">What we look for</h2>
 
       <ul>
         <li>Clear, direct prose — no jargon, no academic obscurantism</li>
@@ -47,7 +61,7 @@ permalink: /contribute/
         <li>Relevance to the freethought tradition — broadly construed</li>
       </ul>
 
-      <h2>Topics of particular interest</h2>
+      <h2 id="topics">Topics of particular interest</h2>
 
       <ul>
         <li>Church-state separation cases and policy</li>
@@ -60,11 +74,11 @@ permalink: /contribute/
         <li>Personal deconversion narratives (if they illuminate broader themes)</li>
       </ul>
 
-      <h2>Before you pitch</h2>
+      <h2 id="before-you-pitch">Before you pitch</h2>
 
       <p>Take a look at our <a href="/templates/">content templates</a>. They show exactly how we structure each type of piece — front matter fields, sections, and what we expect in each. Pick the template that matches what you want to write and shape your pitch around it.</p>
 
-      <h2>How to pitch</h2>
+      <h2 id="how-to-pitch">How to pitch</h2>
 
       <p>Use the form below or email <a href="mailto:{{ site.email }}">{{ site.email }}</a> with "Pitch:" in the subject line.</p>
 
@@ -122,7 +136,7 @@ permalink: /contribute/
         <p class="w3f__privacy">We respond to pitches that interest us within two weeks.</p>
       </form>
 
-      <h2>Other ways to contribute</h2>
+      <h2 id="other-ways">Other ways to contribute</h2>
 
       <p>Writing articles is not the only way to contribute. You can also:</p>
 
@@ -141,7 +155,7 @@ permalink: /contribute/
 
       <p>See all submission options at <a href="/submit/">/submit/</a>.</p>
 
-      <h2>Writing style</h2>
+      <h2 id="writing-style">Writing style</h2>
 
       <ul>
         <li>Write in the first person when appropriate — this is a publication with a voice</li>
@@ -155,16 +169,33 @@ permalink: /contribute/
 
       <p>For full visual and brand guidelines, see the <a href="/style-guide/">style guide</a>.</p>
 
-      <h2>Rights and compensation</h2>
+      <h2 id="rights">Rights and compensation</h2>
 
       <p>{{ site.title }} is currently a volunteer-run publication. We do not pay for contributions at this time. Contributors retain copyright and grant us a non-exclusive license to publish. You may republish your work elsewhere after 30 days.</p>
 
       <p>All published work includes a byline, author bio, and permanent author page on the site.</p>
 
-      <h2>Editorial standards</h2>
+      <h2 id="editorial-standards">Editorial standards</h2>
 
       <p>All submissions are subject to our <a href="/ethics/">editorial ethics policy</a>. We fact-check claims, verify sources, and publish corrections promptly when errors are discovered. See our <a href="/corrections/">corrections log</a> for examples.</p>
 
     </div>
   </div>
 </div>
+
+<script>
+(function () {
+  var links = document.querySelectorAll('.sg-nav a');
+  var sections = Array.from(links).map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function onScroll() {
+    var scrollY = window.scrollY + 100;
+    var current = sections[0];
+    sections.forEach(function (s) { if (s && s.offsetTop <= scrollY) current = s; });
+    links.forEach(function (a) {
+      a.classList.toggle('sg-active', current && a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>

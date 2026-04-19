@@ -6,18 +6,37 @@ permalink: /features/
 ---
 
 <div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
-  <div class="container--prose">
 
-    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
-      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Features</h1>
-      <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic;">
-        Everything this site can do — for readers and for the publication.
-      </p>
-    </header>
+  <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Features</h1>
+    <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic;">
+      Everything this site can do — for readers and for the publication.
+    </p>
+  </header>
+
+  <div class="sg-layout">
+
+    <aside class="sg-nav" aria-label="Page sections">
+      <a href="#reading-experience">Reading experience</a>
+      <a href="#article-actions">Article actions</a>
+      <a href="#library">Library</a>
+      <a href="#navigation">Navigation</a>
+      <a href="#publishing">Publishing</a>
+      <a href="#newsletter">Newsletter</a>
+      <a href="#infrastructure">Infrastructure</a>
+      <a href="#analytics">Analytics</a>
+      <a href="#translation">Translation</a>
+      <a href="#contact-forms">Contact forms</a>
+      <a href="#projects">Projects</a>
+      <a href="#transparency">Transparency</a>
+      <a href="#quotes-media">Quotes & media</a>
+      <a href="#data">Data</a>
+      <a href="#open-source">Open source</a>
+    </aside>
 
     <div class="article-body">
 
-      <h2>Reading experience</h2>
+      <h2 id="reading-experience">Reading experience</h2>
       <ul>
         <li><strong>Dark / light mode</strong> — toggle in the masthead; respects system preference on first visit; preference saved to <code>localStorage</code></li>
         <li><strong>Reading progress bar</strong> — fixed at the top of article and library pages; stops at the end of the body text</li>
@@ -38,7 +57,7 @@ permalink: /features/
         <li><strong>Text selection colour</strong> — pansy purple, consistent with the publication's identity</li>
       </ul>
 
-      <h2>Article actions</h2>
+      <h2 id="article-actions">Article actions</h2>
       <ul>
         <li><strong>Save to reading list</strong> — bookmark any article in the browser; no account required; accessible at <a href="/reading-list/">/reading-list/</a></li>
         <li><strong>Share</strong> — share panel with X/Twitter, Facebook, LinkedIn, Reddit, Bluesky, Mastodon, copy link, and email</li>
@@ -49,13 +68,12 @@ permalink: /features/
         <li><strong>Reader panel</strong> — slide-out panel with Contents (TOC), Highlights, Notes, Bookmarks, and Related tabs</li>
         <li><strong>Highlight & annotate</strong> — select text to highlight it in one of 6 colours (yellow, pink, blue, green, orange, purple) or add a rich-text note; highlights and notes persist in <code>localStorage</code></li>
         <li><strong>Rich-text notes</strong> — WYSIWYG editor with formatting toolbar (bold, italic, lists, blockquotes, links); what you see is what gets saved</li>
-        <li><strong>Reader panel</strong> — icon-only tabs (Contents, Highlights, Notes, Bookmarks, Related) with export (plain text, Markdown, JSON) and print buttons</li>
         <li><strong>Position bookmarks</strong> — save your scroll position from the reader toolbar; bookmark indicators appear in the left margin</li>
         <li><strong>Notes page</strong> at <a href="/notes/">/notes/</a> — all highlights, notes, and bookmarks across the site with export and import (JSON) for cross-device sync</li>
         <li><strong>Annotation footnotes</strong> — inline tooltip footnotes via shortcode; no jump to the bottom of the page</li>
       </ul>
 
-      <h2>Public Domain Library</h2>
+      <h2 id="library">Public Domain Library</h2>
       <ul>
         <li><strong>Library homepage</strong> at <a href="/library/">/library/</a> — featured works grid and full catalogue with subject and era filters</li>
         <li><strong>Work landing pages</strong> — introduction, chapter list, reading progress indicators, and Continue Reading detection</li>
@@ -71,7 +89,7 @@ permalink: /features/
         <li><strong>Browse by Author</strong> at <a href="/library/authors/">/library/authors/</a> — author biographies and collected works</li>
       </ul>
 
-      <h2>Navigation & discovery</h2>
+      <h2 id="navigation">Navigation & discovery</h2>
       <ul>
         <li><strong>Full-site search</strong> via Pagefind — built at deploy time, no backend; section filter bar included</li>
         <li><strong>Section navigation</strong> — dropdown menus per section showing recent articles</li>
@@ -86,7 +104,7 @@ permalink: /features/
         <li><strong>Editions</strong> at <a href="/editions/">/editions/</a> — articles grouped into numbered editions; edition pages are printable with a full article text section included after the contents listing</li>
       </ul>
 
-      <h2>Publishing & editorial</h2>
+      <h2 id="publishing">Publishing & editorial</h2>
       <ul>
         <li><strong>Corrections log</strong> — articles carry corrections in front matter; aggregate view at <a href="/corrections/">/corrections/</a></li>
         <li><strong>Suggest a correction</strong> — button in the article action bar linking to <a href="/corrections/report/">/corrections/report/</a></li>
@@ -101,7 +119,7 @@ permalink: /features/
         <li><strong>Changelog</strong> at <a href="/changelog/">/changelog/</a> — public record of site changes</li>
       </ul>
 
-      <h2>Newsletter</h2>
+      <h2 id="newsletter">Newsletter</h2>
       <ul>
         <li><strong>Newsletter page</strong> at <a href="/newsletter/">/newsletter/</a> — signup form, what to expect, past issues link, alternative follow options</li>
         <li><strong>Buttondown integration</strong> — subscribe forms embedded across the site (inline, sidebar, footer variants); no backend required</li>
@@ -110,7 +128,7 @@ permalink: /features/
         <li><strong>No open or click tracking</strong> — Buttondown's open and click tracking are disabled; links include a UTM tag for aggregate site analytics only</li>
       </ul>
 
-      <h2>Infrastructure & performance</h2>
+      <h2 id="infrastructure">Infrastructure & performance</h2>
       <ul>
         <li><strong>Progressive Web App</strong> — web manifest, cache-first service worker, offline fallback at <code>/offline.html</code></li>
         <li><strong>XML sitemap</strong> at <a href="/sitemap.xml">/sitemap.xml</a> — all articles, library pages, and key static pages with <code>lastmod</code> dates</li>
@@ -127,7 +145,7 @@ permalink: /features/
         <li><strong>Hosted on Cloudflare Pages</strong></li>
       </ul>
 
-      <h2>Analytics & privacy</h2>
+      <h2 id="analytics">Analytics & privacy</h2>
       <ul>
         <li><strong>Umami analytics</strong> — privacy-first; no cookies, no personally identifiable information{% if site.analytics and site.analytics.dashboardUrl %}; <a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer">public dashboard</a>{% endif %}</li>
         <li><strong>No first-party cookies</strong> — all reader preferences and state stored in <code>localStorage</code></li>
@@ -135,7 +153,7 @@ permalink: /features/
         <li><strong>Privacy policy</strong> at <a href="/privacy/">/privacy/</a></li>
       </ul>
 
-      <h2>Translation & accessibility</h2>
+      <h2 id="translation">Translation & accessibility</h2>
       <ul>
         <li><strong>GTranslate widget</strong> — nine languages (English, French, Italian, Spanish, German, Portuguese, Arabic, Chinese, Japanese); accessible from the global display settings panel</li>
         <li><strong>Voice search</strong> — microphone button in the search modal; speak to search with real-time transcription (Chrome, Edge, Safari)</li>
@@ -145,7 +163,7 @@ permalink: /features/
         <li><strong>Keyboard navigation</strong> — arrow keys navigate the events calendar grid; Enter to view events; Escape closes panels</li>
       </ul>
 
-      <h2>Contact forms</h2>
+      <h2 id="contact-forms">Contact forms</h2>
       <ul>
         <li><strong>Contact Us</strong> at <a href="/contact/">/contact/</a> — general inquiries with subject dropdown and card grid linking to all specialised forms</li>
         <li><strong>Submit a Piece</strong> at <a href="/submit/">/submit/</a> — pitch form embedded in editorial guidelines with section dropdown</li>
@@ -164,7 +182,7 @@ permalink: /features/
         <li><strong>All forms</strong> use Web3Forms with hCaptcha, honeypot spam protection, maxlength limits, aria-required attributes, and email fallback</li>
       </ul>
 
-      <h2>Intellectual projects</h2>
+      <h2 id="projects">Intellectual projects</h2>
       <ul>
         <li><strong>Freethought Glossary</strong> at <a href="/glossary/">/glossary/</a> — 86 terms with A–Z sidebar navigation, real-time search, individual Pagefind-indexed pages, and Tippy.js hover tooltips on articles and library pages</li>
         <li><strong>Thought Experiment Library</strong> at <a href="/thought-experiments/">/thought-experiments/</a></li>
@@ -176,7 +194,7 @@ permalink: /features/
         <li><strong>Reviews</strong> at <a href="/reviews/">/reviews/</a> — book, film, podcast, and documentary reviews with star ratings, media type badges, and creator/year metadata</li>
       </ul>
 
-      <h2>Transparency</h2>
+      <h2 id="transparency">Transparency</h2>
       <ul>
         <li><strong>Features page</strong> at <a href="/features/">/features/</a> — this page; complete inventory of site features</li>
         <li><strong>Changelog</strong> at <a href="/changelog/">/changelog/</a> — public record of every site change</li>
@@ -193,7 +211,7 @@ permalink: /features/
         <li><strong>Hub pages</strong> — dedicated landing pages for <a href="/explore/">Explore</a>, <a href="/submit/">Submit</a>, <a href="/reader-tools/">Reader Tools</a>, <a href="/transparency/">Transparency</a>, and <a href="/legal/">Legal</a></li>
       </ul>
 
-      <h2>Quotes, media & resources</h2>
+      <h2 id="quotes-media">Quotes, media & resources</h2>
       <ul>
         <li><strong>Quotes</strong> at <a href="/quotes/">/quotes/</a> — curated freethought quotes filterable by author, topic, and era, with save/share/copy</li>
         <li><strong>Daily quote bar</strong> — rotating quote in the masthead header, cycling every 10 seconds with fade transitions</li>
@@ -212,14 +230,14 @@ permalink: /features/
         <li><strong>RSS Reader</strong> at <a href="/reader/">/reader/</a> — freethought publication feeds fetched at build time</li>
       </ul>
 
-      <h2>Data management</h2>
+      <h2 id="data">Data management</h2>
       <ul>
         <li><strong>Your Data</strong> at <a href="/your-data/">/your-data/</a> — explanation of what is stored and how to manage it</li>
         <li><strong>Export / Import</strong> — backup and restore all site data (reading list, notes, highlights, bookmarks, preferences, RSS feeds) via JSON</li>
         <li><strong>Per-page export</strong> — export notes for individual articles or library entries as plain text, Markdown, or JSON</li>
       </ul>
 
-      <h2>Open source</h2>
+      <h2 id="open-source">Open source</h2>
       <ul>
         <li><strong>Project Broadsheet</strong> at <a href="https://github.com/jonajinga/project-broadsheet" target="_blank" rel="noopener noreferrer">github.com/jonajinga/project-broadsheet</a> — the complete site architecture as a reusable open-source publication system (MIT licence); learn more at <a href="https://projectbroadsheet.com" target="_blank" rel="noopener noreferrer">projectbroadsheet.com</a></li>
         <li><strong>Pages CMS</strong> — browser-based content management via <a href="https://pagescms.org" target="_blank" rel="noopener noreferrer">Pages CMS</a>; configured in <code>.pages.yml</code></li>
@@ -231,3 +249,20 @@ permalink: /features/
     </div>
   </div>
 </div>
+
+<script>
+(function () {
+  var links = document.querySelectorAll('.sg-nav a');
+  var sections = Array.from(links).map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function onScroll() {
+    var scrollY = window.scrollY + 100;
+    var current = sections[0];
+    sections.forEach(function (s) { if (s && s.offsetTop <= scrollY) current = s; });
+    links.forEach(function (a) {
+      a.classList.toggle('sg-active', current && a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>

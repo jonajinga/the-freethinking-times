@@ -6,18 +6,27 @@ permalink: /open-source/
 ---
 
 <div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
-  <div class="container--prose">
 
-    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
-      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Open Source</h1>
-      <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 60ch;">
-        {{ site.title }} is powered by <a href="https://projectbroadsheet.com" target="_blank" rel="noopener noreferrer">Project Broadsheet</a> — a free, open-source publication system built on Eleventy. Fork it, customise it, and launch your own independent publication.
-      </p>
-    </header>
+  <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Open Source</h1>
+    <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 60ch;">
+      {{ site.title }} is powered by <a href="https://projectbroadsheet.com" target="_blank" rel="noopener noreferrer">Project Broadsheet</a> — a free, open-source publication system built on Eleventy. Fork it, customise it, and launch your own independent publication.
+    </p>
+  </header>
+
+  <div class="sg-layout">
+
+    <aside class="sg-nav" aria-label="Page sections">
+      <a href="#project-broadsheet">Project Broadsheet</a>
+      <a href="#what-you-get">What you get</a>
+      <a href="#stack">Stack</a>
+      <a href="#how-to-use">How to use it</a>
+      <a href="#license">License</a>
+    </aside>
 
     <div class="article-body">
 
-      <h2>Project Broadsheet</h2>
+      <h2 id="project-broadsheet">Project Broadsheet</h2>
 
       <p>Project Broadsheet is a complete, production-grade static publication system designed for independent journalists, essayists, and editorial teams who want full control over their platform — no subscription fees, no algorithmic gatekeepers, no third-party CMS.</p>
 
@@ -30,7 +39,7 @@ permalink: /open-source/
         </a>
       </p>
 
-      <h2>What you get</h2>
+      <h2 id="what-you-get">What you get</h2>
 
       <p>This is not a starter template with placeholder divs. It is a complete, production-grade publication system with every feature already built and tested:</p>
 
@@ -74,7 +83,7 @@ permalink: /open-source/
 
       <p>See the full list at <a href="/features/">/features/</a>.</p>
 
-      <h2>Stack</h2>
+      <h2 id="stack">Stack</h2>
 
       <ul>
         <li><strong>Eleventy 3</strong> (static site generator)</li>
@@ -87,7 +96,7 @@ permalink: /open-source/
 
       <p>No bundler, no React, no Tailwind, no CMS. Just HTML, CSS, and JavaScript that renders fast and works everywhere.</p>
 
-      <h2>How to use it</h2>
+      <h2 id="how-to-use">How to use it</h2>
 
       <p>Everything you need to customise is in one file: <code>src/_data/site.json</code>. This controls your publication name, description, URL, email, fonts, analytics, newsletter, comments, section definitions, and navigation. Change the values in that file and the entire site updates.</p>
 
@@ -95,7 +104,7 @@ permalink: /open-source/
 
       <p>Content lives in <code>src/content/</code> as Markdown files with YAML front matter. Each section has its own directory. Add a new article by creating a new <code>.md</code> file.</p>
 
-      <h2>License</h2>
+      <h2 id="license">License</h2>
 
       <p>The code is released under the <strong>MIT License</strong>. Use it for personal projects, commercial publications, or anything else. No attribution required, though it is appreciated.</p>
 
@@ -104,3 +113,20 @@ permalink: /open-source/
     </div>
   </div>
 </div>
+
+<script>
+(function () {
+  var links = document.querySelectorAll('.sg-nav a');
+  var sections = Array.from(links).map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function onScroll() {
+    var scrollY = window.scrollY + 100;
+    var current = sections[0];
+    sections.forEach(function (s) { if (s && s.offsetTop <= scrollY) current = s; });
+    links.forEach(function (a) {
+      a.classList.toggle('sg-active', current && a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>

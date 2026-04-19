@@ -6,22 +6,31 @@ permalink: /community-guidelines/
 ---
 
 <div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
-  <div class="container--prose">
 
-    <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
-      <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Community Guidelines</h1>
-      <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 60ch;">
-        The comments section exists for readers who want to think together. These guidelines exist to keep that space worth reading.
-      </p>
-    </header>
+  <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Community Guidelines</h1>
+    <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 60ch;">
+      The comments section exists for readers who want to think together. These guidelines exist to keep that space worth reading.
+    </p>
+  </header>
+
+  <div class="sg-layout">
+
+    <aside class="sg-nav" aria-label="Page sections">
+      <a href="#short-version">The short version</a>
+      <a href="#what-we-expect">What we expect</a>
+      <a href="#will-not-tolerate">What we won't tolerate</a>
+      <a href="#moderation">How moderation works</a>
+      <a href="#free-expression">A note on free expression</a>
+    </aside>
 
     <div class="article-body">
 
-      <h2>The short version</h2>
+      <h2 id="short-version">The short version</h2>
 
       <p>Argue with ideas, not with people. Be honest. Be specific. If you would not say it to someone's face in a library, do not say it here.</p>
 
-      <h2>What we expect</h2>
+      <h2 id="what-we-expect">What we expect</h2>
 
       <h3>Engage with substance</h3>
       <p>The best comments add something — a counterargument, a relevant source, a question that sharpens the discussion. You do not need to agree with the article to comment, but you do need to engage with what it actually says. "This is wrong" is not a comment; "This is wrong because..." is.</p>
@@ -35,7 +44,7 @@ permalink: /community-guidelines/
       <h3>Respect the conversation</h3>
       <p>Stay on topic. Read the article before commenting on it. Read existing comments before repeating a point someone has already made. If you are responding to another commenter, address their actual argument rather than a caricature of it.</p>
 
-      <h2>What we will not tolerate</h2>
+      <h2 id="will-not-tolerate">What we will not tolerate</h2>
 
       <ul>
         <li><strong>Personal attacks</strong> — Criticise ideas, not the people who hold them. No name-calling, no insults, no threats.</li>
@@ -46,7 +55,7 @@ permalink: /community-guidelines/
         <li><strong>Bad faith</strong> — Trolling, sealioning, gish galloping, or any tactic designed to waste other people's time rather than advance understanding.</li>
       </ul>
 
-      <h2>How moderation works</h2>
+      <h2 id="moderation">How moderation works</h2>
 
       <p>All comments are reviewed before publication. This is not censorship — it is editing. We are a publication, and the comments section is part of that publication.</p>
 
@@ -57,7 +66,7 @@ permalink: /community-guidelines/
         <li>We do not edit comments. If a comment has a problem, it is either approved as written or not approved at all.</li>
       </ul>
 
-      <h2>A note on free expression</h2>
+      <h2 id="free-expression">A note on free expression</h2>
 
       <p>This publication exists to defend the right to think freely. That right does not oblige us to amplify every thought. A comments section without standards is not a free forum — it is a forum that has been surrendered to whoever is loudest. We moderate so that the people with something worth saying are not drowned out by those who do not.</p>
 
@@ -68,3 +77,20 @@ permalink: /community-guidelines/
     </div>
   </div>
 </div>
+
+<script>
+(function () {
+  var links = document.querySelectorAll('.sg-nav a');
+  var sections = Array.from(links).map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function onScroll() {
+    var scrollY = window.scrollY + 100;
+    var current = sections[0];
+    sections.forEach(function (s) { if (s && s.offsetTop <= scrollY) current = s; });
+    links.forEach(function (a) {
+      a.classList.toggle('sg-active', current && a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
