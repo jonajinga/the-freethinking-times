@@ -8,13 +8,13 @@ permalink: /archives/
 <div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
 
   <header class="archive-header">
-    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Archives</h1>
-    <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic;">
-      Every piece published in The Freethinking Times, in reverse chronological order.
+    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-2);">Archives</h1>
+    <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic; margin: 0;">
+      {{ collections.allContent | length }} articles published in The Freethinking Times.
     </p>
   </header>
 
-  {# ── Filter toolbar ─────────────────────────────────────── #}
+  {# ── Filter toolbar ─────────────────────────────────────────── #}
   <div class="archive-toolbar" role="search" aria-label="Filter articles">
     <div class="archive-toolbar__controls">
 
@@ -26,6 +26,7 @@ permalink: /archives/
         placeholder="Search titles and descriptions…"
         autocomplete="off"
         aria-label="Search articles"
+        aria-keyshortcuts="/"
       >
 
       <label class="visually-hidden" for="archive-section">Filter by section</label>
@@ -66,7 +67,7 @@ permalink: /archives/
     <p class="archive-meta" id="archive-count" aria-live="polite" aria-atomic="true"></p>
   </div>
 
-  {# ── Article groups ──────────────────────────────────────── #}
+  {# ── Article groups ───────────────────────────────────────────── #}
   {% set dateGroups = collections.allContent | groupByDate %}
 
   <div id="archive-list">
@@ -74,25 +75,22 @@ permalink: /archives/
     {% for group in dateGroups %}
     <section
       class="archive-group"
-      id="group-{{ group.date }}"
+      id="{{ group.date }}"
       data-group-date="{{ group.date }}"
     >
 
       <h2 class="archive-group__heading">
-        <a href="#group-{{ group.date }}">{{ group.articles[0].date | readableDate | upper }}</a>
+        <a href="#{{ group.date }}">{{ group.articles[0].date | readableDate | upper }}</a>
       </h2>
 
       <ul class="article-list" role="list">
         {% for item in group.articles %}
-        {# Compute values for data attributes #}
         {% set itemDate = item.date | htmlDateString %}
-        {% set itemYear = item.date | readableDate %}
         {% set authorSlug = item.data.author %}
         {% set authorName = authors[authorSlug].name if (authorSlug and authors[authorSlug]) else "The Freethinking Times" %}
         {% set itemSection = item.data.section if item.data.section else "" %}
         {% set itemTitle = item.data.title if item.data.title else "" %}
         {% set itemDesc = item.data.description if item.data.description else "" %}
-        {# Extract year and month from date string YYYY-MM-DD #}
         {% set dateParts = itemDate.split("-") %}
 
         <li
@@ -106,18 +104,15 @@ permalink: /archives/
           data-month="{{ dateParts[1] | int }}"
         >
 
-          {# Top row: date + section badge #}
+          {# Section badge #}
+          {% if itemSection %}
           <div class="archive-entry__top">
-            <time class="archive-entry__date" datetime="{{ itemDate }}">
-              {{ item.date | readableDate | upper }}
-            </time>
-            {% if itemSection %}
             <a
               href="/{{ itemSection | slugify }}/"
               class="section-badge section-badge--{{ itemSection | slugify }}"
             >{{ itemSection }}</a>
-            {% endif %}
           </div>
+          {% endif %}
 
           {# Title #}
           <h3 class="archive-entry__title">
@@ -158,50 +153,101 @@ permalink: /archives/
 
 <script>
 (function () {
-  const searchEl   = document.getElementById('archive-search');
-  const sectionEl  = document.getElementById('archive-section');
-  const authorEl   = document.getElementById('archive-author');
-  const yearEl     = document.getElementById('archive-year');
-  const monthEl    = document.getElementById('archive-month');
-  const clearBtn   = document.getElementById('archive-clear');
-  const countEl    = document.getElementById('archive-count');
-  const emptyEl    = document.getElementById('archive-empty');
-  const entries    = Array.from(document.querySelectorAll('.archive-entry'));
-  const groups     = Array.from(document.querySelectorAll('.archive-group'));
-  const total      = entries.length;
+  var searchEl  = document.getElementById('archive-search');
+  var sectionEl = document.getElementById('archive-section');
+  var authorEl  = document.getElementById('archive-author');
+  var yearEl    = document.getElementById('archive-year');
+  var monthEl   = document.getElementById('archive-month');
+  var clearBtn  = document.getElementById('archive-clear');
+  var countEl   = document.getElementById('archive-count');
+  var emptyEl   = document.getElementById('archive-empty');
+  var listEl    = document.getElementById('archive-list');
+  var entries   = Array.from(document.querySelectorAll('.archive-entry'));
+  var groups    = Array.from(document.querySelectorAll('.archive-group'));
+  var total     = entries.length;
 
-  // ── Populate dropdowns from data ────────────────────────────
-  const unique = (arr) => [...new Set(arr)].filter(Boolean).sort((a, b) => a.localeCompare(b));
+  // ── Populate dropdowns from data ──────────────────────────────
+  var unique = function (arr) {
+    return Array.from(new Set(arr)).filter(Boolean).sort(function (a, b) { return a.localeCompare(b); });
+  };
 
-  const sections = unique(entries.map(e => e.dataset.section));
-  sections.forEach(s => {
-    const opt = document.createElement('option');
+  var sections = unique(entries.map(function (e) { return e.dataset.section; }));
+  sections.forEach(function (s) {
+    var opt = document.createElement('option');
     opt.value = s;
     opt.textContent = s;
     sectionEl.appendChild(opt);
   });
 
-  // Authors: collect slug → display name pairs
-  const authorMap = {};
-  entries.forEach(e => {
+  var authorMap = {};
+  entries.forEach(function (e) {
     if (e.dataset.author) authorMap[e.dataset.author] = e.dataset.authorName;
   });
-  Object.keys(authorMap).sort((a, b) => authorMap[a].localeCompare(authorMap[b])).forEach(slug => {
-    const opt = document.createElement('option');
+  Object.keys(authorMap).sort(function (a, b) {
+    return authorMap[a].localeCompare(authorMap[b]);
+  }).forEach(function (slug) {
+    var opt = document.createElement('option');
     opt.value = slug;
     opt.textContent = authorMap[slug];
     authorEl.appendChild(opt);
   });
 
-  const years = unique(entries.map(e => e.dataset.year)).sort((a, b) => b - a);
-  years.forEach(y => {
-    const opt = document.createElement('option');
+  var years = unique(entries.map(function (e) { return e.dataset.year; })).sort(function (a, b) { return b - a; });
+  years.forEach(function (y) {
+    var opt = document.createElement('option');
     opt.value = y;
     opt.textContent = y;
     yearEl.appendChild(opt);
   });
 
-  // ── Update count display ─────────────────────────────────────
+  // ── Year-jump navigation ──────────────────────────────────────
+  function getScrollOffset() {
+    var masthead = document.querySelector('.masthead');
+    var toolbar  = document.querySelector('.archive-toolbar');
+    return (masthead ? masthead.offsetHeight : 0) + (toolbar ? toolbar.offsetHeight : 0) + 16;
+  }
+
+  function scrollToYear(year) {
+    var target = document.querySelector('[data-group-date^="' + year + '"]:not([hidden])') ||
+                 document.querySelector('[data-group-date^="' + year + '"]');
+    if (!target) return;
+    var top = target.getBoundingClientRect().top + window.scrollY - getScrollOffset();
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  }
+
+  if (years.length >= 2) {
+    var nav = document.createElement('nav');
+    nav.className = 'archive-year-nav';
+    nav.setAttribute('aria-label', 'Jump to year');
+    var label = document.createElement('span');
+    label.textContent = 'Jump to:';
+    nav.appendChild(label);
+    years.forEach(function (y, i) {
+      if (i > 0) {
+        var sep = document.createElement('span');
+        sep.className = 'archive-year-nav__sep';
+        sep.setAttribute('aria-hidden', 'true');
+        sep.textContent = '·';
+        nav.appendChild(sep);
+      }
+      var btn = document.createElement('button');
+      btn.className = 'archive-year-nav__btn';
+      btn.dataset.year = y;
+      btn.textContent = y;
+      btn.addEventListener('click', function () { scrollToYear(this.dataset.year); });
+      nav.appendChild(btn);
+    });
+    listEl.parentNode.insertBefore(nav, listEl);
+  }
+
+  // ── Active select state ───────────────────────────────────────
+  function updateSelectStates() {
+    [sectionEl, authorEl, yearEl, monthEl].forEach(function (el) {
+      el.classList.toggle('archive-select--active', el.value !== '');
+    });
+  }
+
+  // ── Update count display ──────────────────────────────────────
   function updateCount(visible) {
     if (visible === total) {
       countEl.textContent = total + ' article' + (total !== 1 ? 's' : '');
@@ -210,35 +256,33 @@ permalink: /archives/
     }
   }
 
-  // ── Core filter function ─────────────────────────────────────
+  // ── Core filter function ──────────────────────────────────────
   function applyFilters() {
-    const q       = searchEl.value.trim().toLowerCase();
-    const section = sectionEl.value;
-    const author  = authorEl.value;
-    const year    = yearEl.value;
-    const month   = monthEl.value;
+    var q       = searchEl.value.trim().toLowerCase();
+    var section = sectionEl.value;
+    var author  = authorEl.value;
+    var year    = yearEl.value;
+    var month   = monthEl.value;
 
-    const anyActive = q || section || author || year || month;
+    var anyActive = q || section || author || year || month;
     clearBtn.hidden = !anyActive;
+    updateSelectStates();
 
-    let visible = 0;
+    var visible = 0;
 
-    entries.forEach(entry => {
-      let show = true;
-
+    entries.forEach(function (entry) {
+      var show = true;
       if (q && !entry.dataset.title.includes(q) && !entry.dataset.desc.includes(q)) show = false;
       if (section && entry.dataset.section !== section) show = false;
       if (author  && entry.dataset.author  !== author)  show = false;
       if (year    && entry.dataset.year    !== year)     show = false;
-      if (month   && entry.dataset.month !== month) show = false;
-
+      if (month   && entry.dataset.month   !== month)    show = false;
       entry.hidden = !show;
       if (show) visible++;
     });
 
-    // Hide groups where all children are hidden
-    groups.forEach(group => {
-      const anyVisible = group.querySelectorAll('.archive-entry:not([hidden])').length > 0;
+    groups.forEach(function (group) {
+      var anyVisible = group.querySelectorAll('.archive-entry:not([hidden])').length > 0;
       group.hidden = !anyVisible;
     });
 
@@ -246,20 +290,30 @@ permalink: /archives/
     emptyEl.hidden = visible > 0;
   }
 
-  // ── Event listeners ──────────────────────────────────────────
-  let searchTimer;
-  searchEl.addEventListener('input', () => {
+  // ── Event listeners ───────────────────────────────────────────
+  var searchTimer;
+  searchEl.addEventListener('input', function () {
     clearTimeout(searchTimer);
     searchTimer = setTimeout(applyFilters, 200);
   });
 
-  [sectionEl, authorEl, yearEl, monthEl].forEach(el => {
+  [sectionEl, authorEl, yearEl, monthEl].forEach(function (el) {
     el.addEventListener('change', applyFilters);
   });
 
   clearBtn.addEventListener('click', archiveClearAll);
 
-  // ── Global clear (also called from empty state button) ───────
+  // ── Keyboard shortcut: / focuses search ──────────────────────
+  document.addEventListener('keydown', function (e) {
+    var tag = document.activeElement ? document.activeElement.tagName : '';
+    if (e.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
+      e.preventDefault();
+      searchEl.focus();
+      searchEl.select();
+    }
+  });
+
+  // ── Global clear (also called from empty-state button) ───────
   window.archiveClearAll = function () {
     searchEl.value = '';
     sectionEl.value = '';
@@ -271,5 +325,6 @@ permalink: /archives/
 
   // ── Init ─────────────────────────────────────────────────────
   updateCount(total);
+  updateSelectStates();
 })();
 </script>

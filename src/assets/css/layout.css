@@ -306,11 +306,11 @@
   border-bottom: 3px solid var(--color-ink);
 }
 
-/* Sticky filter toolbar */
+/* Sticky filter toolbar — sits below the sticky masthead (~7rem) */
 .archive-toolbar {
   position: sticky;
-  top: 0;
-  z-index: 100;
+  top: 7rem;
+  z-index: 99;
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-rule-heavy);
   padding: var(--space-4) 0;
@@ -397,6 +397,7 @@
 /* Date group sections */
 .archive-group {
   margin-bottom: var(--space-10);
+  scroll-margin-top: 15rem;
 }
 
 .archive-group__heading {
@@ -417,22 +418,16 @@
 }
 
 /* Individual article entries */
-.archive-entry__top {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--space-4);
-  flex-wrap: wrap;
-  margin-bottom: var(--space-2);
+.archive-entry {
+  transition: background-color var(--transition-fast);
 }
 
-.archive-entry__date {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--color-ink-faint);
-  white-space: nowrap;
+.archive-entry:hover {
+  background: var(--color-bg-alt);
+}
+
+.archive-entry__top {
+  margin-bottom: var(--space-2);
 }
 
 .archive-entry__title {
@@ -505,6 +500,50 @@
   cursor: pointer;
   text-decoration: underline;
   padding: 0;
+}
+
+/* Active filter state on dropdowns */
+.archive-select--active {
+  border-color: var(--color-accent);
+  color: var(--color-ink);
+}
+
+/* Year-jump navigation */
+.archive-year-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding: var(--space-3) 0 var(--space-4);
+  margin-bottom: var(--space-6);
+  border-top: 1px solid var(--color-rule);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-faint);
+}
+
+.archive-year-nav__btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--color-accent);
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+  transition: border-color var(--transition-fast);
+}
+
+.archive-year-nav__btn:hover {
+  border-bottom-color: var(--color-accent);
+}
+
+.archive-year-nav__sep {
+  color: var(--color-rule-heavy);
+  font-weight: 400;
+  user-select: none;
 }
 
 /* Visually hidden (accessible labels) */
