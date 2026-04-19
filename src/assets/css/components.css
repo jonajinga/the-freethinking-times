@@ -1470,7 +1470,7 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
 
 /* ── Nav drawer support badge ───────────────────────────────── */
 .nav-drawer__support {
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-2) var(--space-5) var(--space-4);
   display: flex;
   justify-content: center;
 }
