@@ -558,51 +558,39 @@ content:
 
   - name: authors
     label: Authors
-    path: src/_data/authors.json
-    type: file
+    path: src/_data/authorProfiles
+    type: collection
+    filename: "{fields.slug}.json"
     format: json
     fields:
-      - name: jon-ajinga
+      - { name: slug, type: string, required: true, label: "Slug (e.g. jane-doe — becomes the file name and URL)" }
+      - { name: name, type: string, required: true, label: "Display name" }
+      - { name: role, type: string, label: "Role (e.g. Founding Editor, Staff Reporter)" }
+      - { name: title, type: string, label: "Professional title" }
+      - { name: location, type: string, label: "Location (e.g. Denver, Colorado)" }
+      - { name: bio, type: text, label: "Short bio (shown in byline tooltips)" }
+      - { name: bioLong, type: rich-text, label: "Full bio (shown on author page)" }
+      - { name: photo, type: image, label: "Author photo" }
+      - name: social
         type: object
-        label: "Jon Ajinga"
+        label: "Social media links"
         fields:
-          - { name: name, type: string, required: true }
-          - { name: slug, type: string, required: true }
-          - { name: role, type: string, label: "Role (e.g. Founding Editor)" }
-          - { name: title, type: string, label: "Professional title" }
-          - { name: location, type: string, label: "Location (e.g. Denver, Colorado)" }
-          - { name: bio, type: text, label: "Short bio (shown in byline tooltips)" }
-          - { name: bioLong, type: rich-text, label: "Full bio (shown on author page)" }
-          - { name: photo, type: image, label: "Author photo" }
-          - name: social
-            type: object
-            label: "Social media links"
-            fields:
-              - { name: x, type: string, label: "X / Twitter URL" }
-              - { name: bluesky, type: string, label: "Bluesky URL" }
-              - { name: mastodon, type: string, label: "Mastodon URL" }
-              - { name: linkedin, type: string, label: "LinkedIn URL" }
-              - { name: github, type: string, label: "GitHub URL" }
-              - { name: threads, type: string, label: "Threads URL" }
-              - { name: instagram, type: string, label: "Instagram URL" }
-              - { name: website, type: string, label: "Personal website URL" }
-              - { name: email, type: string, label: "Public email address" }
-          - name: tipping
-            type: object
-            label: "Support / donation links"
-            fields:
-              - { name: kofi, type: string, label: "Ko-fi URL" }
-              - { name: bmac, type: string, label: "Buy Me A Coffee URL" }
-              - { name: patreon, type: string, label: "Patreon URL" }
-      - name: staff
+          - { name: x, type: string, label: "X / Twitter URL" }
+          - { name: bluesky, type: string, label: "Bluesky URL" }
+          - { name: mastodon, type: string, label: "Mastodon URL" }
+          - { name: linkedin, type: string, label: "LinkedIn URL" }
+          - { name: github, type: string, label: "GitHub URL" }
+          - { name: threads, type: string, label: "Threads URL" }
+          - { name: instagram, type: string, label: "Instagram URL" }
+          - { name: website, type: string, label: "Personal website URL" }
+          - { name: email, type: string, label: "Public email address" }
+      - name: tipping
         type: object
-        label: "Staff (house byline)"
+        label: "Support / donation links"
         fields:
-          - { name: name, type: string, required: true }
-          - { name: slug, type: string, required: true }
-          - { name: role, type: string }
-          - { name: bio, type: text }
-          - { name: photo, type: image }
+          - { name: kofi, type: string, label: "Ko-fi URL" }
+          - { name: bmac, type: string, label: "Buy Me A Coffee URL" }
+          - { name: patreon, type: string, label: "Patreon URL" }
 
   - name: quotes
     label: Quotes
@@ -758,6 +746,7 @@ content:
       - { name: author, type: string, required: true, label: "Publication byline (used in RSS, JSON-LD, etc.)" }
       - { name: email, type: string, label: "Contact email address" }
       - { name: founded, type: number, label: "Year founded" }
+      - { name: footerByline, type: string, label: "Footer byline (replaces auto-generated 'Founded X. Tagline' text)" }
       - { name: gtranslate, type: boolean, label: "Enable Google Translate widget" }
       - name: tipping
         type: object

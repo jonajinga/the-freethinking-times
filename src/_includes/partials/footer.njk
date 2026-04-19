@@ -11,7 +11,7 @@
             <img src="/assets/favicon.svg" alt="" aria-hidden="true" width="24" height="24">{{ site.title }}
           </p>
           <p style="font-size: var(--text-sm); color: var(--color-ink-muted); max-width: 42ch; line-height: var(--leading-normal);">
-            Founded {{ site.founded }}. {{ site.tagline }}
+            {{ site.footerByline or ("Founded " + site.founded + ". " + site.tagline) }}
           </p>
           {% if site.tipping %}
           {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
