@@ -561,7 +561,6 @@ content:
     path: src/authors-data
     type: collection
     filename: "{fields.slug}.md"
-    format: frontmatter
     fields:
       - { name: slug, type: string, required: true, label: "Slug (e.g. jane-doe — used in article front matter and author URL)" }
       - { name: name, type: string, required: true, label: "Display name" }
@@ -597,7 +596,6 @@ content:
     path: src/quotes-data
     type: collection
     filename: "{fields.author|slugify}-{fields.quote|truncate(20)|slugify}.md"
-    format: frontmatter
     fields:
       - { name: author, type: string, required: true }
       - { name: quote, type: text, required: true }
@@ -610,7 +608,6 @@ content:
     path: src/timeline-data
     type: collection
     filename: "{fields.year}-{fields.title|slugify}.md"
-    format: frontmatter
     fields:
       - { name: title, type: string, required: true }
       - { name: year, type: number, required: true, label: "Year (use negative for BCE, e.g. -399)" }
@@ -622,7 +619,6 @@ content:
     path: src/events-data
     type: collection
     filename: "{fields.date}-{fields.name|slugify}.md"
-    format: frontmatter
     fields:
       - { name: name, type: string, required: true }
       - { name: date, type: date, required: true }
@@ -642,7 +638,6 @@ content:
     path: src/videos-data
     type: collection
     filename: "{fields.speaker|slugify}-{fields.title|slugify}.md"
-    format: frontmatter
     fields:
       - { name: title, type: string, required: true }
       - { name: url, type: string, required: true, label: "YouTube URL" }
@@ -658,7 +653,6 @@ content:
     path: src/feeds-data
     type: collection
     filename: "{fields.name|slugify}.md"
-    format: frontmatter
     fields:
       - { name: name, type: string, required: true }
       - { name: url, type: string, required: true, label: "Feed URL" }
@@ -669,7 +663,6 @@ content:
     path: src/gallery-data
     type: collection
     filename: "{fields.alt|slugify}.md"
-    format: frontmatter
     fields:
       - { name: src, type: image, required: true, label: "Photo" }
       - { name: alt, type: string, required: true, label: "Alt text (required for accessibility)" }
@@ -682,7 +675,6 @@ content:
     path: src/playlists-data
     type: collection
     filename: "{fields.name|slugify}.md"
-    format: frontmatter
     fields:
       - { name: name, type: string, required: true }
       - { name: description, type: text }
@@ -694,7 +686,6 @@ content:
     path: src/songs-data
     type: collection
     filename: "{fields.artist|slugify}-{fields.title|slugify}.md"
-    format: frontmatter
     fields:
       - { name: title, type: string, required: true }
       - { name: artist, type: string, required: true }
@@ -709,7 +700,6 @@ content:
     path: src/games-data
     type: collection
     filename: "{fields.slug}.md"
-    format: frontmatter
     fields:
       - { name: slug, type: string, required: true, label: "URL slug (e.g. fifteen-puzzle)" }
       - { name: title, type: string, required: true }
@@ -722,7 +712,6 @@ content:
     path: src/changelog-data
     type: collection
     filename: "{fields.date}-{fields.title|slugify}.md"
-    format: frontmatter
     fields:
       - { name: title, type: string, required: true }
       - { name: date, type: date, required: true }
