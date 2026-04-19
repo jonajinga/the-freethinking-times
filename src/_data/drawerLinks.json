@@ -1,41 +1,110 @@
 [
   {
     "heading": "Projects",
+    "showSupportBadgeAfter": false,
+    "small": false,
     "links": [
-      { "label": "Public Domain Library",  "url": "/library/" },
-      { "label": "Freethought Quotes",     "url": "/quotes/" },
-      { "label": "Freethought Videos",     "url": "/videos/" },
-      { "label": "Freethought Timeline",   "url": "/timeline/" },
-      { "label": "Freethought Resources",  "url": "/resources/" },
-      { "label": "Freethought Glossary",   "url": "/glossary/" },
-      { "label": "Freethinker's Bookshelf","url": "/bookshelf/" },
-      { "label": "Thought Experiments",    "url": "/thought-experiments/" },
-      { "label": "Trials of Thought",      "url": "/trials/" },
-      { "label": "Freethought Music",      "url": "/music/" },
-      { "label": "Gallery",                "url": "/gallery/" },
-      { "label": "Games",                  "url": "/games/" }
+      {
+        "label": "Public Domain Library",
+        "url": "/library/"
+      },
+      {
+        "label": "Freethought Quotes",
+        "url": "/quotes/"
+      },
+      {
+        "label": "Freethought Videos",
+        "url": "/videos/"
+      },
+      {
+        "label": "Freethought Timeline",
+        "url": "/timeline/"
+      },
+      {
+        "label": "Freethought Resources",
+        "url": "/resources/"
+      },
+      {
+        "label": "Freethought Glossary",
+        "url": "/glossary/"
+      },
+      {
+        "label": "Freethinker's Bookshelf",
+        "url": "/bookshelf/"
+      },
+      {
+        "label": "Thought Experiments",
+        "url": "/thought-experiments/"
+      },
+      {
+        "label": "Trials of Thought",
+        "url": "/trials/"
+      },
+      {
+        "label": "Freethought Music",
+        "url": "/music/"
+      },
+      {
+        "label": "Gallery",
+        "url": "/gallery/"
+      },
+      {
+        "label": "Games",
+        "url": "/games/"
+      }
     ]
   },
   {
     "heading": "Community",
-    "showSupportBadgeAfter": true,
+    "showSupportBadgeAfter": false,
+    "small": false,
     "links": [
-      { "label": "Community Hub",    "url": "/community/" },
-      { "label": "Events Calendar",  "url": "/events/" },
-      { "label": "Newsletter",       "url": "/newsletter/" },
-      { "label": "Contribute",       "url": "/contribute/" },
-      { "label": "Submit",           "url": "/submit/" }
+      {
+        "label": "Community Hub",
+        "url": "/community/"
+      },
+      {
+        "label": "Events Calendar",
+        "url": "/events/"
+      },
+      {
+        "label": "Newsletter",
+        "url": "/newsletter/"
+      },
+      {
+        "label": "Contribute",
+        "url": "/contribute/"
+      },
+      {
+        "label": "Submit",
+        "url": "/submit/"
+      }
     ]
   },
   {
-    "heading": null,
+    "showSupportBadgeAfter": true,
     "small": true,
     "links": [
-      { "label": "About",        "url": "/about/" },
-      { "label": "Contact",      "url": "/contact/" },
-      { "label": "Reader Tools", "url": "/reader-tools/" },
-      { "label": "Transparency", "url": "/transparency/" },
-      { "label": "Legal",        "url": "/legal/" }
+      {
+        "label": "About",
+        "url": "/about/"
+      },
+      {
+        "label": "Contact",
+        "url": "/contact/"
+      },
+      {
+        "label": "Reader Tools",
+        "url": "/reader-tools/"
+      },
+      {
+        "label": "Transparency",
+        "url": "/transparency/"
+      },
+      {
+        "label": "Legal",
+        "url": "/legal/"
+      }
     ]
   }
 ]
