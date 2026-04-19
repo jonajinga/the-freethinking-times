@@ -1,12 +1,12 @@
 ---
-title: What If God Was One of Us
-artist: Joan Osborne
-album: Relish
+title: "What If God Was One of Us"
+artist: "Joan Osborne"
+album: "Relish"
 year: 1995
-genre: Rock
+genre: "Rock"
 tags:
-  - philosophy
-  - religion
-  - questioning
-url: https://www.youtube.com/watch?v=7Gx1Pv02w3Q
+  - "philosophy"
+  - "religion"
+  - "questioning"
+url: "https://www.youtube.com/watch?v=7Gx1Pv02w3Q"
 ---

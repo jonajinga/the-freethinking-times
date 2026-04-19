@@ -1,12 +1,12 @@
 ---
-title: Blasphemous Rumours
-artist: Depeche Mode
-album: Some Great Reward
+title: "Blasphemous Rumours"
+artist: "Depeche Mode"
+album: "Some Great Reward"
 year: 1984
-genre: Synth-Pop
+genre: "Synth-Pop"
 tags:
-  - theodicy
-  - suffering
-  - religion
-url: https://www.youtube.com/watch?v=a5EJYKqR-aI
+  - "theodicy"
+  - "suffering"
+  - "religion"
+url: "https://www.youtube.com/watch?v=a5EJYKqR-aI"
 ---

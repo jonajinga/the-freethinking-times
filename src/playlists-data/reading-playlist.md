@@ -1,6 +1,6 @@
 ---
-name: Reading Playlist
-description: Music for focused reading and deep thought.
-playlistId: PLZzyUfYacyoJjeBe_unngyzRyczmzag5-
-category: Focus
+name: "Reading Playlist"
+description: "Music for focused reading and deep thought."
+playlistId: "PLZzyUfYacyoJjeBe_unngyzRyczmzag5-"
+category: "Focus"
 ---

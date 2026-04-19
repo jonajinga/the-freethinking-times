@@ -1,13 +1,13 @@
 ---
 title: "Robert Ingersoll: The Great Agnostic"
-url: https://www.youtube.com/watch?v=JmVKJcO6E8I
-embed: https://www.youtube-nocookie.com/embed/JmVKJcO6E8I
+url: "https://www.youtube.com/watch?v=JmVKJcO6E8I"
+embed: "https://www.youtube-nocookie.com/embed/JmVKJcO6E8I"
 duration: "58:00"
-speaker: Documentary
+speaker: "Documentary"
 date: "2013"
 tags:
-  - Ingersoll
-  - Biography
-  - Freethought
-description: Documentary exploring the life and legacy of Robert G. Ingersoll, America's most famous agnostic orator.
+  - "Ingersoll"
+  - "Biography"
+  - "Freethought"
+description: "Documentary exploring the life and legacy of Robert G. Ingersoll, America's most famous agnostic orator."
 ---

@@ -1,10 +1,10 @@
 ---
-name: Reason Rally
+name: "Reason Rally"
 date: "2026-06-15"
 endDate: "2026-06-16"
-location: Washington, D.C.
-region: National
-type: conference
-url: https://reasonrally.org
-description: The largest secular gathering in the world — advocacy, community, and celebration on the National Mall.
+location: "Washington, D.C."
+region: "National"
+type: "conference"
+url: "https://reasonrally.org"
+description: "The largest secular gathering in the world — advocacy, community, and celebration on the National Mall."
 ---

@@ -1,12 +1,12 @@
 ---
-title: Dear God
-artist: XTC
-album: Skylarking
+title: "Dear God"
+artist: "XTC"
+album: "Skylarking"
 year: 1986
-genre: Rock
+genre: "Rock"
 tags:
-  - atheism
-  - suffering
-  - religion
-url: https://www.youtube.com/watch?v=p554R-Je43I
+  - "atheism"
+  - "suffering"
+  - "religion"
+url: "https://www.youtube.com/watch?v=p554R-Je43I"
 ---

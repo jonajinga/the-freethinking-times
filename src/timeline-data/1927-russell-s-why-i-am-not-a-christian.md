@@ -1,8 +1,6 @@
 ---
 year: 1927
-title: Russell's 'Why I Am Not a Christian'
-description: >-
-  Bertrand Russell delivers his famous lecture at Battersea Town Hall, the clearest short statement of secular humanism
-  ever written.
-era: 20th Century
+title: "Russell's 'Why I Am Not a Christian'"
+description: "Bertrand Russell delivers his famous lecture at Battersea Town Hall, the clearest short statement of secular humanism ever written."
+era: "20th Century"
 ---

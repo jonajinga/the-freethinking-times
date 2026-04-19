@@ -1,5 +1,5 @@
 ---
-name: Pharyngula
-url: https://freethoughtblogs.com/pharyngula/feed/
-category: Publications
+name: "Pharyngula"
+url: "https://freethoughtblogs.com/pharyngula/feed/"
+category: "Publications"
 ---

@@ -1,13 +1,13 @@
 ---
-title: Christopher Hitchens — God Is Not Great
-url: https://www.youtube.com/watch?v=sD0B-X9LJjs
-embed: https://www.youtube-nocookie.com/embed/sD0B-X9LJjs
+title: "Christopher Hitchens — God Is Not Great"
+url: "https://www.youtube.com/watch?v=sD0B-X9LJjs"
+embed: "https://www.youtube-nocookie.com/embed/sD0B-X9LJjs"
 duration: "1:16:00"
-speaker: Christopher Hitchens
+speaker: "Christopher Hitchens"
 date: "2007"
 tags:
-  - Hitchens
-  - Religion
-  - Debate
+  - "Hitchens"
+  - "Religion"
+  - "Debate"
 description: "Hitchens presents the arguments from his book God Is Not Great: How Religion Poisons Everything."
 ---

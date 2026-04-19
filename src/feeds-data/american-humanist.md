@@ -1,5 +1,5 @@
 ---
-name: American Humanist
-url: https://americanhumanist.org/feed/
-category: Organizations
+name: "American Humanist"
+url: "https://americanhumanist.org/feed/"
+category: "Organizations"
 ---

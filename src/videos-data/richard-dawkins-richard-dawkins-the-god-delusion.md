@@ -1,14 +1,14 @@
 ---
-title: Richard Dawkins — The God Delusion
-url: https://www.youtube.com/watch?v=VxGMqKCcN6A
-embed: https://www.youtube-nocookie.com/embed/VxGMqKCcN6A
+title: "Richard Dawkins — The God Delusion"
+url: "https://www.youtube.com/watch?v=VxGMqKCcN6A"
+embed: "https://www.youtube-nocookie.com/embed/VxGMqKCcN6A"
 duration: "47:00"
-speaker: Richard Dawkins
+speaker: "Richard Dawkins"
 date: "2006"
 tags:
-  - Dawkins
-  - Atheism
-  - Science
-  - Evolution
-description: Dawkins presents the central arguments from The God Delusion at the Randolph-Macon Woman's College.
+  - "Dawkins"
+  - "Atheism"
+  - "Science"
+  - "Evolution"
+description: "Dawkins presents the central arguments from The God Delusion at the Randolph-Macon Woman's College."
 ---

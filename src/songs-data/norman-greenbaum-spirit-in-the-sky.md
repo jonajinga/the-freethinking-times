@@ -1,11 +1,11 @@
 ---
-title: Spirit in the Sky
-artist: Norman Greenbaum
-album: Spirit in the Sky
+title: "Spirit in the Sky"
+artist: "Norman Greenbaum"
+album: "Spirit in the Sky"
 year: 1969
-genre: Rock
+genre: "Rock"
 tags:
-  - spirituality
-  - afterlife
-url: https://www.youtube.com/watch?v=AZQxH_8raCI
+  - "spirituality"
+  - "afterlife"
+url: "https://www.youtube.com/watch?v=AZQxH_8raCI"
 ---

@@ -1,12 +1,12 @@
 ---
-title: Imagine
-artist: John Lennon
-album: Imagine
+title: "Imagine"
+artist: "John Lennon"
+album: "Imagine"
 year: 1971
-genre: Rock
+genre: "Rock"
 tags:
-  - humanism
-  - peace
-  - secularism
-url: https://www.youtube.com/watch?v=YkgkThdzX-8
+  - "humanism"
+  - "peace"
+  - "secularism"
+url: "https://www.youtube.com/watch?v=YkgkThdzX-8"
 ---

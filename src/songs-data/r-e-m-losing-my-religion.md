@@ -1,11 +1,11 @@
 ---
-title: Losing My Religion
-artist: R.E.M.
-album: Out of Time
+title: "Losing My Religion"
+artist: "R.E.M."
+album: "Out of Time"
 year: 1991
-genre: Alternative
+genre: "Alternative"
 tags:
-  - doubt
-  - disillusionment
-url: https://www.youtube.com/watch?v=xwtdhWltSIg
+  - "doubt"
+  - "disillusionment"
+url: "https://www.youtube.com/watch?v=xwtdhWltSIg"
 ---

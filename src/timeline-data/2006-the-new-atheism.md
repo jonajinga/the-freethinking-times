@@ -1,8 +1,6 @@
 ---
 year: 2006
-title: The New Atheism
-description: >-
-  Sam Harris (The End of Faith), Richard Dawkins (The God Delusion), Daniel Dennett (Breaking the Spell), and
-  Christopher Hitchens (God Is Not Great) launch the 'New Atheist' movement.
-era: 21st Century
+title: "The New Atheism"
+description: "Sam Harris (The End of Faith), Richard Dawkins (The God Delusion), Daniel Dennett (Breaking the Spell), and Christopher Hitchens (God Is Not Great) launch the 'New Atheist' movement."
+era: "21st Century"
 ---

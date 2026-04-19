@@ -1,13 +1,13 @@
 ---
-title: The Galaxy Song
-artist: Monty Python
-album: The Meaning of Life
+title: "The Galaxy Song"
+artist: "Monty Python"
+album: "The Meaning of Life"
 year: 1983
-genre: Comedy
+genre: "Comedy"
 tags:
-  - science
-  - cosmos
-  - humanism
-  - humour
-url: https://www.youtube.com/watch?v=buqtdpuZxvk
+  - "science"
+  - "cosmos"
+  - "humanism"
+  - "humour"
+url: "https://www.youtube.com/watch?v=buqtdpuZxvk"
 ---

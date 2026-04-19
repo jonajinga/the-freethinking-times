@@ -1,8 +1,6 @@
 ---
 year: -300
-title: Epicurus founds the Garden
-description: >-
-  Epicurus establishes his school in Athens, teaching that the gods do not intervene in human affairs and that pleasure
-  (ataraxia) is the highest good.
-era: Ancient
+title: "Epicurus founds the Garden"
+description: "Epicurus establishes his school in Athens, teaching that the gods do not intervene in human affairs and that pleasure (ataraxia) is the highest good."
+era: "Ancient"
 ---

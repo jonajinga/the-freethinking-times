@@ -1,10 +1,10 @@
 ---
-name: FFRF National Convention
+name: "FFRF National Convention"
 date: "2026-10-30"
 endDate: "2026-11-01"
-location: San Antonio, TX
-region: Southwest
-type: convention
-url: https://ffrf.org/outreach/convention
-description: Annual convention of the Freedom From Religion Foundation — speakers, legal updates, awards.
+location: "San Antonio, TX"
+region: "Southwest"
+type: "convention"
+url: "https://ffrf.org/outreach/convention"
+description: "Annual convention of the Freedom From Religion Foundation — speakers, legal updates, awards."
 ---

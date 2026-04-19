@@ -1,6 +1,6 @@
 ---
-name: Freethought Channel
-description: A curated channel of music for the freethinking mind.
-playlistId: UUvX3fCdOB5gSuAKenxcPi0w
-category: Mixed
+name: "Freethought Channel"
+description: "A curated channel of music for the freethinking mind."
+playlistId: "UUvX3fCdOB5gSuAKenxcPi0w"
+category: "Mixed"
 ---

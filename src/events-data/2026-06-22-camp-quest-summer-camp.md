@@ -1,10 +1,10 @@
 ---
-name: Camp Quest Summer Camp
+name: "Camp Quest Summer Camp"
 date: "2026-06-22"
 endDate: "2026-06-28"
-location: Multiple locations
-region: National
-type: conference
-url: https://campquest.org
-description: Residential summer camp for children of freethinking families — science, critical thinking, and outdoor fun.
+location: "Multiple locations"
+region: "National"
+type: "conference"
+url: "https://campquest.org"
+description: "Residential summer camp for children of freethinking families — science, critical thinking, and outdoor fun."
 ---

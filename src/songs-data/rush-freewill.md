@@ -1,12 +1,12 @@
 ---
-title: Freewill
-artist: Rush
-album: Permanent Waves
+title: "Freewill"
+artist: "Rush"
+album: "Permanent Waves"
 year: 1980
-genre: Rock
+genre: "Rock"
 tags:
-  - free will
-  - reason
-  - individualism
-url: https://www.youtube.com/watch?v=bpOyQhgM1Fw
+  - "free will"
+  - "reason"
+  - "individualism"
+url: "https://www.youtube.com/watch?v=bpOyQhgM1Fw"
 ---

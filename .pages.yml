@@ -671,7 +671,7 @@ content:
     filename: "{fields.alt|slugify}.md"
     format: frontmatter
     fields:
-      - { name: src, type: string, required: true, label: "Image path (e.g. /assets/img/gallery/photo.jpg)" }
+      - { name: src, type: image, required: true, label: "Photo" }
       - { name: alt, type: string, required: true, label: "Alt text (required for accessibility)" }
       - { name: credit, type: string, label: "Photographer / credit" }
       - { name: license, type: select, options: ["Public Domain", "CC0", "CC BY", "CC BY-SA", "CC BY-NC", "All Rights Reserved"] }

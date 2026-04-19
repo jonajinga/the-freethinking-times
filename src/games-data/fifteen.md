@@ -1,7 +1,7 @@
 ---
-slug: fifteen
-title: The Fifteen Puzzle
-description: Slide the tiles back into numerical order. A pure puzzle of logic and spatial reasoning.
-icon: 🔢
-url: /games/fifteen/
+slug: "fifteen"
+title: "The Fifteen Puzzle"
+description: "Slide the tiles back into numerical order. A pure puzzle of logic and spatial reasoning."
+icon: "🔢"
+url: "/games/fifteen/"
 ---

@@ -1,10 +1,10 @@
 ---
-name: Secular Student Alliance Annual Conference
+name: "Secular Student Alliance Annual Conference"
 date: "2026-07-10"
 endDate: "2026-07-12"
-location: Columbus, OH
-region: Midwest
-type: conference
-url: https://secularstudents.org
-description: Training, networking, and community for secular student leaders from across the country.
+location: "Columbus, OH"
+region: "Midwest"
+type: "conference"
+url: "https://secularstudents.org"
+description: "Training, networking, and community for secular student leaders from across the country."
 ---

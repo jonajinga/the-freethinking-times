@@ -1,11 +1,11 @@
 ---
-name: Banned Books Week
+name: "Banned Books Week"
 date: "2026-09-27"
 endDate: "2026-10-03"
-location: Nationwide
-region: National
-type: observance
-url: https://bannedbooksweek.org
-description: Annual celebration of the freedom to read — events at libraries and bookstores nationwide.
-recurrence: annual
+location: "Nationwide"
+region: "National"
+type: "observance"
+url: "https://bannedbooksweek.org"
+description: "Annual celebration of the freedom to read — events at libraries and bookstores nationwide."
+recurrence: "annual"
 ---
