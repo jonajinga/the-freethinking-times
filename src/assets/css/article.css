@@ -221,6 +221,8 @@
 
 .article-lead-image img {
   width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;  /* reserves space before load — prevents CLS */
   max-height: 560px;
   object-fit: cover;
 }

@@ -19,7 +19,8 @@
       alt="{{ article.data.imageAlt or article.data.title }}"
       width="800"
       height="450"
-      loading="lazy">
+      loading="{{ 'eager' if priority else 'lazy' }}"
+      {% if priority %}fetchpriority="high"{% endif %}>
   </a>
   {% endif %}
 

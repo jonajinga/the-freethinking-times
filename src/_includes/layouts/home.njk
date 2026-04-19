@@ -11,7 +11,9 @@ layout: layouts/base.njk
     {% set article = leadStory %}
     {% set size = "lg" %}
     {% set showImage = true %}
+    {% set priority = true %}
     {% include "partials/article-card.njk" %}
+    {% set priority = false %}
     {% endif %}
   </section>
 

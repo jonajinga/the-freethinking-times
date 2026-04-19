@@ -634,7 +634,7 @@ layout: layouts/base.njk
       {# Lead image #}
       {% if image %}
       <figure class="article-lead-image">
-        <img src="{{ image }}" alt="{{ imageAlt or title }}" loading="eager">
+        <img src="{{ image }}" alt="{{ imageAlt or title }}" loading="eager" fetchpriority="high" width="1200" height="630">
         {% if imageCaption %}
         <figcaption>{{ imageCaption }}</figcaption>
         {% endif %}
