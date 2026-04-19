@@ -141,6 +141,7 @@ layout: layouts/base.njk
               <span class="tip-badge__label">transparency</span><span class="tip-badge__value">how we're funded</span>
             </a>
             <span class="article-header__support-divider" aria-hidden="true"></span>
+            {% set tipHidePublication = true %}
             {% include "partials/tip-buttons.njk" %}
           </div>
           {% endif %}
