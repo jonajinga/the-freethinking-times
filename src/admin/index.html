@@ -7,6 +7,11 @@
     <title>Content Editor — The Freethinking Times</title>
   </head>
   <body>
+    <script>
+      window.addEventListener('message', function(e) {
+        console.log('[auth-debug] message from', e.origin, '|', typeof e.data === 'string' ? e.data.slice(0, 80) : JSON.stringify(e.data).slice(0, 80));
+      });
+    </script>
     <script src="https://unpkg.com/decap-cms@3/dist/decap-cms.js"></script>
   </body>
 </html>
