@@ -8,7 +8,7 @@ Independent journalism. Investigative. Philosophical. Adversarial to power.
 [![Deployed on Cloudflare Pages](https://img.shields.io/badge/deployed-Cloudflare%20Pages-orange)](https://pages.cloudflare.com/)
 
 Built with [Eleventy v3](https://www.11ty.dev/) and hosted on [Cloudflare Pages](https://pages.cloudflare.com/).
-Content is managed via [Pages CMS](https://pagescms.org) or direct Markdown files.
+Content is managed via [Decap CMS](https://decapcms.org) (`/admin/`) or direct Markdown files.
 
 **License:** [MIT](LICENSE) for code. Editorial content remains the copyright of its
 authors — see the note in [LICENSE](LICENSE) if you intend to fork.
@@ -50,14 +50,14 @@ style, and the PR process.
 
 ### For writers and journalists
 
-**Path 1 — Pages CMS (recommended if you don't use Git):**
+**Path 1 — Decap CMS (recommended if you don't use Git):**
 
 1. Contact [hello@thefreethinkingtimes.com](mailto:hello@thefreethinkingtimes.com)
-   to be added as a contributor.
-2. Go to [pagescms.org](https://pagescms.org) and authenticate with your GitHub account.
-3. Add `jonajinga/the-freethinking-times` as a project — it auto-detects `.pages.yml`.
-4. All 14 content collections (News, Opinion, Analysis, Glossary, Bookshelf, etc.)
-   appear in the dashboard.
+   to be added as a contributor (requires a free GitHub account).
+2. Once added, visit [thefreethinkingtimes.com/admin/](https://thefreethinkingtimes.com/admin/)
+   and authenticate with your GitHub account.
+3. All content collections (News, Opinion, Analysis, Glossary, Bookshelf, etc.)
+   appear in the left sidebar.
 
 **Path 2 — Pull request (if you're comfortable with Git):**
 
@@ -127,7 +127,7 @@ editorial workflow, corrections process, and how to add new authors.
 - 100% static output (Eleventy v3)
 - Zero bundler — vanilla CSS and JS
 - Cloudflare Pages auto-deploy on push to `main`
-- Pages CMS for non-technical contributors
+- Decap CMS for non-technical contributors (with Cloudflare Access gates)
 - Webhook notifications on article publish
 - Scheduled daily rebuild (for future-dated articles)
 - Responsive images (AVIF + WebP + JPEG, lazy-loaded)
@@ -143,7 +143,7 @@ editorial workflow, corrections process, and how to add new authors.
 ```
 .
 ├── .env.example              # Environment variable reference — copy to .env
-├── .pages.yml                # Pages CMS — 14 content collection definitions
+├── .pages.yml.bak            # Archived Pages CMS config (superseded by src/admin/config.yml)
 ├── .eleventy.js              # Eleventy config: plugins, collections, filters, shortcodes
 ├── .github/
 │   ├── workflows/
@@ -296,7 +296,7 @@ Colors, fonts, spacing, dark mode palette — all visual variables live there.
 
 **Site globals:** [`src/_data/site.js`](src/_data/site.js) reads from `site-settings.json`
 and environment variables. Non-secret settings (title, description, social links,
-tipping URLs) live in `site-settings.json` and are editable via Pages CMS.
+tipping URLs) live in `site-settings.json` and are editable via Decap CMS.
 
 **Navigation:** [`src/_data/nav.json`](src/_data/nav.json).
 
@@ -320,11 +320,13 @@ and descriptions.
 6. **Deploy:** Follow the Cloudflare Pages steps above, or deploy to any static host
    that can run `npm run build`.
 
-### Pages CMS setup
+### Decap CMS setup
 
-1. Visit [pagescms.org](https://pagescms.org) and authenticate with GitHub.
-2. Add your fork as a project — it auto-detects `.pages.yml`.
-3. All 14 collections appear in the CMS dashboard.
+1. Create a [GitHub OAuth App](https://github.com/settings/developers) — set the callback URL to `https://[your-domain]/admin/`.
+2. Add the Client ID to `src/admin/config.yml` as `app_id`.
+3. Set up [Cloudflare Zero Trust Access](https://one.dash.cloudflare.com/) to gate `[your-domain]/admin/` with an email allowlist.
+4. Add writers as GitHub collaborators (Write access) and to the Cloudflare Access allowlist.
+5. Visit `/admin/` — Cloudflare email OTP → GitHub auth → all 26 collections appear in the sidebar.
 
 ---
 

@@ -54,6 +54,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/assets/favicon.svg": "assets/favicon.svg" });
   eleventyConfig.addPassthroughCopy({ "src/assets/img": "assets/img" });
   eleventyConfig.addPassthroughCopy({ "src/humans.txt": "humans.txt" });
+  eleventyConfig.addPassthroughCopy({ "src/admin": "admin" });
 
   // ─── CSS Concatenation (no @import waterfall) ──────────────────────────────
   eleventyConfig.addTemplateFormats("css");

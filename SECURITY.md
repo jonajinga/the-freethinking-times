@@ -20,7 +20,7 @@ This policy covers responsible disclosure of security vulnerabilities in the
   [Cloudflare directly](https://www.cloudflare.com/trust-hub/security-policy/)
 - Spam or abuse of the contact or submission forms — email
   [hello@thefreethinkingtimes.com](mailto:hello@thefreethinkingtimes.com)
-- Vulnerabilities in third-party services we use (Pagefind, Pages CMS, Cusdis,
+- Vulnerabilities in third-party services we use (Pagefind, Decap CMS, Cusdis,
   Buttondown, Web3Forms) — report those to the respective projects
 - Editorial disputes, factual errors, or harassment — see
   [CONTRIBUTING.md](CONTRIBUTING.md) for the appropriate channels

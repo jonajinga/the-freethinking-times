@@ -12,7 +12,7 @@ corrections policy, and the publishing checklist — see [EDITORIAL.md](EDITORIA
 ## Contents
 
 - [For Writers and Journalists](#for-writers-and-journalists)
-  - [Using Pages CMS](#using-pages-cms-recommended)
+  - [Using Decap CMS](#using-decap-cms-recommended)
   - [Submitting via Pull Request](#submitting-via-pull-request)
   - [Frontmatter Reference](#frontmatter-reference)
   - [Editorial Workflow](#editorial-workflow)
@@ -32,28 +32,27 @@ corrections policy, and the publishing checklist — see [EDITORIAL.md](EDITORIA
 
 ## For Writers and Journalists
 
-### Using Pages CMS (recommended)
+### Using Decap CMS (recommended)
 
-[Pages CMS](https://pagescms.org) provides a web-based editor for all 14 content
+[Decap CMS](https://decapcms.org) provides a web-based editor for all content
 collections — no Git knowledge required.
 
 **Getting access:**
 
 1. Email [hello@thefreethinkingtimes.com](mailto:hello@thefreethinkingtimes.com) to
-   request contributor access.
-2. Once added, go to [pagescms.org](https://pagescms.org) and sign in with your
-   GitHub account.
-3. The `jonajinga/the-freethinking-times` repo will appear in your project list.
-   Select it.
+   request contributor access. You will need a free GitHub account.
+2. Once your email and GitHub account are added, visit
+   [thefreethinkingtimes.com/admin/](https://thefreethinkingtimes.com/admin/).
+3. Enter the one-time PIN sent to your email, then sign in with GitHub.
 4. All collections appear in the left sidebar: News, Opinion, Analysis, Arts & Culture,
    Science & Technology, History, Letters, Reviews, Glossary, Bookshelf, and more.
 
 **How saving works:**
 
-When you save in Pages CMS, it commits directly to the `main` branch. Your article
-is in the repository immediately — but it stays invisible on the live site as long as
-`draft: true` is set in the frontmatter. The CMS sets this automatically for new
-entries. An editor removes `draft: true` to publish.
+When you save a draft in Decap CMS, it creates a pull request branch rather than
+committing directly to the live site. Your article enters the editorial queue
+(Drafts → In Review → Ready to Publish). An editor reviews and merges the PR
+to publish. This means nothing you save goes live until an editor approves it.
 
 ---
 
@@ -195,7 +194,7 @@ When publishing, an editor removes `draft: true` and sets `status: published`.
 ```
 Writer creates article → status: draft, draft: true
          ↓
-Writer submits for review (Pages CMS save or PR)
+Writer submits for review (Decap CMS save creates a PR, or manual PR)
          ↓
 Editor reviews → status: review (draft: true remains — still hidden)
          ↓
@@ -227,8 +226,9 @@ title format `[Section] Title`. Check:
 - `draft: true` and `status: draft` or `status: review` are set.
 - Sources are documented (in the piece or in PR comments).
 
-**Via Pages CMS:** Articles saved in Pages CMS appear with `status: draft`. Change to
-`status: review` to flag them for editorial attention.
+**Via Decap CMS:** Drafts saved in Decap CMS appear as open PRs. Move them from
+"Drafts" to "In Review" in the Decap editorial board, or change `status: review` in
+the frontmatter to flag them for editorial attention.
 
 Request changes via PR review comments or by editing the file directly and committing.
 
