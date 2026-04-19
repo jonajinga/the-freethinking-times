@@ -23,13 +23,13 @@ export async function onRequest(context) {
     const data = await res.json();
 
     if (data.error) {
-      const msg = JSON.stringify('authorization:github:error:' + data.error_description);
-      return html(`window.opener.postMessage(${msg}, '*'); window.close();`);
+      const msg = JSON.stringify('authorization:github:error:' + (data.error_description || data.error));
+      return html(`sendMsg(${msg});`);
     }
 
     const payload = JSON.stringify({ token: data.access_token, provider: 'github' });
     const msg = JSON.stringify('authorization:github:success:' + payload);
-    return html(`window.opener.postMessage(${msg}, '*'); window.close();`);
+    return html(`sendMsg(${msg});`);
   }
 
   const redirectUri = `${url.origin}/api/auth`;
@@ -39,8 +39,19 @@ export async function onRequest(context) {
 }
 
 function html(script) {
-  return new Response(
-    `<!DOCTYPE html><html><body><script>${script}<\/script></body></html>`,
-    { headers: { 'Content-Type': 'text/html' } }
-  );
+  return new Response(`<!DOCTYPE html><html><body>
+<script>
+function sendMsg(msg) {
+  if (window.opener) {
+    window.opener.postMessage(msg, '*');
+    setTimeout(function() { window.close(); }, 100);
+  } else {
+    // opener lost — store token in sessionStorage for the parent to poll
+    sessionStorage.setItem('decap-oauth-msg', msg);
+    document.body.innerHTML = '<p style="font-family:sans-serif;padding:2rem">Authentication complete. You may close this window.</p>';
+  }
+}
+${script}
+<\/script>
+</body></html>`, { headers: { 'Content-Type': 'text/html' } });
 }
