@@ -3149,7 +3149,7 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   color: #fff;
 }
 .tip-badge--pub .tip-badge__value {
-  background: #1A1A1A;
+  background: #1E3A5F;
   color: #F4F1EB;
 }
 .tip-badge--info .tip-badge__label {
