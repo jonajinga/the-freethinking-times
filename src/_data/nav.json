@@ -7,5 +7,5 @@
   { "label": "History",        "url": "/history/",            "key": "history",      "collection": "history" },
   { "label": "Letters",        "url": "/letters/",            "key": "letters",      "collection": "letters" },
   { "label": "Reviews",        "url": "/reviews/",            "key": "reviews",      "collection": "reviews" },
-  { "label": "More",           "url": "/more/",               "key": "more",         "type": "more" }
+  { "label": "Explore",        "url": "/more/",               "key": "more",         "type": "more" }
 ]

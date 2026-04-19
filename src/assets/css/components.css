@@ -3149,13 +3149,8 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   color: #fff;
 }
 .tip-badge--pub .tip-badge__value {
-  background: var(--color-accent);
+  background: #C0392B;  /* hardcoded — avoids dark mode accent (#E05545) which fails 4.5:1 with white */
   color: #fff;
-}
-/* Dark mode accent (#E05545) is too light for white text (3.79:1); use deeper red */
-[data-theme="dark"] .tip-badge--pub .tip-badge__value { background: #C0392B; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .tip-badge--pub .tip-badge__value { background: #C0392B; }
 }
 .tip-badge--info .tip-badge__label {
   background: #374151;
