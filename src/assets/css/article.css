@@ -634,7 +634,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-1);
-  margin-left: auto;
+  margin-top: var(--space-2);
 }
 
 .article-header__meta-tags a {
@@ -652,10 +652,6 @@
 .article-header__meta-tags a:hover {
   color: var(--color-ink);
   border-color: var(--color-ink);
-}
-
-@media (max-width: 640px) {
-  .article-header__meta-tags { margin-left: 0; width: 100%; }
 }
 
 
