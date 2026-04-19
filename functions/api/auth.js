@@ -23,38 +23,56 @@ export async function onRequest(context) {
     const data = await res.json();
 
     if (data.error) {
-      const msg = JSON.stringify('authorization:github:error:' + (data.error_description || data.error));
-      return html(`sendMsg(${msg});`);
+      const errMsg = JSON.stringify('authorization:github:error:' + (data.error_description || data.error));
+      return callbackPage(`window.opener.postMessage(${errMsg}, '*'); window.close();`);
     }
 
     const payload = JSON.stringify({ token: data.access_token, provider: 'github' });
-    const msg = JSON.stringify('authorization:github:success:' + payload);
-    return html(`sendMsg(${msg});`);
+    const successMsg = JSON.stringify('authorization:github:success:' + payload);
+
+    // netlify-auth-providers handshake protocol:
+    // 1. popup sends "authorizing:github" to opener
+    // 2. opener echoes "authorizing:github" back
+    // 3. popup sends "authorization:github:success:..." using the echo's origin
+    // Fallback: send success directly after 1s if no echo arrives.
+    return callbackPage(`
+      var successMsg = ${successMsg};
+      var done = false;
+
+      function send(origin) {
+        if (done) return;
+        done = true;
+        window.opener.postMessage(successMsg, origin || '*');
+        setTimeout(function() { window.close(); }, 300);
+      }
+
+      window.addEventListener('message', function(e) {
+        if (typeof e.data === 'string' && e.data.indexOf('authorizing:github') === 0) {
+          send(e.origin);
+        }
+      });
+
+      if (window.opener) {
+        window.opener.postMessage('authorizing:github', '*');
+      }
+
+      // Fallback if opener never echoes
+      setTimeout(function() { if (!done && window.opener) send('*'); }, 1000);
+    `);
   }
 
+  // Initial request — return a page that sends the handshake THEN redirects to GitHub.
+  // (Avoids losing the opener reference through a bare 302.)
   const redirectUri = `${url.origin}/api/auth`;
   const scope = url.searchParams.get('scope') || 'repo,user';
   const authUrl = `https://github.com/login/oauth/authorize?client_id=${env.GITHUB_CLIENT_ID}&scope=${encodeURIComponent(scope)}&redirect_uri=${encodeURIComponent(redirectUri)}`;
-  return Response.redirect(authUrl, 302);
+  const safeAuthUrl = JSON.stringify(authUrl);
+
+  return callbackPage(`window.location.href = ${safeAuthUrl};`);
 }
 
-function html(script) {
-  return new Response(`<!DOCTYPE html><html><body>
-<pre id="log" style="font-family:monospace;padding:2rem;white-space:pre-wrap"></pre>
-<script>
-function log(s) { document.getElementById('log').textContent += s + '\\n'; }
-function sendMsg(msg) {
-  log('opener: ' + (window.opener ? 'present' : 'NULL'));
-  log('msg prefix: ' + msg.slice(0, 40));
-  if (window.opener) {
-    window.opener.postMessage(msg, '*');
-    log('postMessage sent — closing in 3s');
-    setTimeout(function() { window.close(); }, 3000);
-  } else {
-    log('opener lost — cannot deliver token');
-  }
-}
-${script}
-<\/script>
-</body></html>`, { headers: { 'Content-Type': 'text/html' } });
+function callbackPage(script) {
+  return new Response(`<!DOCTYPE html><html><body><script>${script}<\/script></body></html>`, {
+    headers: { 'Content-Type': 'text/html' }
+  });
 }
