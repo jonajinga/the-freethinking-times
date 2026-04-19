@@ -339,24 +339,24 @@ collections:
       - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
       - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
-      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)" }
-      - { name: image,      widget: image,  label: "Cover Image" }
-      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)" }
+      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
+      - { name: image,      widget: image,  label: "Cover Image", required: false }
+      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
       - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
       - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
-      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)" }
-      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)" }
-      - { name: series,     widget: string, label: "Series Title (optional)" }
-      - { name: seriesPart, widget: number, label: "Part Number in Series" }
-      - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)" }
-      - { name: edition,    widget: number, label: "Edition Number" }
+      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
+      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
+      - { name: series,     widget: string, label: "Series Title (optional)", required: false }
+      - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
+      - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)", required: false }
+      - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
       - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
-      - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)" }
+      - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
-      - { name: assignedTo, widget: string, label: "Assigned To (author slug)" }
-      - { name: dueDate,    widget: datetime, label: "Due Date" }
+      - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
+      - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
@@ -386,24 +386,24 @@ collections:
       - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
       - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
-      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)" }
-      - { name: image,      widget: image,  label: "Cover Image" }
-      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)" }
+      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
+      - { name: image,      widget: image,  label: "Cover Image", required: false }
+      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
       - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
       - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
-      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)" }
-      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)" }
-      - { name: series,     widget: string, label: "Series Title (optional)" }
-      - { name: seriesPart, widget: number, label: "Part Number in Series" }
-      - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)" }
-      - { name: edition,    widget: number, label: "Edition Number" }
+      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
+      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
+      - { name: series,     widget: string, label: "Series Title (optional)", required: false }
+      - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
+      - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)", required: false }
+      - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
       - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
-      - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)" }
+      - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
-      - { name: assignedTo, widget: string, label: "Assigned To (author slug)" }
-      - { name: dueDate,    widget: datetime, label: "Due Date" }
+      - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
+      - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
@@ -433,24 +433,24 @@ collections:
       - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
       - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
-      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)" }
-      - { name: image,      widget: image,  label: "Cover Image" }
-      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)" }
+      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
+      - { name: image,      widget: image,  label: "Cover Image", required: false }
+      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
       - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
       - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
-      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)" }
-      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)" }
-      - { name: series,     widget: string, label: "Series Title (optional)" }
-      - { name: seriesPart, widget: number, label: "Part Number in Series" }
-      - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)" }
-      - { name: edition,    widget: number, label: "Edition Number" }
+      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
+      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
+      - { name: series,     widget: string, label: "Series Title (optional)", required: false }
+      - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
+      - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)", required: false }
+      - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
       - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
-      - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)" }
+      - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
-      - { name: assignedTo, widget: string, label: "Assigned To (author slug)" }
-      - { name: dueDate,    widget: datetime, label: "Due Date" }
+      - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
+      - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
@@ -480,24 +480,24 @@ collections:
       - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
       - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
-      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)" }
-      - { name: image,      widget: image,  label: "Cover Image" }
-      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)" }
+      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
+      - { name: image,      widget: image,  label: "Cover Image", required: false }
+      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
       - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
       - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
-      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)" }
-      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)" }
-      - { name: series,     widget: string, label: "Series Title (optional)" }
-      - { name: seriesPart, widget: number, label: "Part Number in Series" }
-      - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)" }
-      - { name: edition,    widget: number, label: "Edition Number" }
+      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
+      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
+      - { name: series,     widget: string, label: "Series Title (optional)", required: false }
+      - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
+      - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)", required: false }
+      - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
       - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
-      - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)" }
+      - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
-      - { name: assignedTo, widget: string, label: "Assigned To (author slug)" }
-      - { name: dueDate,    widget: datetime, label: "Due Date" }
+      - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
+      - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
@@ -527,24 +527,24 @@ collections:
       - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
       - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
-      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)" }
-      - { name: image,      widget: image,  label: "Cover Image" }
-      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)" }
+      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
+      - { name: image,      widget: image,  label: "Cover Image", required: false }
+      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
       - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
       - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
-      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)" }
-      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)" }
-      - { name: series,     widget: string, label: "Series Title (optional)" }
-      - { name: seriesPart, widget: number, label: "Part Number in Series" }
-      - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)" }
-      - { name: edition,    widget: number, label: "Edition Number" }
+      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
+      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
+      - { name: series,     widget: string, label: "Series Title (optional)", required: false }
+      - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
+      - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)", required: false }
+      - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
       - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
-      - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)" }
+      - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
-      - { name: assignedTo, widget: string, label: "Assigned To (author slug)" }
-      - { name: dueDate,    widget: datetime, label: "Due Date" }
+      - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
+      - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
@@ -574,24 +574,24 @@ collections:
       - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
       - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
-      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)" }
-      - { name: image,      widget: image,  label: "Cover Image" }
-      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)" }
+      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
+      - { name: image,      widget: image,  label: "Cover Image", required: false }
+      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
       - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
       - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
-      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)" }
-      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)" }
-      - { name: series,     widget: string, label: "Series Title (optional)" }
-      - { name: seriesPart, widget: number, label: "Part Number in Series" }
-      - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)" }
-      - { name: edition,    widget: number, label: "Edition Number" }
+      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
+      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
+      - { name: series,     widget: string, label: "Series Title (optional)", required: false }
+      - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
+      - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)", required: false }
+      - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
       - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
-      - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)" }
+      - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
-      - { name: assignedTo, widget: string, label: "Assigned To (author slug)" }
-      - { name: dueDate,    widget: datetime, label: "Due Date" }
+      - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
+      - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
@@ -621,24 +621,24 @@ collections:
       - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
       - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
-      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)" }
-      - { name: image,      widget: image,  label: "Cover Image" }
-      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)" }
+      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
+      - { name: image,      widget: image,  label: "Cover Image", required: false }
+      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
       - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
       - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
-      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)" }
-      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)" }
-      - { name: series,     widget: string, label: "Series Title (optional)" }
-      - { name: seriesPart, widget: number, label: "Part Number in Series" }
-      - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)" }
-      - { name: edition,    widget: number, label: "Edition Number" }
+      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
+      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
+      - { name: series,     widget: string, label: "Series Title (optional)", required: false }
+      - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
+      - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)", required: false }
+      - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
       - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
-      - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)" }
+      - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
-      - { name: assignedTo, widget: string, label: "Assigned To (author slug)" }
-      - { name: dueDate,    widget: datetime, label: "Due Date" }
+      - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
+      - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
@@ -668,26 +668,26 @@ collections:
       - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
       - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
-      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)" }
+      - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
       - { name: mediaType,  widget: select, label: "Media Type", options: [Book, Film, Podcast, Documentary, Series], required: true }
       - { name: creator,    widget: string, label: "Creator / Director / Author", required: true }
       - { name: year,       widget: number, label: "Year of Release" }
       - { name: rating,     widget: number, label: "Rating (1–5)" }
-      - { name: image,      widget: image,  label: "Cover Image" }
-      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)" }
+      - { name: image,      widget: image,  label: "Cover Image", required: false }
+      - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
       - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
       - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
-      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)" }
-      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)" }
-      - { name: series,     widget: string, label: "Series Title (optional)" }
-      - { name: seriesPart, widget: number, label: "Part Number in Series" }
-      - { name: edition,    widget: number, label: "Edition Number" }
+      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
+      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
+      - { name: series,     widget: string, label: "Series Title (optional)", required: false }
+      - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
+      - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
       - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
-      - { name: assignedTo, widget: string, label: "Assigned To (author slug)" }
-      - { name: dueDate,    widget: datetime, label: "Due Date" }
+      - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
+      - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
@@ -771,12 +771,12 @@ collections:
       - { name: imageAlt,     widget: string, label: "Image Alt Text (required for accessibility)" }
       - { name: tags, widget: list, label: "Tags", field: { name: tag, widget: string } }
       - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
-      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)" }
-      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)" }
+      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
+      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
       - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
-      - { name: assignedTo, widget: string, label: "Assigned To (author slug)" }
-      - { name: dueDate,    widget: datetime, label: "Due Date" }
+      - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
+      - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
@@ -810,12 +810,12 @@ collections:
       - { name: imageAlt,     widget: string, label: "Image Alt Text (required for accessibility)" }
       - { name: tags, widget: list, label: "Tags", field: { name: tag, widget: string } }
       - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
-      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)" }
-      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)" }
+      - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
+      - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
       - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
-      - { name: assignedTo, widget: string, label: "Assigned To (author slug)" }
-      - { name: dueDate,    widget: datetime, label: "Due Date" }
+      - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
+      - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
