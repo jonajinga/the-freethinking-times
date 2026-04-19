@@ -10,7 +10,7 @@
   --color-bg-inset:     #E0DBCF;   /* Card backgrounds */
   --color-ink:          #1A1A1A;   /* Primary text */
   --color-ink-muted:    #4A4845;   /* Secondary text, datelines */
-  --color-ink-faint:    #888380;   /* Captions, metadata */
+  --color-ink-faint:    #5E5856;   /* Captions, metadata — 5.1:1 on card bg #E0DBCF */
   --color-rule:         #C8C2B6;   /* Horizontal rules, borders */
   --color-rule-heavy:   #8A847A;   /* Strong dividers */
 
@@ -30,7 +30,7 @@
   --color-analysis:            #5D4037;
   --color-arts-culture:        #6A1B9A;
   --color-science:             #1B5E20;
-  --color-history:             #BF8C00;
+  --color-history:             #75540A;   /* darkened from #BF8C00 — 5.1:1 on card bg */
   --color-letters:             #37474F;
   --color-thought-experiments: #1D5C6E;
   --color-trials:              #6B2A2A;
