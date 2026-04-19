@@ -1,7 +1,7 @@
 ---
 layout: article
 section: Opinion
-title: This is my opinion BITCH!
+title: This is my opinion...
 description: Test
 author: jon-ajinga
 authorName: Jon Ajinga
