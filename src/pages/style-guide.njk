@@ -203,7 +203,7 @@ permalink: /style-guide/
             <div class="sg-color"><div class="sg-color__swatch" style="background:#E8E4DC;"></div><div class="sg-color__body"><span class="sg-color__name">Ink</span><span class="sg-color__value">#E8E4DC</span></div></div>
             <div class="sg-color"><div class="sg-color__swatch" style="background:#A8A49C;"></div><div class="sg-color__body"><span class="sg-color__name">Ink muted</span><span class="sg-color__value">#A8A49C</span></div></div>
             <div class="sg-color"><div class="sg-color__swatch" style="background:#9E9A96;"></div><div class="sg-color__body"><span class="sg-color__name">Ink faint</span><span class="sg-color__value">#9E9A96 · 5.5:1 on card bg</span></div></div>
-            <div class="sg-color"><div class="sg-color__swatch" style="background:#E05545;"></div><div class="sg-color__body"><span class="sg-color__name">Accent (text)</span><span class="sg-color__value">#E05545 — use as text only; #C0392B for bg+white text</span></div></div>
+            <div class="sg-color"><div class="sg-color__swatch" style="background:#E05545;"></div><div class="sg-color__body"><span class="sg-color__name">Accent (text)</span><span class="sg-color__value">#E05545 — text use only (4.9:1 on page bg). Badges hardcode #C0392B directly.</span></div></div>
             <div class="sg-color"><div class="sg-color__swatch" style="background:#6B9EC7;"></div><div class="sg-color__body"><span class="sg-color__name">Link</span><span class="sg-color__value">#6B9EC7</span></div></div>
             <div class="sg-color"><div class="sg-color__swatch" style="background:#B87ACC;"></div><div class="sg-color__body"><span class="sg-color__name">Selection</span><span class="sg-color__value">#B87ACC</span></div></div>
           </div>
@@ -313,6 +313,7 @@ permalink: /style-guide/
             <a class="tip-badge tip-badge--pub" href="#badges" onclick="return false;"><span class="tip-badge__label">support</span><span class="tip-badge__value">The Freethinking Times</span></a>
             <a class="tip-badge tip-badge--info" href="#badges" onclick="return false;"><span class="tip-badge__label">transparency</span><span class="tip-badge__value">how we're funded</span></a>
           </div>
+          <p style="font-size: var(--text-sm); color: var(--color-ink-muted); margin-top: var(--space-2);"><code>tip-badge--pub</code> value uses <code>background: #C0392B</code> hardcoded — not <code>var(--color-accent)</code> — because the dark mode accent (#E05545) fails WCAG AA with white text. Do not change this to use the token.</p>
           <pre class="sg-code">&lt;a class="tip-badge" href="..."&gt;
   &lt;span class="tip-badge__label"&gt;support&lt;/span&gt;
   &lt;span class="tip-badge__value"&gt;Author Name&lt;/span&gt;
@@ -744,7 +745,7 @@ data-tippy-placement="top"</pre>
             </table>
           </div>
         </div>
-        <p style="font-size: var(--text-sm); color: var(--color-ink-muted); margin-top: var(--space-4);">Note: dark mode accent (#E05545) is intentionally lighter for readability as text on dark backgrounds. When used as a background with white text (e.g. publication badge), the CSS overrides to #C0392B to maintain 5.4:1.</p>
+        <p style="font-size: var(--text-sm); color: var(--color-ink-muted); margin-top: var(--space-4);">Note: dark mode accent (#E05545) is for text use only — it passes on dark backgrounds but fails with white text overlaid (3.8:1). The publication tip-badge hardcodes <code>background: #C0392B</code> directly rather than using <code>var(--color-accent)</code>, avoiding the dark mode contrast failure without needing an override.</p>
       </section>
 
       {# ── Naming ── #}
