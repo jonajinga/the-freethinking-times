@@ -9,8 +9,8 @@ date: 2026-04-19T15:44:00.000-06:00
 tags:
   - Opinion
 profile: standard
-featured: false
-draft: true
+featured: true
+draft: false
 status: review
 emailOnly: false
 ---
