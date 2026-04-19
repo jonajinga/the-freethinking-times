@@ -8,7 +8,7 @@ module.exports = {
   eleventyComputed: {
     eleventyExcludeFromCollections: (data) => {
       if (process.env.SHOW_FUTURE === "1") return data.eleventyExcludeFromCollections || false;
-      if (data.draft) return true;
+      if (data.draft && process.env.SHOW_DRAFTS !== "1") return true;
       const now = new Date();
       const pageDate = data.page && data.page.date ? new Date(data.page.date) : null;
       if (pageDate && pageDate > now) return true;
