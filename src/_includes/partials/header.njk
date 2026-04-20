@@ -257,7 +257,7 @@
           {% if subs.length or topTags.length or latest.length %}
             {% if subs.length %}
             <div class="nav-section-col">
-              <p class="nav-section-col__heading">Sections</p>
+              <p class="nav-section-col__heading">Subsections</p>
               {% for sub in subs %}
               <a href="{{ item.url }}?s={{ sub | slugify }}" class="nav-section-col__link">{{ sub }}</a>
               {% endfor %}
