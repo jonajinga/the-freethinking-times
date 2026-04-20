@@ -440,6 +440,8 @@ body, .masthead, .site-footer, .nav-dropdown, .global-settings-panel {
   display: flex;
   flex-direction: column;
   padding: var(--space-3) var(--space-4);
+  min-width: 0; /* prevent grid blowout from nowrap link content */
+  overflow: hidden;
 }
 
 .nav-section-col--bordered {
@@ -463,6 +465,8 @@ body, .masthead, .site-footer, .nav-dropdown, .global-settings-panel {
   font-size: var(--text-sm);
   color: var(--color-ink-muted);
   text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
   transition: color 0.1s;
 }
@@ -3163,13 +3167,17 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   overflow: hidden;
   font-family: var(--font-ui);
   font-size: 0.7rem;
-  font-weight: 400;
-  letter-spacing: 0.02em;
+  font-weight: 600;
+  letter-spacing: 0.03em;
   text-decoration: none;
   line-height: 1;
+  padding: 0 8px;
   height: 20px;
   flex-shrink: 0;
-  opacity: 0.85;
+  background: var(--color-link);
+  color: #fff;
+  white-space: nowrap;
+  opacity: 0.9;
   transition: opacity var(--transition-fast);
 }
 .tip-badge:hover,
@@ -3177,32 +3185,12 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   opacity: 1;
   outline: none;
 }
-.tip-badge__label,
+.tip-badge__label { display: none; }
 .tip-badge__value {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding: 0 7px;
-  white-space: nowrap;
-}
-.tip-badge__label {
-  background: #555;
-  color: #fff;
-}
-.tip-badge__value {
-  background: #2563eb;
-  color: #fff;
-}
-.tip-badge--pub .tip-badge__value {
-  background: #1E3A5F;
-  color: #F4F1EB;
-}
-.tip-badge--info .tip-badge__label {
-  background: #374151;
-}
-.tip-badge--info .tip-badge__value {
-  background: #4b5563;
-  color: #fff;
+  display: contents;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
 }
 
 /* ── Print: don't print tip / social UI chrome ────────────── */

@@ -39,7 +39,6 @@
   },
   "devDependencies": {
     "clean-css": "^5.3.3",
-    "eleventy-plugin-broken-links": "^2.2.1",
     "purgecss": "^8.0.0"
   }
 }

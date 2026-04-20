@@ -17,13 +17,11 @@
           {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
           {% if pubTipUrl %}
           <div style="margin-top: var(--space-3);">
-            <a class="tip-badge tip-badge--pub" href="{{ pubTipUrl }}" target="_blank" rel="noopener noreferrer"
+            <a class="tip-badge" href="{{ pubTipUrl }}" target="_blank" rel="noopener noreferrer"
                aria-label="Support {{ site.title }}"
                data-tippy-content="Support {{ site.title }}. Reader contributions keep us independent, ad-free, and able to pay our contributors fairly."
                data-tippy-theme="badge"
-               data-tippy-placement="top">
-              <span class="tip-badge__label">support</span><span class="tip-badge__value">{{ site.shortTitle or site.title }}</span>
-            </a>
+               data-tippy-placement="top">Support {{ site.title }}</a>
           </div>
           {% endif %}
           {% endif %}

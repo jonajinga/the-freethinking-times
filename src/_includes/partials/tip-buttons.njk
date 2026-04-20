@@ -18,18 +18,14 @@
      aria-label="Support {{ tipAuthor.name }}"
      data-tippy-content="Support {{ tipAuthor.name }} directly. Your tip goes entirely to the author and helps them continue their independent work."
      data-tippy-theme="badge"
-     data-tippy-placement="top">
-    <span class="tip-badge__label">support</span><span class="tip-badge__value">{{ tipAuthor.name }}</span>
-  </a>
+     data-tippy-placement="top">Support {{ tipAuthor.name }}</a>
   {% endif %}
   {% if pubTipUrl and not tipHidePublication %}
-  <a class="tip-badge tip-badge--pub" href="{{ pubTipUrl }}" target="_blank" rel="noopener noreferrer"
+  <a class="tip-badge" href="{{ pubTipUrl }}" target="_blank" rel="noopener noreferrer"
      aria-label="Support {{ site.title }}"
      data-tippy-content="Support {{ site.title }}. Reader contributions keep us independent, ad-free, and able to pay our contributors fairly."
      data-tippy-theme="badge"
-     data-tippy-placement="top">
-    <span class="tip-badge__label">support</span><span class="tip-badge__value">{{ site.shortTitle or site.title }}</span>
-  </a>
+     data-tippy-placement="top">Support {{ site.title }}</a>
   {% endif %}
 </div>
 {% endif %}
