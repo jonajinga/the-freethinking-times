@@ -3,6 +3,7 @@ layout: article
 title: "The Attention Economy's Bargain, and Who Is Paying for It"
 description: "A close look at what the business model of free digital services actually extracts, from whom, and what the downstream consequences have been."
 section: Analysis
+subsection: "Context"
 author: jon-ajinga
 authorName: Staff Reporter
 date: 2026-02-28

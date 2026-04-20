@@ -3,6 +3,7 @@ layout: article
 title: "What the Replication Crisis Actually Tells Us About How Science Works"
 description: "The failure of a large number of published findings to replicate is not a scandal. It is science functioning as designed — just more visibly than usual."
 section: Science & Technology
+subsection: "Science"
 author: jon-ajinga
 authorName: The Editors
 date: 2026-03-11

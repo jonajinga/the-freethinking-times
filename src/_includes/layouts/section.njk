@@ -177,6 +177,8 @@ layout: layouts/base.njk
 
   // Toggle is-fit on filter bars when no overflow, so the right-edge
   // fade mask disappears (looks odd on a bar that doesn't actually scroll).
+  // Also wire vertical mouse-wheel to horizontal scroll on desktop so
+  // users can scroll pills with a trackpad / mouse wheel.
   function checkFit() {
     document.querySelectorAll('.subsection-filter, .reading-filter').forEach(function (bar) {
       bar.classList.toggle('is-fit', bar.scrollWidth <= bar.clientWidth + 1);
@@ -184,5 +186,16 @@ layout: layouts/base.njk
   }
   checkFit();
   window.addEventListener('resize', checkFit, { passive: true });
+
+  document.querySelectorAll('.subsection-filter, .reading-filter').forEach(function (bar) {
+    bar.addEventListener('wheel', function (e) {
+      // If the bar can scroll horizontally and the user scrolls vertically,
+      // redirect to horizontal scroll.
+      if (bar.scrollWidth <= bar.clientWidth + 1) return;
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      e.preventDefault();
+      bar.scrollLeft += e.deltaY;
+    }, { passive: false });
+  });
 }());
 </script>

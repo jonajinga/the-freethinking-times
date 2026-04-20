@@ -3,6 +3,7 @@ layout: article
 title: "On Epistemic Humility and the Academy"
 description: "A philosopher takes issue — respectfully — with our characterization of performed uncertainty."
 section: Letters
+subsection: "On Opinion"
 author: jon-ajinga
 authorName: Letters Editor
 date: 2026-03-06

@@ -3,6 +3,7 @@ layout: article
 title: "Federal Regulators Quietly Shelved Three Major Investigations Last Quarter"
 description: "Documents obtained through FOIA requests reveal that enforcement actions against major financial institutions were dropped without explanation in the final weeks of the fiscal year."
 section: News
+subsection: "Politics"
 author: jon-ajinga
 authorName: Staff Reporter
 date: 2026-03-15

@@ -3,6 +3,7 @@ layout: article
 title: "Cinema's Nostalgia Problem Is a Thinking Problem"
 description: "The film industry's retreat into franchises and reboots is not primarily an aesthetic failure. It is an epistemological one."
 section: Arts & Culture
+subsection: "Film"
 author: jon-ajinga
 authorName: The Editors
 date: 2026-02-20

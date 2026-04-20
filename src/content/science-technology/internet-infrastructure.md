@@ -3,6 +3,7 @@ layout: article
 title: "The Infrastructure Nobody Talks About: How the Internet Actually Stays On"
 description: "Beneath the platforms and apps that dominate public discussion sits a layer of physical and institutional infrastructure that is aging, concentrated, and poorly understood."
 section: Science & Technology
+subsection: "Technology"
 author: jon-ajinga
 authorName: Staff Reporter
 date: 2026-02-25

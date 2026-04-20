@@ -3,6 +3,7 @@ layout: article
 title: "The First Gilded Age Ended. Here Is What It Took."
 description: "The concentration of wealth and power in the late nineteenth century looked permanent until it didn't. The mechanisms of change are worth studying carefully."
 section: History
+subsection: "U.S. History"
 author: jon-ajinga
 authorName: The Editors
 date: 2026-03-09

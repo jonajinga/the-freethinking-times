@@ -3,6 +3,7 @@ layout: article
 title: "The Vocabulary of Unbelief: How Freethinkers Named Their Own Tradition"
 description: "From atheism to secular humanism, the terms we use to describe non-belief carry centuries of argument, persecution, and hard-won clarity. Understanding the vocabulary is the first step to understanding the movement."
 section: History
+subsection: "Ideas"
 author: jon-ajinga
 authorName: The Editors
 date: 2026-04-11

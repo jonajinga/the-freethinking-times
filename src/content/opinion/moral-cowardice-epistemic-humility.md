@@ -3,6 +3,7 @@ layout: article
 title: "On the Moral Cowardice of Epistemic Humility"
 description: "There is a difference between genuine uncertainty and the performance of uncertainty as a way of avoiding difficult conclusions. Our public discourse has become expert at the latter."
 section: Opinion
+subsection: "Columns"
 author: jon-ajinga
 authorName: The Editors
 date: 2026-03-05

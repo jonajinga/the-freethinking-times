@@ -3,6 +3,7 @@ layout: article
 title: "The Newspaper Didn't Die. It Was Sold for Parts."
 description: "The collapse of local journalism is not a market failure. It is the predictable outcome of private equity treating public institutions as inventory."
 section: Opinion
+subsection: "Editorials"
 author: jon-ajinga
 authorName: The Editors
 date: 2026-03-12

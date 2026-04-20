@@ -3,6 +3,7 @@ layout: article
 title: "City's Affordable Housing Fund Diverted to Consultant Contracts, Records Show"
 description: "An eighteen-month review of municipal spending records reveals that nearly a third of the city's affordable housing allocation went to consulting firms, not housing."
 section: News
+subsection: "Local"
 author: jon-ajinga
 authorName: Staff Reporter
 date: 2026-03-10

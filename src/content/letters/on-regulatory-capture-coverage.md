@@ -3,6 +3,7 @@ layout: article
 title: "On Your Coverage of Regulatory Capture"
 description: "A reader with thirty years in federal regulatory work responds to our field guide."
 section: Letters
+subsection: "On Analysis"
 author: jon-ajinga
 authorName: Letters Editor
 date: 2026-03-14

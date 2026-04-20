@@ -3,6 +3,7 @@ layout: article
 title: "What We Talk About When We Talk About 'Difficult' Books"
 description: "The literary establishment's comfort with calling certain books difficult says more about the establishment than the books."
 section: Arts & Culture
+subsection: "Books"
 author: jon-ajinga
 authorName: The Editors
 date: 2026-03-01

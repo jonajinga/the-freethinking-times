@@ -3,6 +3,7 @@ layout: article
 title: "How Regulatory Capture Actually Works: A Field Guide"
 description: "The textbook definition of regulatory capture is too clean. Here is how the process actually unfolds, in practice, across industries and decades."
 section: Analysis
+subsection: "Deep Dives"
 author: jon-ajinga
 authorName: The Editors
 date: 2026-03-08

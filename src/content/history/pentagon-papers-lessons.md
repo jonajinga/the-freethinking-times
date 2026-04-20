@@ -3,6 +3,7 @@ layout: article
 title: "The Pentagon Papers at Fifty-Plus: What We Actually Learned"
 description: "The publication of the Pentagon Papers is remembered as a triumph of press freedom. The deeper lesson — about institutional deception and its durability — is less often drawn."
 section: History
+subsection: "U.S. History"
 author: jon-ajinga
 authorName: The Editors
 date: 2026-02-15

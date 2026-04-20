@@ -1167,20 +1167,29 @@
   max-width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  /* Nudge users on touch devices: a tiny gradient fade on the right edge
-     signals there's more content to scroll to. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-rule) transparent;
+  /* Nudge users: a tiny gradient fade on the right edge signals there's
+     more content to scroll to. */
   -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
           mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
+  padding-bottom: 4px; /* room for the scrollbar */
 }
 /* Drop the fade mask when there's nothing overflowing (scrollWidth fits) */
 .subsection-filter.is-fit,
 .reading-filter.is-fit {
   -webkit-mask-image: none;
   mask-image: none;
+  scrollbar-width: none;
 }
 .subsection-filter::-webkit-scrollbar,
-.reading-filter::-webkit-scrollbar { display: none; }
+.reading-filter::-webkit-scrollbar { height: 4px; }
+.subsection-filter::-webkit-scrollbar-track,
+.reading-filter::-webkit-scrollbar-track { background: transparent; }
+.subsection-filter::-webkit-scrollbar-thumb,
+.reading-filter::-webkit-scrollbar-thumb { background: var(--color-rule); border-radius: 4px; }
+.subsection-filter.is-fit::-webkit-scrollbar,
+.reading-filter.is-fit::-webkit-scrollbar { display: none; }
 
 .subsection-filter {
   padding: var(--space-3) 0;
