@@ -280,6 +280,22 @@
   // Save on page unload
   window.addEventListener('beforeunload', saveState);
 
+  // SPA-nav integration. When the app swaps #main-content, any music bar
+  // mounted into #annotation-toolbar-music (an article-layout slot) gets
+  // wiped even though the YT iframe (parked on document.body) keeps
+  // playing. Before the swap we re-parent the bar to body so it survives;
+  // after the swap we re-seat it into the new page's slot if present.
+  document.addEventListener('spa:beforeswap', function () {
+    if (bar && bar.parentNode && bar.parentNode.id === 'annotation-toolbar-music') {
+      document.body.appendChild(bar);
+    }
+  });
+  document.addEventListener('spa:contentswap', function () {
+    if (!bar) return;
+    var slot = document.getElementById('annotation-toolbar-music');
+    if (slot && bar.parentNode !== slot) slot.appendChild(bar);
+  });
+
   // Public API
   window.musicPlayer = {
     loadPlaylist: function (id, name) {

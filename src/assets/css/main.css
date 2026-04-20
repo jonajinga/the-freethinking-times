@@ -56,13 +56,17 @@
   body { orphans: 2; widows: 2; }
 
   /* Show link URLs in print (skip internal/anchor links) */
-  .article-body a[href^="http"]::after,
-  .library-body a[href^="http"]::after {
+  .article-body a[href^="http"]:not(.archive-link)::after,
+  .library-body a[href^="http"]:not(.archive-link)::after {
     content: " (" attr(href) ")";
     font-size: 8pt;
     color: #666;
     word-break: break-all;
   }
+  /* Archive links collapse to "(archived)" in print */
+  .archive-link { font-size: 7pt; color: #888; }
+  .archive-link svg { display: none; }
+  .archive-link::before { content: "[archived] "; }
 
   /* Footnote superscript — render as plain text, no button affordance */
   .fn-btn {

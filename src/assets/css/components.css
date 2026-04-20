@@ -547,6 +547,45 @@
 
 /* Word spacing — driven by --gs-word-spacing custom property on :root */
 body { word-spacing: var(--gs-word-spacing, 0); }
+
+/* ── Archive link (link-rot protection) ─────────────────────────
+   Tiny subtle icon rendered immediately after every external link in
+   markdown-generated content. Points at the web.archive.org wildcard
+   snapshot URL so readers can recover the source even if the
+   original dies. */
+.archive-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.05em;
+  height: 1.05em;
+  margin-left: 0.15em;
+  padding: 0;
+  border: 1px solid currentColor;
+  color: var(--color-ink-faint);
+  opacity: 0.55;
+  vertical-align: baseline;
+  line-height: 1;
+  text-decoration: none;
+  transition: opacity var(--transition-fast), color var(--transition-fast), background var(--transition-fast);
+}
+.archive-link:hover,
+.archive-link:focus-visible {
+  opacity: 1;
+  color: var(--color-bg);
+  background: var(--color-ink);
+  outline: none;
+  text-decoration: none;
+}
+.archive-link svg {
+  display: block;
+  width: 0.7em;
+  height: 0.7em;
+}
+/* Prevent the archive link from inheriting underline decorations from the
+   parent anchor styling or article body link rules. */
+.article-body .archive-link,
+.library-body .archive-link { text-decoration: none; }
 [data-gs-bg="cream"] { --color-bg: #fefcf0; --color-bg-alt: #f8f5e8; --color-bg-inset: #f0edde; }
 
 /* Smooth theme transitions (prevent flash) */

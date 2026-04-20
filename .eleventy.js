@@ -126,6 +126,10 @@ module.exports = function (eleventyConfig) {
               "article-card__read-pill", "article-card__progress",
               "article-card__progress-fill",
               "reading-list", "reading-list__item",
+              // Archive-link (link-rot protection) — emitted by markdown-it
+              // renderer customization; not visible to PurgeCSS as a literal
+              // class in source templates.
+              "archive-link",
             ],
             // ── Keep any rule whose selector contains these patterns ─────────
             deep: [
@@ -804,6 +808,54 @@ module.exports = function (eleventyConfig) {
     permalink: false,
     slugify: s => s.toLowerCase().replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-'),
   });
+
+  // ─── Link-rot protection ──────────────────────────────────────────────────
+  // For every external link in rendered markdown, emit a sibling archive
+  // link pointing to web.archive.org/web/*/URL. The `*` wildcard lets the
+  // Internet Archive auto-redirect to the latest available snapshot, so
+  // readers can recover the source even after link rot. Archives of our
+  // own domain, already-archived URLs, and explicit opt-outs are skipped.
+  const isSkippedArchive = (url) => {
+    if (!url) return true;
+    if (!/^https?:\/\//i.test(url)) return true;
+    return /(?:^https?:\/\/)?(?:[a-z0-9.-]*\.)?(?:thefreethinkingtimes\.com|web\.archive\.org|archive\.(?:org|today|is|ph))\b/i.test(url);
+  };
+  const originalLinkOpen = md.renderer.rules.link_open || function (t, i, o, e, s) { return s.renderToken(t, i, o); };
+  const originalLinkClose = md.renderer.rules.link_close || function (t, i, o, e, s) { return s.renderToken(t, i, o); };
+
+  md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+    const token = tokens[idx];
+    const hrefIdx = token.attrIndex('href');
+    env.__archiveStack = env.__archiveStack || [];
+    if (hrefIdx >= 0) {
+      const href = token.attrs[hrefIdx][1];
+      const noArchive = token.attrGet('data-no-archive') !== null;
+      if (!noArchive && !isSkippedArchive(href)) {
+        token.attrSet('rel', 'noopener');
+        env.__archiveStack.push('https://web.archive.org/web/*/' + href);
+      } else {
+        env.__archiveStack.push(null);
+      }
+    } else {
+      env.__archiveStack.push(null);
+    }
+    return originalLinkOpen(tokens, idx, options, env, self);
+  };
+
+  md.renderer.rules.link_close = function (tokens, idx, options, env, self) {
+    const closeTag = originalLinkClose(tokens, idx, options, env, self);
+    const stack = env.__archiveStack || [];
+    const archiveUrl = stack.pop();
+    if (archiveUrl) {
+      return closeTag +
+        '<a class="archive-link" href="' + archiveUrl + '" rel="noopener nofollow" ' +
+        'target="_blank" aria-label="Archived version" title="Archived version">' +
+        '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>' +
+        '</a>';
+    }
+    return closeTag;
+  };
 
   eleventyConfig.setLibrary("md", md);
 

@@ -106,6 +106,10 @@
         return;
       }
 
+      // Notify listeners so persistent widgets (music bar etc.) can
+      // detach themselves from inside #main-content before it is wiped.
+      document.dispatchEvent(new Event('spa:beforeswap'));
+
       // Swap content
       mainEl.innerHTML = data.main;
       document.title = data.title;
@@ -152,18 +156,9 @@
         try { new Function(code)(); } catch (e) { console.warn('SPA script error:', e); }
       });
 
-      // Re-run glossary tooltips
-      if (window.tippy && window.__glossaryTerms) {
-        setTimeout(function () {
-          // Re-init tippy for new content
-          var body = document.querySelector('.article-body') || document.querySelector('.library-body');
-          if (body && body.querySelectorAll('.glossary-tip').length === 0) {
-            // Glossary tips script needs to re-run on new content
-            // We'll dispatch a custom event
-            document.dispatchEvent(new Event('spa:contentswap'));
-          }
-        }, 100);
-      }
+      // Always fire spa:contentswap so persistent widgets (music bar, etc.)
+      // can rebind to the new DOM. Glossary tips re-init piggybacks on it.
+      document.dispatchEvent(new Event('spa:contentswap'));
 
       // Fade in
       requestAnimationFrame(function () {
