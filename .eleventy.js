@@ -130,6 +130,12 @@ module.exports = function (eleventyConfig) {
               // renderer customization; not visible to PurgeCSS as a literal
               // class in source templates.
               "archive-link",
+              // Reader-panel tab-strip scroll chevrons — injected at runtime
+              // by annotations.js; invisible to PurgeCSS's source scan.
+              "library-panel__tabs-wrap",
+              "library-panel__tabs-arrow",
+              "library-panel__tabs-arrow--left",
+              "library-panel__tabs-arrow--right",
             ],
             // ── Keep any rule whose selector contains these patterns ─────────
             deep: [

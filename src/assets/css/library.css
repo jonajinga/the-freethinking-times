@@ -682,7 +682,7 @@
   top: var(--space-16);
   right: 0;
   bottom: 56px; /* clear the bottom annotation toolbar so footer-links aren't hidden behind it */
-  width: min(460px, 90vw);
+  width: min(560px, 90vw);
   background: var(--color-bg);
   border-left: 1px solid var(--color-rule);
   box-shadow: -18px 0 48px rgba(0, 0, 0, 0.08), -2px 0 6px rgba(0, 0, 0, 0.04);
@@ -731,15 +731,16 @@
 }
 .library-panel__title {
   font-family: var(--font-masthead, var(--font-headline));
+  /* Default font-size; JS (fitPanelTitle in annotations.js) shrinks this
+     down to as small as 0.72rem on very long titles so the whole title
+     is readable instead of being clamped with an ellipsis. */
   font-size: 1.12rem;
   font-weight: 700;
-  line-height: var(--leading-tight);
+  line-height: 1.2;
   color: var(--color-ink);
   margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .library-panel__header-btn {
@@ -816,17 +817,59 @@
   border-color: var(--color-ink);
 }
 
+.library-panel__tabs-wrap {
+  position: relative;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--color-rule);
+}
+
 .library-panel__tabs {
   display: flex;
-  border-bottom: 1px solid var(--color-rule);
   flex-shrink: 0;
   overflow-x: auto;
   overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
+/* When not inside a wrap (before JS init), keep the original border. */
+.library-panel__tabs:not(.library-panel__tabs-wrap > *) {
+  border-bottom: 1px solid var(--color-rule);
+}
 
 .library-panel__tabs::-webkit-scrollbar { display: none; }
+
+/* Scroll chevrons flanking the tab strip. Rendered via annotations.js
+   init so users on narrow viewports can discover overflowed tabs
+   without having to guess that they're scrollable. */
+.library-panel__tabs-arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  border: none;
+  color: var(--color-ink-muted);
+  cursor: pointer;
+  z-index: 2;
+  padding: 0;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+.library-panel__tabs-arrow:hover {
+  color: var(--color-ink);
+  background: var(--color-bg-alt);
+}
+.library-panel__tabs-arrow[hidden] { display: none; }
+.library-panel__tabs-arrow--left {
+  left: 0;
+  box-shadow: 6px 0 8px -4px rgba(0, 0, 0, 0.08);
+}
+.library-panel__tabs-arrow--right {
+  right: 0;
+  box-shadow: -6px 0 8px -4px rgba(0, 0, 0, 0.08);
+}
 
 /* ── Reader panel: quick-actions row ──
    Top band of the Reader panel. Holds Save, Listen, Focus — the

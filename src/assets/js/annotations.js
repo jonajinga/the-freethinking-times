@@ -501,8 +501,74 @@
     var panel        = document.getElementById('article-notes-panel') || document.getElementById('library-panel');
     var panelOverlay = document.querySelector('.article-notes-overlay');
     var panelClose   = panel ? panel.querySelector('.library-panel__close') : null;
+    var panelTitle   = panel ? panel.querySelector('.library-panel__title') : null;
 
     var PANEL_KEY = (window.__PREFIX || 'tft') + '-reader-panel';
+
+    // Shrink the panel title font-size until the full text fits on <= 3
+    // lines without truncation. Long article headlines used to hit the
+    // 2-line clamp and show an ellipsis; now they just scale down.
+    function fitPanelTitle() {
+      if (!panelTitle) return;
+      panelTitle.style.fontSize = '';
+      var max = 17.92; // 1.12rem at 16-px root
+      var min = 11.52; // 0.72rem
+      var fs = max;
+      var maxHeight = Math.ceil(fs * 1.2) * 3 + 1;
+      panelTitle.style.fontSize = fs + 'px';
+      while (panelTitle.scrollHeight > maxHeight && fs > min) {
+        fs -= 0.5;
+        panelTitle.style.fontSize = fs + 'px';
+        maxHeight = Math.ceil(fs * 1.2) * 3 + 1;
+      }
+    }
+
+    // Inject left / right scroll chevrons for the tab strip so readers on
+    // narrow viewports can discover more tabs. Arrows auto-hide when the
+    // strip can't scroll any further in a given direction.
+    var tabsEl = panel ? panel.querySelector('.library-panel__tabs') : null;
+    function installTabScrollArrows() {
+      if (!tabsEl || tabsEl.__arrowsInstalled) return;
+      tabsEl.__arrowsInstalled = true;
+      var wrap = document.createElement('div');
+      wrap.className = 'library-panel__tabs-wrap';
+      tabsEl.parentNode.insertBefore(wrap, tabsEl);
+      wrap.appendChild(tabsEl);
+
+      var leftBtn = document.createElement('button');
+      leftBtn.type = 'button';
+      leftBtn.className = 'library-panel__tabs-arrow library-panel__tabs-arrow--left';
+      leftBtn.setAttribute('aria-label', 'Scroll tabs left');
+      leftBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>';
+
+      var rightBtn = document.createElement('button');
+      rightBtn.type = 'button';
+      rightBtn.className = 'library-panel__tabs-arrow library-panel__tabs-arrow--right';
+      rightBtn.setAttribute('aria-label', 'Scroll tabs right');
+      rightBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>';
+
+      wrap.appendChild(leftBtn);
+      wrap.appendChild(rightBtn);
+
+      function updateArrows() {
+        var max = tabsEl.scrollWidth - tabsEl.clientWidth - 1;
+        var sl = tabsEl.scrollLeft;
+        leftBtn.hidden = sl <= 1 || max <= 0;
+        rightBtn.hidden = sl >= max;
+      }
+      function nudge(dir) {
+        var step = Math.max(120, Math.round(tabsEl.clientWidth * 0.7));
+        tabsEl.scrollBy({ left: dir * step, behavior: 'smooth' });
+      }
+      leftBtn.addEventListener('click', function () { nudge(-1); });
+      rightBtn.addEventListener('click', function () { nudge(1); });
+      tabsEl.addEventListener('scroll', updateArrows, { passive: true });
+      window.addEventListener('resize', updateArrows);
+      // Delay initial measurement a frame so layout has settled.
+      requestAnimationFrame(updateArrows);
+      setTimeout(updateArrows, 100);
+    }
+    installTabScrollArrows();
 
     function openPanel() {
       if (!panel) return;
@@ -510,6 +576,7 @@
       if (panelOverlay) panelOverlay.setAttribute('aria-hidden', 'false');
       panelToggles.forEach(function (t) { t.setAttribute('aria-expanded', 'true'); });
       refreshPanelContents();
+      fitPanelTitle();
       try { localStorage.setItem(PANEL_KEY, 'open'); } catch (e) {}
     }
 
@@ -944,13 +1011,39 @@
           }
 
           var context = lastRange ? lastRange.text.slice(0, 80) : '';
-          // Find nearest heading at current scroll position
+          // Find the heading the reader is actually inside. If text was
+          // selected, use the selection's position as the anchor so we
+          // don't get confused when the reader has scrolled past the
+          // selection before clicking Bookmark. Otherwise use a reading-
+          // line about a third of the way down the viewport — that's where
+          // the eye typically lands, rather than the very top.
           var bmSection = '';
           if (bodyEl) {
-            var headings = bodyEl.querySelectorAll('h2, h3');
-            var scrollY = window.scrollY + 100;
+            // Scope to direct descendants: article markdown renders all
+            // headings as top-level children, so this avoids picking up
+            // incidental h2/h3s inside footnote blocks, related-article
+            // cards, or embedded widgets.
+            var allHeadings = bodyEl.querySelectorAll('h2, h3');
+            var headings = [];
+            for (var hx = 0; hx < allHeadings.length; hx++) {
+              if (allHeadings[hx].parentNode === bodyEl) headings.push(allHeadings[hx]);
+            }
+            if (!headings.length) {
+              // Fallback: any h2/h3 in the body if none are direct kids.
+              headings = Array.prototype.slice.call(allHeadings);
+            }
+            var anchorY;
+            if (lastRange && lastRange.range) {
+              try {
+                anchorY = lastRange.range.getBoundingClientRect().top + window.scrollY;
+              } catch (_) {}
+            }
+            if (anchorY == null) {
+              anchorY = window.scrollY + window.innerHeight * 0.33;
+            }
             for (var hi = headings.length - 1; hi >= 0; hi--) {
-              if (headings[hi].getBoundingClientRect().top + window.scrollY <= scrollY) {
+              var absTop = headings[hi].getBoundingClientRect().top + window.scrollY;
+              if (absTop <= anchorY) {
                 bmSection = headings[hi].textContent.trim();
                 break;
               }
