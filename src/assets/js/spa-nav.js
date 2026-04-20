@@ -34,11 +34,14 @@
     if (link.hasAttribute('data-no-spa')) return false;
     // Skip if inside a form
     if (link.closest('form')) return false;
-    // Skip article and library pages — they have complex page-specific JS
-    // (progress.js, reading-settings.js, annotations.js) that needs full reload
+    // Library chapters have complex page-specific JS (annotations, chapter
+    // nav, TOC highlighting) that still needs a full reload.
     var path = link.pathname;
-    if (path.match(/^\/(news|opinion|analysis|arts-culture|science-technology|history|letters|reviews)\/.+/)) return false;
     if (path.match(/^\/library\/.+\/.+/)) return false;
+    // Article pages now SPA-nav so the background music iframe survives the
+    // transition. Article-specific scripts (progress.js, reading-settings.js,
+    // annotations.js, reading-list.js, download.js) are loaded on first
+    // visit and re-initialise on the `spa:contentswap` event.
     if (path.match(/^\/glossary\/.+/) && path !== '/glossary/') return false;
     if (path.match(/^\/bookshelf\/.+/) && path !== '/bookshelf/') return false;
     if (path.match(/^\/trials\/.+/) && !path.match(/\/(timeline|showcase|submit)\//)) return false;
@@ -54,7 +57,6 @@
     var newMain = doc.getElementById('main-content');
     var newTitle = doc.querySelector('title');
     var newMeta = doc.querySelector('meta[name="description"]');
-    var newScripts = doc.querySelectorAll('main script, #main-content script');
     // Collect page-specific inline scripts. Start from the new page's
     // main content (most page scripts live there); also include inline
     // scripts outside main that aren't site-wide bootstraps.
@@ -65,13 +67,35 @@
     var scripts = [];
     function pushScript(s) {
       var code = s.textContent;
-      if (seen[code]) return;
+      if (!code || seen[code]) return;
       seen[code] = true;
       scripts.push(code);
     }
-    if (newMain) {
-      newMain.querySelectorAll('script').forEach(pushScript);
+    // External <script src> tags that aren't already loaded in the current
+    // document need to be injected so page-specific bundles (e.g. article
+    // layout scripts) run on first SPA visit to that page type.
+    var externalScripts = [];
+    function collectExternal(node) {
+      node.querySelectorAll('script[src]').forEach(function (s) {
+        var src = s.getAttribute('src');
+        if (src) externalScripts.push(src);
+      });
     }
+    if (newMain) {
+      // Separate external vs inline so external get fetched + executed by
+      // creating <script> tags live; inline get eval'd after swap.
+      newMain.querySelectorAll('script').forEach(function (s) {
+        if (!s.hasAttribute('src')) pushScript(s);
+      });
+      collectExternal(newMain);
+    }
+    // Page-level <script> blocks that live outside #main-content (added via
+    // {% block scripts %} in Nunjucks layouts). Those get appended to the
+    // end of <body>; we scan for them anywhere in the parsed document.
+    doc.querySelectorAll('script[src]').forEach(function (s) {
+      var src = s.getAttribute('src');
+      if (src && externalScripts.indexOf(src) === -1) externalScripts.push(src);
+    });
     doc.querySelectorAll('script:not([src])').forEach(function (s) {
       var code = s.textContent;
       // Skip the site-wide bootstrap scripts; they're already running.
@@ -87,7 +111,8 @@
       main: newMain ? newMain.innerHTML : null,
       title: newTitle ? newTitle.textContent : document.title,
       description: newMeta ? newMeta.getAttribute('content') : '',
-      scripts: scripts
+      scripts: scripts,
+      externalScripts: externalScripts
     };
   }
 
@@ -151,13 +176,48 @@
         window.scrollTo(0, 0);
       }
 
-      // Execute page-specific scripts
+      // Inject external scripts that aren't already loaded (first-time
+      // visits to a page type that needs them, e.g. article-layout scripts).
+      // Once loaded, subsequent SPA-swaps rely on those scripts listening to
+      // `spa:contentswap` to re-bind. Normalise the href so query-string
+      // cache-busters don't mask an already-loaded module.
+      function stripCacheBust(src) { return (src || '').split('?')[0]; }
+      var loadedSrcs = {};
+      document.querySelectorAll('script[src]').forEach(function (s) {
+        loadedSrcs[stripCacheBust(s.getAttribute('src'))] = true;
+      });
+      (data.externalScripts || []).forEach(function (src) {
+        if (loadedSrcs[stripCacheBust(src)]) return;
+        var s = document.createElement('script');
+        s.src = src;
+        s.defer = true;
+        document.body.appendChild(s);
+      });
+
+      // Execute page-specific inline scripts
       data.scripts.forEach(function (code) {
         try { new Function(code)(); } catch (e) { console.warn('SPA script error:', e); }
       });
 
+      // Re-inject article-layout scripts so their per-page DOM bindings
+      // (TTS, share, footnote tooltips, annotations, reading settings,
+      // reading list, download) re-bind to the swapped-in #main-content.
+      // Each script has a one-time bootstrap guard (e.g. `isFirstRun` in
+      // progress.js) so window-level listeners aren't duplicated across
+      // executions.
+      ['progress.js', 'annotations.js', 'reading-list.js', 'reading-settings.js', 'download.js'].forEach(function (name) {
+        var tag = document.querySelector('script[src*="/assets/js/' + name + '"]');
+        if (!tag || !tag.parentNode) return;
+        var tagSrc = tag.src;
+        tag.parentNode.removeChild(tag);
+        var s = document.createElement('script');
+        s.src = tagSrc;
+        s.defer = true;
+        document.head.appendChild(s);
+      });
+
       // Always fire spa:contentswap so persistent widgets (music bar, etc.)
-      // can rebind to the new DOM. Glossary tips re-init piggybacks on it.
+      // and article-layout scripts can rebind to the new DOM.
       document.dispatchEvent(new Event('spa:contentswap'));
 
       // Fade in

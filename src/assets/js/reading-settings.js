@@ -13,6 +13,13 @@
   var body  = document.querySelector('.article-body');
   if (!btn || !panel || !body) return;
 
+  // Re-execution guard. spa-nav re-injects this script on article SPA
+  // swaps so element bindings track the new #main-content DOM; window-
+  // level listeners (resize / scroll on the persistent window object)
+  // must only register once.
+  var isFirstRun = !window.__readingSettingsBootstrapped;
+  window.__readingSettingsBootstrapped = true;
+
   // ─── Storage keys ──────────────────────────────────────────
   var K = {};
   ['fontSize','font','spacing','width','wordspace','bg','ruler','rulerThick','rulerColor','rulerStyle','paraNums','autoscroll','scrollSpeed'].forEach(function (k) {
@@ -119,11 +126,11 @@
         // On touch: fixed at 40% of viewport height, stays put while scrolling
         ruler.style.top = Math.round(window.innerHeight * 0.4) + 'px';
         ruler.style.opacity = '';
-      } else {
+      } else if (isFirstRun) {
         document.addEventListener('mousemove', moveRuler);
       }
-      window.addEventListener('resize', updateRulerBounds);
-      window.addEventListener('scroll', updateRulerBounds, { passive: true });
+      if (isFirstRun) window.addEventListener('resize', updateRulerBounds);
+      if (isFirstRun) window.addEventListener('scroll', updateRulerBounds, { passive: true });
     } else if (!on && existing) {
       existing.remove();
       document.removeEventListener('mousemove', moveRuler);

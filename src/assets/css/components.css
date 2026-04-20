@@ -235,6 +235,14 @@
   line-height: 1.55;
   color: var(--color-ink);
   margin: 0;
+  font-style: italic;
+}
+.gs-preview__attrib {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  color: var(--color-ink-faint);
+  margin: var(--space-2) 0 0;
+  letter-spacing: 0.04em;
 }
 
 /* Section */

@@ -478,7 +478,7 @@
   }());
 
   // ─── Init ─────────────────────────────────────────────────
-  document.addEventListener('DOMContentLoaded', function () {
+  function initAnnotations() {
 
     // ── Panel ──
     var panelToggles = document.querySelectorAll('.article-notes-toggle, .library-panel-toggle');
@@ -999,5 +999,11 @@
       });
     }
 
-  }); // end DOMContentLoaded
+  } // end initAnnotations
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAnnotations);
+  } else {
+    initAnnotations();
+  }
 }());

@@ -7,6 +7,13 @@
 
   var _p = window.__PREFIX || 'tft';
 
+  // Re-execution guard. On SPA content swaps article-layout scripts get
+  // re-injected so new #main-content DOM gets fresh bindings; window- and
+  // document-level listeners (which live on nodes that survive the swap)
+  // must only be registered once.
+  var isFirstRun = !window.__progressBootstrapped;
+  window.__progressBootstrapped = true;
+
   /* ── Reading progress bar + % text + back-to-top ─────────── */
   var bar    = document.querySelector('.reading-progress');
   var floats = document.getElementById('reading-floats');
@@ -32,7 +39,7 @@
       var pct = dist > 0 ? Math.min((scrollTop / dist) * 100, 100) : 0;
       pctEl.textContent = Math.round(pct) + '%';
     }
-    window.addEventListener('scroll', updateFloats, { passive: true });
+    if (isFirstRun) window.addEventListener('scroll', updateFloats, { passive: true });
     updateFloats();
   }
 
@@ -53,7 +60,7 @@
       bar.style.width = pct + '%';
       if (pctEl) pctEl.textContent = Math.round(pct) + '% through';
     }
-    window.addEventListener('scroll', updateProgress, { passive: true });
+    if (isFirstRun) window.addEventListener('scroll', updateProgress, { passive: true });
     updateProgress();
   }
 
@@ -605,8 +612,16 @@
       }
 
       /* — Stop on navigate away — */
-      window.addEventListener('beforeunload', function () {
-        if (ttsSpeaking) window.speechSynthesis.cancel();
+      if (isFirstRun) window.addEventListener('beforeunload', function () {
+        if (window.speechSynthesis && window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+      });
+      // On SPA content swap we're moving to a new article; cancel any
+      // in-flight speech so the reader doesn't hear yesterday's article
+      // on today's page.
+      if (isFirstRun) document.addEventListener('spa:beforeswap', function () {
+        if (window.speechSynthesis && (window.speechSynthesis.speaking || window.speechSynthesis.pending)) {
+          window.speechSynthesis.cancel();
+        }
       });
 
       // Resume speaking from the current word position — used by the
@@ -900,7 +915,7 @@
     setTimeout(buildSidenotes, 400); // rerun after fonts/images settle
 
     var snResizeTimer;
-    window.addEventListener('resize', function () {
+    if (isFirstRun) window.addEventListener('resize', function () {
       clearTimeout(snResizeTimer);
       snResizeTimer = setTimeout(buildSidenotes, 150);
     }, { passive: true });
