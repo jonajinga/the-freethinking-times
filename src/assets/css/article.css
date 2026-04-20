@@ -1158,38 +1158,64 @@
    Subsection uses the accent color for active; reading-time uses ink.
    Subsection sits above reading-time, separated by a hairline rule. */
 
+/* Filter-row wrapper: bar + optional "next" arrow button */
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-rule);
+  min-width: 0;
+}
+.filter-row + .filter-row { padding-top: var(--space-3); }
+.filter-row:last-of-type { margin-bottom: var(--space-6); }
+
+/* When a filter-row follows another, collapse the top border so the
+   two bars read as a stacked group. */
+.filter-row + .filter-row { border-top: 0; }
+
+.filter-row__next {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  background: var(--color-bg);
+  border: 1px solid var(--color-rule);
+  color: var(--color-ink-muted);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast), background var(--transition-fast), opacity 0.2s;
+}
+.filter-row__next:hover,
+.filter-row__next:focus-visible {
+  border-color: var(--color-ink);
+  color: var(--color-ink);
+  background: var(--color-bg-alt);
+  outline: none;
+}
+.filter-row__next[hidden] { display: none; }
+.filter-row__next--back svg { transform: scaleX(-1); }
+
 .subsection-filter,
 .reading-filter {
   display: flex;
   align-items: center;
   gap: var(--space-3);
   flex-wrap: nowrap;
-  max-width: 100%;
+  flex: 1;
+  min-width: 0;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-rule) transparent;
-  /* Nudge users: a tiny gradient fade on the right edge signals there's
-     more content to scroll to. */
-  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
-          mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
-  padding-bottom: 4px; /* room for the scrollbar */
-}
-/* Drop the fade mask when there's nothing overflowing (scrollWidth fits) */
-.subsection-filter.is-fit,
-.reading-filter.is-fit {
-  -webkit-mask-image: none;
-  mask-image: none;
   scrollbar-width: none;
+  scroll-behavior: smooth;
 }
 .subsection-filter::-webkit-scrollbar,
-.reading-filter::-webkit-scrollbar { height: 4px; }
-.subsection-filter::-webkit-scrollbar-track,
-.reading-filter::-webkit-scrollbar-track { background: transparent; }
-.subsection-filter::-webkit-scrollbar-thumb,
-.reading-filter::-webkit-scrollbar-thumb { background: var(--color-rule); border-radius: 4px; }
-.subsection-filter.is-fit::-webkit-scrollbar,
-.reading-filter.is-fit::-webkit-scrollbar { display: none; }
+.reading-filter::-webkit-scrollbar { display: none; }
+
+/* filter-row's own border-bottom replaces the bar-level border */
+.subsection-filter,
+.reading-filter { padding-bottom: 0; margin-bottom: 0; border-bottom: 0; }
 
 .subsection-filter {
   padding: var(--space-3) 0;

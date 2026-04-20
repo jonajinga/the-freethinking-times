@@ -1428,10 +1428,17 @@ a.dateline:hover { color: var(--color-accent); }
 .nav-drawer__brand:hover { text-decoration: none; }
 .nav-drawer__brand img { flex-shrink: 0; }
 
-/* Scrollable middle region — header and footer stay put */
+/* Scrollable middle region — header and footer stay put.
+   min-height: 0 is load-bearing: flex items default to min-height: auto,
+   which lets them expand to fit content regardless of flex:1. Without
+   this, the scroll container grows to its children's natural height and
+   overflow-y: auto has nothing to clip (the overflow spills the whole
+   drawer silently on desktop where content fits below the drawer edge). */
 .nav-drawer__scroll {
-  flex: 1;
+  flex: 1 1 0;
+  min-height: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   padding-bottom: var(--space-4);
 }

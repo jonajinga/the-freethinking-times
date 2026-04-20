@@ -35,21 +35,31 @@ layout: layouts/base.njk
       {# Subsection filter, only renders if there are subsections for this section #}
       {% set subs = subsections[sectionSlug] if subsections and subsections[sectionSlug] else [] %}
       {% if subs.length %}
-      <div class="subsection-filter" id="subsection-filter" role="group" aria-label="Filter by subsection">
-        <span class="subsection-filter__label">Subsection:</span>
-        <button class="subsection-filter__btn is-active" data-sub="all" type="button">All</button>
-        {% for sub in subs %}
-        <button class="subsection-filter__btn" data-sub="{{ sub | slugify }}" type="button">{{ sub }}</button>
-        {% endfor %}
+      <div class="filter-row">
+        <div class="subsection-filter" id="subsection-filter" role="group" aria-label="Filter by subsection">
+          <span class="subsection-filter__label">Subsection:</span>
+          <button class="subsection-filter__btn is-active" data-sub="all" type="button">All</button>
+          {% for sub in subs %}
+          <button class="subsection-filter__btn" data-sub="{{ sub | slugify }}" type="button">{{ sub }}</button>
+          {% endfor %}
+        </div>
+        <button class="filter-row__next" type="button" aria-label="Show more subsections" hidden>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
       </div>
       {% endif %}
 
       {# Reading time filter #}
-      <div class="reading-filter" id="reading-filter" role="group" aria-label="Filter by reading time">
-        <span class="reading-filter__label">Filter:</span>
-        <button class="reading-filter__btn is-active" data-filter="all" type="button">All</button>
-        <button class="reading-filter__btn" data-filter="short" type="button">Short reads <span class="reading-filter__hint">(&lt;5 min)</span></button>
-        <button class="reading-filter__btn" data-filter="long" type="button">Long reads <span class="reading-filter__hint">(&gt;15 min)</span></button>
+      <div class="filter-row">
+        <div class="reading-filter" id="reading-filter" role="group" aria-label="Filter by reading time">
+          <span class="reading-filter__label">Filter:</span>
+          <button class="reading-filter__btn is-active" data-filter="all" type="button">All</button>
+          <button class="reading-filter__btn" data-filter="short" type="button">Short reads <span class="reading-filter__hint">(&lt;5 min)</span></button>
+          <button class="reading-filter__btn" data-filter="long" type="button">Long reads <span class="reading-filter__hint">(&gt;15 min)</span></button>
+        </div>
+        <button class="filter-row__next" type="button" aria-label="Show more filters" hidden>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
       </div>
 
       {# Lead story #}
@@ -175,23 +185,35 @@ layout: layouts/base.njk
     }
   }
 
-  // Toggle is-fit on filter bars when no overflow, so the right-edge
-  // fade mask disappears (looks odd on a bar that doesn't actually scroll).
-  // Also wire vertical mouse-wheel to horizontal scroll on desktop so
-  // users can scroll pills with a trackpad / mouse wheel.
-  function checkFit() {
-    document.querySelectorAll('.subsection-filter, .reading-filter').forEach(function (bar) {
-      bar.classList.toggle('is-fit', bar.scrollWidth <= bar.clientWidth + 1);
-    });
-  }
-  checkFit();
-  window.addEventListener('resize', checkFit, { passive: true });
+  // Filter-row arrow: shows a rightward chevron beside a scrollable bar
+  // when it overflows. Click advances the scroll by one viewport; when
+  // the bar reaches the right edge, we switch to a leftward chevron to
+  // wind it back. Hidden entirely when the bar fits.
+  document.querySelectorAll('.filter-row').forEach(function (row) {
+    var bar = row.querySelector('.subsection-filter, .reading-filter');
+    var btn = row.querySelector('.filter-row__next');
+    if (!bar || !btn) return;
 
-  document.querySelectorAll('.subsection-filter, .reading-filter').forEach(function (bar) {
+    function atEnd() { return bar.scrollLeft + bar.clientWidth >= bar.scrollWidth - 1; }
+    function overflows() { return bar.scrollWidth > bar.clientWidth + 1; }
+
+    function update() {
+      if (!overflows()) { btn.hidden = true; return; }
+      btn.hidden = false;
+      btn.setAttribute('aria-label', atEnd() ? 'Scroll filters back to start' : 'Show more filters');
+      btn.classList.toggle('filter-row__next--back', atEnd());
+    }
+
+    btn.addEventListener('click', function () {
+      bar.scrollTo({ left: atEnd() ? 0 : bar.scrollLeft + bar.clientWidth - 40, behavior: 'smooth' });
+    });
+    bar.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+
+    // Vertical wheel -> horizontal scroll on desktop
     bar.addEventListener('wheel', function (e) {
-      // If the bar can scroll horizontally and the user scrolls vertically,
-      // redirect to horizontal scroll.
-      if (bar.scrollWidth <= bar.clientWidth + 1) return;
+      if (!overflows()) return;
       if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
       e.preventDefault();
       bar.scrollLeft += e.deltaY;

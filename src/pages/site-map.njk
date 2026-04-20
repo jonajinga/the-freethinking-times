@@ -20,7 +20,7 @@ permalink: /site-map/
   .sitemap-section summary {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: var(--space-3);
     padding: var(--space-3) var(--space-4);
     font-family: var(--font-headline);
     font-size: var(--text-md);
@@ -29,6 +29,12 @@ permalink: /site-map/
     user-select: none;
     border-bottom: 2px solid transparent;
     transition: border-color var(--transition-fast);
+  }
+  .sitemap-section summary > .sitemap-title {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .sitemap-section summary:hover {
     color: var(--color-link);
@@ -79,10 +85,14 @@ permalink: /site-map/
     color: var(--color-link);
   }
   .sitemap-count {
+    font-family: var(--font-ui);
     font-size: var(--text-xs);
     color: var(--color-ink-faint);
-    font-weight: 400;
-    margin-left: var(--space-2);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    min-width: 2ch;
+    text-align: right;
+    flex-shrink: 0;
   }
 </style>
 
@@ -99,7 +109,7 @@ permalink: /site-map/
 
     {# ── Editorial Sections ── #}
     <details class="sitemap-section" open>
-      <summary>Editorial Sections <span class="sitemap-count">11</span></summary>
+      <summary><span class="sitemap-title">Editorial Sections</span><span class="sitemap-count">11</span></summary>
       <ul>
         <li><a href="/news/">News</a></li>
         <li><a href="/opinion/">Opinion</a></li>
@@ -117,7 +127,7 @@ permalink: /site-map/
 
     {# ── Library & Reference ── #}
     <details class="sitemap-section" open>
-      <summary>Library & Reference <span class="sitemap-count">10</span></summary>
+      <summary><span class="sitemap-title">Library & Reference</span><span class="sitemap-count">10</span></summary>
       <ul>
         <li><a href="/library/">Public Domain Library</a></li>
         <li><a href="/library/subjects/" class="sub">Browse by Subject</a></li>
@@ -137,7 +147,7 @@ permalink: /site-map/
 
     {# ── Timelines & Showcases ── #}
     <details class="sitemap-section" open>
-      <summary>Timelines & Showcases <span class="sitemap-count">11</span></summary>
+      <summary><span class="sitemap-title">Timelines & Showcases</span><span class="sitemap-count">11</span></summary>
       <ul>
         <li><a href="/timeline/">Historical Timeline</a></li>
         <li><a href="/timeline/showcase/" class="sub">Timeline Showcase</a></li>
@@ -155,7 +165,7 @@ permalink: /site-map/
 
     {# ── Media ── #}
     <details class="sitemap-section" open>
-      <summary>Media <span class="sitemap-count">4</span></summary>
+      <summary><span class="sitemap-title">Media</span><span class="sitemap-count">4</span></summary>
       <ul>
         <li><a href="/videos/">Video Library</a></li>
         <li><a href="/music/">Freethought Music</a></li>
@@ -167,7 +177,7 @@ permalink: /site-map/
 
     {# ── Freethought Community ── #}
     <details class="sitemap-section" open>
-      <summary>Freethought Community <span class="sitemap-count">6</span></summary>
+      <summary><span class="sitemap-title">Freethought Community</span><span class="sitemap-count">6</span></summary>
       <ul>
         <li><a href="/community/">Community Directory</a></li>
         <li><a href="/events/">Events Calendar</a></li>
@@ -180,7 +190,7 @@ permalink: /site-map/
 
     {# ── Contribute to Our Projects ── #}
     <details class="sitemap-section" open>
-      <summary>Contribute to Our Projects <span class="sitemap-count">10</span></summary>
+      <summary><span class="sitemap-title">Contribute to Our Projects</span><span class="sitemap-count">10</span></summary>
       <ul>
         <li><a href="/quotes/submit/">Submit a Quote</a></li>
         <li><a href="/timeline/submit/">Submit a Timeline Entry</a></li>
@@ -197,7 +207,7 @@ permalink: /site-map/
 
     {# ── Contribute ── #}
     <details class="sitemap-section" open>
-      <summary>Contribute <span class="sitemap-count">4</span></summary>
+      <summary><span class="sitemap-title">Contribute</span><span class="sitemap-count">4</span></summary>
       <ul>
         <li><a href="/contribute/">Write for Us</a></li>
         <li><a href="/submit/">Submit an Article</a></li>
@@ -208,7 +218,7 @@ permalink: /site-map/
 
     {# ── Contact ── #}
     <details class="sitemap-section" open>
-      <summary>Contact <span class="sitemap-count">4</span></summary>
+      <summary><span class="sitemap-title">Contact</span><span class="sitemap-count">4</span></summary>
       <ul>
         <li><a href="/contact/">Contact Us</a></li>
         <li><a href="/feedback/">Send Feedback</a></li>
@@ -219,7 +229,7 @@ permalink: /site-map/
 
     {# ── Reader Tools ── #}
     <details class="sitemap-section" open>
-      <summary>Reader Tools <span class="sitemap-count">10</span></summary>
+      <summary><span class="sitemap-title">Reader Tools</span><span class="sitemap-count">10</span></summary>
       <ul>
         <li><a href="/search/">Search</a></li>
         <li><a href="/start-here/">Start Here</a></li>
@@ -237,7 +247,7 @@ permalink: /site-map/
 
     {# ── About ── #}
     <details class="sitemap-section" open>
-      <summary>About <span class="sitemap-count">10</span></summary>
+      <summary><span class="sitemap-title">About</span><span class="sitemap-count">10</span></summary>
       <ul>
         <li><a href="/about/">About Us</a></li>
         <li><a href="/masthead/">Masthead</a></li>
@@ -254,7 +264,7 @@ permalink: /site-map/
 
     {# ── Transparency ── #}
     <details class="sitemap-section" open>
-      <summary>Transparency <span class="sitemap-count">8</span></summary>
+      <summary><span class="sitemap-title">Transparency</span><span class="sitemap-count">8</span></summary>
       <ul>
         <li><a href="/features/">Features</a></li>
         <li><a href="/stack/">How It's Built</a></li>
@@ -269,7 +279,7 @@ permalink: /site-map/
 
     {# ── Legal ── #}
     <details class="sitemap-section" open>
-      <summary>Legal <span class="sitemap-count">6</span></summary>
+      <summary><span class="sitemap-title">Legal</span><span class="sitemap-count">6</span></summary>
       <ul>
         <li><a href="/privacy/">Privacy Policy</a></li>
         <li><a href="/terms/">Terms of Use</a></li>

@@ -24,12 +24,15 @@
   </a>
   {% endif %}
 
-  {# Eyebrow: section + date #}
+  {# Eyebrow: section + subsection + date #}
   <div class="article-card__eyebrow">
     {% if article.data.section %}
     <a href="/{{ sectionKey }}/" class="section-badge section-badge--{{ sectionKey }}">
       {{ article.data.section }}
     </a>
+    {% endif %}
+    {% if article.data.subsection and article.data.section %}
+    <a href="/{{ sectionKey }}/?s={{ article.data.subsection | slugify }}" class="dateline dateline--link" aria-label="Filter {{ article.data.section }} to {{ article.data.subsection }}">{{ article.data.subsection }}</a>
     {% endif %}
     <a href="/archives/#{{ article.date | htmlDateString }}" class="dateline">
       <time datetime="{{ article.date | htmlDateString }}">{{ article.date | shortDate }}</time>

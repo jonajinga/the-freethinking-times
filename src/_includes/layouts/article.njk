@@ -77,7 +77,11 @@ layout: layouts/base.njk
           </a>
           {% endif %}
           {% if subsection %}
+          {% if section %}
+          <a href="/{{ section | slugify }}/?s={{ subsection | slugify }}" class="dateline dateline--link" aria-label="Filter {{ section }} to {{ subsection }}">{{ subsection }}</a>
+          {% else %}
           <span class="dateline">{{ subsection }}</span>
+          {% endif %}
           {% endif %}
           {% if edition %}
           <a href="/editions/{{ edition }}/" class="edition-badge">Edition {{ edition }}</a>
