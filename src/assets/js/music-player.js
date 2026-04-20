@@ -379,6 +379,18 @@
   var savedTime = parseInt(localStorage.getItem(K.time), 10) || 0;
 
   if (wasPlaying && savedPlaylist) {
+    // Preconnect to YouTube hosts so DNS/TLS is already warm by the time
+    // the iframe actually needs them — shaves ~100–200 ms off the first
+    // playback request after a full page reload (most common on article
+    // navigation, which can't use SPA-swap and so loses the prior iframe).
+    ['https://www.youtube.com', 'https://www.google.com', 'https://i.ytimg.com', 'https://fonts.gstatic.com'].forEach(function (origin) {
+      var link = document.createElement('link');
+      link.rel = 'preconnect';
+      link.href = origin;
+      link.crossOrigin = 'anonymous';
+      document.head.appendChild(link);
+    });
+
     loadYouTubeAPI();
     var resumeCheck = setInterval(function () {
       if (window.YT && window.YT.Player) {
@@ -388,7 +400,9 @@
         createPlayerBar();
         bar.hidden = false;
         if (nameEl) nameEl.textContent = currentName;
-        if (titleEl) titleEl.textContent = 'Resuming\u2026';
+        // Show the actual saved track name (if any) instead of a generic
+        // "Resuming..." placeholder — avoids an extra title flicker.
+        if (titleEl) titleEl.textContent = savedName || 'Resuming\u2026';
         // 'VIDEO:<id>' prefix marks a single-song playback; anything else
         // is a playlist id.
         if (savedPlaylist.indexOf('VIDEO:') === 0) {
@@ -397,7 +411,7 @@
           initPlayer(savedPlaylist, null, savedIndex, savedTime);
         }
       }
-    }, 300);
+    }, 100);
     setTimeout(function () { clearInterval(resumeCheck); }, 10000);
   }
 })();
