@@ -54,24 +54,33 @@
     var newTitle = doc.querySelector('title');
     var newMeta = doc.querySelector('meta[name="description"]');
     var newScripts = doc.querySelectorAll('main script, #main-content script');
-    // Collect inline scripts from the new page's main content
+    // Collect page-specific inline scripts. Start from the new page's
+    // main content (most page scripts live there); also include inline
+    // scripts outside main that aren't site-wide bootstraps.
+    // Deduplicate at the end because a script inside main would
+    // otherwise be picked up by both passes and run twice — this was
+    // the cause of duplicated <select> options on the Archives page.
+    var seen = Object.create(null);
     var scripts = [];
-    if (newMain) {
-      newMain.querySelectorAll('script').forEach(function (s) {
-        scripts.push(s.textContent);
-      });
+    function pushScript(s) {
+      var code = s.textContent;
+      if (seen[code]) return;
+      seen[code] = true;
+      scripts.push(code);
     }
-    // Also get scripts in block scripts area
-    var blockScripts = doc.querySelectorAll('script:not([src])');
-    blockScripts.forEach(function (s) {
-      if (s.textContent.indexOf('__glossaryTerms') === -1 &&
-          s.textContent.indexOf('iframe_api') === -1 &&
-          s.textContent.indexOf('music-player') === -1 &&
-          s.textContent.indexOf('drawer') === -1 &&
-          s.textContent.indexOf('gtranslateSettings') === -1) {
-        // Page-specific inline script
-        scripts.push(s.textContent);
-      }
+    if (newMain) {
+      newMain.querySelectorAll('script').forEach(pushScript);
+    }
+    doc.querySelectorAll('script:not([src])').forEach(function (s) {
+      var code = s.textContent;
+      // Skip the site-wide bootstrap scripts; they're already running.
+      if (code.indexOf('__glossaryTerms') !== -1) return;
+      if (code.indexOf('iframe_api') !== -1) return;
+      if (code.indexOf('music-player') !== -1) return;
+      if (code.indexOf('drawer') !== -1) return;
+      if (code.indexOf('gtranslateSettings') !== -1) return;
+      if (code.indexOf('__PREFIX') !== -1) return;
+      pushScript(s);
     });
     return {
       main: newMain ? newMain.innerHTML : null,

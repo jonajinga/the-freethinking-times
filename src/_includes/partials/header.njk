@@ -249,7 +249,9 @@
           <a href="/library/authors/" class="nav-dropdown__footer">Browse by Author</a>
           <a href="/library/" class="nav-dropdown__footer">View full library →</a>
         {% else %}
-          {% set subs = subsections[item.key] if subsections[item.key] else [] %}
+          {# Subsection keys are keyed by collection slug (which matches sectionSlug on section pages);
+             item.key sometimes differs from item.collection (e.g. science-tech vs science-technology). #}
+          {% set subs = subsections[item.collection] if subsections[item.collection] else (subsections[item.key] if subsections[item.key] else []) %}
           {% set topTags = collections[item.collection] | topTagsForSection(6) %}
           {% set latest = sectionItems | reverse | limit(4) %}
           {% if subs.length or topTags.length or latest.length %}
