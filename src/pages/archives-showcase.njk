@@ -102,14 +102,17 @@ eleventyExcludeFromCollections: true
 .as-showcase.is-visible .as-showcase__read { opacity: 1; }
 .as-showcase.is-visible .as-showcase__title { opacity: 1; transform: translateY(0); }
 
-/* Exit / filter header */
+/* Exit / filter header — three-column grid so the middle filter label
+   is visually centred on the viewport regardless of the brand / exit
+   widths. With flex + space-between, asymmetric side widths push the
+   centre item off-axis. */
 .as-showcase__topbar {
   position: fixed;
   top: var(--space-5);
   left: var(--space-6);
   right: var(--space-6);
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: var(--space-4);
   z-index: 10;
@@ -119,6 +122,9 @@ eleventyExcludeFromCollections: true
   text-transform: uppercase;
   color: var(--color-ink);
 }
+.as-showcase__brand  { justify-self: start; }
+.as-showcase__filter { justify-self: center; }
+.as-showcase__exit   { justify-self: end; }
 .as-showcase__brand {
   color: var(--color-ink);
   font-weight: 700;
