@@ -468,7 +468,8 @@
     <ul class="nav-drawer__list nav-drawer__list--cols" role="list">
       {% for item in nav %}
       {% if item.collection %}
-      <li><a class="nav-drawer__link nav-drawer__link--primary" href="{{ item.url }}" {% if page.url == item.url %}aria-current="page"{% endif %}>{{ item.label }}</a></li>
+      {% set sec = site.sections[item.collection] %}
+      <li><a class="nav-drawer__link nav-drawer__link--primary" href="{{ item.url }}"{% if sec and sec.description %} data-tippy-content="{{ sec.description }}"{% endif %}{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.label }}</a></li>
       {% endif %}
       {% endfor %}
     </ul>
@@ -481,7 +482,7 @@
     {% endif %}
     <ul class="nav-drawer__list{% if not group.small %} nav-drawer__list--cols{% endif %}" role="list">
       {% for link in group.links %}
-      <li><a class="nav-drawer__link{% if group.small %} nav-drawer__link--small{% endif %}" href="{{ link.url }}">{{ link.label }}</a></li>
+      <li><a class="nav-drawer__link{% if group.small %} nav-drawer__link--small{% endif %}" href="{{ link.url }}"{% if link.title %} data-tippy-content="{{ link.title }}"{% endif %}>{{ link.label }}</a></li>
       {% endfor %}
     </ul>
     {% if group.showSupportBadgeAfter and site.tipping %}
