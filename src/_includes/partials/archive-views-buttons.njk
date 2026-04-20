@@ -7,6 +7,10 @@
 {% set _qs = ("?" + viewFilter) if viewFilter else "" %}
 {% set _viewsSize = viewsSize or "" %}
 <div class="archive-views {% if _viewsSize %}archive-views--{{ _viewsSize }}{% endif %}" role="group" aria-label="Alternate views">
-  <a href="/archives/showcase/{{ _qs }}" class="btn archive-views__btn">Showcase</a>
+  {# Showcase intentionally opts out of SPA-nav: it's a fullscreen overlay
+     that reparents itself into document.body and hides the site-wrapper.
+     An SPA swap breaks that back-button behaviour (bfcache restores the
+     displaced DOM). Full reload keeps history clean. #}
+  <a href="/archives/showcase/{{ _qs }}" class="btn archive-views__btn" data-no-spa>Showcase</a>
   <a href="/archives/timeline/{{ _qs }}" class="btn archive-views__btn">Timeline</a>
 </div>
