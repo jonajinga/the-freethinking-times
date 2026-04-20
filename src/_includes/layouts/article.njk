@@ -754,99 +754,126 @@ layout: layouts/base.njk
 <div class="article-notes-overlay library-panel-overlay" aria-hidden="true"></div>
 
 {# ── Notes & highlights panel ── #}
-<aside id="article-notes-panel" class="library-panel" aria-hidden="true" aria-label="Notes and highlights">
-  <div class="library-panel__header">
-    <span style="font-family:var(--font-ui);font-size:var(--text-sm);font-weight:700;">Reader</span>
-    <button class="library-panel__close" aria-label="Close panel">&times;</button>
-  </div>
+<aside id="article-notes-panel" class="library-panel" aria-hidden="true" aria-label="Reader panel">
+  <header class="library-panel__header">
+    <div class="library-panel__heading">
+      <p class="library-panel__kicker">Reader</p>
+      <p class="library-panel__title">{{ title }}</p>
+    </div>
+    <button class="library-panel__close" type="button" aria-label="Close reader panel">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </header>
 
-  <div class="library-panel__tabs" role="tablist" style="justify-content:center;">
-    <button class="library-panel__tab" role="tab" aria-selected="true" aria-label="Contents" title="Contents"
-            data-target="article-panel-contents">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+  <div class="library-panel__tabs" role="tablist" aria-label="Reader panel sections">
+    <button class="library-panel__tab" role="tab" aria-selected="true" data-target="article-panel-contents" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      <span class="library-panel__tab-label">Contents</span>
     </button>
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Highlights" title="Highlights"
-            data-target="article-panel-highlights">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="article-panel-highlights" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      <span class="library-panel__tab-label">Highlights</span>
     </button>
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Notes" title="Notes"
-            data-target="article-panel-notes">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="article-panel-notes" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span class="library-panel__tab-label">Notes</span>
     </button>
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Bookmarks" title="Bookmarks"
-            data-target="article-panel-bookmarks">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="article-panel-bookmarks" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      <span class="library-panel__tab-label">Bookmarks</span>
     </button>
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Footnotes" title="Footnotes"
-            data-target="article-panel-footnotes">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><text x="2" y="9" font-size="7" font-weight="700" fill="currentColor" stroke="none">1</text><text x="2" y="15" font-size="7" font-weight="700" fill="currentColor" stroke="none">2</text><text x="2" y="21" font-size="7" font-weight="700" fill="currentColor" stroke="none">3</text></svg>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="article-panel-footnotes" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><text x="2" y="9" font-size="7" font-weight="700" fill="currentColor" stroke="none">1</text><text x="2" y="15" font-size="7" font-weight="700" fill="currentColor" stroke="none">2</text><text x="2" y="21" font-size="7" font-weight="700" fill="currentColor" stroke="none">3</text></svg>
+      <span class="library-panel__tab-label">Footnotes</span>
     </button>
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Related" title="Related"
-            data-target="article-panel-related">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="article-panel-related" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span class="library-panel__tab-label">Related</span>
     </button>
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Citation formats" title="Cite"
-            data-target="article-panel-cite-inline">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.685.54-2.293.44-.6 1.05-1.05 1.83-1.343.78-.295 1.56-.43 2.34-.43v-1.52c-.976 0-1.94.16-2.886.48-.95.32-1.8.824-2.556 1.51-.755.685-1.347 1.54-1.78 2.563-.432 1.025-.65 2.218-.65 3.58 0 1.36.22 2.47.65 3.33.432.86 1.02 1.5 1.76 1.92.74.42 1.57.63 2.48.63.97 0 1.79-.22 2.46-.66.67-.44 1.17-1.03 1.5-1.77.33-.74.5-1.55.5-2.44zm9 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.132-1.54-.022-.16-.95.1-1.685.54-2.294.44-.606 1.05-1.056 1.83-1.35.78-.294 1.56-.43 2.34-.43v-1.52c-.976 0-1.94.16-2.886.48-.95.32-1.8.825-2.556 1.51-.755.686-1.347 1.54-1.78 2.565-.432 1.022-.65 2.216-.65 3.578 0 1.36.22 2.47.65 3.33.432.86 1.02 1.5 1.76 1.92.74.42 1.57.63 2.48.63.97 0 1.79-.22 2.46-.66.67-.44 1.17-1.03 1.5-1.77.33-.74.5-1.55.5-2.44z"/></svg>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="article-panel-cite-inline" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.685.54-2.293.44-.6 1.05-1.05 1.83-1.343.78-.295 1.56-.43 2.34-.43v-1.52c-.976 0-1.94.16-2.886.48-.95.32-1.8.824-2.556 1.51-.755.685-1.347 1.54-1.78 2.563-.432 1.025-.65 2.218-.65 3.58 0 1.36.22 2.47.65 3.33.432.86 1.02 1.5 1.76 1.92.74.42 1.57.63 2.48.63.97 0 1.79-.22 2.46-.66.67-.44 1.17-1.03 1.5-1.77.33-.74.5-1.55.5-2.44zm9 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.132-1.54-.022-.16-.95.1-1.685.54-2.294.44-.606 1.05-1.056 1.83-1.35.78-.294 1.56-.43 2.34-.43v-1.52c-.976 0-1.94.16-2.886.48-.95.32-1.8.825-2.556 1.51-.755.686-1.347 1.54-1.78 2.565-.432 1.022-.65 2.216-.65 3.578 0 1.36.22 2.47.65 3.33.432.86 1.02 1.5 1.76 1.92.74.42 1.57.63 2.48.63.97 0 1.79-.22 2.46-.66.67-.44 1.17-1.03 1.5-1.77.33-.74.5-1.55.5-2.44z"/></svg>
+      <span class="library-panel__tab-label">Cite</span>
     </button>
     {% if site.repo and site.repo.owner %}
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Revision history" title="History"
-            data-target="article-panel-history">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="article-panel-history" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
+      <span class="library-panel__tab-label">History</span>
     </button>
     {% endif %}
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Display settings" title="Display"
-            data-target="article-panel-display">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="article-panel-display" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+      <span class="library-panel__tab-label">Display</span>
     </button>
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Export notes" title="Export"
-            data-target="article-panel-export">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="article-panel-export" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span class="library-panel__tab-label">Export</span>
     </button>
-    <span style="flex:1;"></span>
-    </div>
+  </div>
 
   <div class="library-panel__body">
     <div id="article-panel-contents" class="library-panel__section" aria-hidden="false">
+      <p class="library-panel__section-head">Contents</p>
+      <p class="library-panel__section-lede">Jump to any section. The current section highlights as you scroll.</p>
       <nav id="toc-nav" aria-label="Article sections"></nav>
     </div>
-    <div id="article-panel-highlights" class="library-panel__section" aria-hidden="true" data-print-label="Highlights"></div>
-    <div id="article-panel-notes" class="library-panel__section" aria-hidden="true" data-print-label="Notes"></div>
-    <div id="article-panel-bookmarks" class="library-panel__section" aria-hidden="true" data-print-label="Bookmarks"></div>
-    <div id="article-panel-footnotes" class="library-panel__section" aria-hidden="true" data-print-label="Footnotes"></div>
+    <div id="article-panel-highlights" class="library-panel__section" aria-hidden="true" data-print-label="Highlights">
+      <p class="library-panel__section-head">Highlights</p>
+      <p class="library-panel__section-lede">Passages you've marked, in reverse chronological order.</p>
+    </div>
+    <div id="article-panel-notes" class="library-panel__section" aria-hidden="true" data-print-label="Notes">
+      <p class="library-panel__section-head">Notes</p>
+      <p class="library-panel__section-lede">Annotated passages with your comments attached.</p>
+    </div>
+    <div id="article-panel-bookmarks" class="library-panel__section" aria-hidden="true" data-print-label="Bookmarks">
+      <p class="library-panel__section-head">Bookmarks</p>
+      <p class="library-panel__section-lede">Specific positions you've saved so you can resume later.</p>
+    </div>
+    <div id="article-panel-footnotes" class="library-panel__section" aria-hidden="true" data-print-label="Footnotes">
+      <p class="library-panel__section-head">Footnotes</p>
+      <p class="library-panel__section-lede">All endnotes for this article, each linking back to its citation in the text.</p>
+    </div>
     <div id="article-panel-display" class="library-panel__section" aria-hidden="true">
+      <p class="library-panel__section-head">Display</p>
+      <p class="library-panel__section-lede">Typeface, size, spacing, and background for this reading session.</p>
       <div id="reader-panel-slot-display"></div>
     </div>
     <div id="article-panel-export" class="library-panel__section" aria-hidden="true">
-      <p class="reader-panel-subhead">Export your notes &amp; highlights</p>
+      <p class="library-panel__section-head">Export</p>
+      <p class="library-panel__section-lede">Download your notes and highlights. Everything stays in your browser until you export.</p>
       <ul class="reader-export-list">
         <li><button type="button" class="reader-export-btn" data-export="txt">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          <span><strong>Plain text</strong><em>.txt, readable in any editor</em></span>
+          <span><strong>Plain text</strong><em>.txt &mdash; readable in any editor</em></span>
         </button></li>
         <li><button type="button" class="reader-export-btn" data-export="md">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>
-          <span><strong>Markdown</strong><em>.md, for Obsidian, notes apps</em></span>
+          <span><strong>Markdown</strong><em>.md &mdash; for Obsidian, Notion, any notes app</em></span>
         </button></li>
         <li><button type="button" class="reader-export-btn" data-export="json">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-          <span><strong>JSON</strong><em>.json, raw data for developers</em></span>
+          <span><strong>JSON</strong><em>.json &mdash; raw structured data for developers</em></span>
         </button></li>
         <li><button type="button" class="reader-export-btn" data-export="print">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          <span><strong>Print</strong><em>Opens a printable view of your notes</em></span>
+          <span><strong>Print</strong><em>Opens a printable view of this article and your notes</em></span>
         </button></li>
       </ul>
     </div>
     <div id="article-panel-cite-inline" class="library-panel__section" aria-hidden="true">
-      {# Inline citation formats, rendered into this section by cite-inline.js #}
+      <p class="library-panel__section-head">Cite this article</p>
+      <p class="library-panel__section-lede">Pre-formatted citations in the most common academic styles, ready to copy.</p>
+      {# Inline citation formats, rendered below by cite-inline.js #}
     </div>
     {% if site.repo and site.repo.owner %}
     <div id="article-panel-history" class="library-panel__section" aria-hidden="true">
-      {# Revision history, rendered into this section on first activation by revision-history.js #}
+      <p class="library-panel__section-head">Revision history</p>
+      <p class="library-panel__section-lede">Every edit to this article, from the Git history behind the publication.</p>
+      {# Revision history, rendered below on first activation by revision-history.js #}
     </div>
     {% endif %}
     <div id="article-panel-related" class="library-panel__section" aria-hidden="true" data-print-label="Related">
+      <p class="library-panel__section-head">Related reading</p>
+      <p class="library-panel__section-lede">Other articles connected by tag, section, or subject matter.</p>
       {% set relatedList = collections.allContent | relatedArticles({ tags: tags, section: section, title: title }, page.url, 4) %}
       {% if relatedList.length > 0 %}
       <ul style="list-style:none;padding:0;margin:0;">

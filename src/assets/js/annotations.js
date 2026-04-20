@@ -187,7 +187,12 @@
       var list = load();
       containerEl.innerHTML = '';
       if (!list.length) {
-        containerEl.innerHTML = '<p class="library-panel__empty">No bookmarks yet. Click "Bookmark" to save your position.</p>';
+        containerEl.innerHTML =
+          '<div class="library-panel__empty">' +
+            '<span class="library-panel__empty-title">No bookmarks yet</span>' +
+            'Save the spot you\'re reading so you can jump back later.' +
+            '<span class="library-panel__empty-hint">Tap the location-pin icon in the toolbar below to bookmark this spot.</span>' +
+          '</div>';
         return;
       }
       var ul = document.createElement('div');
@@ -259,7 +264,12 @@
       var list = load();
       containerEl.innerHTML = '';
       if (!list.length) {
-        containerEl.innerHTML = '<p class="library-panel__empty">No notes yet. Select text to highlight or annotate.</p>';
+        containerEl.innerHTML =
+          '<div class="library-panel__empty">' +
+            '<span class="library-panel__empty-title">Nothing highlighted yet</span>' +
+            'Select any passage in the article; the floating toolbar gives you a highlighter and a note button.' +
+            '<span class="library-panel__empty-hint">Everything stays in this browser. Nothing is synced.</span>' +
+          '</div>';
         return;
       }
       var wrapper = document.createElement('div');
@@ -385,7 +395,7 @@
       var list = load().filter(filterFn);
       containerEl.innerHTML = '';
       if (!list.length) {
-        containerEl.innerHTML = '<p class="library-panel__empty">' + emptyMsg + '</p>';
+        containerEl.innerHTML = '<div class="library-panel__empty">' + emptyMsg + '</div>';
         return;
       }
       var wrapper = document.createElement('div');
@@ -467,11 +477,17 @@
     }
 
     function renderHighlights(containerEl) {
-      renderFiltered(containerEl, function (a) { return !a.note; }, 'No highlights yet. Select text and click Highlight.');
+      renderFiltered(containerEl, function (a) { return !a.note; },
+        '<span class="library-panel__empty-title">No highlights yet</span>' +
+        'Select a passage and click the highlighter in the pop-up toolbar to mark it.' +
+        '<span class="library-panel__empty-hint">Highlights appear here with the quoted text and a link back to the passage.</span>');
     }
 
     function renderNotes(containerEl) {
-      renderFiltered(containerEl, function (a) { return !!a.note; }, 'No notes yet. Select text and click Note to add one.');
+      renderFiltered(containerEl, function (a) { return !!a.note; },
+        '<span class="library-panel__empty-title">No notes yet</span>' +
+        'Select a passage and click the note icon to attach a thought, reference, or rebuttal.' +
+        '<span class="library-panel__empty-hint">Notes are stored in your browser; export them any time from the Export tab.</span>');
     }
 
     return { add: add, remove: remove, load: load, render: render, renderHighlights: renderHighlights, renderNotes: renderNotes, restoreHighlights: restoreHighlights };

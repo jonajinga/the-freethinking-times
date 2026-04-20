@@ -145,37 +145,51 @@ layout: layouts/base.njk
 <div class="library-panel-overlay" aria-hidden="true"></div>
 
 {# ── Reading panel ── #}
-<aside id="library-panel" class="library-panel" aria-hidden="true" aria-label="Reading panel">
-  <div class="library-panel__header">
-    <span style="font-family:var(--font-ui);font-size:var(--text-sm);font-weight:700;">Reader</span>
-    <button class="library-panel__close" aria-label="Close panel">&times;</button>
-  </div>
-
-  <div class="library-panel__tabs" role="tablist" style="justify-content:center;">
-    <button class="library-panel__tab" role="tab" aria-selected="true" aria-label="Contents" title="Contents" data-target="panel-toc">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-    </button>
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Highlights" title="Highlights" data-target="panel-highlights">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-    </button>
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Notes" title="Notes" data-target="panel-notes">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-    </button>
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Bookmarks" title="Bookmarks" data-target="panel-bookmarks">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-    </button>
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Footnotes" title="Footnotes" data-target="panel-footnotes">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><text x="2" y="9" font-size="7" font-weight="700" fill="currentColor" stroke="none">1</text><text x="2" y="15" font-size="7" font-weight="700" fill="currentColor" stroke="none">2</text><text x="2" y="21" font-size="7" font-weight="700" fill="currentColor" stroke="none">3</text></svg>
-    </button>
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Citation formats" title="Cite" data-target="panel-cite-inline">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.685.54-2.293.44-.6 1.05-1.05 1.83-1.343.78-.295 1.56-.43 2.34-.43v-1.52c-.976 0-1.94.16-2.886.48-.95.32-1.8.824-2.556 1.51-.755.685-1.347 1.54-1.78 2.563-.432 1.025-.65 2.218-.65 3.58 0 1.36.22 2.47.65 3.33.432.86 1.02 1.5 1.76 1.92.74.42 1.57.63 2.48.63.97 0 1.79-.22 2.46-.66.67-.44 1.17-1.03 1.5-1.77.33-.74.5-1.55.5-2.44zm9 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.132-1.54-.022-.16-.95.1-1.685.54-2.294.44-.606 1.05-1.056 1.83-1.35.78-.294 1.56-.43 2.34-.43v-1.52c-.976 0-1.94.16-2.886.48-.95.32-1.8.825-2.556 1.51-.755.686-1.347 1.54-1.78 2.565-.432 1.022-.65 2.216-.65 3.578 0 1.36.22 2.47.65 3.33.432.86 1.02 1.5 1.76 1.92.74.42 1.57.63 2.48.63.97 0 1.79-.22 2.46-.66.67-.44 1.17-1.03 1.5-1.77.33-.74.5-1.55.5-2.44z"/></svg>
-    </button>
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Display settings" title="Display" data-target="panel-display">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
-    </button>
-    <button class="library-panel__tab" role="tab" aria-selected="false" aria-label="Export notes" title="Export" data-target="panel-export"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
-    <span style="flex:1;"></span>
+<aside id="library-panel" class="library-panel" aria-hidden="true" aria-label="Reader panel">
+  <header class="library-panel__header">
+    <div class="library-panel__heading">
+      <p class="library-panel__kicker">Reader</p>
+      <p class="library-panel__title">{{ workTitle }}{% if title %} &middot; {{ title }}{% endif %}</p>
     </div>
+    <button class="library-panel__close" type="button" aria-label="Close reader panel">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </header>
+
+  <div class="library-panel__tabs" role="tablist" aria-label="Reader panel sections">
+    <button class="library-panel__tab" role="tab" aria-selected="true" data-target="panel-toc" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      <span class="library-panel__tab-label">Contents</span>
+    </button>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="panel-highlights" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      <span class="library-panel__tab-label">Highlights</span>
+    </button>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="panel-notes" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span class="library-panel__tab-label">Notes</span>
+    </button>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="panel-bookmarks" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      <span class="library-panel__tab-label">Bookmarks</span>
+    </button>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="panel-footnotes" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><text x="2" y="9" font-size="7" font-weight="700" fill="currentColor" stroke="none">1</text><text x="2" y="15" font-size="7" font-weight="700" fill="currentColor" stroke="none">2</text><text x="2" y="21" font-size="7" font-weight="700" fill="currentColor" stroke="none">3</text></svg>
+      <span class="library-panel__tab-label">Footnotes</span>
+    </button>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="panel-cite-inline" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.685.54-2.293.44-.6 1.05-1.05 1.83-1.343.78-.295 1.56-.43 2.34-.43v-1.52c-.976 0-1.94.16-2.886.48-.95.32-1.8.824-2.556 1.51-.755.685-1.347 1.54-1.78 2.563-.432 1.025-.65 2.218-.65 3.58 0 1.36.22 2.47.65 3.33.432.86 1.02 1.5 1.76 1.92.74.42 1.57.63 2.48.63.97 0 1.79-.22 2.46-.66.67-.44 1.17-1.03 1.5-1.77.33-.74.5-1.55.5-2.44zm9 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.132-1.54-.022-.16-.95.1-1.685.54-2.294.44-.606 1.05-1.056 1.83-1.35.78-.294 1.56-.43 2.34-.43v-1.52c-.976 0-1.94.16-2.886.48-.95.32-1.8.825-2.556 1.51-.755.686-1.347 1.54-1.78 2.565-.432 1.022-.65 2.216-.65 3.578 0 1.36.22 2.47.65 3.33.432.86 1.02 1.5 1.76 1.92.74.42 1.57.63 2.48.63.97 0 1.79-.22 2.46-.66.67-.44 1.17-1.03 1.5-1.77.33-.74.5-1.55.5-2.44z"/></svg>
+      <span class="library-panel__tab-label">Cite</span>
+    </button>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="panel-display" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+      <span class="library-panel__tab-label">Display</span>
+    </button>
+    <button class="library-panel__tab" role="tab" aria-selected="false" data-target="panel-export" type="button">
+      <svg class="library-panel__tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span class="library-panel__tab-label">Export</span>
+    </button>
+  </div>
 
   <div class="library-panel__body">
     {# TOC tab #}

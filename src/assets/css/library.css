@@ -685,7 +685,7 @@
   width: min(460px, 90vw);
   background: var(--color-bg);
   border-left: 1px solid var(--color-rule);
-  box-shadow: var(--shadow-md);
+  box-shadow: -18px 0 48px rgba(0, 0, 0, 0.08), -2px 0 6px rgba(0, 0, 0, 0.04);
   /* Sits above the annotation-toolbar (both share --z-overlay by default,
      but the panel must win so selection buttons / download items in the
      Share tab aren't intercepted by the toolbar). */
@@ -706,13 +706,40 @@
   transform: translateX(0);
 }
 
+/* ── Header: kicker + current title + close ───────────────── */
 .library-panel__header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  padding: var(--space-4) var(--space-6);
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6) var(--space-4);
   border-bottom: 1px solid var(--color-rule);
   flex-shrink: 0;
+}
+.library-panel__heading {
+  min-width: 0;
+  flex: 1;
+}
+.library-panel__kicker {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-accent);
+  margin: 0 0 2px;
+}
+.library-panel__title {
+  font-family: var(--font-masthead, var(--font-headline));
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  color: var(--color-ink);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .library-panel__header-btn {
@@ -768,17 +795,25 @@
 }
 
 .library-panel__close {
-  background: none;
-  border: none;
-  font-size: var(--text-md);
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 1px solid var(--color-rule);
   color: var(--color-ink-muted);
   cursor: pointer;
-  padding: var(--space-1);
+  padding: 0;
   line-height: 1;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .library-panel__close:hover {
-  color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-bg);
+  border-color: var(--color-ink);
 }
 
 .library-panel__tabs {
@@ -1066,38 +1101,56 @@
 
 .library-panel__tab {
   flex: 0 0 auto;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-3) 10px var(--space-2);
   font-family: 'DM Sans', system-ui, sans-serif;
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-ink-faint);
   cursor: pointer;
-  transition: color var(--transition-fast), border-color var(--transition-fast);
+  min-width: 58px;
+  transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+}
+.library-panel__tab-icon {
+  opacity: 0.75;
+  transition: opacity var(--transition-fast);
+}
+.library-panel__tab-label {
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .library-panel__tab[aria-selected="true"] {
   color: var(--color-ink);
   border-bottom-color: var(--color-accent);
+  background: var(--color-bg-alt);
 }
+.library-panel__tab[aria-selected="true"] .library-panel__tab-icon { opacity: 1; }
 
 .library-panel__tab:hover:not([aria-selected="true"]) {
   color: var(--color-ink-muted);
+  background: var(--color-bg-alt);
 }
+.library-panel__tab:hover:not([aria-selected="true"]) .library-panel__tab-icon { opacity: 0.95; }
 
-/* Tighten the panel tab icons a notch on phones so all tabs fit
-   without feeling bloated. */
+/* Phones: icon-only to fit more tabs. */
 @media (max-width: 640px) {
   .library-panel__tab {
-    padding: var(--space-2);
+    min-width: 0;
+    padding: var(--space-2) var(--space-3);
   }
-  .library-panel__tab svg {
-    width: 12px !important;
-    height: 12px !important;
+  .library-panel__tab-label { display: none; }
+  .library-panel__tab-icon {
+    width: 16px !important;
+    height: 16px !important;
   }
   .library-panel__export-item svg {
     width: 11px !important;
@@ -1108,7 +1161,8 @@
 .library-panel__body {
   flex: 1;
   overflow-y: auto;
-  padding: var(--space-6);
+  padding: var(--space-5) var(--space-5) var(--space-6);
+  scrollbar-width: thin;
 }
 
 .library-panel__section {
@@ -1119,13 +1173,51 @@
   display: block;
 }
 
+.library-panel__section-head {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-ink-faint);
+  margin: 0 0 var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.library-panel__section-lede {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-ink-muted);
+  margin: 0 0 var(--space-4);
+}
+
 .library-panel__empty {
   font-family: var(--font-ui);
   font-size: var(--text-sm);
   color: var(--color-ink-faint);
-  font-style: italic;
+  line-height: var(--leading-relaxed);
   text-align: center;
-  padding: var(--space-8) 0;
+  padding: var(--space-10) var(--space-4);
+  margin: 0;
+}
+.library-panel__empty-title {
+  display: block;
+  font-weight: 700;
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 var(--space-2);
+}
+.library-panel__empty-hint {
+  display: block;
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--color-ink-faint);
+  font-style: italic;
 }
 
 /* TOC items */
