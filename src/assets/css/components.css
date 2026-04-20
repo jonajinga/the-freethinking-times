@@ -464,6 +464,18 @@
 }
 .gs-theme-btn.is-active .gs-theme-btn__label { color: var(--color-ink); }
 
+/* Article-only section (ruler / paragraph numbers / auto-scroll). Hidden
+   by default; becomes visible on pages where #main-content contains an
+   .article-body (articles, library chapters, glossary entries, etc.). */
+.gs-article-only { display: none; }
+body:has(.article-body) .gs-article-only { display: block; }
+
+/* Hide desktop-only controls on coarse pointers (phones, most tablets).
+   Auto-scroll in particular is awkward without a mouse. */
+@media (hover: none) and (pointer: coarse) {
+  .gs-desktop-only { display: none !important; }
+}
+
 /* Footer */
 .gs-panel__footer {
   padding: var(--space-4) var(--space-5) var(--space-5);

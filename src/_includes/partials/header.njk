@@ -249,6 +249,63 @@
         </div>
       </section>
 
+      {# ── Article tools ── shown only on pages that have an .article-body #}
+      <section class="gs-section gs-article-only">
+        <h3 class="gs-section__title">Article tools</h3>
+
+        <div class="gs-row">
+          <p class="gs-row__label">Reading ruler</p>
+          <div class="gs-row__control gs-seg" role="group" aria-label="Reading ruler">
+            <button class="gs-seg__btn is-active" data-gs-ruler="off" type="button">Off</button>
+            <button class="gs-seg__btn" data-gs-ruler="on" type="button">On</button>
+          </div>
+        </div>
+        <div class="gs-row gs-ruler-opts" hidden>
+          <label class="gs-row__label" for="gs-ruler-color">Ruler color</label>
+          <select id="gs-ruler-color" class="gs-select">
+            <option value="accent">Accent</option>
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <option value="yellow">Amber</option>
+            <option value="black">Black</option>
+          </select>
+        </div>
+        <div class="gs-row gs-ruler-opts" hidden>
+          <p class="gs-row__label">Ruler style</p>
+          <div class="gs-row__control gs-seg" role="group" aria-label="Ruler style">
+            <button class="gs-seg__btn is-active" data-gs-ruler-style="solid" type="button">Solid</button>
+            <button class="gs-seg__btn" data-gs-ruler-style="dashed" type="button">Dashed</button>
+            <button class="gs-seg__btn" data-gs-ruler-style="dotted" type="button">Dotted</button>
+            <button class="gs-seg__btn" data-gs-ruler-style="glow" type="button">Glow</button>
+          </div>
+        </div>
+
+        <div class="gs-row">
+          <p class="gs-row__label">Paragraph numbers</p>
+          <div class="gs-row__control gs-seg" role="group" aria-label="Paragraph numbers">
+            <button class="gs-seg__btn is-active" data-gs-paranums="off" type="button">Off</button>
+            <button class="gs-seg__btn" data-gs-paranums="on" type="button">On</button>
+          </div>
+        </div>
+
+        <div class="gs-row gs-desktop-only">
+          <p class="gs-row__label">Auto-scroll</p>
+          <div class="gs-row__control gs-seg" role="group" aria-label="Auto-scroll">
+            <button class="gs-seg__btn is-active" data-gs-autoscroll="off" type="button">Off</button>
+            <button class="gs-seg__btn" data-gs-autoscroll="on" type="button">On</button>
+          </div>
+        </div>
+        <div class="gs-row gs-desktop-only gs-autoscroll-opts" hidden>
+          <label class="gs-row__label" for="gs-autoscroll-speed">Scroll speed</label>
+          <div class="gs-row__control gs-size">
+            <span class="gs-size__min" aria-hidden="true">&minus;</span>
+            <input type="range" class="gs-size__slider" id="gs-autoscroll-speed" min="1" max="10" step="1" value="3" aria-label="Auto-scroll speed">
+            <span class="gs-size__max" aria-hidden="true">+</span>
+          </div>
+        </div>
+      </section>
+
       {% if site.gtranslate %}
       {# ── Language ── #}
       <section class="gs-section">

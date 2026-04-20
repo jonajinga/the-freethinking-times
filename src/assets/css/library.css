@@ -1056,6 +1056,29 @@
   color: var(--color-ink-faint);
 }
 
+/* CTA button inside the Display tab — opens the unified global display
+   settings panel (now the single source of truth for display prefs). */
+.reader-panel-open-display {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-ink);
+  color: var(--color-bg);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.reader-panel-open-display:hover {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
 /* Subheads inside tab sections (e.g. "Share" / "Download" in the Share tab) */
 .reader-panel-subhead {
   font-family: var(--font-ui);

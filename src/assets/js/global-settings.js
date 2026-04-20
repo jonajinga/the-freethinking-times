@@ -13,6 +13,16 @@
     wordspace: _p + '-gs-wordspace',
     bg:       _p + '-gs-bg'
   };
+  // Article-tool keys reuse the legacy `rs-` prefix so existing user
+  // preferences carry over from the old per-article reading-settings panel.
+  var AK = {
+    paraNums:    _p + '-rs-paraNums',
+    ruler:       _p + '-rs-ruler',
+    rulerColor:  _p + '-rs-rulerColor',
+    rulerStyle:  _p + '-rs-rulerStyle',
+    autoscroll:  _p + '-rs-autoscroll',
+    scrollSpeed: _p + '-rs-scrollSpeed'
+  };
 
   var root = document.documentElement;
   var prefs = {
@@ -20,11 +30,20 @@
     font:      localStorage.getItem(K.font) || 'default',
     spacing:   localStorage.getItem(K.spacing) || 'normal',
     wordspace: localStorage.getItem(K.wordspace) || 'normal',
-    bg:        localStorage.getItem(K.bg) || 'default'
+    bg:        localStorage.getItem(K.bg) || 'default',
+    // Article-tool prefs. Ruler + autoscroll are session-ephemeral (don't
+    // auto-restore), but their colour / style / speed do persist.
+    paraNums:    localStorage.getItem(AK.paraNums) === 'true',
+    rulerColor:  localStorage.getItem(AK.rulerColor) || 'accent',
+    rulerStyle:  localStorage.getItem(AK.rulerStyle) || 'solid',
+    scrollSpeed: parseInt(localStorage.getItem(AK.scrollSpeed), 10) || 3
   };
 
   function save(key, val) {
     try { localStorage.setItem(K[key], val); } catch (e) {}
+  }
+  function saveArt(key, val) {
+    try { localStorage.setItem(AK[key], val); } catch (e) {}
   }
 
   // Quick profile presets
@@ -91,6 +110,129 @@
   }
 
   applyAll();
+
+  // ── Article tools (ruler / paragraph numbers / auto-scroll) ──
+  // These only take effect on pages with an .article-body element.
+  var rulerColorMap = {
+    accent: 'var(--color-accent)',
+    red: '#e53e3e',
+    blue: '#3182ce',
+    green: '#38a169',
+    yellow: '#d69e2e',
+    black: '#111',
+    white: '#eee'
+  };
+  var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  var rulerBounds = { left: 0, width: 0, top: 0, bottom: 0 };
+  var _mousemoveBound = false;
+  var _rulerListenersBound = false;
+  var scrollAnim = null;
+
+  function articleBody() { return document.querySelector('.article-body'); }
+
+  function updateRulerBounds() {
+    var body = articleBody();
+    if (!body) return;
+    var rect = body.getBoundingClientRect();
+    rulerBounds.left = rect.left;
+    rulerBounds.width = rect.width;
+    rulerBounds.top = rect.top;
+    rulerBounds.bottom = rect.bottom;
+    var ruler = document.getElementById('rs-reading-ruler');
+    if (ruler) {
+      ruler.style.left = rect.left + 'px';
+      ruler.style.width = rect.width + 'px';
+      if (isTouchDevice) {
+        ruler.style.top = Math.round(window.innerHeight * 0.4) + 'px';
+      }
+    }
+  }
+  function moveRuler(e) {
+    var ruler = document.getElementById('rs-reading-ruler');
+    if (!ruler) return;
+    var y = e.clientY;
+    if (y < rulerBounds.top || y > rulerBounds.bottom) {
+      ruler.style.opacity = '0';
+    } else {
+      ruler.style.opacity = '';
+      ruler.style.top = y + 'px';
+    }
+  }
+  function applyRulerStyle() {
+    var ruler = document.getElementById('rs-reading-ruler');
+    if (!ruler) return;
+    var thick = 2;
+    var color = rulerColorMap[prefs.rulerColor] || rulerColorMap.accent;
+    ruler.style.height = thick + 'px';
+    ruler.style.background = color;
+    ruler.style.borderTop = 'none';
+    ruler.style.boxShadow = 'none';
+    if (prefs.rulerStyle === 'dashed') {
+      ruler.style.background = 'none';
+      ruler.style.borderTop = thick + 'px dashed ' + color;
+      ruler.style.height = '0';
+    } else if (prefs.rulerStyle === 'dotted') {
+      ruler.style.background = 'none';
+      ruler.style.borderTop = thick + 'px dotted ' + color;
+      ruler.style.height = '0';
+    } else if (prefs.rulerStyle === 'glow') {
+      ruler.style.boxShadow = '0 0 ' + (thick * 3) + 'px ' + thick + 'px ' + color;
+    }
+  }
+  function applyRuler(on) {
+    var body = articleBody();
+    var existing = document.getElementById('rs-reading-ruler');
+    if (on && body && !existing) {
+      var ruler = document.createElement('div');
+      ruler.id = 'rs-reading-ruler';
+      ruler.className = 'rs-ruler-line';
+      document.body.appendChild(ruler);
+      applyRulerStyle();
+      updateRulerBounds();
+      if (isTouchDevice) {
+        ruler.style.top = Math.round(window.innerHeight * 0.4) + 'px';
+        ruler.style.opacity = '';
+      } else if (!_mousemoveBound) {
+        document.addEventListener('mousemove', moveRuler);
+        _mousemoveBound = true;
+      }
+      if (!_rulerListenersBound) {
+        window.addEventListener('resize', updateRulerBounds);
+        window.addEventListener('scroll', updateRulerBounds, { passive: true });
+        document.addEventListener('selectionchange', function () {
+          var r = document.getElementById('rs-reading-ruler');
+          if (!r) return;
+          var sel = window.getSelection();
+          r.style.visibility = (sel && sel.toString().length > 0) ? 'hidden' : '';
+        });
+        _rulerListenersBound = true;
+      }
+    } else if (!on && existing) {
+      existing.remove();
+    }
+  }
+  function applyParaNums(on) {
+    var body = articleBody();
+    if (body) body.classList.toggle('rs-para-numbers', on);
+  }
+  function applyAutoscroll(on) {
+    if (on) {
+      var speed = prefs.scrollSpeed || 3;
+      function tick() {
+        window.scrollBy(0, speed * 0.3);
+        scrollAnim = requestAnimationFrame(tick);
+      }
+      if (scrollAnim) cancelAnimationFrame(scrollAnim);
+      scrollAnim = requestAnimationFrame(tick);
+    } else {
+      if (scrollAnim) cancelAnimationFrame(scrollAnim);
+      scrollAnim = null;
+    }
+  }
+  // Apply persisted article-tool prefs on load. Ruler and autoscroll are
+  // ephemeral (start off on each pageload), but paraNums + ruler style
+  // should stick.
+  if (prefs.paraNums) applyParaNums(true);
 
   // ── Bind panel (runs after DOM ready) ──
   function bindPanel() {
@@ -241,15 +383,96 @@
       if (e.key === 'Escape' && !panel.hidden) panel.hidden = true;
     });
 
+    // ── Article-tool controls ──
+    var rulerOptsRows = panel.querySelectorAll('.gs-ruler-opts');
+    var autoscrollOptsRows = panel.querySelectorAll('.gs-autoscroll-opts');
+    var rulerColorSel = document.getElementById('gs-ruler-color');
+    var autoscrollSpeed = document.getElementById('gs-autoscroll-speed');
+
+    function toggleGroup(rows, show) {
+      rows.forEach(function (r) { r.hidden = !show; });
+    }
+    function syncSegmented(attr, val) {
+      panel.querySelectorAll('[' + attr + ']').forEach(function (b) {
+        var dk = Object.keys(b.dataset).find(function (k) { return k.indexOf('gs') === 0; });
+        b.classList.toggle('is-active', b.dataset[dk] === val);
+      });
+    }
+
+    // Ruler
+    panel.querySelectorAll('[data-gs-ruler]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var v = b.dataset.gsRuler;
+        syncSegmented('data-gs-ruler', v);
+        var on = v === 'on';
+        applyRuler(on);
+        toggleGroup(rulerOptsRows, on);
+      });
+    });
+    if (rulerColorSel) {
+      rulerColorSel.value = prefs.rulerColor;
+      rulerColorSel.addEventListener('change', function () {
+        prefs.rulerColor = this.value;
+        saveArt('rulerColor', prefs.rulerColor);
+        applyRulerStyle();
+      });
+    }
+    panel.querySelectorAll('[data-gs-ruler-style]').forEach(function (b) {
+      b.classList.toggle('is-active', b.dataset.gsRulerStyle === prefs.rulerStyle);
+      b.addEventListener('click', function () {
+        prefs.rulerStyle = b.dataset.gsRulerStyle;
+        saveArt('rulerStyle', prefs.rulerStyle);
+        syncSegmented('data-gs-ruler-style', prefs.rulerStyle);
+        applyRulerStyle();
+      });
+    });
+
+    // Paragraph numbers
+    syncSegmented('data-gs-paranums', prefs.paraNums ? 'on' : 'off');
+    panel.querySelectorAll('[data-gs-paranums]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var on = b.dataset.gsParanums === 'on';
+        prefs.paraNums = on;
+        saveArt('paraNums', on);
+        syncSegmented('data-gs-paranums', on ? 'on' : 'off');
+        applyParaNums(on);
+      });
+    });
+
+    // Auto-scroll
+    panel.querySelectorAll('[data-gs-autoscroll]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var v = b.dataset.gsAutoscroll;
+        syncSegmented('data-gs-autoscroll', v);
+        var on = v === 'on';
+        applyAutoscroll(on);
+        toggleGroup(autoscrollOptsRows, on);
+      });
+    });
+    if (autoscrollSpeed) {
+      autoscrollSpeed.value = prefs.scrollSpeed || 3;
+      autoscrollSpeed.addEventListener('input', function () {
+        prefs.scrollSpeed = parseInt(this.value, 10);
+        saveArt('scrollSpeed', prefs.scrollSpeed);
+      });
+    }
+
     // Reset
     window.__resetGlobalSettings = function () {
       Object.keys(K).forEach(function (k) { localStorage.removeItem(K[k]); });
+      Object.keys(AK).forEach(function (k) { localStorage.removeItem(AK[k]); });
       localStorage.removeItem(_p + '-theme');
       root.removeAttribute('data-theme');
       root.removeAttribute('data-gs-bg');
       root.removeAttribute('data-gs-font');
-      prefs = { fontSize: 0, font: 'default', spacing: 'normal', wordspace: 'normal', bg: 'default' };
+      prefs = {
+        fontSize: 0, font: 'default', spacing: 'normal', wordspace: 'normal', bg: 'default',
+        paraNums: false, rulerColor: 'accent', rulerStyle: 'solid', scrollSpeed: 3
+      };
       applyAll();
+      applyRuler(false);
+      applyParaNums(false);
+      applyAutoscroll(false);
       if (slider) slider.value = 16;
       updateSizeReadout();
       if (fontSel) fontSel.value = 'default';
@@ -259,6 +482,14 @@
       panel.querySelectorAll('[data-gs-wordspace]').forEach(function (x) {
         x.classList.toggle('is-active', x.dataset.gsWordspace === 'normal');
       });
+      syncSegmented('data-gs-ruler', 'off');
+      syncSegmented('data-gs-paranums', 'off');
+      syncSegmented('data-gs-autoscroll', 'off');
+      syncSegmented('data-gs-ruler-style', 'solid');
+      toggleGroup(rulerOptsRows, false);
+      toggleGroup(autoscrollOptsRows, false);
+      if (rulerColorSel) rulerColorSel.value = 'accent';
+      if (autoscrollSpeed) autoscrollSpeed.value = 3;
       themeBtns.forEach(function (x) { x.classList.toggle('is-active', x.dataset.gsTheme === 'auto'); });
       profBtns.forEach(function (x) { x.classList.remove('is-active'); });
     };

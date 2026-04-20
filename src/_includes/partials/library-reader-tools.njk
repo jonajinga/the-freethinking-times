@@ -82,7 +82,10 @@
     </div>
   </div>
 
-  {# Reading settings #}
+  {# Reading settings are now handled by the global display-settings panel
+     (masthead → Display button). Article-only controls (ruler, paragraph
+     numbers, auto-scroll) appear there automatically on library pages. #}
+  {% if false %}
   <div class="reading-settings-wrap">
     <button class="article-action-btn" id="reading-settings-btn" type="button"
       aria-label="Reading settings"
@@ -253,6 +256,7 @@
       <button type="button" style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);background:none;border:none;cursor:pointer;padding:var(--space-1) 0;" onclick="if(window.__resetReadingSettings)window.__resetReadingSettings();">Reset to defaults</button>
     </div>
   </div>
+  {% endif %}
 
   {# 6. Download #}
   <div class="download-wrap">

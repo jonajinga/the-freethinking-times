@@ -2,14 +2,16 @@
  * Reader-panel migration + share/print popover wiring.
  *
  * The article HTML still renders the original .article-header__actions block
- * (hidden via CSS) so existing scripts (reading-settings.js, download.js,
- * progress.js, reading-list.js) keep wiring up by ID. This script:
+ * (hidden via CSS) so existing scripts (download.js, progress.js,
+ * reading-list.js) keep wiring up by ID. This script:
  *
  *   - moves Save / Feedback buttons into the bottom toolbar
- *   - moves Reading-settings panel into the Reader panel's Display tab
  *   - moves share-panel / download-panel into the Share popover
  *   - wires the Share and Print popovers (toggle + close-on-outside)
  *   - delegates to navigator.share() on mobile if available
+ *
+ * (The old Reading-settings panel migration is gone; display settings
+ * are now unified in the masthead global-settings panel.)
  */
 (function () {
   'use strict';
@@ -49,16 +51,13 @@
   move('article-feedback-btn',   'ann-feedback-slot');
   move('article-feedback-popup', 'ann-feedback-slot');
 
-  // ── Reader panel: Display tab
-  move('reading-settings-panel', 'reader-panel-slot-display');
-
   // ── Share popover slots
   move('share-panel',    'ann-share-slot');
   move('download-panel', 'ann-download-slot');
 
   // Clear [hidden] on relocated panels — visibility now lives on the new
-  // containers (the Display tab, the Share popover).
-  ['reading-settings-panel', 'share-panel', 'download-panel'].forEach(function (id) {
+  // containers (the Share popover).
+  ['share-panel', 'download-panel'].forEach(function (id) {
     var el = document.getElementById(id);
     if (el) { el.hidden = false; el.classList.add('is-in-panel'); }
   });

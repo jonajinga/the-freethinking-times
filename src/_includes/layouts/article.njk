@@ -247,7 +247,11 @@ layout: layouts/base.njk
             </div>
           </div>
 
-          {# Reading settings (font size, width, font choice) #}
+          {# Reading settings moved into the global display-settings panel
+             accessible from the masthead. Article-only controls (reading
+             ruler, paragraph numbers, auto-scroll) appear there only on
+             pages with an .article-body. #}
+          {% if false %}
           <div class="reading-settings-wrap">
             <button class="article-action-btn" id="reading-settings-btn" type="button"
               aria-label="Reading settings"
@@ -418,6 +422,7 @@ layout: layouts/base.njk
               <button type="button" style="font-family:var(--font-ui);font-size:var(--text-xs);color:var(--color-ink-faint);background:none;border:none;cursor:pointer;padding:var(--space-1) 0;" onclick="if(window.__resetReadingSettings)window.__resetReadingSettings();">Reset to defaults</button>
             </div>
           </div>
+          {% endif %}
 
           {# 6. Download (.txt / .md / .epub) #}
           <div class="download-wrap">
@@ -834,7 +839,11 @@ layout: layouts/base.njk
     </div>
     <div id="article-panel-display" class="library-panel__section" aria-hidden="true">
       <p class="library-panel__section-head">Display</p>
-      <p class="library-panel__section-lede">Typeface, size, spacing, and background for this reading session.</p>
+      <p class="library-panel__section-lede">Typeface, size, spacing, theme, and article tools (ruler, paragraph numbers, auto-scroll) all live in one place now.</p>
+      <button type="button" class="reader-panel-open-display" onclick="var p=document.getElementById('global-settings-panel');if(p)p.hidden=false;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+        Open display settings
+      </button>
       <div id="reader-panel-slot-display"></div>
     </div>
     <div id="article-panel-export" class="library-panel__section" aria-hidden="true">
@@ -963,6 +972,5 @@ layout: layouts/base.njk
 
 <script src="/assets/js/reading-list.js?v={{ buildTime }}" defer></script>
 <script src="/assets/js/download.js?v={{ buildTime }}" defer></script>
-<script src="/assets/js/reading-settings.js?v={{ buildTime }}" defer></script>
 <script src="/assets/js/annotations.js?v={{ buildTime }}" defer></script>
 {% endblock %}
