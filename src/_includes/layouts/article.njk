@@ -164,7 +164,6 @@ layout: layouts/base.njk
         <div class="article-header__meta-row" data-pagefind-ignore>
           <span>{{ content | wordCount }} words</span>
           <span>{{ content | readingTime }}</span>
-          <span>Listen ~{{ (content | readingMins * 1.3) | round }}m</span>
         </div>
         {% if tags %}
         <div class="article-header__meta-tags">{% for tag in tags %}{% if tag != "post" %}<a href="/topics/{{ tag | slugify }}/">{{ tag }}</a>{% endif %}{% endfor %}</div>
@@ -247,16 +246,6 @@ layout: layouts/base.njk
               </a>
             </div>
           </div>
-
-          {# 3. Listen (TTS) #}
-          <button class="article-action-btn" id="tts-btn" type="button" aria-label="Listen to this article">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-            </svg>
-            <span class="btn-label">Listen</span>
-          </button>
 
           {# Reading settings (font size, width, font choice) #}
           <div class="reading-settings-wrap">
@@ -586,27 +575,6 @@ layout: layouts/base.njk
         </div>
       </div>
 
-      {# TTS control bar, shown by JS when reading starts #}
-      <div id="tts-controls" class="tts-controls" hidden>
-        <div class="tts-controls__inner">
-          <button id="tts-pause-btn" class="tts-controls__btn" type="button" aria-label="Pause">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-          </button>
-          <button id="tts-stop-btn" class="tts-controls__btn" type="button" aria-label="Stop">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="4" width="16" height="16"/></svg>
-          </button>
-          <span class="tts-controls__divider" aria-hidden="true"></span>
-          <div class="tts-controls__speed" role="group" aria-label="Speed">
-            <button class="tts-speed-btn" data-rate="0.75" type="button">0.75×</button>
-            <button class="tts-speed-btn is-active"  data-rate="1"    type="button">1×</button>
-            <button class="tts-speed-btn" data-rate="1.25" type="button">1.25×</button>
-            <button class="tts-speed-btn" data-rate="1.5"  type="button">1.5×</button>
-            <button class="tts-speed-btn" data-rate="2"    type="button">2×</button>
-          </div>
-          <select id="tts-voice-select" class="tts-controls__voice-select" aria-label="Voice"></select>
-        </div>
-      </div>
-
       {# "In response to" banner, shown when this article is a response to another #}
       {% if responseTo %}
       {% set responseTarget = null %}
@@ -918,7 +886,6 @@ layout: layouts/base.njk
     <button id="ann-bookmark-btn" class="annotation-toolbar__btn" type="button" aria-label="Bookmark this spot" title="Bookmark this spot">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
     </button>
-    <div id="ann-listen-slot" class="annotation-toolbar__slot"></div>
     <div id="ann-focus-slot" class="annotation-toolbar__slot"></div>
     <div id="ann-save-slot" class="annotation-toolbar__slot"></div>
     <button id="ann-share-btn" class="annotation-toolbar__btn" type="button" aria-label="Share, download, print" aria-controls="ann-share-popover" aria-expanded="false" title="Share, download, print">

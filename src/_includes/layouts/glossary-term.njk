@@ -97,15 +97,6 @@ layout: base
             </div>
           </div>
 
-          <button class="article-action-btn" id="tts-btn" type="button" aria-label="Listen to this entry">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-            </svg>
-            <span class="btn-label">Listen</span>
-          </button>
-
           <div class="reading-settings-wrap">
             <button class="article-action-btn" id="reading-settings-btn" type="button"
               aria-label="Reading settings" aria-expanded="false" aria-controls="reading-settings-panel">
@@ -184,27 +175,6 @@ layout: base
             <p id="cite-text" class="cite-modal__text"></p>
           </div>
           <button id="cite-copy-btn" class="cite-modal__copy-btn" type="button">Copy citation</button>
-        </div>
-      </div>
-
-      {# TTS control bar #}
-      <div id="tts-controls" class="tts-controls" hidden>
-        <div class="tts-controls__inner">
-          <button id="tts-pause-btn" class="tts-controls__btn" type="button" aria-label="Pause">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-          </button>
-          <button id="tts-stop-btn" class="tts-controls__btn" type="button" aria-label="Stop">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="4" width="16" height="16"/></svg>
-          </button>
-          <span class="tts-controls__divider" aria-hidden="true"></span>
-          <div class="tts-controls__speed" role="group" aria-label="Speed">
-            <button class="tts-speed-btn" data-rate="0.75" type="button">0.75×</button>
-            <button class="tts-speed-btn is-active" data-rate="1" type="button">1×</button>
-            <button class="tts-speed-btn" data-rate="1.25" type="button">1.25×</button>
-            <button class="tts-speed-btn" data-rate="1.5" type="button">1.5×</button>
-            <button class="tts-speed-btn" data-rate="2" type="button">2×</button>
-          </div>
-          <select id="tts-voice-select" class="tts-controls__voice-select" aria-label="Voice"></select>
         </div>
       </div>
 

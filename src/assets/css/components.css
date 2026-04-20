@@ -2076,7 +2076,7 @@ a.dateline:hover { color: var(--color-accent); }
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: var(--space-4);
   min-height: 52px;
   padding: var(--space-2) var(--space-4);
@@ -2094,7 +2094,13 @@ a.dateline:hover { color: var(--color-accent); }
 
 .music-bar[hidden] { display: none !important; }
 
-.music-bar__info { flex: 1; min-width: 0; overflow: hidden; }
+.music-bar__info {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 40ch;
+  overflow: hidden;
+  text-align: center;
+}
 
 .music-bar__name {
   font-size: var(--text-xs);
@@ -2158,12 +2164,13 @@ a.dateline:hover { color: var(--color-accent); }
   max-width: 100%;
   font-size: var(--text-xs);
   z-index: auto;
-  justify-content: space-between;
+  justify-content: center;
 }
 .annotation-toolbar .music-bar__info {
   min-width: 0;
-  flex: 1;
-  max-width: none;
+  flex: 0 1 auto;
+  max-width: 30ch;
+  text-align: center;
 }
 .annotation-toolbar .music-bar__title { font-size: var(--text-xs); }
 .annotation-toolbar .music-bar__vol { width: 80px; }
@@ -2181,20 +2188,12 @@ body:has(.annotation-toolbar) .reading-floats {
 body:has(.annotation-toolbar .music-bar:not([hidden])) .reading-floats {
   bottom: 8.5rem; /* extra clearance for the music row */
 }
-/* When TTS controls are visible, lift reading-floats above them so the
-   back-to-top and % indicators don't get hidden behind the TTS bar. */
-body:has(.tts-controls:not([hidden])) .reading-floats {
-  bottom: 11rem;
-}
 @media (max-width: 600px) {
   body:has(.annotation-toolbar) .reading-floats {
     bottom: 7rem;
   }
   body:has(.annotation-toolbar .music-bar:not([hidden])) .reading-floats {
     bottom: 10rem;
-  }
-  body:has(.tts-controls:not([hidden])) .reading-floats {
-    bottom: 12rem;
   }
 }
 

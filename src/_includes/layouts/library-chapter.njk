@@ -57,29 +57,8 @@ layout: layouts/base.njk
     <span>{{ content | readingTime }}</span>
   </p>
 
-  {# ── Reader tools (Save, Share, Listen, Focus, Reading, Download, Print, Cite) ── #}
+  {# ── Reader tools (Save, Share, Reading, Download, Print, Cite) ── #}
   {% include "partials/library-reader-tools.njk" %}
-
-  {# TTS control bar, shown by JS when reading starts #}
-  <div id="tts-controls" class="tts-controls" hidden>
-    <div class="tts-controls__inner">
-      <button id="tts-pause-btn" class="tts-controls__btn" type="button" aria-label="Pause">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-      </button>
-      <button id="tts-stop-btn" class="tts-controls__btn" type="button" aria-label="Stop">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="4" width="16" height="16"/></svg>
-      </button>
-      <span class="tts-controls__divider" aria-hidden="true"></span>
-      <div class="tts-controls__speed" role="group" aria-label="Speed">
-        <button class="tts-speed-btn" data-rate="0.75" type="button">0.75×</button>
-        <button class="tts-speed-btn is-active"  data-rate="1"    type="button">1×</button>
-        <button class="tts-speed-btn" data-rate="1.25" type="button">1.25×</button>
-        <button class="tts-speed-btn" data-rate="1.5"  type="button">1.5×</button>
-        <button class="tts-speed-btn" data-rate="2"    type="button">2×</button>
-      </div>
-      <select id="tts-voice-select" class="tts-controls__voice-select" aria-label="Voice"></select>
-    </div>
-  </div>
 
   {# Cite overlay + modal #}
   <div id="cite-overlay" class="cite-overlay" hidden aria-hidden="true"></div>

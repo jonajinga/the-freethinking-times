@@ -205,7 +205,7 @@
       // Each script has a one-time bootstrap guard (e.g. `isFirstRun` in
       // progress.js) so window-level listeners aren't duplicated across
       // executions.
-      ['progress.js', 'annotations.js', 'reading-list.js', 'reading-settings.js', 'download.js'].forEach(function (name) {
+      ['progress.js', 'annotations.js', 'reading-list.js', 'reading-settings.js', 'download.js', 'reader-panel-migrate.js', 'keyboard-shortcuts.js', 'footnotes.js', 'cite-inline.js'].forEach(function (name) {
         var tag = document.querySelector('script[src*="/assets/js/' + name + '"]');
         if (!tag || !tag.parentNode) return;
         var tagSrc = tag.src;

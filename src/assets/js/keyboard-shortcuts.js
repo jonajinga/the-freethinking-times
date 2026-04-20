@@ -4,8 +4,6 @@
  * Active shortcuts (shown in ? overlay):
  *   /   Focus the search input (wherever it is on the page)
  *   r   Toggle the reader panel (highlights / notes / bookmarks / related)
- *   f   Toggle focus mode
- *   t   Read aloud — toggle text-to-speech
  *   g   Go to top / go to bottom (g g for top, G for bottom)
  *   n   Next article in the section (when on an article page)
  *   p   Previous article in the section
@@ -16,6 +14,13 @@
  */
 (function () {
   'use strict';
+
+  // Shortcuts are global to the site, so the script should initialise its
+  // document listeners exactly once even though spa-nav re-injects it on
+  // article SPA swaps (the re-inject is meant for other bundles that
+  // actually need fresh per-page binding).
+  if (window.__keyboardShortcutsBootstrapped) return;
+  window.__keyboardShortcutsBootstrapped = true;
 
   // Don't fire shortcuts when the user is typing into a field
   function isTyping(e) {
@@ -46,12 +51,6 @@
   function toggleReaderPanel() {
     // Article reader panel toggle button (from library-reading-header)
     var btn = document.querySelector('.article-notes-toggle, .library-panel-toggle');
-    if (btn) { btn.click(); return true; }
-    return false;
-  }
-
-  function toggleTTS() {
-    var btn = document.getElementById('tts-btn');
     if (btn) { btn.click(); return true; }
     return false;
   }
@@ -119,7 +118,6 @@
 
     // Single-letter shortcuts
     if (k === 'r') { if (toggleReaderPanel()) e.preventDefault(); return; }
-    if (k === 't') { if (toggleTTS()) e.preventDefault(); return; }
     if (k === 'n') { if (gotoAdjacent('next')) e.preventDefault(); return; }
     if (k === 'p') { if (gotoAdjacent('prev')) e.preventDefault(); return; }
   });
@@ -142,8 +140,6 @@
         '<table class="kb-list">' +
           row('/', 'Search') +
           row('r', 'Toggle reader panel') +
-          row('f', 'Toggle focus mode') +
-          row('t', 'Read aloud (text-to-speech)') +
           row('n', 'Next article') +
           row('p', 'Previous article') +
           row('g g', 'Scroll to top') +

@@ -5,7 +5,7 @@
  * (hidden via CSS) so existing scripts (reading-settings.js, download.js,
  * progress.js, reading-list.js) keep wiring up by ID. This script:
  *
- *   - moves Save / Listen / Focus / Feedback buttons into the bottom toolbar
+ *   - moves Save / Feedback buttons into the bottom toolbar
  *   - moves Reading-settings panel into the Reader panel's Display tab
  *   - moves share-panel / download-panel into the Share popover
  *   - wires the Share and Print popovers (toggle + close-on-outside)
@@ -13,6 +13,12 @@
  */
 (function () {
   'use strict';
+
+  // Re-execution guard: spa-nav re-injects this script on every article/
+  // library page swap so element migration runs against the freshly-
+  // rendered DOM. Document-level listeners must only register once.
+  var isFirstRun = !window.__readerPanelMigrateBootstrapped;
+  window.__readerPanelMigrateBootstrapped = true;
 
   function move(srcId, slotId) {
     var src = document.getElementById(srcId);
@@ -24,9 +30,8 @@
   var toolbar = document.getElementById('annotation-toolbar');
   if (!panel && !toolbar) return;
 
-  // ── Bottom toolbar slots (Save / Listen stay here)
+  // ── Bottom toolbar slots
   move('bookmark-btn', 'ann-save-slot');
-  move('tts-btn',      'ann-listen-slot');
 
   // Hide the panel-footer "Comments" button if the page has no comments
   // section to scroll to (e.g. comments aren't configured for this site).
@@ -181,7 +186,7 @@
   // to be a popover, which was cramped and positioned poorly on mobile).
   // Each button carries data-export="txt|md|json|print" and is wired via
   // document-level delegation so migrated/re-rendered buttons work too.
-  document.addEventListener('click', function (e) {
+  if (isFirstRun) document.addEventListener('click', function (e) {
     var btn = e.target.closest('.reader-export-btn, [data-export]');
     if (!btn) return;
     // Print/download data-export buttons also appear inside ann-share-popover;
