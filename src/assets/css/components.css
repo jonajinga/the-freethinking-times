@@ -585,18 +585,26 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   align-items: center;
   font-size: var(--text-xs);
 }
-/* Compact sibling variant sized to sit inline with a big h1. */
+/* Compact sibling variant sized to sit inline with a big h1.
+   Thinner border, tighter padding, smaller caps so the pair reads as
+   secondary chrome next to the author name instead of dominating it. */
+.archive-views--sm { gap: 6px; }
 .archive-views--sm .archive-views__btn {
-  font-size: 0.7rem;
-  padding: 0.35rem 0.7rem;
-  letter-spacing: 0.1em;
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  letter-spacing: 0.12em;
+  border-width: 1px;
+  line-height: 1.2;
+  align-self: center;
 }
 
-/* Author hero: inline alternate-view buttons after the name. Wraps to a
-   new line on narrow screens. */
+/* Author hero: inline alternate-view buttons after the name. Center-
+   aligned so the chip-style buttons sit on the optical middle of the
+   name, not offset by the h1 baseline. Wraps on narrow screens. */
 .author-hero__name-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: var(--space-3);
   flex-wrap: wrap;
   margin-bottom: var(--space-2);

@@ -105,27 +105,41 @@ eleventyExcludeFromCollections: true
 /* Exit / filter header */
 .as-showcase__topbar {
   position: fixed;
-  top: var(--space-4);
-  left: 0;
-  right: 0;
+  top: var(--space-5);
+  left: var(--space-6);
+  right: var(--space-6);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 var(--space-6);
+  gap: var(--space-4);
   z-index: 10;
   font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  letter-spacing: 0.1em;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-ink-faint);
+  color: var(--color-ink-muted);
 }
+.as-showcase__brand { color: var(--color-ink); font-weight: 700; }
+.as-showcase__exit { color: var(--color-ink-muted); }
 .as-showcase__exit,
-.as-showcase__brand { color: inherit; text-decoration: none; transition: color var(--transition-fast); }
+.as-showcase__brand {
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
 .as-showcase__exit:hover,
-.as-showcase__brand:hover { color: var(--color-ink); }
+.as-showcase__brand:hover { color: var(--color-accent); }
 .as-showcase__filter {
   font-weight: 700;
   color: var(--color-accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 40%;
+}
+.as-showcase__filter[hidden] { display: none; }
+@media (max-width: 640px) {
+  .as-showcase__topbar { font-size: 0.62rem; }
+  .as-showcase__filter { display: none; }
 }
 
 /* Controls */
@@ -254,7 +268,9 @@ eleventyExcludeFromCollections: true
     return true;
   });
 
-  // Filter label
+  // Filter label — only shown when an actual filter is applied.
+  // Every slide's own kicker already shows section › subsection so we
+  // don't want the topbar to repeat that for the unfiltered full archive.
   var filterLabel = '';
   var exitHref = '/archives/';
   if (author) {
@@ -265,12 +281,16 @@ eleventyExcludeFromCollections: true
     filterLabel = 'Topic: ' + topic;
     exitHref = '/topics/' + topic + '/';
   } else if (section) {
-    filterLabel = section.charAt(0).toUpperCase() + section.slice(1) + (subsection ? ' \u203a ' + subsection : '');
+    filterLabel = section.charAt(0).toUpperCase() + section.slice(1) + (subsection ? ' \u203a ' + subsection.charAt(0).toUpperCase() + subsection.slice(1) : '');
     exitHref = '/' + section + '/';
-  } else {
-    filterLabel = 'All articles';
   }
-  document.getElementById('as-filter').textContent = filterLabel;
+  var filterEl = document.getElementById('as-filter');
+  if (filterLabel) {
+    filterEl.textContent = filterLabel;
+    filterEl.hidden = false;
+  } else {
+    filterEl.hidden = true;
+  }
   document.getElementById('as-exit').href = exitHref;
 
   // Move showcase out of site-wrapper and hide everything else

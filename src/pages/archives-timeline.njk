@@ -39,6 +39,12 @@ eleventyExcludeFromCollections: true
         <option value="">All sections</option>
       </select>
     </label>
+    <label class="at-filter" id="at-subsection-wrap" hidden>
+      <span class="at-filter__label">Subsection</span>
+      <select id="at-subsection" class="at-filter__select">
+        <option value="">All subsections</option>
+      </select>
+    </label>
     <label class="at-filter">
       <span class="at-filter__label">Topic</span>
       <select id="at-topic" class="at-filter__select">
@@ -308,8 +314,35 @@ eleventyExcludeFromCollections: true
   var clearBtn = document.getElementById('at-clear');
   var authorSel = document.getElementById('at-author');
   var sectionSel = document.getElementById('at-section');
+  var subsectionSel = document.getElementById('at-subsection');
+  var subsectionWrap = document.getElementById('at-subsection-wrap');
   var topicSel = document.getElementById('at-topic');
   var yearSel = document.getElementById('at-year');
+
+  // Build { sectionSlug: { subsectionSlug: displayName } } for the
+  // dependent subsection dropdown below.
+  var subsByBySection = {};
+  data.forEach(function (a) {
+    if (!a.section || !a.subsection) return;
+    var sec = normSlug(a.sectionSlug || a.section);
+    var sub = normSlug(a.subsection);
+    if (!subsByBySection[sec]) subsByBySection[sec] = {};
+    subsByBySection[sec][sub] = a.subsection;
+  });
+  function populateSubsections(sectionSlugNorm) {
+    // Clear existing (keep the first "All" option)
+    while (subsectionSel.options.length > 1) subsectionSel.remove(1);
+    var subs = subsByBySection[sectionSlugNorm] || {};
+    var keys = Object.keys(subs).sort(function (a, b) { return subs[a].localeCompare(subs[b]); });
+    if (!keys.length) { subsectionWrap.hidden = true; return; }
+    keys.forEach(function (k) {
+      var opt = document.createElement('option');
+      opt.value = k;
+      opt.textContent = subs[k];
+      subsectionSel.appendChild(opt);
+    });
+    subsectionWrap.hidden = false;
+  }
 
   // ── Build filter option lists from the data set ──
   (function buildOptions() {
@@ -367,6 +400,15 @@ eleventyExcludeFromCollections: true
   function syncSelects(state) {
     authorSel.value = state.author || '';
     sectionSel.value = state.section || '';
+    // Populate subsection dropdown based on current section before we
+    // try to set its value so the option actually exists.
+    if (state.section) {
+      populateSubsections(state.section);
+      subsectionSel.value = state.subsection || '';
+    } else {
+      subsectionWrap.hidden = true;
+      subsectionSel.value = '';
+    }
     topicSel.value = state.topic || '';
     yearSel.value = state.year || '';
   }
@@ -478,21 +520,34 @@ eleventyExcludeFromCollections: true
   }
 
   // ── Wire up filter changes ──
-  function onSelectChange() {
+  // Section change resets subsection (dropdown options depend on it).
+  function onSectionChange() {
     var state = {
       author: authorSel.value,
       section: sectionSel.value,
+      subsection: '',
       topic: topicSel.value,
-      year: yearSel.value,
-      subsection: '' // cleared when user picks a new section
+      year: yearSel.value
     };
     writeParams(state);
     render();
   }
-  authorSel.addEventListener('change', onSelectChange);
-  sectionSel.addEventListener('change', onSelectChange);
-  topicSel.addEventListener('change', onSelectChange);
-  yearSel.addEventListener('change', onSelectChange);
+  function onOtherChange() {
+    var state = {
+      author: authorSel.value,
+      section: sectionSel.value,
+      subsection: subsectionSel.value,
+      topic: topicSel.value,
+      year: yearSel.value
+    };
+    writeParams(state);
+    render();
+  }
+  authorSel.addEventListener('change', onOtherChange);
+  sectionSel.addEventListener('change', onSectionChange);
+  subsectionSel.addEventListener('change', onOtherChange);
+  topicSel.addEventListener('change', onOtherChange);
+  yearSel.addEventListener('change', onOtherChange);
 
   clearBtn.addEventListener('click', function () {
     history.replaceState(null, '', location.pathname);
