@@ -200,7 +200,7 @@
       });
 
       // Re-inject article-layout scripts so their per-page DOM bindings
-      // (TTS, share, footnote tooltips, annotations, reading settings,
+      // (share, footnote tooltips, annotations, reading settings,
       // reading list, download) re-bind to the swapped-in #main-content.
       // Each script has a one-time bootstrap guard (e.g. `isFirstRun` in
       // progress.js) so window-level listeners aren't duplicated across
