@@ -6,7 +6,8 @@
 (function () {
   'use strict';
   if (typeof tippy === 'undefined') return;
-  var els = document.querySelectorAll('.site-footer a[data-tippy-content], .nav-drawer a[data-tippy-content]');
+  // Exclude .tip-badge — already handled by badge-tips.js (would double-init otherwise).
+  var els = document.querySelectorAll('.site-footer a[data-tippy-content]:not(.tip-badge), .nav-drawer a[data-tippy-content]:not(.tip-badge)');
   if (!els.length) return;
   tippy(els, {
     theme: 'badge',

@@ -1735,18 +1735,18 @@ a.dateline:hover { color: var(--color-accent); }
 /* Push the reading-floats (percentage + back-to-top) up above the
    annotation-toolbar so they don't sit behind it. */
 body:has(.annotation-toolbar) .reading-floats {
-  bottom: 4.25rem;
+  bottom: 6rem;
 }
 @media (max-width: 600px) {
   body:has(.annotation-toolbar) .reading-floats {
-    bottom: 4rem;
+    bottom: 5.5rem;
   }
 }
 
 /* When the music bar is NOT inside the annotation-toolbar (non-reading
-   pages), keep the legacy "push reading-floats up above music-bar" rule. */
+   pages), keep reading-floats well clear of the fixed music bar. */
 body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .reading-floats {
-  bottom: 3.5rem;
+  bottom: 5.5rem;
 }
 
 @media (max-width: 480px) {
