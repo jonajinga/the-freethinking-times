@@ -48,7 +48,7 @@ layout: layouts/base.njk
   <span class="library-reading-header__title">{{ title }}</span>
 </header>
 
-{# Pagefind metadata — hidden, used by search index #}
+{# Pagefind metadata, hidden, used by search index #}
 <div aria-hidden="true" style="display:none">
   {% if section %}
   <span data-pagefind-meta="section">{{ section }}</span>
@@ -127,7 +127,7 @@ layout: layouts/base.njk
             {% endif %}
           </div>
 
-          {# Support row — clearly separated from the byline meta above #}
+          {# Support row, clearly separated from the byline meta above #}
           {% if author and authors[author] %}
           {% set tipAuthor = authors[author] %}
           {% set authorTipUrl = tipAuthor.tipping.kofi or tipAuthor.tipping.bmac or tipAuthor.tipping.patreon %}
@@ -138,7 +138,7 @@ layout: layouts/base.njk
             {% include "partials/tip-buttons.njk" %}
             <span class="article-header__support-divider" aria-hidden="true"></span>
             <a class="tip-badge" href="/support/" aria-label="Learn how we are funded"
-               data-tippy-content="We fund our journalism entirely through reader support — no ads, no paywalls. Learn how we operate and how contributors are compensated."
+               data-tippy-content="We fund our journalism entirely through reader support, no ads, no paywalls. Learn how we operate and how contributors are compensated."
                data-tippy-theme="badge"
                data-tippy-placement="top">How We're Funded</a>
           </div>
@@ -503,7 +503,7 @@ layout: layouts/base.njk
               </div>
               <form class="article-feedback-form" action="https://api.web3forms.com/submit" method="POST">
                 <input type="hidden" name="access_key" value="{{ site.forms.accessKey }}">
-                <input type="hidden" name="subject" value="Article feedback — {{ title | escape }}">
+                <input type="hidden" name="subject" value="Article feedback, {{ title | escape }}">
                 <input type="hidden" name="redirect" value="{{ site.url }}/thank-you/">
                 <input type="hidden" name="from_name" value="{{ site.title }} Article Feedback">
                 <input type="hidden" name="page_url" value="{{ site.url }}{{ page.url }}">
@@ -525,7 +525,7 @@ layout: layouts/base.njk
                 </label>
 
                 <label class="article-feedback-form__field">
-                  <span class="article-feedback-form__label">Email <span class="article-feedback-form__label-hint">(optional — for a response)</span></span>
+                  <span class="article-feedback-form__label">Email <span class="article-feedback-form__label-hint">(optional, for a response)</span></span>
                   <input type="email" name="email" autocomplete="email" class="article-feedback-form__input">
                 </label>
 
@@ -546,7 +546,7 @@ layout: layouts/base.njk
 
         </div>
 
-        {# Citation data — consumed by JS to build formatted citations #}
+        {# Citation data, consumed by JS to build formatted citations #}
         <div id="cite-data"
           data-title="{{ title | escape }}"
           data-author="{{ (authors[author].name or authorName or author) | default('') }}"
@@ -579,7 +579,7 @@ layout: layouts/base.njk
         </div>
       </div>
 
-      {# TTS control bar — shown by JS when reading starts #}
+      {# TTS control bar, shown by JS when reading starts #}
       <div id="tts-controls" class="tts-controls" hidden>
         <div class="tts-controls__inner">
           <button id="tts-pause-btn" class="tts-controls__btn" type="button" aria-label="Pause">
@@ -600,7 +600,7 @@ layout: layouts/base.njk
         </div>
       </div>
 
-      {# "In response to" banner — shown when this article is a response to another #}
+      {# "In response to" banner, shown when this article is a response to another #}
       {% if responseTo %}
       {% set responseTarget = null %}
       {% for item in collections.allContent %}
@@ -657,7 +657,7 @@ layout: layouts/base.njk
         {{ content | safe }}
       </div>
 
-      {# Footnotes — visible, hideable #}
+      {# Footnotes, visible, hideable #}
       <div id="article-footnotes" class="article-footnotes"></div>
 
       {# Article footer #}
@@ -697,7 +697,7 @@ layout: layouts/base.njk
       </aside>
       {% endif %}
 
-      {# Backlinks — other articles that reference this one #}
+      {# Backlinks, other articles that reference this one #}
       {% set backlinks = collections.allContent | backlinksTo(page.url) %}
       {% if backlinks.length %}
       <aside class="backlinks-section">
@@ -717,7 +717,7 @@ layout: layouts/base.njk
       {% endif %}
 
 
-      {# Comments — always rendered, comments provider is always
+      {# Comments, always rendered, comments provider is always
          configured (cusdis app id is set in site.js with a fallback). #}
       <div class="article-comments">
         <div class="article-comments__header">
@@ -776,7 +776,7 @@ layout: layouts/base.njk
 <div id="print-citations" class="print-citations" aria-hidden="true"></div>
 
 <footer class="print-footer" aria-hidden="true">
-  <span>{{ site.title }} — {{ site.url }}{{ page.url }}</span>
+  <span>{{ site.title }}, {{ site.url }}{{ page.url }}</span>
   <span>Published {{ page.date | readableDate }}</span>
 </footer>
 
@@ -852,15 +852,15 @@ layout: layouts/base.njk
       <ul class="reader-export-list">
         <li><button type="button" class="reader-export-btn" data-export="txt">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          <span><strong>Plain text</strong><em>.txt — readable in any editor</em></span>
+          <span><strong>Plain text</strong><em>.txt, readable in any editor</em></span>
         </button></li>
         <li><button type="button" class="reader-export-btn" data-export="md">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>
-          <span><strong>Markdown</strong><em>.md — for Obsidian, notes apps</em></span>
+          <span><strong>Markdown</strong><em>.md, for Obsidian, notes apps</em></span>
         </button></li>
         <li><button type="button" class="reader-export-btn" data-export="json">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-          <span><strong>JSON</strong><em>.json — raw data for developers</em></span>
+          <span><strong>JSON</strong><em>.json, raw data for developers</em></span>
         </button></li>
         <li><button type="button" class="reader-export-btn" data-export="print">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
@@ -869,11 +869,11 @@ layout: layouts/base.njk
       </ul>
     </div>
     <div id="article-panel-cite-inline" class="library-panel__section" aria-hidden="true">
-      {# Inline citation formats — rendered into this section by cite-inline.js #}
+      {# Inline citation formats, rendered into this section by cite-inline.js #}
     </div>
     {% if site.repo and site.repo.owner %}
     <div id="article-panel-history" class="library-panel__section" aria-hidden="true">
-      {# Revision history — rendered into this section on first activation by revision-history.js #}
+      {# Revision history, rendered into this section on first activation by revision-history.js #}
     </div>
     {% endif %}
     <div id="article-panel-related" class="library-panel__section" aria-hidden="true" data-print-label="Related">
@@ -912,7 +912,7 @@ layout: layouts/base.njk
     <button id="ann-annotate-btn" class="annotation-toolbar__btn annotation-toolbar__btn--needs-selection" type="button" aria-label="Add note" title="Note">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
     </button>
-    {# Bookmark this spot — pin icon, distinct from the Save (reading-list) bookmark #}
+    {# Bookmark this spot, pin icon, distinct from the Save (reading-list) bookmark #}
     <button id="ann-bookmark-btn" class="annotation-toolbar__btn" type="button" aria-label="Bookmark this spot" title="Bookmark this spot">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
     </button>
@@ -922,24 +922,24 @@ layout: layouts/base.njk
     <button id="ann-share-btn" class="annotation-toolbar__btn" type="button" aria-label="Share, download, print" aria-controls="ann-share-popover" aria-expanded="false" title="Share, download, print">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
     </button>
-    {# Comments — always present in the bar; scrolls to the comments
+    {# Comments, always present in the bar; scrolls to the comments
        section at the bottom of the article. Hides itself in JS if the
        comments-body element isn't on the page. #}
     <button id="ann-comments-btn" class="annotation-toolbar__btn" type="button" aria-label="Jump to comments" title="Comments"
       onclick="var el=document.getElementById('comments-body');if(!el)return;el.hidden=false;var b=document.getElementById('comments-toggle');if(b)b.textContent='Hide comments';var t=el.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:t,behavior:'smooth'});">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
     </button>
-    {# Feedback — slot populated by reader-panel-migrate.js with the
+    {# Feedback, slot populated by reader-panel-migrate.js with the
        migrated feedback button + popup. #}
     <div id="ann-feedback-slot" class="annotation-toolbar__slot"></div>
   </div>
 
-  {# Music player slot — populated by music-player.js when playback starts.
+  {# Music player slot, populated by music-player.js when playback starts.
      The ::before pseudo-element adds a vertical separator when non-empty. #}
   <div id="annotation-toolbar-music" class="annotation-toolbar__music"></div>
 </div>
 
-{# Share / download / print popover — anchored above ann-share-btn. The
+{# Share / download / print popover, anchored above ann-share-btn. The
    share-panel (social links + copy + email) and download-panel (txt / md)
    are moved in by reader-panel-migrate.js; print button is inline. #}
 {# Combined Share / Download / Print popover anchored above the share icon. #}

@@ -47,7 +47,7 @@ permalink: /search/
 
   </div>
 
-  {# ── States — only one visible at a time ─────────────────────── #}
+  {# ── States, only one visible at a time ─────────────────────── #}
   <div id="sp">
 
     <div id="sp-default" class="sp-state">
@@ -222,7 +222,7 @@ permalink: /search/
 .sp-result[data-section="Library"]             { border-left-color: var(--color-opinion); }
 .sp-result[data-section="Thought Experiments"] { border-left-color: var(--color-thought-experiments); }
 .sp-result[data-section="Trials of Thought"]   { border-left-color: var(--color-trials); }
-/* Section badge inside result — override display for inline flow */
+/* Section badge inside result, override display for inline flow */
 .sp-result .section-badge { display: inline-block; margin-bottom: var(--space-3); }
 .sp-result__title { font-family: var(--font-headline); font-size: var(--text-md); font-weight: 700; color: var(--color-ink); line-height: var(--leading-snug); display: block; margin-bottom: var(--space-3); }
 .sp-result__excerpt { font-family: var(--font-body); font-size: var(--text-sm); color: var(--color-ink-muted); line-height: var(--leading-relaxed); display: block; }
@@ -238,7 +238,7 @@ permalink: /search/
 .sp-browse { font-family: var(--font-ui); font-size: var(--text-sm); color: var(--color-link); text-decoration: none; font-weight: 600; padding: var(--space-2) var(--space-3); border: 1px solid var(--color-rule); transition: all var(--transition-fast); }
 .sp-browse:hover { border-color: var(--color-link); background: var(--color-bg-alt); }
 
-/* Autocomplete — z-index must clear the sticky bar */
+/* Autocomplete, z-index must clear the sticky bar */
 .sp-autocomplete {
   position: absolute; left: 0; right: 0; top: 100%; z-index: 200;
   background: var(--color-bg); border: 1px solid var(--color-rule-heavy); border-top: none;
@@ -415,7 +415,7 @@ permalink: /search/
     if (initial) resultsEl.innerHTML = html; else resultsEl.insertAdjacentHTML('beforeend', html);
     countEl.textContent = allResults.length + ' result' + (allResults.length !== 1 ? 's' : '');
     moreWrap.hidden = shown >= allResults.length;
-    moreBtn.textContent = 'Load more (' + (allResults.length - shown) + ' remaining)';
+    moreBtn.textContent = 'Load more (' + (allResults.length, shown) + ' remaining)';
     focusIdx = -1;
   }
 

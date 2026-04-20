@@ -237,7 +237,7 @@ layout: base
 
     <aside class="glossary-sidebar">
 
-      {# Table of contents — populated by JS when entry has 2+ headings #}
+      {# Table of contents, populated by JS when entry has 2+ headings #}
       <div class="sidebar-widget toc-widget" id="toc-widget" hidden>
         <p class="sidebar-widget__title">Contents</p>
         <nav id="toc-nav" aria-label="Entry sections"></nav>
@@ -266,7 +266,7 @@ layout: base
       {% endif %}
 
       <div class="sidebar-widget">
-        <h3 class="sidebar-widget__title">Browse A–Z</h3>
+        <h3 class="sidebar-widget__title">Browse A, Z</h3>
         <ul class="glossary-az">
           {% for entry in collections.glossary %}
           <li class="{% if entry.url == page.url %}glossary-az__current{% endif %}">
@@ -288,7 +288,7 @@ layout: base
 </div>
 
 <footer class="print-footer" aria-hidden="true">
-  <span>{{ site.title }} — {{ site.url }}{{ page.url }}</span>
+  <span>{{ site.title }}, {{ site.url }}{{ page.url }}</span>
   <span>Published {{ page.date | readableDate }}</span>
 </footer>
 

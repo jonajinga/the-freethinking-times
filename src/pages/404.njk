@@ -87,7 +87,7 @@ eleventyExcludeFromCollections: true
 
   function escapeHtml(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
 
-  // Try Pagefind first — it's already loaded for search
+  // Try Pagefind first, it's already loaded for search
   (async function () {
     try {
       var pf = await import('/pagefind/pagefind.js');
@@ -97,7 +97,7 @@ eleventyExcludeFromCollections: true
       var items = await Promise.all(s.results.slice(0, 10).map(function (r) { return r.data(); }));
       var scored = items.map(function (item) {
         return { title: item.meta && item.meta.title || 'Untitled', url: item.url, score: scoreMatch(item.meta && item.meta.title || '', item.url) };
-      }).filter(function (r) { return r.score > 0; }).sort(function (a, b) { return b.score - a.score; });
+      }).filter(function (r) { return r.score > 0; }).sort(function (a, b) { return b.score, a.score; });
       renderMatches(scored);
     } catch (e) { /* Pagefind not available; fail silently */ }
   })();

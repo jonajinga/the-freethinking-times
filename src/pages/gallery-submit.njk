@@ -25,7 +25,7 @@ permalink: /gallery/submit/
 
       <form action="https://api.web3forms.com/submit" method="POST" class="w3f" style="margin: var(--space-6) 0;">
         <input type="hidden" name="access_key" value="{{ site.forms.accessKey }}">
-        <input type="hidden" name="subject" value="Photo submission — {{ site.title }}">
+        <input type="hidden" name="subject" value="Photo submission, {{ site.title }}">
         <input type="hidden" name="redirect" value="{{ site.url }}/thank-you/">
         <input type="hidden" name="from_name" value="{{ site.title }} Gallery Form">
         <input type="checkbox" name="botcheck" class="visually-hidden" style="display:none" tabindex="-1" autocomplete="off">
@@ -61,7 +61,7 @@ permalink: /gallery/submit/
           </div>
         </div>
         <div class="w3f__group">
-          <label class="w3f__label" for="ph-email">Email <span class="w3f__optional">(optional — for credit or questions)</span></label>
+          <label class="w3f__label" for="ph-email">Email <span class="w3f__optional">(optional, for credit or questions)</span></label>
           <input class="w3f__input" type="email" name="email" id="ph-email" autocomplete="email">
         </div>
         <div class="h-captcha" data-captcha="true"></div>

@@ -244,7 +244,7 @@ layout: base
 
     <aside class="book-sidebar">
 
-      {# Table of contents — populated by JS when entry has 2+ headings #}
+      {# Table of contents, populated by JS when entry has 2+ headings #}
       <div class="sidebar-widget toc-widget" id="toc-widget" hidden>
         <p class="sidebar-widget__title">Contents</p>
         <nav id="toc-nav" aria-label="Entry sections"></nav>
@@ -276,7 +276,7 @@ layout: base
 </div>
 
 <footer class="print-footer" aria-hidden="true">
-  <span>{{ site.title }} — {{ site.url }}{{ page.url }}</span>
+  <span>{{ site.title }}, {{ site.url }}{{ page.url }}</span>
   <span>Published {{ page.date | readableDate }}</span>
 </footer>
 

@@ -7,7 +7,7 @@ pagination:
 permalink: /editions/{{ editionNum }}/
 eleventyComputed:
   title: "Edition {{ editionNum }}"
-  description: "Edition {{ editionNum }} of The Freethinking Times — a curated bundle of articles published together."
+  description: "Edition {{ editionNum }} of The Freethinking Times, a curated bundle of articles published together."
 ---
 
 {% set edArts = collections.allContent | editionArticles(editionNum) %}
@@ -68,7 +68,7 @@ eleventyComputed:
   <p style="color: var(--color-ink-faint); font-style: italic;">No articles found for this edition.</p>
   {% endif %}
 
-  {# ── Full article text — print only ── #}
+  {# ── Full article text, print only ── #}
   {% if edArts.length %}
   <div class="edition-print-articles" aria-hidden="true">
     {% for item in edArts %}
@@ -93,7 +93,7 @@ eleventyComputed:
 
   {# ── Print footer ── #}
   <footer class="print-footer" aria-hidden="true">
-    <span>{{ site.title }} — Edition {{ editionNum }}</span>
+    <span>{{ site.title }}, Edition {{ editionNum }}</span>
     <span>{{ site.url }}/editions/{{ editionNum }}/</span>
   </footer>
 

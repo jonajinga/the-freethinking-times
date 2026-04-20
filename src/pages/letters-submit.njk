@@ -28,7 +28,7 @@ permalink: /letters/submit/
 
       <form action="https://api.web3forms.com/submit" method="POST" class="w3f" style="margin-top: var(--space-6);">
         <input type="hidden" name="access_key" value="{{ site.forms.accessKey }}">
-        <input type="hidden" name="subject" value="Letter to the editor — {{ site.title }}">
+        <input type="hidden" name="subject" value="Letter to the editor, {{ site.title }}">
         <input type="hidden" name="redirect" value="{{ site.url }}/thank-you/">
         <input type="hidden" name="from_name" value="{{ site.title }} Letters Form">
         <input type="checkbox" name="botcheck" class="visually-hidden" style="display:none" tabindex="-1" autocomplete="off">

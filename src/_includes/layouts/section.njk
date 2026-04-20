@@ -32,7 +32,7 @@ layout: layouts/base.njk
       <p style="color: var(--color-ink-muted); font-style: italic;">No articles published yet. Check back soon.</p>
       {% else %}
 
-      {# Subsection filter — only renders if there are subsections for this section #}
+      {# Subsection filter, only renders if there are subsections for this section #}
       {% set subs = subsections[sectionSlug] if subsections and subsections[sectionSlug] else [] %}
       {% if subs.length %}
       <div class="subsection-filter" id="subsection-filter" role="group" aria-label="Filter by subsection">

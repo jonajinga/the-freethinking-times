@@ -17,7 +17,7 @@
           <line x1="3" y1="18" x2="21" y2="18"/>
         </svg>
       </button>
-      <a href="/" class="masthead__title notranslate" aria-label="{{ site.title }} — Home">
+      <a href="/" class="masthead__title notranslate" aria-label="{{ site.title }}, Home">
         {{ site.title }}
       </a>
       <button
@@ -30,7 +30,7 @@
       </button>
       <div class="masthead__actions">
 
-        {# Search — primary discovery #}
+        {# Search, primary discovery #}
         <button
           class="masthead__icon-btn js-only"
           id="search-open"
@@ -45,7 +45,7 @@
           </svg>
         </button>
 
-        {# Notes & highlights — all annotations #}
+        {# Notes & highlights, all annotations #}
         <a href="/notes/"
            class="masthead__icon-btn"
            aria-label="Notes & highlights"
@@ -58,7 +58,7 @@
           </svg>
         </a>
 
-        {# Reading list — saved articles #}
+        {# Reading list, saved articles #}
         <a href="/reading-list/"
            class="masthead__icon-btn"
            aria-label="Reading list"
@@ -68,10 +68,10 @@
           </svg>
         </a>
 
-        {# Surprise Me — random article #}
+        {# Surprise Me, random article #}
         <a href="/random/"
            class="masthead__icon-btn"
-           aria-label="Surprise me — random article"
+           aria-label="Surprise me, random article"
            title="Surprise me">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <polyline points="16 3 21 3 21 8"/>
@@ -81,7 +81,7 @@
           </svg>
         </a>
 
-        {# Display settings — global (includes language, theme, font, spacing) #}
+        {# Display settings, global (includes language, theme, font, spacing) #}
         <div class="masthead__settings-wrap" style="position:relative;">
           <button
             class="masthead__icon-btn js-only"
@@ -103,7 +103,7 @@
       </div>
     </div>
 
-    {# Global settings panel — outside masthead__actions so it's accessible on mobile via drawer button #}
+    {# Global settings panel, outside masthead__actions so it's accessible on mobile via drawer button #}
     <div id="global-settings-panel" class="global-settings-panel" hidden>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4);">
         <p style="font-family:var(--font-headline);font-size:var(--text-sm);font-weight:700;color:var(--color-ink);margin:0;">Display Settings</p>
@@ -216,7 +216,7 @@
         </ul>
       </div>
 
-      {# ── Nav Dropdowns — siblings of .site-nav__inner so they escape overflow:hidden ── #}
+      {# ── Nav Dropdowns, siblings of .site-nav__inner so they escape overflow:hidden ── #}
       {% for item in nav %}
       {% set sectionItems = collections[item.collection] if item.collection %}
       {% set hasDropdown = item.type == "library" or item.type == "more" or (sectionItems and sectionItems.length) %}
@@ -403,7 +403,7 @@
   aria-hidden="true">
 
   <div class="nav-drawer__header">
-    <a href="/" class="nav-drawer__brand notranslate" aria-label="{{ site.title }} — Home">
+    <a href="/" class="nav-drawer__brand notranslate" aria-label="{{ site.title }}, Home">
       <img src="/assets/favicon.svg" alt="" aria-hidden="true" width="22" height="22">
       <span class="nav-drawer__label">{{ site.title }}</span>
     </a>
@@ -414,7 +414,7 @@
 
   <div class="nav-drawer__scroll">
 
-    {# ── Search form — in-place, submits to /search/ without leaving the drawer ── #}
+    {# ── Search form, in-place, submits to /search/ without leaving the drawer ── #}
     <form class="nav-drawer__search" role="search" action="/search/" method="get" aria-label="Site search">
       <svg class="nav-drawer__search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <label for="nav-drawer-search-input" class="visually-hidden">Search</label>
@@ -464,7 +464,7 @@
       {% endfor %}
     </ul>
 
-    {# ── Additional nav groups (from drawerLinks.json — editable via Pages CMS) ── #}
+    {# ── Additional nav groups (from drawerLinks.json, editable via Pages CMS) ── #}
     {% for group in drawerLinks %}
     <div class="nav-drawer__divider"></div>
     {% if group.heading %}

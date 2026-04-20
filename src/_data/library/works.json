@@ -14,7 +14,7 @@
     "translator": null,
     "chapters": 3,
     "featured": true,
-    "description": "A systematic critique of revealed religion that cost Paine his reputation and nearly his life — written while he awaited execution in a French prison."
+    "description": "A systematic critique of revealed religion that cost Paine his reputation and nearly his life, written while he awaited execution in a French prison."
   },
   {
     "slug": "common-sense",
@@ -31,7 +31,7 @@
     "translator": null,
     "chapters": 1,
     "featured": true,
-    "description": "The pamphlet that argued for American independence with plain reason rather than legal precedent — and sold 500,000 copies in a population of three million."
+    "description": "The pamphlet that argued for American independence with plain reason rather than legal precedent, and sold 500,000 copies in a population of three million."
   },
   {
     "slug": "enquiry-human-understanding",
@@ -48,7 +48,7 @@
     "translator": null,
     "chapters": 12,
     "featured": false,
-    "description": "The most readable and rigorous statement of empiricist philosophy — including Hume's devastating argument against the rational basis for belief in miracles."
+    "description": "The most readable and rigorous statement of empiricist philosophy, including Hume's devastating argument against the rational basis for belief in miracles."
   },
   {
     "slug": "on-liberty",
@@ -65,7 +65,7 @@
     "translator": null,
     "chapters": 5,
     "featured": false,
-    "description": "The most rigorous philosophical defense of free expression ever written — grounding it not in rights but in epistemic necessity."
+    "description": "The most rigorous philosophical defense of free expression ever written, grounding it not in rights but in epistemic necessity."
   },
   {
     "slug": "why-i-am-not-a-christian",
@@ -82,7 +82,7 @@
     "translator": null,
     "chapters": 1,
     "featured": false,
-    "description": "A lecture delivered at the National Secular Society in 1927 — still the clearest short statement of secular humanism ever written."
+    "description": "A lecture delivered at the National Secular Society in 1927, still the clearest short statement of secular humanism ever written."
   },
   {
     "slug": "works-of-ingersoll",
@@ -101,11 +101,11 @@
     "featured": true,
     "isParent": true,
     "volumes": ["works-of-ingersoll-v1", "works-of-ingersoll-v2"],
-    "description": "The Dresden Edition lectures of 'the Great Agnostic' — the most celebrated orator of nineteenth-century America. A sustained, witty, and fearless critique of religious orthodoxy paired with a passionate defence of individual liberty and the scientific method."
+    "description": "The Dresden Edition lectures of 'the Great Agnostic', the most celebrated orator of nineteenth-century America. A sustained, witty, and fearless critique of religious orthodoxy paired with a passionate defence of individual liberty and the scientific method."
   },
   {
     "slug": "works-of-ingersoll-v1",
-    "title": "Vol. 1 — Lectures",
+    "title": "Vol. 1, Lectures",
     "author": "Robert G. Ingersoll",
     "authorSlug": "robert-ingersoll",
     "year": 1909,
@@ -119,11 +119,11 @@
     "chapters": 9,
     "featured": false,
     "parentWork": "works-of-ingersoll",
-    "description": "Nine lectures spanning 1869–1880: The Gods, Humboldt, Thomas Paine, Individuality, Heretics and Heresies, The Ghosts, The Liberty of Man Woman and Child, About Farming in Illinois, and What Must We Do to Be Saved?"
+    "description": "Nine lectures spanning 1869, 1880: The Gods, Humboldt, Thomas Paine, Individuality, Heretics and Heresies, The Ghosts, The Liberty of Man Woman and Child, About Farming in Illinois, and What Must We Do to Be Saved?"
   },
   {
     "slug": "works-of-ingersoll-v2",
-    "title": "Vol. 2 — Lectures",
+    "title": "Vol. 2, Lectures",
     "author": "Robert G. Ingersoll",
     "authorSlug": "robert-ingersoll",
     "year": 1909,

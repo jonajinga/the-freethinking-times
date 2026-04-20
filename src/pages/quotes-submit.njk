@@ -24,11 +24,11 @@ permalink: /quotes/submit/
 
     <div class="article-body">
 
-      <p>We look for quotes that are well-sourced, thought-provoking, and relevant to the freethought tradition — reason, secularism, science, liberty of conscience, and the examined life. Please verify the attribution before submitting. You can also send quote suggestions via <a href="/contact/">our contact form</a>.</p>
+      <p>We look for quotes that are well-sourced, thought-provoking, and relevant to the freethought tradition, reason, secularism, science, liberty of conscience, and the examined life. Please verify the attribution before submitting. You can also send quote suggestions via <a href="/contact/">our contact form</a>.</p>
 
       <form action="https://api.web3forms.com/submit" method="POST" class="w3f" style="margin: var(--space-6) 0;">
         <input type="hidden" name="access_key" value="{{ site.forms.accessKey }}">
-        <input type="hidden" name="subject" value="Quote submission — {{ site.title }}">
+        <input type="hidden" name="subject" value="Quote submission, {{ site.title }}">
         <input type="hidden" name="redirect" value="{{ site.url }}/thank-you/">
         <input type="hidden" name="from_name" value="{{ site.title }} Quote Form">
         <input type="checkbox" name="botcheck" class="visually-hidden" style="display:none" tabindex="-1" autocomplete="off">
@@ -63,7 +63,7 @@ permalink: /quotes/submit/
             <input class="w3f__input" type="text" name="name" id="quote-name" autocomplete="name">
           </div>
           <div class="w3f__group">
-            <label class="w3f__label" for="quote-email">Email <span class="w3f__optional">(optional — if you'd like credit)</span></label>
+            <label class="w3f__label" for="quote-email">Email <span class="w3f__optional">(optional, if you'd like credit)</span></label>
             <input class="w3f__input" type="email" name="email" id="quote-email" autocomplete="email">
           </div>
         </div>

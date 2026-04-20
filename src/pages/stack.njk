@@ -1,7 +1,7 @@
 ---
 layout: base
 title: "How This Site Is Built"
-description: The tools and services behind The Freethinking Times — what we use, why we chose it, and what it means for you.
+description: The tools and services behind The Freethinking Times, what we use, why we chose it, and what it means for you.
 permalink: /stack/
 ---
 
@@ -44,27 +44,27 @@ permalink: /stack/
 
       <h2 id="project-broadsheet">Project Broadsheet</h2>
 
-      <p>This site is built on <a href="https://projectbroadsheet.com" target="_blank" rel="noopener noreferrer">Project Broadsheet</a> — a free, open-source publication system designed for independent journalists and editorial teams who want full control over their platform without subscription fees, algorithmic gatekeepers, or third-party CMS lock-in. The source code is available on <a href="https://github.com/jonajinga/project-broadsheet" target="_blank" rel="noopener noreferrer">GitHub</a> under the MIT licence.</p>
+      <p>This site is built on <a href="https://projectbroadsheet.com" target="_blank" rel="noopener noreferrer">Project Broadsheet</a>, a free, open-source publication system designed for independent journalists and editorial teams who want full control over their platform without subscription fees, algorithmic gatekeepers, or third-party CMS lock-in. The source code is available on <a href="https://github.com/jonajinga/project-broadsheet" target="_blank" rel="noopener noreferrer">GitHub</a> under the MIT licence.</p>
 
       <h2 id="approach">Our approach</h2>
 
-      <p>Every page on this site is pre-built before you visit it. There is no server generating pages on the fly, no database to query, and no loading spinner while content renders in your browser. When you click a link, you get a finished page immediately. This makes the site fast, reliable, and cheap to run — which means we do not need advertising revenue to keep it online.</p>
+      <p>Every page on this site is pre-built before you visit it. There is no server generating pages on the fly, no database to query, and no loading spinner while content renders in your browser. When you click a link, you get a finished page immediately. This makes the site fast, reliable, and cheap to run, which means we do not need advertising revenue to keep it online.</p>
 
       <h2 id="pages-content">Pages and content</h2>
 
-      <p>Articles are written as plain text files with simple formatting. A tool called <strong>Eleventy</strong> takes those files and turns them into the web pages you see. The entire site — all 500+ pages — builds in roughly ten seconds. We publish by pushing a button, and the new version is live within a minute.</p>
+      <p>Articles are written as plain text files with simple formatting. A tool called <strong>Eleventy</strong> takes those files and turns them into the web pages you see. The entire site, all 500+ pages, builds in roughly ten seconds. We publish by pushing a button, and the new version is live within a minute.</p>
 
       <h2 id="design">Design</h2>
 
-      <p>The look and feel is built with standard web styles — no design framework or theme. Every colour, font size, and spacing value is defined once and reused everywhere, so the site looks consistent whether you are reading an article, browsing the library, or filling out a form. Typefaces are served by <strong>Bunny Fonts</strong>, a privacy-friendly alternative to Google Fonts that does not track visitors. Web fonts are loaded on demand — only when a reader selects them in the display settings panel.</p>
+      <p>The look and feel is built with standard web styles, no design framework or theme. Every colour, font size, and spacing value is defined once and reused everywhere, so the site looks consistent whether you are reading an article, browsing the library, or filling out a form. Typefaces are served by <strong>Bunny Fonts</strong>, a privacy-friendly alternative to Google Fonts that does not track visitors. Web fonts are loaded on demand, only when a reader selects them in the display settings panel.</p>
 
       <h2 id="interactive">Interactive features</h2>
 
-      <p>All interactive features — search, text-to-speech, voice search, annotations, the events calendar, reading settings, and form dictation — are written in plain browser code with no external framework. They load only when needed and work offline once cached. Total size across all features: about 200 KB, smaller than most single images.</p>
+      <p>All interactive features, search, text-to-speech, voice search, annotations, the events calendar, reading settings, and form dictation, are written in plain browser code with no external framework. They load only when needed and work offline once cached. Total size across all features: about 200 KB, smaller than most single images.</p>
 
       <h2 id="search">Search</h2>
 
-      <p>Search is powered by <strong>Pagefind</strong>, which builds a search index alongside the site. When you search, your query is matched against a small index file already on the page — no request is sent to a search engine or third-party service.</p>
+      <p>Search is powered by <strong>Pagefind</strong>, which builds a search index alongside the site. When you search, your query is matched against a small index file already on the page, no request is sent to a search engine or third-party service.</p>
 
       <h2 id="hosting">Hosting</h2>
 
@@ -76,11 +76,11 @@ permalink: /stack/
 
       <h2 id="newsletter">Newsletter</h2>
 
-      <p>The newsletter is managed by <strong>Buttondown</strong>. We have disabled open tracking and click tracking — we do not know whether you opened a particular email or clicked a particular link. You can unsubscribe at any time from any email.</p>
+      <p>The newsletter is managed by <strong>Buttondown</strong>. We have disabled open tracking and click tracking, we do not know whether you opened a particular email or clicked a particular link. You can unsubscribe at any time from any email.</p>
 
       <h2 id="analytics">Analytics</h2>
 
-      <p>We use <strong>Umami</strong>, a privacy-first analytics tool. It tells us how many people visit the site and which pages are popular, but it does not use cookies, does not collect personal information, and cannot identify individual visitors. Our analytics dashboard is <a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer">public</a> — you can see exactly what we see.</p>
+      <p>We use <strong>Umami</strong>, a privacy-first analytics tool. It tells us how many people visit the site and which pages are popular, but it does not use cookies, does not collect personal information, and cannot identify individual visitors. Our analytics dashboard is <a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer">public</a>, you can see exactly what we see.</p>
 
       <h2 id="comments">Comments</h2>
 
@@ -96,7 +96,7 @@ permalink: /stack/
 
       <h2 id="nav-speed">Navigation speed</h2>
 
-      <p>Links are prefetched on hover using <a href="https://instant.page" target="_blank" rel="noopener noreferrer">instant.page</a> (~3 KB, self-hosted). For most pages, navigation is handled SPA-style — when you click a link, only the main content area is swapped without a full page reload. This makes transitions feel nearly instant and allows background features like the music player to continue uninterrupted.</p>
+      <p>Links are prefetched on hover using <a href="https://instant.page" target="_blank" rel="noopener noreferrer">instant.page</a> (~3 KB, self-hosted). For most pages, navigation is handled SPA-style, when you click a link, only the main content area is swapped without a full page reload. This makes transitions feel nearly instant and allows background features like the music player to continue uninterrupted.</p>
 
       <h2 id="tooltips">Glossary tooltips</h2>
 

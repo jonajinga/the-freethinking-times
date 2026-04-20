@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   {# ── Title ── #}
-  <title>{% if title %}{{ title }} — {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <title>{% if title %}{{ title }}, {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
 
   {# ── Meta Description ── #}
   <meta name="description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}">
@@ -40,7 +40,7 @@
   {# ── RSS Feeds ── #}
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ site.url }}/feed.xml">
   {% if authorSlug %}
-  <link rel="alternate" type="application/rss+xml" title="{{ title }} — {{ site.title }}" href="{{ site.url }}/feeds/{{ authorSlug }}.xml">
+  <link rel="alternate" type="application/rss+xml" title="{{ title }}, {{ site.title }}" href="{{ site.url }}/feeds/{{ authorSlug }}.xml">
   {% endif %}
 
   {# ── Favicon ── #}
@@ -52,21 +52,21 @@
   <link rel="dns-prefetch" href="https://fonts.bunny.net">
   <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
 
-  {# ── Font woff2 preloads — DM Sans and Source Serif 4 regular weights to prevent CLS ── #}
+  {# ── Font woff2 preloads, DM Sans and Source Serif 4 regular weights to prevent CLS ── #}
   <link rel="preload" href="https://fonts.bunny.net/dm-sans/files/dm-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="https://fonts.bunny.net/source-serif-4/files/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 
-  {# ── Fonts (async — non-render-blocking) ── #}
+  {# ── Fonts (async, non-render-blocking) ── #}
   <link rel="preload" href="{{ site.fontsUrl }}" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="{{ site.fontsUrl }}" crossorigin></noscript>
 
-  {# ── Critical CSS: tokens + body baseline — inlined to prevent FOUC while main.css loads async ── #}
+  {# ── Critical CSS: tokens + body baseline, inlined to prevent FOUC while main.css loads async ── #}
   <style>:root{--color-bg:#F4F1EB;--color-bg-alt:#EAE6DE;--color-bg-inset:#E0DBCF;--color-ink:#1A1A1A;--color-ink-muted:#4A4845;--color-ink-faint:#5E5856;--color-rule:#C8C2B6;--color-rule-heavy:#8A847A;--color-accent:#C0392B;--color-link:#2C5F8A;--color-selection:#6A1B9A;--color-selection-ink:#fff;--font-masthead:'Playfair Display',Georgia,serif;--font-headline:'Lora',Georgia,serif;--font-body:'Source Serif 4',Georgia,serif;--font-ui:'DM Sans',system-ui,sans-serif}[data-theme="dark"]{--color-bg:#141414;--color-bg-alt:#1E1E1E;--color-bg-inset:#252525;--color-ink:#E8E4DC;--color-ink-muted:#A8A49C;--color-ink-faint:#9E9A96;--color-rule:#303030;--color-rule-heavy:#484440;--color-accent:#E05545;--color-link:#6B9EC7}@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--color-bg:#141414;--color-bg-alt:#1E1E1E;--color-bg-inset:#252525;--color-ink:#E8E4DC;--color-ink-muted:#A8A49C;--color-ink-faint:#9E9A96;--color-rule:#303030;--color-rule-heavy:#484440;--color-accent:#E05545;--color-link:#6B9EC7}}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{color-scheme:light dark}body{background:var(--color-bg);color:var(--color-ink);font-family:var(--font-body)}.site-wrapper{min-height:100vh;display:flex;flex-direction:column}</style>
 
   {# ── Styles ── #}
   <link rel="stylesheet" href="/assets/css/main.css?v={{ buildTime }}">
 
-  {# ── Theme: removed external script — inlined below after __PREFIX is set ── #}
+  {# ── Theme: removed external script, inlined below after __PREFIX is set ── #}
 
   {# ── BreadcrumbList structured data ── #}
   {% if page.url != "/" %}
@@ -151,10 +151,10 @@
   <script src="/assets/js/revision-history.js?v={{ buildTime }}" defer></script>
   {% endif %}
 
-  {# ── Reader panel migration — re-parents article action buttons into the panel ── #}
+  {# ── Reader panel migration, re-parents article action buttons into the panel ── #}
   <script src="/assets/js/reader-panel-migrate.js?v={{ buildTime }}" defer></script>
 
-  {# ── Reader panel tab populators — Footnotes / Cite render lazily into their tabs ── #}
+  {# ── Reader panel tab populators, Footnotes / Cite render lazily into their tabs ── #}
   <script src="/assets/js/footnotes.js?v={{ buildTime }}" defer></script>
   <script src="/assets/js/cite-inline.js?v={{ buildTime }}" defer></script>
 
@@ -210,7 +210,7 @@
     }
   </script>
 
-  {# ── GTranslate (dropdown — renders inside nav drawer) ── #}
+  {# ── GTranslate (dropdown, renders inside nav drawer) ── #}
   {% if site.gtranslate %}
   <script>
     window.gtranslateSettings = {
@@ -230,7 +230,7 @@
   <script defer src="{{ site.analytics.scriptUrl }}" data-website-id="{{ site.analytics.websiteId }}"></script>
   {% endif %}
 
-  {# ── Instant Page (prefetch on hover) — loaded last so it never touches the critical path ── #}
+  {# ── Instant Page (prefetch on hover), loaded last so it never touches the critical path ── #}
   <script src="/assets/js/instant.page.js?v={{ buildTime }}" type="module"></script>
 </body>
 </html>

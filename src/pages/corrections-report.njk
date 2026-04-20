@@ -28,7 +28,7 @@ permalink: /corrections/report/
 
       <form action="https://api.web3forms.com/submit" method="POST" class="w3f" style="margin: var(--space-6) 0;">
         <input type="hidden" name="access_key" value="{{ site.forms.accessKey }}">
-        <input type="hidden" name="subject" value="Correction report — {{ site.title }}">
+        <input type="hidden" name="subject" value="Correction report, {{ site.title }}">
         <input type="hidden" name="redirect" value="{{ site.url }}/thank-you/">
         <input type="hidden" name="from_name" value="{{ site.title }} Correction Form">
         <input type="checkbox" name="botcheck" class="visually-hidden" style="display:none" tabindex="-1" autocomplete="off">
@@ -57,7 +57,7 @@ permalink: /corrections/report/
             <input class="w3f__input" type="text" name="name" id="corr-name" autocomplete="name">
           </div>
           <div class="w3f__group">
-            <label class="w3f__label" for="corr-email">Email <span class="w3f__optional">(optional — if you'd like us to follow up)</span></label>
+            <label class="w3f__label" for="corr-email">Email <span class="w3f__optional">(optional, if you'd like us to follow up)</span></label>
             <input class="w3f__input" type="email" name="email" id="corr-email" autocomplete="email">
           </div>
         </div>

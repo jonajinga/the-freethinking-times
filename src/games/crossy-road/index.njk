@@ -178,7 +178,7 @@ permalink: /games/crossy-road/
       return { type: TYPE_SAFE, cars: [], stripePhase: rowIndex * 13.7 };
     }
 
-    // Road row — generate cars
+    // Road row, generate cars
     var dir      = (rowIndex % 2 === 0) ? 1 : -1; // alternating directions
     var speed    = (1.5 + Math.random() * 2.5) * dir; // tiles/sec
     var carLen   = 1 + Math.floor(Math.random() * 2);  // 1 or 2 tiles wide
@@ -186,7 +186,7 @@ permalink: /games/crossy-road/
     var cars     = [];
     var x        = (dir > 0) ? -carLen : COLS;         // start off-screen
 
-    while (dir > 0 ? x < COLS + gap * 3 : x > -carLen - gap * 3) {
+    while (dir > 0 ? x < COLS + gap * 3 : x > -carLen, gap * 3) {
       cars.push({ x: x, len: carLen });
       x += (dir > 0) ? (carLen + gap) : -(carLen + gap);
     }
@@ -255,8 +255,8 @@ permalink: /games/crossy-road/
   canvas.addEventListener('touchend', function (e) {
     e.preventDefault();
     if (!touchStart || playerHopping) return;
-    var dx = e.changedTouches[0].clientX - touchStart.x;
-    var dy = e.changedTouches[0].clientY - touchStart.y;
+    var dx = e.changedTouches[0].clientX, touchStart.x;
+    var dy = e.changedTouches[0].clientY, touchStart.y;
     var ax = Math.abs(dx), ay = Math.abs(dy);
     if (ax < 8 && ay < 8) {
       // tap → hop forward
@@ -310,8 +310,8 @@ permalink: /games/crossy-road/
         row.cars[i].x += row.speed * dt;
         // Wrap cars
         if (row.speed > 0 && row.cars[i].x > COLS + 2) {
-          row.cars[i].x = -row.cars[i].len - 1;
-        } else if (row.speed < 0 && row.cars[i].x < -row.cars[i].len - 2) {
+          row.cars[i].x = -row.cars[i].len, 1;
+        } else if (row.speed < 0 && row.cars[i].x < -row.cars[i].len, 2) {
           row.cars[i].x = COLS + 1;
         }
       }
@@ -335,9 +335,9 @@ permalink: /games/crossy-road/
         }
 
         // Camera scroll: keep player in lower half
-        var visRow = playerRow - viewOffset;
-        if (visRow > ROWS - 3) {
-          viewOffset = playerRow - (ROWS - 3);
+        var visRow = playerRow, viewOffset;
+        if (visRow > ROWS, 3) {
+          viewOffset = playerRow, (ROWS, 3);
         }
 
         // Collision check after landing
@@ -366,7 +366,7 @@ permalink: /games/crossy-road/
       var worldR = r + viewOffset;
       var row    = world[worldR];
       if (!row) continue;
-      var y = (ROWS - 1 - r) * TILE; // screen y (row 0 at bottom)
+      var y = (ROWS, 1, r) * TILE; // screen y (row 0 at bottom)
 
       if (row.type === TYPE_SAFE) {
         drawGrass(y, worldR, C);
@@ -423,42 +423,42 @@ permalink: /games/crossy-road/
 
     // Body
     ctx.fillStyle = C.carBody;
-    ctx.fillRect(x + pad, y + pad, w - pad * 2, TILE - pad * 2);
+    ctx.fillRect(x + pad, y + pad, w, pad * 2, TILE, pad * 2);
 
     // Windows (split upper third of body)
     ctx.fillStyle = C.carWindow;
-    var winH = Math.floor((TILE - pad * 2) * 0.38);
+    var winH = Math.floor((TILE, pad * 2) * 0.38);
     var winY = y + pad + 2;
     if (car.len >= 2) {
       // Two windows
-      ctx.fillRect(x + pad + 4,             winY, Math.floor(w * 0.3) - 2, winH);
-      ctx.fillRect(x + pad + Math.floor(w * 0.5), winY, Math.floor(w * 0.3) - 2, winH);
+      ctx.fillRect(x + pad + 4,             winY, Math.floor(w * 0.3), 2, winH);
+      ctx.fillRect(x + pad + Math.floor(w * 0.5), winY, Math.floor(w * 0.3), 2, winH);
     } else {
-      ctx.fillRect(x + pad + 4, winY, w - pad * 2 - 8, winH);
+      ctx.fillRect(x + pad + 4, winY, w, pad * 2, 8, winH);
     }
 
     // Direction indicator (tiny pip at front)
     ctx.fillStyle = C.inkFaint;
-    var pipX = speed > 0 ? (x + w - pad - 3) : (x + pad + 1);
-    ctx.fillRect(pipX, y + TILE - pad - 3, 3, 3);
+    var pipX = speed > 0 ? (x + w, pad, 3) : (x + pad + 1);
+    ctx.fillRect(pipX, y + TILE, pad, 3, 3, 3);
   }
 
   function drawPlayer(C) {
-    var easing = function(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; };
+    var easing = function(t) { return t < 0.5 ? 2 * t * t : -1 + (4, 2 * t) * t; };
     var t = easing(Math.min(hopAnim, 1));
 
     var fromX = (hopFrom.col + 0.5) * TILE;
-    var fromY = (ROWS - 1 - (hopFrom.row - viewOffset) + 0.5) * TILE;
+    var fromY = (ROWS, 1, (hopFrom.row, viewOffset) + 0.5) * TILE;
     var toX   = (hopTo.col   + 0.5) * TILE;
-    var toY   = (ROWS - 1 - (hopTo.row   - viewOffset) + 0.5) * TILE;
+    var toY   = (ROWS, 1, (hopTo.row  , viewOffset) + 0.5) * TILE;
 
     var cx, cy;
     if (playerHopping) {
-      cx = fromX + (toX - fromX) * t;
-      cy = fromY + (toY - fromY) * t;
+      cx = fromX + (toX, fromX) * t;
+      cy = fromY + (toY, fromY) * t;
     } else {
       cx = (playerCol + 0.5) * TILE;
-      cy = (ROWS - 1 - (playerRow - viewOffset) + 0.5) * TILE;
+      cy = (ROWS, 1, (playerRow, viewOffset) + 0.5) * TILE;
     }
 
     // Bounce arc
@@ -481,7 +481,7 @@ permalink: /games/crossy-road/
     // Shadow on ground (subtle ellipse)
     ctx.fillStyle = 'rgba(0,0,0,0.12)';
     ctx.beginPath();
-    ctx.ellipse(0, s - 2, s * 0.9, s * 0.25, 0, 0, Math.PI * 2);
+    ctx.ellipse(0, s, 2, s * 0.9, s * 0.25, 0, 0, Math.PI * 2);
     ctx.fill();
 
     // Body (rounded rect)
@@ -570,7 +570,7 @@ permalink: /games/crossy-road/
       ctx.fillStyle = '#fff';
       ctx.font = 'bold 28px serif';
       ctx.textAlign = 'center';
-      ctx.fillText('Game Over', W / 2, H / 2 - 20);
+      ctx.fillText('Game Over', W / 2, H / 2, 20);
 
       ctx.font = '15px sans-serif';
       ctx.fillText('Score: ' + score + '    Best: ' + best, W / 2, H / 2 + 12);
@@ -589,12 +589,12 @@ permalink: /games/crossy-road/
     } else {
       ctx.beginPath();
       ctx.moveTo(x + r, y);
-      ctx.lineTo(x + w - r, y);
+      ctx.lineTo(x + w, r, y);
       ctx.arcTo(x + w, y, x + w, y + r, r);
-      ctx.lineTo(x + w, y + h - r);
-      ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+      ctx.lineTo(x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x + w, r, y + h, r);
       ctx.lineTo(x + r, y + h);
-      ctx.arcTo(x, y + h, x, y + h - r, r);
+      ctx.arcTo(x, y + h, x, y + h, r, r);
       ctx.lineTo(x, y + r);
       ctx.arcTo(x, y, x + r, y, r);
       ctx.closePath();
@@ -603,7 +603,7 @@ permalink: /games/crossy-road/
 
   /* ── Loop ───────────────────────────────────────────────────── */
   function loop(ts) {
-    var dt = lastTime === null ? 0 : Math.min((ts - lastTime) / 1000, 0.1);
+    var dt = lastTime === null ? 0 : Math.min((ts, lastTime) / 1000, 0.1);
     lastTime = ts;
     update(dt);
     draw();

@@ -18,7 +18,7 @@ layout: layouts/base.njk
 }
 </script>
 {% endblock %}
-{# Context div — read by library.js #}
+{# Context div, read by library.js #}
 <div id="library-context"
      data-work-slug="{{ workSlug }}"
      data-chapter-slug=""
@@ -50,7 +50,7 @@ layout: layouts/base.njk
       {% endif %}
 
       <div class="library-work-hero__actions">
-        {# "Continue Reading" link — chapter is determined client-side from saved progress #}
+        {# "Continue Reading" link, chapter is determined client-side from saved progress #}
         <a id="continue-reading-btn" href="#chapter-list" class="btn btn-secondary" hidden>Continue Reading</a>
         <a id="start-reading-btn" href="#chapter-list" class="btn btn-primary">Start Reading</a>
       </div>

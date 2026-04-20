@@ -1,5 +1,5 @@
 {#
-  Author hero block — photo + name + role + bio + socials + stats + tip badges.
+  Author hero block, photo + name + role + bio + socials + stats + tip badges.
   Used on /author/{slug}/.
 #}
 {% if authorData %}
@@ -79,7 +79,7 @@
         {% set tipHidePublication = true %}
         {% include "partials/tip-buttons.njk" %}
         <a class="tip-badge" href="/support/" aria-label="Learn how we are funded"
-           data-tippy-content="We fund our journalism entirely through reader support — no ads, no paywalls. Learn how we operate and how contributors are compensated."
+           data-tippy-content="We fund our journalism entirely through reader support, no ads, no paywalls. Learn how we operate and how contributors are compensated."
            data-tippy-theme="badge"
            data-tippy-placement="top">How We're Funded</a>
       </div>

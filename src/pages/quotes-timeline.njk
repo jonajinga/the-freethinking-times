@@ -1,7 +1,7 @@
 ---
 layout: base
 title: Quotes Through the Ages
-description: Freethought quotes arranged chronologically — from Epicurus to Carl Sagan.
+description: Freethought quotes arranged chronologically, from Epicurus to Carl Sagan.
 permalink: /quotes/timeline/
 eleventyExcludeFromCollections: true
 ---
@@ -61,7 +61,7 @@ eleventyExcludeFromCollections: true
             {% if item.year < 0 %}{{ item.year * -1 }} BCE{% elif item.year > 0 %}{{ item.year }}{% endif %}
           </div>
           <blockquote class="tl__quote">&ldquo;{{ item.quote }}&rdquo;</blockquote>
-          <p class="tl__author">&mdash; {{ item.author }}</p>
+          <p class="tl__author">,  {{ item.author }}</p>
           <p class="tl__source">{{ item.source }}</p>
         </div>
       </div>

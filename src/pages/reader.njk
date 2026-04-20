@@ -1,7 +1,7 @@
 ---
 layout: base
 title: RSS Reader
-description: Follow freethought publications and add your own RSS feeds. All reading happens in your browser — no account required.
+description: Follow freethought publications and add your own RSS feeds. All reading happens in your browser, no account required.
 permalink: /reader/
 ---
 
@@ -22,7 +22,7 @@ permalink: /reader/
     {% endfor %}
   </div>
 
-  {# Feed entries — pre-rendered from build-time data #}
+  {# Feed entries, pre-rendered from build-time data #}
   <div id="feed-entries">
     {% set allItems = [] %}
     {% for feed in feeds %}

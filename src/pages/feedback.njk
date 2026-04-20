@@ -1,7 +1,7 @@
 ---
 layout: base
 title: "Send Feedback"
-description: Tell us what you think about The Freethinking Times — report bugs, suggest features, or say something kind.
+description: Tell us what you think about The Freethinking Times, report bugs, suggest features, or say something kind.
 permalink: /feedback/
 ---
 
@@ -26,7 +26,7 @@ permalink: /feedback/
 
       <form action="https://api.web3forms.com/submit" method="POST" class="w3f">
         <input type="hidden" name="access_key" value="{{ site.forms.accessKey }}">
-        <input type="hidden" name="subject" value="Site feedback — {{ site.title }}">
+        <input type="hidden" name="subject" value="Site feedback, {{ site.title }}">
         <input type="hidden" name="redirect" value="{{ site.url }}/thank-you/">
         <input type="hidden" name="from_name" value="{{ site.title }} Feedback Form">
         <input type="checkbox" name="botcheck" class="visually-hidden" style="display:none" tabindex="-1" autocomplete="off">
@@ -34,11 +34,11 @@ permalink: /feedback/
         <div class="w3f__group">
           <label class="w3f__label" for="fb-category">Category</label>
           <select class="w3f__select" name="category" id="fb-category">
-            <option value="Bug report">Bug report — something is broken</option>
-            <option value="Feature suggestion">Feature suggestion — something you would like to see</option>
-            <option value="Content request">Content request — a topic you want us to cover</option>
+            <option value="Bug report">Bug report, something is broken</option>
+            <option value="Feature suggestion">Feature suggestion, something you would like to see</option>
+            <option value="Content request">Content request, a topic you want us to cover</option>
             <option value="Accessibility">Accessibility issue</option>
-            <option value="Compliment">Compliment — something you like</option>
+            <option value="Compliment">Compliment, something you like</option>
             <option value="Other">Other</option>
           </select>
         </div>
@@ -60,7 +60,7 @@ permalink: /feedback/
             <input class="w3f__input" type="text" name="name" id="fb-name" autocomplete="name">
           </div>
           <div class="w3f__group">
-            <label class="w3f__label" for="fb-email">Email <span class="w3f__optional">(optional — if you'd like a response)</span></label>
+            <label class="w3f__label" for="fb-email">Email <span class="w3f__optional">(optional, if you'd like a response)</span></label>
             <input class="w3f__input" type="email" name="email" id="fb-email" autocomplete="email">
           </div>
         </div>

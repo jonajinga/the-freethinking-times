@@ -94,7 +94,7 @@
           <li><a href="{{ link.url }}"{% if link.title %} data-tippy-content="{{ link.title }}"{% endif %}>{{ link.label }}</a></li>
           {% endfor %}
           {% if col.heading == "Transparency" and site.analytics and site.analytics.dashboardUrl %}
-          <li><a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer" data-tippy-content="Our public analytics dashboard — the same numbers we see, open for readers to inspect. No individual tracking, just aggregate pageviews, referrers, and country.">Public Analytics</a></li>
+          <li><a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer" data-tippy-content="Our public analytics dashboard, the same numbers we see, open for readers to inspect. No individual tracking, just aggregate pageviews, referrers, and country.">Public Analytics</a></li>
           {% endif %}
         </ul>
       </div>

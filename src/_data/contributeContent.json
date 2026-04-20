@@ -5,11 +5,11 @@
     { "name": "Contributing Editor", "desc": "Section-level editorial input. Helps shape coverage in their area of expertise." }
   ],
   "lookingFor": [
-    "Clear, direct prose — no jargon, no academic obscurantism",
-    "Original thinking — not just summaries of existing debates",
-    "Evidence and sourcing — claims backed by references",
-    "Intellectual honesty — engage the strongest version of opposing arguments",
-    "Relevance to the freethought tradition — broadly construed"
+    "Clear, direct prose, no jargon, no academic obscurantism",
+    "Original thinking, not just summaries of existing debates",
+    "Evidence and sourcing, claims backed by references",
+    "Intellectual honesty, engage the strongest version of opposing arguments",
+    "Relevance to the freethought tradition, broadly construed"
   ],
   "topics": [
     "Church-state separation cases and policy",
@@ -34,12 +34,12 @@
     { "label": "Submit an event",              "url": "/events/submit/" }
   ],
   "writingStyle": [
-    "Write in the first person when appropriate — this is a publication with a voice",
+    "Write in the first person when appropriate, this is a publication with a voice",
     "Lead with the argument, not the background",
     "Use short paragraphs and clear topic sentences",
     "Avoid passive voice unless it serves clarity",
-    "Cite sources inline or in footnotes — we use tooltip footnotes, not endnotes",
-    "No clickbait headlines — say what the piece argues",
+    "Cite sources inline or in footnotes, we use tooltip footnotes, not endnotes",
+    "No clickbait headlines, say what the piece argues",
     "No emoji in headings or body text"
   ]
 }

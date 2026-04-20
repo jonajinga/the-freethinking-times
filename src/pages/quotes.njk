@@ -1,7 +1,7 @@
 ---
 layout: base
 title: Quotes
-description: A curated collection of freethought quotes — save, share, and print your favourites.
+description: A curated collection of freethought quotes, save, share, and print your favourites.
 permalink: /quotes/
 ---
 
@@ -188,7 +188,7 @@ permalink: /quotes/
         var citeText = citeEl ? citeEl.textContent.trim() : '';
         list.unshift({
           url: url,
-          title: quoteText + ' — ' + citeText,
+          title: quoteText + ', ' + citeText,
           section: 'Quotes',
           date: '',
           mins: ''
@@ -199,7 +199,7 @@ permalink: /quotes/
     });
   });
 
-  // Copy — show checkmark briefly
+  // Copy, show checkmark briefly
   document.querySelectorAll('.quote-copy-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var text = getQuoteText(btn);
@@ -209,7 +209,7 @@ permalink: /quotes/
     });
   });
 
-  // Share — social share panel
+  // Share, social share panel
   document.querySelectorAll('.quote-share-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var text = getQuoteText(btn);

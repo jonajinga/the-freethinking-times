@@ -1,7 +1,7 @@
 [
   {
     "title": "The Freethought Glossary",
-    "description": "A proper philosophical glossary of terms that matter to the tradition — Freethought, Skepticism, Empiricism, Rationalism, Secular Humanism, Agnosticism, Atheism, Deism, Pantheism, Materialism, Determinism.",
+    "description": "A proper philosophical glossary of terms that matter to the tradition, Freethought, Skepticism, Empiricism, Rationalism, Secular Humanism, Agnosticism, Atheism, Deism, Pantheism, Materialism, Determinism.",
     "shortDescription": "The philosophical vocabulary of the freethinking tradition, defined rigorously.",
     "url": "/glossary/",
     "icon": "📖",
@@ -11,7 +11,7 @@
   {
     "title": "The Thought Experiment Library",
     "description": "Classic thought experiments given serious popular treatment: what they were designed to show, what they actually show, how they have been used and misused, and what remains genuinely unresolved.",
-    "shortDescription": "Classic thought experiments given serious treatment — what they prove, what they don't, and what remains unresolved.",
+    "shortDescription": "Classic thought experiments given serious treatment, what they prove, what they don't, and what remains unresolved.",
     "url": "/thought-experiments/",
     "icon": "🧠",
     "status": "Active",
@@ -19,7 +19,7 @@
   },
   {
     "title": "The Freethinker's Bookshelf",
-    "description": "A curated, annotated reading list for the intellectually curious. Books that shaped the freethinking tradition — and books that should. Every entry tells you what the book does and where it goes wrong.",
+    "description": "A curated, annotated reading list for the intellectually curious. Books that shaped the freethinking tradition, and books that should. Every entry tells you what the book does and where it goes wrong.",
     "shortDescription": "A curated reading list for the intellectually curious. Every entry tells you what the book does and where it goes wrong.",
     "url": "/bookshelf/",
     "icon": "📚",
@@ -29,7 +29,7 @@
   {
     "title": "The Trials of Thought",
     "description": "An interactive timeline of landmark trials where ideas were the defendant. From Socrates to Rushdie, each trial is a window into what a society found intolerable and why.",
-    "shortDescription": "Landmark trials where ideas were the defendant — from Socrates to Rushdie.",
+    "shortDescription": "Landmark trials where ideas were the defendant, from Socrates to Rushdie.",
     "url": "/trials/",
     "icon": "⚖️",
     "status": "Active",
