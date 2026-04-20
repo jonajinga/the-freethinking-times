@@ -48,8 +48,16 @@ permalink: /contributors/
         <p class="author-card__bio">{{ authorData.bio }}</p>
         {% endif %}
 
-        {% set social = authorData.social %}
-        {% include "partials/social-icons.njk" %}
+        <div class="author-card__socials-row">
+          {% set social = authorData.social %}
+          {% include "partials/social-icons.njk" %}
+          {% if authorArticles.length %}
+          <span class="author-card__socials-divider" aria-hidden="true"></span>
+          {% set viewFilter = "author=" + slug %}
+          {% set viewsSize = "sm" %}
+          {% include "partials/archive-views-buttons.njk" %}
+          {% endif %}
+        </div>
 
         {% if authorArticles.length %}
         <div class="author-card__stats">

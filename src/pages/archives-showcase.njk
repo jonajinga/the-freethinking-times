@@ -122,8 +122,8 @@ eleventyExcludeFromCollections: true
   text-transform: uppercase;
   color: var(--color-ink);
 }
-.as-showcase__brand  { justify-self: start; }
-.as-showcase__filter { justify-self: center; }
+.as-showcase__brand  { justify-self: start; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+.as-showcase__filter { justify-self: center; min-width: 0; }
 .as-showcase__exit   { justify-self: end; }
 .as-showcase__brand {
   color: var(--color-ink);
@@ -159,8 +159,8 @@ eleventyExcludeFromCollections: true
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 40%;
   text-align: center;
+  max-width: 100%;
 }
 .as-showcase__filter[hidden] { display: none; }
 @media (max-width: 640px) {
