@@ -574,6 +574,19 @@ body:has(.article-body) .gs-article-only { display: block; }
 /* Word spacing — driven by --gs-word-spacing custom property on :root */
 body { word-spacing: var(--gs-word-spacing, 0); }
 
+/* ── Archive view CTAs (showcase + timeline pair) ────────────── */
+.archive-views {
+  display: inline-flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.archive-views__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+}
+
 /* ── Archive link (link-rot protection) ─────────────────────────
    Tiny subtle icon rendered immediately after every external link in
    markdown-generated content. Points at the web.archive.org wildcard

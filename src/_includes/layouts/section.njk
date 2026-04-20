@@ -20,6 +20,12 @@ layout: layouts/base.njk
       Have something to say? <a href="/letters/submit/" style="color: var(--color-link); font-weight: 600;">Write a letter</a>
     </p>
     {% endif %}
+    {% if collections[sectionSlug] and collections[sectionSlug].length %}
+    <div style="margin-top:var(--space-4);">
+      {% set viewFilter = "section=" + sectionSlug %}
+      {% include "partials/archive-views-buttons.njk" %}
+    </div>
+    {% endif %}
   </header>
 
   <div class="section-grid">

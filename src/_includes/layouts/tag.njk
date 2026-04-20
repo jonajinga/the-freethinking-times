@@ -9,9 +9,13 @@ layout: layouts/base.njk
       Topic
     </p>
     <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-2);">{{ tag }}</h1>
-    <p style="color: var(--color-ink-muted); font-size: var(--text-sm);">
+    <p style="color: var(--color-ink-muted); font-size: var(--text-sm); margin-bottom: var(--space-4);">
       {{ collections[tag].length }} article{% if collections[tag].length != 1 %}s{% endif %} across all sections
     </p>
+    {% if collections[tag] and collections[tag].length %}
+    {% set viewFilter = "topic=" + (tag | slugify) %}
+    {% include "partials/archive-views-buttons.njk" %}
+    {% endif %}
   </header>
 
   <div class="section-grid">

@@ -62,9 +62,11 @@ permalink: /archives/
   {# ── Page title (sits below the sticky toolbar) ────────────── #}
   <header class="archive-header" style="margin-top: var(--space-8); margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
     <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-2);">Archives</h1>
-    <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic; margin: 0;">
+    <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic; margin: 0 0 var(--space-4);">
       {{ collections.allContent | length }} articles published in The Freethinking Times.
     </p>
+    {% set viewFilter = "" %}
+    {% include "partials/archive-views-buttons.njk" %}
   </header>
 
   {# ── Article groups ───────────────────────────────────────────── #}
