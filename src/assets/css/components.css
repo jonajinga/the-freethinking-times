@@ -599,17 +599,6 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   align-self: center;
 }
 
-/* Author hero: inline alternate-view buttons after the name. Center-
-   aligned so the chip-style buttons sit on the optical middle of the
-   name, not offset by the h1 baseline. Wraps on narrow screens. */
-.author-hero__name-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-  margin-bottom: var(--space-2);
-}
-.author-hero__name-row .author-hero__name { margin: 0; }
 
 /* ── Archive link (link-rot protection) ─────────────────────────
    Tiny subtle icon rendered immediately after every external link in
@@ -3779,12 +3768,26 @@ select.w3f__input option {
 .author-hero__socials {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
+  gap: var(--space-2);
   flex-wrap: wrap;
   margin-bottom: var(--space-4);
 }
 .author-hero__socials .social-icons {
   margin-bottom: 0;
+}
+.author-hero__socials-divider {
+  width: 1px;
+  height: 1.4rem;
+  background: var(--color-rule-heavy, var(--color-rule));
+  margin: 0 var(--space-2);
+  flex-shrink: 0;
+}
+@media (max-width: 520px) {
+  .author-hero__socials-divider {
+    width: 100%;
+    height: 0;
+    margin: var(--space-1) 0;
+  }
 }
 
 /* ── Author stats strip ────────────────────────────────────── */
