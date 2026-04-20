@@ -1158,21 +1158,23 @@
    Subsection uses the accent color for active; reading-time uses ink.
    Subsection sits above reading-time, separated by a hairline rule. */
 
-/* Filter-row wrapper: bar + optional "next" arrow button */
+/* Filter-row wrapper: bar + optional "next" arrow button.
+   Multiple filter-rows read as ONE grouped control cluster — a single
+   hairline closes the group at the bottom, with no inter-row dividers. */
 .filter-row {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-3) 0;
-  border-bottom: 1px solid var(--color-rule);
+  padding: var(--space-2) 0;
   min-width: 0;
 }
-.filter-row + .filter-row { padding-top: var(--space-3); }
-.filter-row:last-of-type { margin-bottom: var(--space-6); }
-
-/* When a filter-row follows another, collapse the top border so the
-   two bars read as a stacked group. */
-.filter-row + .filter-row { border-top: 0; }
+/* Only the last filter-row in a group gets a bottom rule; any preceding
+   filter-rows sit flush with it. Uses :has() so we don't need to mark
+   the last row in the template. */
+.filter-row:not(:has(+ .filter-row)) {
+  border-bottom: 1px solid var(--color-rule);
+  margin-bottom: var(--space-6);
+}
 
 .filter-row__next {
   flex-shrink: 0;
