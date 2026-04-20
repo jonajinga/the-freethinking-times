@@ -3175,10 +3175,10 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   padding: 0 8px;
   height: 20px;
   flex-shrink: 0;
-  background: var(--color-link);
-  color: #fff;
+  background: var(--color-ink);
+  color: var(--color-bg);
   white-space: nowrap;
-  opacity: 0.9;
+  opacity: 0.85;
   transition: opacity var(--transition-fast);
 }
 .tip-badge:hover,
@@ -3216,6 +3216,12 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   padding-top: var(--space-10);
   padding-bottom: var(--space-20);
 }
+@media (max-width: 1180px) {
+  .sg-nav { top: 4.5rem; }
+  .sg-layout h2[id],
+  .sg-section { scroll-margin-top: 4.5rem; }
+}
+
 @media (max-width: 960px) {
   .sg-layout { grid-template-columns: 1fr; }
   .sg-nav {
@@ -3229,13 +3235,21 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   }
 }
 
+@media (max-width: 768px) {
+  .sg-nav { display: none; }
+  .sg-scale-row, .sg-space-row {
+    grid-template-columns: 5rem 5rem 1fr;
+    gap: var(--space-2);
+  }
+}
+
 .sg-layout h2[id] {
   scroll-margin-top: 7rem;
 }
 
 .sg-nav {
   position: sticky;
-  top: 7rem;
+  top: 7rem; /* drops to 4.5rem on tablet via media query below */
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
