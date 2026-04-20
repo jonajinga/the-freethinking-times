@@ -50,10 +50,9 @@
   var nav = document.querySelector('.site-nav');
   if (!nav) return;
 
-  var keys = ['news', 'opinion', 'analysis', 'arts-culture', 'science-tech', 'history', 'letters', 'library', 'projects', 'games', 'more'];
+  var keys = ['news', 'opinion', 'analysis', 'arts-culture', 'science-tech', 'history', 'letters', 'reviews', 'library', 'projects', 'games', 'more'];
 
   function positionDropdown(trigger, dropdown) {
-    // Skip positioning for quotes (uses fixed centering)
     if (dropdown.id === 'dropdown-quotes') return;
     var navRect     = nav.getBoundingClientRect();
     var triggerRect = trigger.getBoundingClientRect();
@@ -71,6 +70,13 @@
     return (trigger && dropdown) ? { trigger: trigger, dropdown: dropdown } : null;
   }).filter(Boolean);
 
+  function closeAll() {
+    pairs.forEach(function (p) {
+      p.dropdown.classList.remove('is-open');
+      p.trigger.setAttribute('aria-expanded', 'false');
+    });
+  }
+
   pairs.forEach(function (p) {
     positionDropdown(p.trigger, p.dropdown);
 
@@ -79,6 +85,13 @@
     function show() {
       clearTimeout(hideTimer);
       hideTimer = null;
+      // Close any other open dropdown immediately
+      pairs.forEach(function (other) {
+        if (other !== p) {
+          other.dropdown.classList.remove('is-open');
+          other.trigger.setAttribute('aria-expanded', 'false');
+        }
+      });
       p.dropdown.classList.add('is-open');
       p.trigger.setAttribute('aria-expanded', 'true');
       positionDropdown(p.trigger, p.dropdown);
@@ -88,7 +101,7 @@
       hideTimer = setTimeout(function () {
         p.dropdown.classList.remove('is-open');
         p.trigger.setAttribute('aria-expanded', 'false');
-      }, 150);
+      }, 80);
     }
 
     p.trigger.addEventListener('mouseenter', show);

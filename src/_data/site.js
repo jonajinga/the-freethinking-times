@@ -32,7 +32,7 @@ module.exports = {
   fontsUrl: "https://fonts.bunny.net/css?family=dm-sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=playfair-display:ital,wght@0,700;0,900;1,700&family=source-serif-4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap",
   forms: {
     provider: "web3forms",
-    accessKey: env.WEB3FORMS_ACCESS_KEY || ""
+    accessKey: env.WEB3FORMS_ACCESS_KEY || "74ef6035-e746-4d9f-8e32-a1e1053feceb"
   },
   analytics: {
     provider: "umami",

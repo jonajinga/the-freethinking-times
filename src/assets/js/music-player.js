@@ -141,18 +141,17 @@
           player.setVolume(0);
           player.unMute();
 
-          // Resume at saved track and time if provided
+          // Start fading in immediately so there is no silent gap on page load
+          fadeIn();
+
+          // Seek to saved track/time while fade is already in progress
           if (resumeIndex > 0 || resumeTime > 0) {
             setTimeout(function () {
               if (player && resumeIndex > 0) player.playVideoAt(resumeIndex);
               setTimeout(function () {
                 if (player && resumeTime > 0) player.seekTo(resumeTime, true);
-                // Fade in after seeking
-                fadeIn();
-              }, 500);
-            }, 1000);
-          } else {
-            fadeIn();
+              }, 200);
+            }, 300);
           }
 
           if (cb) cb();

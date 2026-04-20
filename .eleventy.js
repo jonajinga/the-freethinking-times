@@ -161,6 +161,9 @@ module.exports = function (eleventyConfig) {
               /library-annotation/,
               /library-bookmark/,
               /library-highlight/,
+              // Dynamic dropdown IDs not visible to PurgeCSS (id="dropdown-{{ item.key }}")
+              /dropdown-more/,    // Explore mega-menu width override
+              /dropdown-quotes/,  // Quotes fixed-position override
             ],
           },
           variables: false,  // never strip CSS custom property declarations
@@ -351,6 +354,17 @@ module.exports = function (eleventyConfig) {
   });
 
   eleventyConfig.addFilter("limit", (arr, limit) => arr.slice(0, limit));
+
+  eleventyConfig.addFilter("titleCase", (str) => {
+    if (!str) return "";
+    const minor = new Set(["a","an","the","and","but","or","for","nor","on","at","to","by","in","of","up","as","is"]);
+    return str.replace(/-/g, " ").split(" ").map((word, i) => {
+      if (!word) return word;
+      return (i === 0 || !minor.has(word.toLowerCase()))
+        ? word.charAt(0).toUpperCase() + word.slice(1)
+        : word.toLowerCase();
+    }).join(" ");
+  });
 
   eleventyConfig.addFilter("topTagsForSection", (collection, limit = 6) => {
     const skip = new Set(["post", "all"]);

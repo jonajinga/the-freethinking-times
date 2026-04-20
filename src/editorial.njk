@@ -8,6 +8,22 @@ permalink: /editorial/
 <div class="container">
   <div class="editorial-layout">
 
+    {# ── Sticky TOC sidebar ── #}
+    <aside class="editorial-nav" aria-label="Handbook sections">
+      <a href="#mission">Mission and scope</a>
+      <a href="#accuracy">Accuracy and verification</a>
+      <a href="#sourcing">Sourcing standards</a>
+      <a href="#independence">Editorial independence</a>
+      <a href="#corrections">Corrections policy</a>
+      <a href="#tone">Tone and voice</a>
+      <a href="#contributors">Contributor expectations</a>
+      <a href="#conflicts">Conflicts of interest</a>
+      <a href="#contact">Contact and complaints</a>
+    </aside>
+
+    {# ── Content ── #}
+    <div>
+
     <header class="editorial-header">
       <p class="editorial-header__kicker">Transparency</p>
       <h1 class="editorial-header__title">Editorial Handbook</h1>
@@ -21,21 +37,6 @@ permalink: /editorial/
         Questions or concerns: <a href="mailto:{{ site.email }}">{{ site.email }}</a>
       </p>
     </header>
-
-    <nav class="editorial-toc" aria-label="Handbook sections">
-      <p class="editorial-toc__title">Contents</p>
-      <ol class="editorial-toc__list">
-        <li><a href="#mission">Mission and scope</a></li>
-        <li><a href="#accuracy">Accuracy and verification</a></li>
-        <li><a href="#sourcing">Sourcing standards</a></li>
-        <li><a href="#independence">Editorial independence</a></li>
-        <li><a href="#corrections">Corrections policy</a></li>
-        <li><a href="#tone">Tone and voice</a></li>
-        <li><a href="#contributors">Contributor expectations</a></li>
-        <li><a href="#conflicts">Conflicts of interest</a></li>
-        <li><a href="#contact">Contact and complaints</a></li>
-      </ol>
-    </nav>
 
     <div class="editorial-body prose">
 
@@ -139,5 +140,24 @@ permalink: /editorial/
 
     </div>{# /.editorial-body #}
 
+    </div>{# /.content col #}
+
   </div>{# /.editorial-layout #}
 </div>
+
+<script>
+(function () {
+  var links = document.querySelectorAll('.editorial-nav a');
+  var sections = Array.from(links).map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function onScroll() {
+    var scrollY = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function (s) { if (s && s.offsetTop <= scrollY) current = s; });
+    links.forEach(function (a) {
+      a.classList.toggle('is-active', current && a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>

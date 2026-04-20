@@ -350,7 +350,7 @@ body, .masthead, .site-footer, .nav-dropdown, .global-settings-panel {
   visibility: hidden;
   transform: translateY(-6px);
   pointer-events: none;
-  transition: opacity 0.15s ease 0.15s, visibility 0.15s ease 0.15s, transform 0.15s ease 0.15s;
+  transition: opacity 0.12s ease 0.08s, visibility 0.12s ease 0.08s, transform 0.12s ease 0.08s;
 }
 
 /* Show each dropdown only on its own trigger — one rule per nav item */
@@ -461,7 +461,8 @@ body, .masthead, .site-footer, .nav-dropdown, .global-settings-panel {
 
 .nav-section-col__link {
   display: block;
-  padding: var(--space-1) 0;
+  padding: var(--space-1) var(--space-2);
+  margin-inline: calc(-1 * var(--space-2));
   font-family: var(--font-ui);
   font-size: var(--text-sm);
   color: var(--color-ink-muted);
@@ -473,7 +474,9 @@ body, .masthead, .site-footer, .nav-dropdown, .global-settings-panel {
 }
 
 .nav-section-col__link:hover {
-  color: var(--color-ink);
+  color: var(--color-accent);
+  background: var(--color-bg-alt);
+  border-radius: 2px;
 }
 
 .nav-section-col__empty {
@@ -3184,6 +3187,8 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
 .tip-badge:hover,
 .tip-badge:focus-visible {
   opacity: 1;
+  background: var(--color-accent);
+  color: #fff;
   outline: none;
 }
 .tip-badge__label { display: none; }

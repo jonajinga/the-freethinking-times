@@ -251,18 +251,20 @@
         {% else %}
           {% set subs = subsections[item.key] if subsections[item.key] else [] %}
           {% set topTags = collections[item.collection] | topTagsForSection(6) %}
-          {% if subs.length %}
+          {% if subs.length or topTags.length %}
+            {% if subs.length %}
             <div class="nav-section-col">
               <p class="nav-section-col__heading">Sections</p>
               {% for sub in subs %}
               <a href="{{ item.url }}?s={{ sub | slugify }}" class="nav-section-col__link">{{ sub }}</a>
               {% endfor %}
             </div>
-            <div class="nav-section-col nav-section-col--bordered">
+            {% endif %}
+            <div class="nav-section-col{% if subs.length %} nav-section-col--bordered{% endif %}">
               <p class="nav-section-col__heading">Top Topics</p>
               {% if topTags.length %}
                 {% for tag in topTags %}
-                <a href="/topics/{{ tag | slugify }}/" class="nav-section-col__link">{{ tag }}</a>
+                <a href="/topics/{{ tag | slugify }}/" class="nav-section-col__link">{{ tag | titleCase }}</a>
                 {% endfor %}
               {% else %}
                 <p class="nav-section-col__empty">No topics yet</p>
