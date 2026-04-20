@@ -452,8 +452,13 @@
         };
         var _offset = spanOffset || 0;
 
+        // onstart is unreliable on some Chrome configurations (particularly
+        // desktop with default local voices). We kick off the highlight
+        // pipeline synchronously from startTts / resumeFromCurrent instead;
+        // onstart just serves as a safety net if that hasn't happened yet.
         utt.onstart = function () {
           _ttsBoundaryFired = false;
+          if (ttsWords.length && ttsHighlightEl && ttsTimer) return; // already running
           wrapWordsOnce();
           buildWordIndex(text, _offset);
           ttsSpanOffset = _offset;
@@ -513,6 +518,20 @@
         }
       });
 
+      // Kick off the highlight pipeline synchronously. Doesn't matter if
+      // onstart or the fallback runs first; this is the single entry point
+      // for starting / resuming the word-by-word highlight timer.
+      function kickHighlight(text, spanOffset) {
+        wrapWordsOnce();
+        buildWordIndex(text, spanOffset || 0);
+        ttsSpanOffset = spanOffset || 0;
+        ttsWordIdx = 0;
+        if (ttsWords.length) {
+          highlightWord(0);
+          startTimerAdvance();
+        }
+      }
+
       function startTts() {
         var body = document.querySelector('.article-body');
         if (!body) return;
@@ -525,28 +544,16 @@
         }
         // Cancel then speak immediately (setTimeout breaks user gesture chain in Chrome)
         window.speechSynthesis.cancel();
-        var utt = buildUtterance(ttsText);
+        var utt = buildUtterance(ttsText, 0);
         window.speechSynthesis.speak(utt);
         ttsSpeaking = true;
         ttsBtn.setAttribute('aria-label', 'Stop reading');
         ttsBtn.classList.add('is-speaking');
 
-        // Chrome fallback: onstart doesn't always fire for local voices
-        // even though audio plays. If we don't see a highlight started
-        // within ~500ms of speak(), kick off the wrap + timer manually
-        // so the reader isn't left staring at silent audio with no cue.
-        setTimeout(function () {
-          if (!ttsSpeaking) return;                   // already cancelled
-          if (ttsWords.length && ttsHighlightEl) return; // onstart did fire
-          wrapWordsOnce();
-          buildWordIndex(ttsText, 0);
-          ttsSpanOffset = 0;
-          ttsWordIdx = 0;
-          if (ttsWords.length) {
-            highlightWord(0);
-            startTimerAdvance();
-          }
-        }, 500);
+        // Kick highlight immediately, independent of whether/when onstart
+        // fires. On desktop Chrome with default local voices, onstart is
+        // unreliable — relying on it was leaving the reader at word 0.
+        kickHighlight(ttsText, 0);
       }
 
       /* — Play / Pause / Resume — */
@@ -593,7 +600,11 @@
         var globalIdx = currentGlobalWord();
         var remaining = textFromWord(ttsText, globalIdx);
         window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(buildUtterance(remaining, globalIdx));
+        var utt = buildUtterance(remaining, globalIdx);
+        window.speechSynthesis.speak(utt);
+        // Kick highlight synchronously — don't wait for onstart on the new
+        // utterance. onstart's own idempotency check will short-circuit.
+        kickHighlight(remaining, globalIdx);
       }
 
       /* — Speed — */
