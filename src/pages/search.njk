@@ -5,16 +5,9 @@ description: Search all articles, quotes, library texts, glossary terms, videos,
 permalink: /search/
 ---
 
-<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+<div class="container" style="padding-top: 0; padding-bottom: var(--space-20);">
 
-  <header class="archive-header">
-    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-2);">Search</h1>
-    <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic; margin: 0;">
-      Articles, quotes, library texts, glossary terms, timeline, and more.
-    </p>
-  </header>
-
-  {# ── Sticky search bar (input + section filters) ─────────────── #}
+  {# ── Sticky search bar (input + section filters), sits flush below masthead ─── #}
   <div class="sp-sticky">
 
     <div class="sp-input-wrap">
@@ -46,6 +39,14 @@ permalink: /search/
     </div>
 
   </div>
+
+  {# ── Page title (sits below the sticky bar) ─────────────────── #}
+  <header class="archive-header" style="margin-top: var(--space-8); margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
+    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-2);">Search</h1>
+    <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic; margin: 0;">
+      Articles, quotes, library texts, glossary terms, timeline, and more.
+    </p>
+  </header>
 
   {# ── States, only one visible at a time ─────────────────────── #}
   <div id="sp">
@@ -113,19 +114,19 @@ permalink: /search/
 <style>
 /* ── Search page ─────────────────────────────────────────────── */
 
-/* Sticky bar: input + filter pills. Sits flush below sticky masthead. */
+/* Sticky bar: input + filter pills. Same behavior as .archive-toolbar,
+   sits flush below the sticky masthead (7rem full / 4.5rem below 1180px). */
 .sp-sticky {
   position: sticky;
-  top: 5.4rem;
+  top: 7rem;
   z-index: 99;
   background: var(--color-bg);
-  padding-top: var(--space-3);
-  padding-bottom: var(--space-3);
-  margin-bottom: var(--space-6);
+  padding: var(--space-4) 0;
+  margin-bottom: 0;
   border-bottom: 1px solid var(--color-rule-heavy);
 }
 @media (max-width: 1180px) {
-  .sp-sticky { top: 3rem; }
+  .sp-sticky { top: 4.5rem; }
 }
 
 .sp-input-wrap { position: relative; margin-bottom: var(--space-4); }
@@ -258,7 +259,6 @@ permalink: /search/
 
 @media (max-width: 640px) {
   #sp-input { font-size: var(--text-md); padding: var(--space-3) var(--space-8) var(--space-3) var(--space-10); }
-  .sp-sticky { top: 8rem; }
 }
 </style>
 
