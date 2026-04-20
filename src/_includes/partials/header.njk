@@ -283,10 +283,12 @@
             </div>
             {% endif %}
           {% endif %}
-          {% if item.key == "letters" %}
-          <a href="/letters/submit/" class="nav-dropdown__footer nav-dropdown__footer--cta">Write us a letter →</a>
-          {% endif %}
-          <a href="{{ item.url }}" class="nav-dropdown__footer">All {{ item.label | lower }} →</a>
+          <div class="nav-dropdown__footer-row">
+            {% if item.key == "letters" %}
+            <a href="/letters/submit/" class="nav-dropdown__footer-link nav-dropdown__footer-link--cta">Write us a letter →</a>
+            {% endif %}
+            <a href="{{ item.url }}" class="nav-dropdown__footer-link nav-dropdown__footer-link--all">All {{ item.label | lower }} →</a>
+          </div>
         {% endif %}
       </div>
       {% endif %}
