@@ -179,6 +179,73 @@ eleventyExcludeFromCollections: true
   }
 }
 
+/* Short viewport (landscape phones, small laptops, split-screen). The
+   regular rhythm overflows when there are only ~400 px of height to
+   work with — topbar, title card, and nav stack into a mess. Compress
+   padding, type, and the description / rule-dividers so the slide
+   stays intact and scannable. */
+@media (max-height: 520px) {
+  .as-showcase {
+    padding: var(--space-4) var(--space-6);
+  }
+  .as-showcase__slide { max-width: 64ch; }
+  .as-showcase__kicker {
+    margin: 0 0 var(--space-2);
+    padding-bottom: var(--space-2);
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+  }
+  .as-showcase__title {
+    font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+    line-height: 1.18;
+  }
+  .as-showcase__desc {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    margin-top: var(--space-2);
+    max-width: 58ch;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .as-showcase__meta {
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    font-size: 0.78rem;
+  }
+  .as-showcase__read {
+    margin-top: var(--space-2);
+    padding: 6px var(--space-4);
+    font-size: 0.66rem;
+  }
+  .as-showcase__topbar {
+    top: var(--space-3);
+    left: var(--space-4);
+    right: var(--space-4);
+    font-size: 0.6rem;
+  }
+  .as-showcase__exit {
+    padding: 4px var(--space-2);
+  }
+  .as-showcase__nav {
+    bottom: var(--space-3);
+    gap: var(--space-2);
+  }
+  .as-showcase__nav button {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* Very short viewports (most landscape phones). Drop the description
+   entirely so we can still show title + meta + CTA without clipping. */
+@media (max-height: 420px) {
+  .as-showcase__desc { display: none; }
+  .as-showcase__title { font-size: clamp(1rem, 2.2vw, 1.4rem); }
+  .as-showcase__kicker { display: inline-block; }
+}
+
 /* Controls */
 .as-showcase__nav {
   position: fixed;
