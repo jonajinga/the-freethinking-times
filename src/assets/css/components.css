@@ -1465,7 +1465,11 @@ a.dateline:hover { color: var(--color-accent); }
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   padding-bottom: var(--space-4);
+  /* Keep scroll behavior but hide the visual scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.nav-drawer__scroll::-webkit-scrollbar { display: none; }
 
 /* In-drawer search form — real input, submits to /search/ */
 .nav-drawer__search {

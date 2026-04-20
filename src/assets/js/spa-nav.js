@@ -30,7 +30,8 @@
     var ext = link.pathname.split('.').pop();
     if (['xml', 'json', 'pdf', 'txt', 'md', 'epub', 'zip', 'jpg', 'png', 'svg', 'css', 'js'].indexOf(ext) !== -1) return false;
     // Skip if marked
-    if (link.dataset.noSpa) return false;
+    // hasAttribute, not dataset, so `data-no-spa` with no value still opts out
+    if (link.hasAttribute('data-no-spa')) return false;
     // Skip if inside a form
     if (link.closest('form')) return false;
     // Skip article and library pages — they have complex page-specific JS
