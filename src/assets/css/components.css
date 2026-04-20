@@ -1023,20 +1023,6 @@ a.dateline:hover { color: var(--color-accent); }
   margin-bottom: var(--space-2);
 }
 
-.site-footer__legal-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  font-size: var(--text-xs);
-}
-.site-footer__legal-links a {
-  color: var(--color-ink-muted);
-  text-decoration: none;
-  padding: 2px 0;
-}
-.site-footer__legal-links a:hover { color: var(--color-ink); text-decoration: underline; }
-.site-footer__legal-links span { color: var(--color-rule); }
-
 .site-footer__powered {
   font-size: var(--text-xs);
   color: var(--color-ink-faint);
@@ -1052,14 +1038,6 @@ a.dateline:hover { color: var(--color-accent); }
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
-  }
-  .site-footer__legal-links { gap: var(--space-1) var(--space-2); }
-}
-@media (max-width: 480px) {
-  .site-footer__legal-links span { display: none; }
-  .site-footer__legal-links {
-    flex-direction: column;
-    gap: var(--space-1);
   }
 }
 
@@ -3543,9 +3521,9 @@ select.w3f__input option {
   padding-bottom: var(--space-20);
 }
 @media (max-width: 1180px) {
-  .sg-nav { top: 3rem; }
+  .sg-nav { top: 4.5rem; }
   .sg-layout h2[id],
-  .sg-section { scroll-margin-top: 3.5rem; }
+  .sg-section { scroll-margin-top: 5rem; }
 }
 
 @media (max-width: 960px) {
@@ -3570,16 +3548,17 @@ select.w3f__input option {
 }
 
 .sg-layout h2[id] {
-  scroll-margin-top: 7rem;
+  scroll-margin-top: 7.5rem;
 }
 
 .sg-nav {
   position: sticky;
-  top: 5.4rem; /* drops to 3rem on tablet via media query below */
-  max-height: calc(100vh - 5.4rem - var(--space-4));
+  top: 7rem; /* full masthead clearance (nameplate + site-nav) */
+  max-height: calc(100vh - 7rem - var(--space-4));
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
+  padding-top: var(--space-2);
   padding-right: var(--space-2);
   display: flex;
   flex-direction: column;
@@ -3588,7 +3567,7 @@ select.w3f__input option {
   font-size: 0.88rem;
 }
 @media (max-width: 1180px) {
-  .sg-nav { max-height: calc(100vh - 3rem - var(--space-4)); }
+  .sg-nav { max-height: calc(100vh - 4.5rem - var(--space-4)); }
 }
 .sg-nav a {
   display: block;

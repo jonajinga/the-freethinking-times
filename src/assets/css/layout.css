@@ -307,10 +307,10 @@
 }
 
 /* Sticky filter toolbar — sits flush below the sticky masthead.
-   Nameplate + nav ≈ 5.4rem desktop; drops when nav hides at <=1180px. */
+   Full masthead is ~7rem desktop (nameplate + nav); ~4.5rem <=1180px. */
 .archive-toolbar {
   position: sticky;
-  top: 5.4rem;
+  top: 7rem;
   z-index: 99;
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-rule-heavy);

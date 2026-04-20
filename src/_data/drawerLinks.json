@@ -82,8 +82,9 @@
     ]
   },
   {
+    "heading": "About",
     "showSupportBadgeAfter": true,
-    "small": true,
+    "small": false,
     "links": [
       {
         "label": "About",
