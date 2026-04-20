@@ -11,7 +11,8 @@
     "kofi": "https://ko-fi.com/thefreethinkingtimes"
   },
   "newsletter": {
-    "provider": "buttondown"
+    "provider": "buttondown",
+    "username": "thefreethinkingtimes"
   },
   "social": {
     "rss": "/feed.xml"

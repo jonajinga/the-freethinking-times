@@ -36,7 +36,7 @@ module.exports = {
   },
   analytics: {
     provider: "umami",
-    websiteId: env.UMAMI_WEBSITE_ID || "",
+    websiteId: env.UMAMI_WEBSITE_ID || "3866304f-237b-4532-b1be-ef47f336b2b0",
     scriptUrl: env.UMAMI_SRC || "https://cloud.umami.is/script.js",
     dashboardUrl: env.UMAMI_DASHBOARD_URL || ""
   },
