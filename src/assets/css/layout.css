@@ -306,11 +306,11 @@
   border-bottom: 3px solid var(--color-ink);
 }
 
-/* Sticky filter toolbar — sits below the sticky masthead.
-   7rem = nameplate + site-nav; drops to 4.5rem when site-nav is hidden (<= 1180px) */
+/* Sticky filter toolbar — sits flush below the sticky masthead.
+   Nameplate + nav ≈ 5.4rem desktop; drops when nav hides at <=1180px. */
 .archive-toolbar {
   position: sticky;
-  top: 7rem;
+  top: 5.4rem;
   z-index: 99;
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-rule-heavy);
@@ -561,7 +561,7 @@
 }
 
 @media (max-width: 1180px) {
-  .archive-toolbar { top: 4.5rem; }
+  .archive-toolbar { top: 3rem; }
 }
 
 @media (max-width: 768px) {

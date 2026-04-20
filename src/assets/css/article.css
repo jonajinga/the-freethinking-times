@@ -2556,7 +2556,7 @@
 
 .editorial-nav {
   position: sticky;
-  top: 7rem;
+  top: 5.4rem;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -2587,8 +2587,8 @@
 [data-theme="dark"] .editorial-nav a.is-active { background: var(--color-bg-inset); }
 
 @media (max-width: 1180px) {
-  .editorial-nav { top: 4.5rem; }
-  .editorial-body section[id] { scroll-margin-top: 4.5rem; }
+  .editorial-nav { top: 3rem; }
+  .editorial-body section[id] { scroll-margin-top: 3.5rem; }
 }
 
 @media (max-width: 960px) {
