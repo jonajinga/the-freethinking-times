@@ -234,6 +234,40 @@
   // should stick.
   if (prefs.paraNums) applyParaNums(true);
 
+  // Auto-turn-off the article-only tools when we navigate to a page with
+  // no article body (e.g. an edition index, the events calendar). Fires
+  // on initial load AND on SPA content swaps.
+  function autoDisableArticleToolsIfNotArticle() {
+    if (articleBody()) return;
+    if (document.getElementById('rs-reading-ruler')) applyRuler(false);
+    if (scrollAnim) applyAutoscroll(false);
+  }
+  autoDisableArticleToolsIfNotArticle();
+  document.addEventListener('spa:contentswap', autoDisableArticleToolsIfNotArticle);
+
+  // Auto-scroll should yield to the reader the moment they try to scroll
+  // themselves. Any wheel / touchmove / pageup-down / arrow-key input
+  // stops the animation so the reader isn't fighting their own browser.
+  function userInterruptAutoscroll() {
+    if (!scrollAnim) return;
+    applyAutoscroll(false);
+    var panel = document.getElementById('global-settings-panel');
+    if (panel) {
+      panel.querySelectorAll('[data-gs-autoscroll]').forEach(function (b) {
+        b.classList.toggle('is-active', b.dataset.gsAutoscroll === 'off');
+      });
+      panel.querySelectorAll('.gs-autoscroll-opts').forEach(function (r) {
+        r.hidden = true;
+      });
+    }
+  }
+  window.addEventListener('wheel', userInterruptAutoscroll, { passive: true });
+  window.addEventListener('touchmove', userInterruptAutoscroll, { passive: true });
+  window.addEventListener('keydown', function (e) {
+    var keys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Space'];
+    if (keys.indexOf(e.key) !== -1) userInterruptAutoscroll();
+  });
+
   // ── Bind panel (runs after DOM ready) ──
   function bindPanel() {
     var panel = document.getElementById('global-settings-panel');
