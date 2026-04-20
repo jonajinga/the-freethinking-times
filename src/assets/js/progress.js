@@ -268,6 +268,8 @@
       var ttsTimer = null;
       var ttsWrapped = false;   // wrapped this body yet?
       var _ttsBoundaryFired = false;
+      var ttsHasStarted = false; // set true in onstart; onend ignored until then
+      var ttsSpeakAt = 0;        // timestamp of the most recent speak() call
 
       // Global (article-absolute) word index at the current moment.
       function currentGlobalWord() { return ttsSpanOffset + ttsWordIdx; }
@@ -440,15 +442,27 @@
         // browser uses its default system voice which is reliable on mobile.
         if (ttsVoice) utt.voice = ttsVoice;
         utt.lang  = (ttsVoice && ttsVoice.lang) || 'en-US';
-        // Chrome fires onend spuriously for local voices — sometimes seconds
-        // before audio actually finishes. Verify the API agrees before
-        // tearing down highlight + timer state.
+        // Chrome fires onend spuriously — both (a) immediately after speak()
+        // for some cloud/remote voices (before audio has even started) and
+        // (b) seconds before audio actually finishes with local voices.
+        //
+        // (a) is the reason desktop TTS highlight broke past word 1: the
+        //     spurious end fires before onstart, we stopTts(), the timer
+        //     dies. Guard by requiring onstart to have fired first OR
+        //     that a reasonable minimum duration has passed since speak().
+        //
+        // (b) is handled by double-checking speechSynthesis state after a
+        //     patience delay before tearing anything down.
         utt.onend = function () {
+          if (!ttsHasStarted && Date.now() - ttsSpeakAt < 1500) {
+            // Spurious end before real start — ignore it.
+            return;
+          }
           setTimeout(function () {
             if (window.speechSynthesis.speaking || window.speechSynthesis.pending) return;
             clearTtsHighlight();
             stopTts();
-          }, 60);
+          }, 200);
         };
         var _offset = spanOffset || 0;
 
@@ -457,6 +471,7 @@
         // pipeline synchronously from startTts / resumeFromCurrent instead;
         // onstart just serves as a safety net if that hasn't happened yet.
         utt.onstart = function () {
+          ttsHasStarted = true;
           _ttsBoundaryFired = false;
           if (ttsWords.length && ttsHighlightEl && ttsTimer) return; // already running
           wrapWordsOnce();
@@ -545,6 +560,8 @@
         // Cancel then speak immediately (setTimeout breaks user gesture chain in Chrome)
         window.speechSynthesis.cancel();
         var utt = buildUtterance(ttsText, 0);
+        ttsHasStarted = false;
+        ttsSpeakAt = Date.now();
         window.speechSynthesis.speak(utt);
         ttsSpeaking = true;
         ttsBtn.setAttribute('aria-label', 'Stop reading');
@@ -601,6 +618,8 @@
         var remaining = textFromWord(ttsText, globalIdx);
         window.speechSynthesis.cancel();
         var utt = buildUtterance(remaining, globalIdx);
+        ttsHasStarted = false;
+        ttsSpeakAt = Date.now();
         window.speechSynthesis.speak(utt);
         // Kick highlight synchronously — don't wait for onstart on the new
         // utterance. onstart's own idempotency check will short-circuit.

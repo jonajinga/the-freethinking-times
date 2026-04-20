@@ -115,38 +115,45 @@
     if (player) { try { player.destroy(); } catch (e) {} player = null; }
     var wrap = document.getElementById('tft-yt-wrap');
     wrap.innerHTML = '<div id="tft-yt-player"></div>';
+    var unmutedOnce = false;
     player = new YT.Player('tft-yt-player', {
       height: '1',
       width: '1',
-      videoId: videoId,
       playerVars: {
-        autoplay: 1,
         controls: 0,
         disablekb: 1,
         fs: 0,
         modestbranding: 1,
         rel: 0,
-        playsinline: 1,
-        mute: 1
+        playsinline: 1
       },
       events: {
         onReady: function () {
           ready = true;
-          player.setVolume(0);
-          player.unMute();
-          fadeIn();
-          if (resumeTime > 0) {
-            setTimeout(function () {
-              if (player) player.seekTo(resumeTime, true);
-            }, 400);
-          }
+          try { player.mute(); } catch (e) {}
+          // loadVideoById is more reliable than passing videoId in the
+          // constructor — Chrome desktop otherwise sometimes hangs with the
+          // iframe stuck on 'Loading...' because autoplay-with-videoId is
+          // delayed by media policies.
+          try {
+            player.loadVideoById({ videoId: videoId, startSeconds: resumeTime || 0 });
+          } catch (e) {}
           if (cb) cb();
+          // Pull title once metadata resolves.
+          setTimeout(updateNowPlaying, 800);
           setTimeout(updateNowPlaying, 2000);
         },
         onStateChange: function (e) {
           if (e.data === YT.PlayerState.PLAYING) {
             playIcon.style.display = 'none';
             pauseIcon.style.display = '';
+            // Unmute + fade in the first time playback actually starts,
+            // not in onReady (too early — no audio pipeline yet).
+            if (!unmutedOnce) {
+              unmutedOnce = true;
+              try { player.unMute(); } catch (e) {}
+              fadeIn();
+            }
             saveState();
           } else {
             playIcon.style.display = '';

@@ -29,6 +29,7 @@
     { "label": "Suggest a trial",              "url": "/trials/submit/" },
     { "label": "Suggest a thought experiment", "url": "/thought-experiments/submit/" },
     { "label": "Suggest a song",               "url": "/music/submit/" },
+    { "label": "Suggest a playlist",           "url": "/music/playlists/submit/" },
     { "label": "Submit a photo",               "url": "/gallery/submit/" },
     { "label": "Suggest a community",          "url": "/community/submit/" },
     { "label": "Submit an event",              "url": "/events/submit/" }

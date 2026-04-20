@@ -49,7 +49,7 @@
   .fn-tooltip,
   .music-bar,
   .reading-settings-wrap,
-  .global-settings-panel,
+  .gs-panel,
   .global-settings-overlay { display: none !important; }
 
   @page { margin: 0.5in; }
