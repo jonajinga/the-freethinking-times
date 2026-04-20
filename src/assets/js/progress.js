@@ -202,9 +202,23 @@
         list.forEach(function (v) {
           var opt = document.createElement('option');
           opt.value = v.name;
-          // Show a cleaner label: name + (local) indicator
+          // Clean the raw voice name: strip parenthetical metadata and
+          // any locale tail like "en-US" that browsers leave in.
           var label = v.name.replace(/\s*\(.*?\)\s*/g, ' ').trim();
-          if (v.localService) label += ' (offline)';
+          // Append a locale hint when the voice doesn't already mention one,
+          // so users can tell e.g. Samantha (US) from Daniel (UK).
+          var region = '';
+          if (v.lang) {
+            if (v.lang === 'en-US') region = 'US';
+            else if (v.lang === 'en-GB') region = 'UK';
+            else if (v.lang === 'en-AU') region = 'AU';
+            else if (v.lang === 'en-IN') region = 'IN';
+            else if (v.lang === 'en-CA') region = 'CA';
+            else if (v.lang === 'en-IE') region = 'IE';
+            else if (v.lang === 'en-ZA') region = 'ZA';
+            else if (v.lang === 'en-NZ') region = 'NZ';
+          }
+          if (region && label.toUpperCase().indexOf(region) === -1) label += ' (' + region + ')';
           opt.textContent = label;
           if (saved && v.name === saved) { opt.selected = true; ttsVoice = v; foundSaved = true; }
           voiceSelect.appendChild(opt);
@@ -234,18 +248,24 @@
       }
 
       /* — TTS highlight tracking —
-         Chrome doesn't fire `onboundary` for the default local voices
-         (it's gated behind secure contexts + specific voice engines),
-         and Edge fires it but with noticeable audio lag. So we run a
-         word-advancing timer and let `onboundary` correct it when it
-         fires — giving every browser a highlight, synced to the audio
-         as closely as the platform allows. */
+         Chrome doesn't fire `onboundary` reliably for default local voices
+         (it's gated behind secure contexts + specific voice engines), and
+         Edge fires it with some audio lag. We run a word-advancing timer
+         and let `onboundary` correct it when it fires.
+
+         Word highlighting is done by pre-wrapping every visible word in
+         .article-body with a <span class="tts-word"> at start, then just
+         toggling .tts-word-active on the current span. Critically, this
+         avoids mutating the DOM during playback — the previous 'wrap in a
+         new span per word' approach broke on the second word because
+         range.surroundContents() splits the host text node and made our
+         stored node references stale. */
       var ttsHighlightEl = null;
-      var ttsWords = [];        // [{ text, charStart, node, nodeOffset }]
+      var ttsWordSpans = [];    // NodeList of .tts-word spans, in order
+      var ttsWords = [];        // [{ charStart, span }] for onboundary mapping
       var ttsWordIdx = 0;
       var ttsTimer = null;
-      var ttsStartAt = 0;
-      var ttsCharsPerSec = 0;
+      var ttsWrapped = false;   // wrapped this body yet?
       var _ttsBoundaryFired = false;
 
       function clearTtsHighlight() {
@@ -254,77 +274,89 @@
           ttsHighlightEl.classList.remove('tts-word-active');
           ttsHighlightEl = null;
         }
-        document.querySelectorAll('.tts-word-active').forEach(function (el) {
-          el.classList.remove('tts-word-active');
-        });
       }
 
-      // Walk the article body text nodes, recording each word's position
-      // so both onboundary (charIdx) and the timer (ordinal word index)
-      // can map back to a DOM range quickly.
-      function buildWordIndex(text) {
-        ttsWords = [];
+      // Wrap every word in .article-body in a <span class="tts-word"> once
+      // on first play. This is DOM-stable: subsequent highlights just
+      // toggle a class on the pre-existing spans.
+      function wrapWordsOnce() {
+        if (ttsWrapped) return;
         var body = document.querySelector('.article-body');
         if (!body) return;
 
-        // Map: absolute charIndex (within text) → { node, localOffset }
-        var nodeMap = [];
-        var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null, false);
-        var offset = 0;
-        var node;
-        while ((node = walker.nextNode())) {
-          nodeMap.push({ node: node, start: offset, end: offset + node.nodeValue.length });
-          offset += node.nodeValue.length;
-        }
+        // Collect all text nodes up-front so we can mutate without breaking
+        // the tree walker mid-iteration.
+        var textNodes = [];
+        var walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, {
+          acceptNode: function (n) {
+            // Skip text inside SCRIPT/STYLE/etc — and skip empty/whitespace-only nodes
+            if (!n.nodeValue || !/\S/.test(n.nodeValue)) return NodeFilter.FILTER_REJECT;
+            var p = n.parentNode;
+            while (p && p !== body) {
+              var tag = p.nodeName;
+              if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'CODE' ||
+                  tag === 'PRE' || tag === 'SVG' || p.classList && p.classList.contains('tts-word')) {
+                return NodeFilter.FILTER_REJECT;
+              }
+              p = p.parentNode;
+            }
+            return NodeFilter.FILTER_ACCEPT;
+          }
+        }, false);
+        var n;
+        while ((n = walker.nextNode())) textNodes.push(n);
 
-        // Locate the utterance text inside the concatenated node text so
-        // boundary char indices line up even when innerText inserts newlines.
-        var joined = nodeMap.map(function (e) { return e.node.nodeValue; }).join('');
-        var base   = joined.indexOf((text || '').substring(0, 40));
-        if (base < 0) base = 0;
+        textNodes.forEach(function (node) {
+          var text = node.nodeValue;
+          // Tokenize into word / non-word runs so we preserve spacing
+          var parts = text.split(/(\s+)/);
+          if (parts.length < 2) return;
+          var frag = document.createDocumentFragment();
+          parts.forEach(function (part) {
+            if (!part) return;
+            if (/^\s+$/.test(part)) {
+              frag.appendChild(document.createTextNode(part));
+            } else {
+              var span = document.createElement('span');
+              span.className = 'tts-word';
+              span.textContent = part;
+              frag.appendChild(span);
+            }
+          });
+          node.parentNode.replaceChild(frag, node);
+        });
 
-        // Simple word split on whitespace
+        ttsWordSpans = Array.prototype.slice.call(body.querySelectorAll('.tts-word'));
+        ttsWrapped = true;
+      }
+
+      // Build a char->span map from the utterance text so onboundary's
+      // charIndex can find the right span. We map by counting word
+      // boundaries in the utterance text, then pairing each regex match
+      // to the next unused word span in document order.
+      function buildWordIndex(text) {
+        ttsWords = [];
+        if (!ttsWordSpans.length) return;
         var re = /\S+/g;
         var m;
-        while ((m = re.exec(text))) {
-          var absStart = base + m.index;
-          // Find which nodeMap entry contains this absolute offset
-          for (var i = 0; i < nodeMap.length; i++) {
-            var e = nodeMap[i];
-            if (e.start <= absStart && absStart < e.end) {
-              ttsWords.push({
-                text: m[0],
-                charStart: m.index,   // utterance-text char index (for onboundary)
-                node: e.node,
-                nodeOffset: absStart - e.start
-              });
-              break;
-            }
-          }
+        var spanIdx = 0;
+        while ((m = re.exec(text)) && spanIdx < ttsWordSpans.length) {
+          ttsWords.push({ charStart: m.index, span: ttsWordSpans[spanIdx] });
+          spanIdx++;
         }
       }
 
       function highlightWord(i) {
         if (i < 0 || i >= ttsWords.length) return;
         var w = ttsWords[i];
-        if (!w || !w.node) return;
-        if (ttsHighlightEl) {
-          ttsHighlightEl.classList.remove('tts-word-active');
-          ttsHighlightEl = null;
+        if (!w || !w.span) return;
+        if (ttsHighlightEl) ttsHighlightEl.classList.remove('tts-word-active');
+        w.span.classList.add('tts-word-active');
+        ttsHighlightEl = w.span;
+        var rect = w.span.getBoundingClientRect();
+        if (rect.top < 80 || rect.bottom > window.innerHeight - 80) {
+          w.span.scrollIntoView({ block: 'center', behavior: 'smooth' });
         }
-        try {
-          var range = document.createRange();
-          range.setStart(w.node, w.nodeOffset);
-          range.setEnd(w.node, Math.min(w.nodeOffset + w.text.length, w.node.nodeValue.length));
-          var span = document.createElement('span');
-          span.className = 'tts-word-active';
-          range.surroundContents(span);
-          ttsHighlightEl = span;
-          var rect = span.getBoundingClientRect();
-          if (rect.top < 80 || rect.bottom > window.innerHeight - 80) {
-            span.scrollIntoView({ block: 'center', behavior: 'smooth' });
-          }
-        } catch (e) { /* range crossed an element boundary — skip this word */ }
       }
 
       function findWordIndexByChar(charIdx) {
@@ -366,6 +398,7 @@
 
         utt.onstart = function () {
           _ttsBoundaryFired = false;
+          wrapWordsOnce();
           buildWordIndex(text);
           ttsWordIdx = 0;
           if (ttsWords.length) {

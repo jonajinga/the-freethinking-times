@@ -852,7 +852,16 @@
 }
 
 /* ── TTS control bar ────────────────────────────────────────── */
-/* TTS word highlight */
+/* Every word in the article body is pre-wrapped in a .tts-word span
+   on first play, so highlighting just toggles a class — no DOM mutation
+   during playback. .tts-word itself must be a no-op (invisible) when
+   inactive to preserve the original typography. */
+.tts-word {
+  /* inline is default; be explicit so style recalcs don't break it */
+  display: inline;
+  background: transparent;
+  transition: background 0.1s ease;
+}
 .tts-word-active {
   background: rgba(250, 204, 21, 0.35);
   border-radius: 2px;

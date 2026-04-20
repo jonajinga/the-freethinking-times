@@ -105,7 +105,7 @@ module.exports = function (eleventyConfig) {
               // Calendar
               "cal-detail--open", "cal-detail-backdrop--open",
               // Article features
-              "footnote-flash", "tts-word-active", "sidenote--highlight",
+              "footnote-flash", "tts-word", "tts-word-active", "sidenote--highlight",
               "print-include-notes", "print-notes-only", "rs-para-numbers",
               "article-card--read", "article-card--in-progress",
               // Subscribe form states
