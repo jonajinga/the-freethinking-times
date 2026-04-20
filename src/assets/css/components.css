@@ -583,9 +583,25 @@ body { word-spacing: var(--gs-word-spacing, 0); }
 .archive-views__btn {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
   font-size: var(--text-xs);
 }
+/* Compact sibling variant sized to sit inline with a big h1. */
+.archive-views--sm .archive-views__btn {
+  font-size: 0.7rem;
+  padding: 0.35rem 0.7rem;
+  letter-spacing: 0.1em;
+}
+
+/* Author hero: inline alternate-view buttons after the name. Wraps to a
+   new line on narrow screens. */
+.author-hero__name-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-2);
+}
+.author-hero__name-row .author-hero__name { margin: 0; }
 
 /* ── Archive link (link-rot protection) ─────────────────────────
    Tiny subtle icon rendered immediately after every external link in

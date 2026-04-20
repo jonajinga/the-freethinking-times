@@ -5,13 +5,8 @@
   or "topic=climate"); omit for the full archive.
 #}
 {% set _qs = ("?" + viewFilter) if viewFilter else "" %}
-<div class="archive-views" role="group" aria-label="Alternate views">
-  <a href="/archives/showcase/{{ _qs }}" class="btn archive-views__btn">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-    Showcase
-  </a>
-  <a href="/archives/timeline/{{ _qs }}" class="btn archive-views__btn">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    Timeline
-  </a>
+{% set _viewsSize = viewsSize or "" %}
+<div class="archive-views {% if _viewsSize %}archive-views--{{ _viewsSize }}{% endif %}" role="group" aria-label="Alternate views">
+  <a href="/archives/showcase/{{ _qs }}" class="btn archive-views__btn">Showcase</a>
+  <a href="/archives/timeline/{{ _qs }}" class="btn archive-views__btn">Timeline</a>
 </div>

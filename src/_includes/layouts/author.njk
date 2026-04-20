@@ -42,15 +42,9 @@ layout: layouts/base.njk
   </div>
   {% endif %}
 
-  <div class="author-articles-heading-row" style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);flex-wrap:wrap;margin-bottom:var(--space-4);">
-    <p class="author-articles-heading" style="margin:0;">
-      Articles by {{ title }}{% if authorArticles.length %} <span class="author-articles-heading__count">({{ authorArticles.length }})</span>{% endif %}
-    </p>
-    {% if authorArticles.length %}
-    {% set viewFilter = "author=" + authorSlug %}
-    {% include "partials/archive-views-buttons.njk" %}
-    {% endif %}
-  </div>
+  <p class="author-articles-heading">
+    Articles by {{ title }}{% if authorArticles.length %} <span class="author-articles-heading__count">({{ authorArticles.length }})</span>{% endif %}
+  </p>
 
   {% if authorArticles.length == 0 %}
   <p style="color: var(--color-ink-muted); font-style: italic;">No articles published yet.</p>

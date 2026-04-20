@@ -18,7 +18,14 @@
     {% if authorData.role %}
     <p class="author-hero__role">{{ authorData.role }}</p>
     {% endif %}
-    <h1 class="author-hero__name">{{ authorData.name }}</h1>
+    <div class="author-hero__name-row">
+      <h1 class="author-hero__name">{{ authorData.name }}</h1>
+      {% if authorArticles is defined and authorArticles.length and authorSlug %}
+      {% set viewFilter = "author=" + authorSlug %}
+      {% set viewsSize = "sm" %}
+      {% include "partials/archive-views-buttons.njk" %}
+      {% endif %}
+    </div>
     {% if authorData.title or authorData.location %}
     <p class="author-hero__meta">
       {% if authorData.title %}{{ authorData.title }}{% endif %}
