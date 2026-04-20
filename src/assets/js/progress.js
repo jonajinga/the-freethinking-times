@@ -405,7 +405,11 @@
       function buildUtterance(text) {
         var utt = new SpeechSynthesisUtterance(text);
         utt.rate  = ttsRate;
-        utt.voice = ttsVoice;
+        // Only set voice if we actually picked one — setting voice=null on
+        // mobile Chrome/Safari can silently suppress audio. When unset, the
+        // browser uses its default system voice which is reliable on mobile.
+        if (ttsVoice) utt.voice = ttsVoice;
+        utt.lang  = (ttsVoice && ttsVoice.lang) || 'en-US';
         utt.onend = function () { clearTtsHighlight(); stopTts(); };
 
         utt.onstart = function () {
@@ -480,10 +484,27 @@
         }
         // Cancel then speak immediately (setTimeout breaks user gesture chain in Chrome)
         window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(buildUtterance(ttsText));
+        var utt = buildUtterance(ttsText);
+        window.speechSynthesis.speak(utt);
         ttsSpeaking = true;
         ttsBtn.setAttribute('aria-label', 'Stop reading');
         ttsBtn.classList.add('is-speaking');
+
+        // Chrome fallback: onstart doesn't always fire for local voices
+        // even though audio plays. If we don't see a highlight started
+        // within ~500ms of speak(), kick off the wrap + timer manually
+        // so the reader isn't left staring at silent audio with no cue.
+        setTimeout(function () {
+          if (!ttsSpeaking) return;                   // already cancelled
+          if (ttsWords.length && ttsHighlightEl) return; // onstart did fire
+          wrapWordsOnce();
+          buildWordIndex(ttsText);
+          ttsWordIdx = 0;
+          if (ttsWords.length) {
+            highlightWord(0);
+            startTimerAdvance();
+          }
+        }, 500);
       }
 
       /* — Play / Pause / Resume — */
