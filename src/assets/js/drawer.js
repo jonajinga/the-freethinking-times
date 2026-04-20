@@ -74,6 +74,28 @@
   pairs.forEach(function (p) {
     positionDropdown(p.trigger, p.dropdown);
 
+    var hideTimer = null;
+
+    function show() {
+      clearTimeout(hideTimer);
+      hideTimer = null;
+      p.dropdown.classList.add('is-open');
+      p.trigger.setAttribute('aria-expanded', 'true');
+      positionDropdown(p.trigger, p.dropdown);
+    }
+
+    function scheduleHide() {
+      hideTimer = setTimeout(function () {
+        p.dropdown.classList.remove('is-open');
+        p.trigger.setAttribute('aria-expanded', 'false');
+      }, 150);
+    }
+
+    p.trigger.addEventListener('mouseenter', show);
+    p.trigger.addEventListener('mouseleave', scheduleHide);
+    p.dropdown.addEventListener('mouseenter', function () { clearTimeout(hideTimer); });
+    p.dropdown.addEventListener('mouseleave', scheduleHide);
+
     p.trigger.addEventListener('focus', function () {
       p.trigger.setAttribute('aria-expanded', 'true');
     });

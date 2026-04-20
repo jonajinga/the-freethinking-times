@@ -378,6 +378,7 @@ body, .masthead, .site-footer, .nav-dropdown, .global-settings-panel {
 .site-nav:has(#nav-quotes:focus)     #dropdown-quotes,
 .site-nav:has(#nav-more:hover)       #dropdown-more,
 .site-nav:has(#nav-more:focus)       #dropdown-more,
+.nav-dropdown.is-open,
 .nav-dropdown:hover,
 .nav-dropdown:focus-within {
   opacity: 1;
