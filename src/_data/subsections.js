@@ -10,6 +10,6 @@ module.exports = {
   "arts-culture":       ["Books", "Film", "Music", "Television", "Visual Arts", "Theater"],
   "science-technology": ["Science", "Technology", "Space", "Medicine", "Environment", "Climate"],
   "history":            ["Ancient", "Medieval", "Modern", "U.S. History", "World History", "Ideas"],
-  "letters":            ["Replies to Our Coverage", "Disputes", "Praise", "Corrections Requested", "General"],
+  "letters":            ["On the News", "On Opinion", "On Analysis", "On Culture", "On Science", "On History", "Expert Voices", "International", "Corrections Requested"],
   "reviews":            ["Books", "Film", "Music", "Television", "Theater", "Games", "Podcasts", "Documentaries"]
 };

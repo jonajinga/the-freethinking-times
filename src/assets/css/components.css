@@ -1732,21 +1732,33 @@ a.dateline:hover { color: var(--color-accent); }
   .annotation-toolbar .music-bar__name { display: none; }
 }
 
-/* Push the reading-floats (percentage + back-to-top) up above the
-   annotation-toolbar so they don't sit behind it. */
+/* Push the reading-floats (percentage + back-to-top) above the annotation
+   toolbar. Mobile gets MORE offset because the toolbar wraps to two rows
+   (icon row + music-bar-on-its-own-row), so it's taller. */
 body:has(.annotation-toolbar) .reading-floats {
-  bottom: 6rem;
+  bottom: 6.5rem;
+}
+body:has(.annotation-toolbar .music-bar:not([hidden])) .reading-floats {
+  bottom: 8.5rem; /* extra clearance for the music row */
 }
 @media (max-width: 600px) {
   body:has(.annotation-toolbar) .reading-floats {
-    bottom: 5.5rem;
+    bottom: 7rem;
+  }
+  body:has(.annotation-toolbar .music-bar:not([hidden])) .reading-floats {
+    bottom: 10rem;
   }
 }
 
 /* When the music bar is NOT inside the annotation-toolbar (non-reading
    pages), keep reading-floats well clear of the fixed music bar. */
 body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .reading-floats {
-  bottom: 5.5rem;
+  bottom: 6rem;
+}
+@media (max-width: 600px) {
+  body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .reading-floats {
+    bottom: 7rem;
+  }
 }
 
 @media (max-width: 480px) {
