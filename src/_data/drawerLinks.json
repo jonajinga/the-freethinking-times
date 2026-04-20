@@ -1,35 +1,35 @@
 [
   {
-    "heading": "Projects",
+    "heading": "Freethought Projects",
     "showSupportBadgeAfter": false,
     "small": false,
     "links": [
       {
-        "label": "Public Domain Library",
+        "label": "Library",
         "url": "/library/"
       },
       {
-        "label": "Freethought Quotes",
+        "label": "Quotes",
         "url": "/quotes/"
       },
       {
-        "label": "Freethought Videos",
+        "label": "Videos",
         "url": "/videos/"
       },
       {
-        "label": "Freethought Timeline",
+        "label": "Timeline",
         "url": "/timeline/"
       },
       {
-        "label": "Freethought Resources",
+        "label": "Resources",
         "url": "/resources/"
       },
       {
-        "label": "Freethought Glossary",
+        "label": "Glossary",
         "url": "/glossary/"
       },
       {
-        "label": "Freethinker's Bookshelf",
+        "label": "Bookshelf",
         "url": "/bookshelf/"
       },
       {
@@ -41,7 +41,7 @@
         "url": "/trials/"
       },
       {
-        "label": "Freethought Music",
+        "label": "Music",
         "url": "/music/"
       },
       {
@@ -60,11 +60,11 @@
     "small": false,
     "links": [
       {
-        "label": "Community Hub",
+        "label": "Directory",
         "url": "/community/"
       },
       {
-        "label": "Events Calendar",
+        "label": "Events",
         "url": "/events/"
       },
       {
