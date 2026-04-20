@@ -1341,8 +1341,8 @@ a.dateline:hover { color: var(--color-accent); }
   position: fixed;
   left: 0;
   top: 0;
-  height: 100vh;
-  height: 100dvh;
+  bottom: 0; /* using top:0 + bottom:0 forces explicit height, no reliance on vh/dvh quirks */
+  height: auto;
   width: min(460px, 92vw);
   background: var(--color-bg);
   border-right: 1px solid var(--color-rule);
@@ -1353,11 +1353,6 @@ a.dateline:hover { color: var(--color-accent); }
   transform: translateX(-100%);
   transition: transform var(--transition-normal);
   visibility: hidden;
-  /* Grid rows [header] [scroll=1fr] [footer] — more reliable than flex
-     for this three-row pinned layout. The 1fr row combined with
-     min-height:0 on the scroll child guarantees overflow clipping. */
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
 }
 
 /* Full-screen drawer on mobile */
@@ -1375,13 +1370,16 @@ a.dateline:hover { color: var(--color-accent); }
 }
 
 .nav-drawer__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-5);
   min-height: 56px;
-  flex-shrink: 0;
   border-bottom: 1px solid var(--color-rule);
   background: var(--color-bg);
   z-index: 2;
@@ -1452,15 +1450,17 @@ a.dateline:hover { color: var(--color-accent); }
 .nav-drawer__brand:hover { text-decoration: none; }
 .nav-drawer__brand img { flex-shrink: 0; }
 
-/* Scrollable middle region — header and footer stay put.
-   min-height: 0 is load-bearing: flex items default to min-height: auto,
-   which lets them expand to fit content regardless of flex:1. Without
-   this, the scroll container grows to its children's natural height and
-   overflow-y: auto has nothing to clip (the overflow spills the whole
-   drawer silently on desktop where content fits below the drawer edge). */
+/* Scrollable middle region — absolutely positioned between the pinned
+   header (top) and pinned footer (bottom). Explicit top/bottom offsets
+   give it a deterministic height no matter how long its content is,
+   which is what lets overflow-y:auto actually clip. No more relying on
+   flex/grid intrinsic-sizing quirks. */
 .nav-drawer__scroll {
-  flex: 1 1 0;
-  min-height: 0;
+  position: absolute;
+  top: 57px;     /* header min-height 56px + 1px border */
+  bottom: 80px;  /* footer height (~60px content + ~20px padding + border) */
+  left: 0;
+  right: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
@@ -1558,14 +1558,12 @@ a.dateline:hover { color: var(--color-accent); }
 }
 .nav-drawer__quick-btn svg { color: var(--color-accent); }
 
-/* Drawer footer — pinned bottom, small meta.
-   No margin-top: auto here: the .nav-drawer__scroll sibling has flex: 1
-   and already takes all remaining space, so the footer sits naturally
-   at the end. margin-top: auto combined with flex:1 caused the layout
-   to fall apart in some desktop viewports (content expanded past the
-   drawer bounds without the scroll clipping). */
+/* Drawer footer — pinned absolutely to the bottom of the drawer. */
 .nav-drawer__footer {
-  flex-shrink: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding: var(--space-4) var(--space-6);
   border-top: 1px solid var(--color-rule);
   background: var(--color-bg-alt);
