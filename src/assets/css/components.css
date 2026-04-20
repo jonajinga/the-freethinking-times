@@ -1116,42 +1116,82 @@ a.dateline:hover { color: var(--color-accent); }
 /* ── Submit Card Grid ──────────────────────────────────────── */
 .submit-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-6);
-  margin-bottom: var(--space-10);
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-12);
 }
 
 .submit-card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  padding: var(--space-5) var(--space-6);
-  border: 1px solid var(--color-rule);
-  border-top: 3px solid transparent;
+  gap: var(--space-1);
+  padding: var(--space-5) var(--space-5) var(--space-6);
   background: var(--color-bg);
+  border: 1px solid var(--color-rule);
+  border-top: 3px solid var(--color-ink);
   text-decoration: none;
   color: var(--color-ink);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-height: 120px;
+  transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.submit-card:hover {
+.submit-card::after {
+  content: '\2192';
+  position: absolute;
+  right: var(--space-4);
+  bottom: var(--space-3);
+  font-size: var(--text-md);
+  color: var(--color-ink-faint);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.submit-card:hover,
+.submit-card:focus-visible {
   border-top-color: var(--color-accent);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+  outline: none;
+}
+.submit-card:hover::after,
+.submit-card:focus-visible::after {
+  color: var(--color-accent);
+  transform: translateX(3px);
+}
+.submit-card:hover .submit-card__title,
+.submit-card:focus-visible .submit-card__title {
+  color: var(--color-accent);
+}
+
+.submit-card__kicker {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-ink-faint);
+  margin-bottom: var(--space-1);
 }
 
 .submit-card__title {
   font-family: var(--font-headline);
-  font-size: var(--text-base);
+  font-size: var(--text-md);
   font-weight: 700;
-  margin: 0 0 var(--space-2);
-  line-height: 1.3;
+  margin: 0 0 var(--space-1);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+  transition: color var(--transition-fast);
 }
 
 .submit-card__desc {
   font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--color-ink-muted);
-  line-height: 1.5;
+  line-height: var(--leading-normal);
   margin: 0;
+  padding-right: var(--space-6); /* keep text clear of the arrow */
 }
 
 /* ── Submit CTA ─────────────────────────────────────────────── */
@@ -2575,39 +2615,83 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   .support-two-col { grid-template-columns: 1fr; }
 }
 
-/* ── Hub Card Grid ───────────────────────────────────────────── */
+/* ── Hub Card Grid ───────────────────────────────────────────
+   Directory/navigation cards for hub pages (legal, reader-tools,
+   transparency, resources, etc.). Shares visual DNA with .submit-card:
+   ink-colored top rule, lift-on-hover, arrow accent. Icon is optional
+   — cards without an .hub-card__icon render as a simple two-row layout. */
 .hub-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: var(--space-6);
+  gap: var(--space-4);
   margin-top: var(--space-8);
 }
 .hub-card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  background: var(--color-bg-alt);
+  gap: var(--space-1);
+  background: var(--color-bg);
   border: 1px solid var(--color-rule);
-  border-top: 3px solid var(--color-accent);
-  padding: var(--space-7);
+  border-top: 3px solid var(--color-ink);
+  padding: var(--space-5) var(--space-5) var(--space-6);
+  min-height: 120px;
   text-decoration: none;
   color: var(--color-ink);
-  transition: border-top-color var(--transition-fast);
+  transition: border-top-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
-.hub-card:hover { border-top-color: var(--color-ink); }
+.hub-card::after {
+  content: '\2192';
+  position: absolute;
+  right: var(--space-4);
+  bottom: var(--space-3);
+  font-size: var(--text-md);
+  color: var(--color-ink-faint);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+.hub-card:hover,
+.hub-card:focus-visible {
+  border-top-color: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+  outline: none;
+}
+.hub-card:hover::after,
+.hub-card:focus-visible::after {
+  color: var(--color-accent);
+  transform: translateX(3px);
+}
+.hub-card:hover .hub-card__title,
+.hub-card:focus-visible .hub-card__title { color: var(--color-accent); }
+
+.hub-card__kicker {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-ink-faint);
+  margin-bottom: var(--space-1);
+}
+
 .hub-card__title {
   font-family: var(--font-headline);
   font-size: var(--text-md);
   font-weight: 700;
-  margin: 0;
+  margin: 0 0 var(--space-1);
+  line-height: var(--leading-snug);
   color: var(--color-ink);
+  transition: color var(--transition-fast);
 }
-.hub-card:hover .hub-card__title { color: var(--color-accent); }
 .hub-card__desc {
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--color-ink-muted);
-  margin: 0;
   line-height: var(--leading-normal);
+  margin: 0;
+  padding-right: var(--space-6); /* keep text clear of the arrow */
 }
 
 /* ── Support / Donate Block ──────────────────────────────────── */

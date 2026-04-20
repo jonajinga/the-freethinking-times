@@ -91,10 +91,10 @@
         </p>
         <ul class="site-footer__nav">
           {% for link in col.links %}
-          <li><a href="{{ link.url }}"{% if link.title %} title="{{ link.title }}"{% endif %}>{{ link.label }}</a></li>
+          <li><a href="{{ link.url }}"{% if link.title %} data-tippy-content="{{ link.title }}"{% endif %}>{{ link.label }}</a></li>
           {% endfor %}
           {% if col.heading == "Transparency" and site.analytics and site.analytics.dashboardUrl %}
-          <li><a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer" title="See the same data we see">Public Analytics</a></li>
+          <li><a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer" data-tippy-content="Our public analytics dashboard — the same numbers we see, open for readers to inspect. No individual tracking, just aggregate pageviews, referrers, and country.">Public Analytics</a></li>
           {% endif %}
         </ul>
       </div>

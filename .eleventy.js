@@ -164,6 +164,9 @@ module.exports = function (eleventyConfig) {
               // Dynamic dropdown IDs not visible to PurgeCSS (id="dropdown-{{ item.key }}")
               /dropdown-more/,    // Explore mega-menu width override
               /dropdown-quotes/,  // Quotes fixed-position override
+              // Calendar dots/chips — classes built in JS from event.type
+              /cal-dot--/,        // colored dots on month view
+              /cal-week__chip--/, // colored chip borders on week view
             ],
           },
           variables: false,  // never strip CSS custom property declarations
