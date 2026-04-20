@@ -249,12 +249,33 @@
           <a href="/library/authors/" class="nav-dropdown__footer">Browse by Author</a>
           <a href="/library/" class="nav-dropdown__footer">View full library →</a>
         {% else %}
-          {% for article in sectionItems | limit(4) %}
-          <a href="{{ article.url }}" class="nav-dropdown__item">
-            <span class="nav-dropdown__title">{{ article.data.title }}</span>
-            {% if article.data.description %}<span class="nav-dropdown__desc">{{ article.data.description }}</span>{% endif %}
-          </a>
-          {% endfor %}
+          {% set subs = subsections[item.key] if subsections[item.key] else [] %}
+          {% set topTags = collections[item.collection] | topTagsForSection(6) %}
+          {% if subs.length %}
+            <div class="nav-section-col">
+              <p class="nav-section-col__heading">Sections</p>
+              {% for sub in subs %}
+              <a href="{{ item.url }}?s={{ sub | slugify }}" class="nav-section-col__link">{{ sub }}</a>
+              {% endfor %}
+            </div>
+            <div class="nav-section-col nav-section-col--bordered">
+              <p class="nav-section-col__heading">Top Topics</p>
+              {% if topTags.length %}
+                {% for tag in topTags %}
+                <a href="/topics/{{ tag | slugify }}/" class="nav-section-col__link">{{ tag }}</a>
+                {% endfor %}
+              {% else %}
+                <p class="nav-section-col__empty">No topics yet</p>
+              {% endif %}
+            </div>
+          {% else %}
+            {% for article in sectionItems | limit(4) %}
+            <a href="{{ article.url }}" class="nav-dropdown__item">
+              <span class="nav-dropdown__title">{{ article.data.title }}</span>
+              {% if article.data.description %}<span class="nav-dropdown__desc">{{ article.data.description }}</span>{% endif %}
+            </a>
+            {% endfor %}
+          {% endif %}
           <a href="{{ item.url }}" class="nav-dropdown__footer">All {{ item.label | lower }} →</a>
         {% endif %}
       </div>

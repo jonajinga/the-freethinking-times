@@ -333,7 +333,8 @@ collections:
     slug: "{{title}}"
     fields:
       - { name: layout,     widget: hidden, default: article }
-      - { name: section,    widget: hidden, default: News }
+      - { name: section,     widget: hidden, default: News }
+      - { name: subsection,  widget: select, label: "Subsection", required: false, hint: "Optional — groups this article within News", options: ["U.S.", "World", "Politics", "Local", "Climate", "Education", "Health"] }
       - { name: title,      widget: string, label: "Title", required: true }
       - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: true }
       - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
@@ -380,7 +381,8 @@ collections:
     slug: "{{title}}"
     fields:
       - { name: layout,     widget: hidden, default: article }
-      - { name: section,    widget: hidden, default: Opinion }
+      - { name: section,     widget: hidden, default: Opinion }
+      - { name: subsection,  widget: select, label: "Subsection", required: false, hint: "Optional — groups this article within Opinion", options: ["Editorials", "Columns", "Letters to the Editor", "Guest Essays"] }
       - { name: title,      widget: string, label: "Title", required: true }
       - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: true }
       - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
@@ -427,7 +429,8 @@ collections:
     slug: "{{title}}"
     fields:
       - { name: layout,     widget: hidden, default: article }
-      - { name: section,    widget: hidden, default: Analysis }
+      - { name: section,     widget: hidden, default: Analysis }
+      - { name: subsection,  widget: select, label: "Subsection", required: false, hint: "Optional — groups this article within Analysis", options: ["Data", "Explainers", "Context", "Deep Dives"] }
       - { name: title,      widget: string, label: "Title", required: true }
       - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: true }
       - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
@@ -474,7 +477,8 @@ collections:
     slug: "{{title}}"
     fields:
       - { name: layout,     widget: hidden, default: article }
-      - { name: section,    widget: hidden, default: "Arts & Culture" }
+      - { name: section,     widget: hidden, default: "Arts & Culture" }
+      - { name: subsection,  widget: select, label: "Subsection", required: false, hint: "Optional — groups this article within Arts & Culture", options: ["Books", "Film", "Music", "Television", "Visual Arts", "Theater"] }
       - { name: title,      widget: string, label: "Title", required: true }
       - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: true }
       - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
@@ -521,7 +525,8 @@ collections:
     slug: "{{title}}"
     fields:
       - { name: layout,     widget: hidden, default: article }
-      - { name: section,    widget: hidden, default: "Science & Technology" }
+      - { name: section,     widget: hidden, default: "Science & Technology" }
+      - { name: subsection,  widget: select, label: "Subsection", required: false, hint: "Optional — groups this article within Science & Tech", options: ["Science", "Technology", "Space", "Medicine", "Environment"] }
       - { name: title,      widget: string, label: "Title", required: true }
       - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: true }
       - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
@@ -568,7 +573,8 @@ collections:
     slug: "{{title}}"
     fields:
       - { name: layout,     widget: hidden, default: article }
-      - { name: section,    widget: hidden, default: History }
+      - { name: section,     widget: hidden, default: History }
+      - { name: subsection,  widget: select, label: "Subsection", required: false, hint: "Optional — groups this article within History", options: ["Ancient", "Medieval", "Modern", "U.S. History", "World History"] }
       - { name: title,      widget: string, label: "Title", required: true }
       - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: true }
       - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
@@ -662,7 +668,8 @@ collections:
     slug: "{{title}}"
     fields:
       - { name: layout,     widget: hidden, default: article }
-      - { name: section,    widget: hidden, default: Reviews }
+      - { name: section,     widget: hidden, default: Reviews }
+      - { name: subsection,  widget: select, label: "Subsection", required: false, hint: "Optional — groups this article within Reviews", options: ["Books", "Film", "Music", "Television", "Theater", "Games"] }
       - { name: title,      widget: string, label: "Title", required: true }
       - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: true }
       - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }

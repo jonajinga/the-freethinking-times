@@ -352,6 +352,21 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter("limit", (arr, limit) => arr.slice(0, limit));
 
+  eleventyConfig.addFilter("topTagsForSection", (collection, limit = 6) => {
+    const skip = new Set(["post", "all"]);
+    const counts = {};
+    for (const item of (collection || [])) {
+      for (const tag of (item.data.tags || [])) {
+        if (skip.has(tag)) continue;
+        counts[tag] = (counts[tag] || 0) + 1;
+      }
+    }
+    return Object.entries(counts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, limit)
+      .map(([tag]) => tag);
+  });
+
   eleventyConfig.addFilter("urlencode", (str) => encodeURIComponent(str || ""));
 
   // Convert a page URL to a flat slug for OG image filenames
