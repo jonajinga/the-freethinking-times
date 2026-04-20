@@ -17,7 +17,7 @@ layout: layouts/base.njk
     {% endif %}
     {% if sectionSlug == "letters" %}
     <p style="font-family: var(--font-ui); font-size: var(--text-sm); margin-top: var(--space-4);">
-      Have something to say? <a href="/letters/submit/" style="color: var(--color-link); font-weight: 600;">Write a letter</a> or email <a href="mailto:{{ site.email }}" style="color: var(--color-link);">{{ site.email }}</a>
+      Have something to say? <a href="/letters/submit/" style="color: var(--color-link); font-weight: 600;">Write a letter</a>
     </p>
     {% endif %}
   </header>
@@ -32,6 +32,18 @@ layout: layouts/base.njk
       <p style="color: var(--color-ink-muted); font-style: italic;">No articles published yet. Check back soon.</p>
       {% else %}
 
+      {# Subsection filter — only renders if there are subsections for this section #}
+      {% set subs = subsections[sectionSlug] if subsections and subsections[sectionSlug] else [] %}
+      {% if subs.length %}
+      <div class="subsection-filter" id="subsection-filter" role="group" aria-label="Filter by subsection">
+        <span class="subsection-filter__label">Subsection:</span>
+        <button class="subsection-filter__btn is-active" data-sub="all" type="button">All</button>
+        {% for sub in subs %}
+        <button class="subsection-filter__btn" data-sub="{{ sub | slugify }}" type="button">{{ sub }}</button>
+        {% endfor %}
+      </div>
+      {% endif %}
+
       {# Reading time filter #}
       <div class="reading-filter" id="reading-filter" role="group" aria-label="Filter by reading time">
         <span class="reading-filter__label">Filter:</span>
@@ -42,7 +54,7 @@ layout: layouts/base.njk
 
       {# Lead story #}
       {% set leadArticle = sectionItems[0] %}
-      <div class="section-lead js-filterable" data-reading-mins="{{ leadArticle.templateContent | readingMins }}"
+      <div class="section-lead js-filterable" data-reading-mins="{{ leadArticle.templateContent | readingMins }}" data-subsection="{{ leadArticle.data.subsection | slugify if leadArticle.data.subsection else '' }}"
            style="padding-bottom: var(--space-8); border-bottom: 1px solid var(--color-rule); margin-bottom: var(--space-8);">
         {% set article = leadArticle %}
         {% set size = "lg" %}
@@ -54,7 +66,7 @@ layout: layouts/base.njk
       <ul class="article-list" role="list">
         {% for item in sectionItems %}
         {% if not loop.first %}
-        <li class="article-list__item js-filterable" data-reading-mins="{{ item.templateContent | readingMins }}">
+        <li class="article-list__item js-filterable" data-reading-mins="{{ item.templateContent | readingMins }}" data-subsection="{{ item.data.subsection | slugify if item.data.subsection else '' }}">
           {% set article = item %}
           {% set size = "sm" %}
           {% include "partials/article-card.njk" %}
@@ -96,29 +108,74 @@ layout: layouts/base.njk
 
 <script>
 (function () {
-  var btns  = document.querySelectorAll('.reading-filter__btn');
+  var rBtns = document.querySelectorAll('.reading-filter__btn');
+  var sBtns = document.querySelectorAll('.subsection-filter__btn');
   var items = document.querySelectorAll('.js-filterable');
   var empty = document.getElementById('filter-empty');
-  if (!btns.length || !items.length) return;
+  if (!items.length) return;
 
-  btns.forEach(function (btn) {
+  var state = { reading: 'all', sub: 'all' };
+
+  function apply() {
+    var visible = 0;
+    items.forEach(function (item) {
+      var mins = parseInt(item.getAttribute('data-reading-mins'), 10) || 1;
+      var sub  = item.getAttribute('data-subsection') || '';
+      var okRead = state.reading === 'all'
+        || (state.reading === 'short' && mins < 5)
+        || (state.reading === 'long'  && mins > 15);
+      var okSub = state.sub === 'all' || sub === state.sub;
+      var show = okRead && okSub;
+      item.hidden = !show;
+      if (show) visible++;
+    });
+    if (empty) empty.hidden = visible > 0;
+  }
+
+  function setActive(group, value) {
+    group.forEach(function (b) {
+      b.classList.toggle('is-active', b.getAttribute(group === rBtns ? 'data-filter' : 'data-sub') === value);
+    });
+  }
+
+  rBtns.forEach(function (btn) {
     btn.addEventListener('click', function () {
-      var filter = btn.getAttribute('data-filter');
-      btns.forEach(function (b) { b.classList.remove('is-active'); });
-      btn.classList.add('is-active');
-
-      var visible = 0;
-      items.forEach(function (item) {
-        var mins = parseInt(item.getAttribute('data-reading-mins'), 10) || 1;
-        var show = filter === 'all'
-          || (filter === 'short' && mins < 5)
-          || (filter === 'long'  && mins > 15);
-        item.hidden = !show;
-        if (show) visible++;
-      });
-
-      if (empty) empty.hidden = visible > 0;
+      state.reading = btn.getAttribute('data-filter');
+      setActive(rBtns, state.reading);
+      apply();
     });
   });
+
+  sBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      state.sub = btn.getAttribute('data-sub');
+      setActive(sBtns, state.sub);
+      // Update URL (?s=slug) without a reload so the view is shareable/bookmarkable
+      var url = new URL(window.location.href);
+      if (state.sub === 'all') url.searchParams.delete('s');
+      else url.searchParams.set('s', state.sub);
+      window.history.replaceState({}, '', url.toString());
+      apply();
+    });
+  });
+
+  // Honour ?s=subsection-slug on initial load (from the header dropdown)
+  var params = new URLSearchParams(window.location.search);
+  var initSub = params.get('s');
+  if (initSub && sBtns.length) {
+    var target = Array.prototype.find.call(sBtns, function (b) {
+      return b.getAttribute('data-sub') === initSub;
+    });
+    if (target) {
+      state.sub = initSub;
+      setActive(sBtns, initSub);
+      apply();
+      // Scroll the filter into view so the reader sees they're on a subsection
+      setTimeout(function () {
+        var bar = document.getElementById('subsection-filter');
+        if (bar) bar.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      }, 50);
+    }
+  }
 }());
 </script>
