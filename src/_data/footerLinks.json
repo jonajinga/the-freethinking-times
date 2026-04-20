@@ -11,6 +11,7 @@
   },
   {
     "heading": "Freethought Community",
+    "headingUrl": "/community/",
     "links": [
       { "label": "Community Directory", "url": "/community/",            "title": "A curated directory of freethought, humanist, and secular organizations worldwide, filterable by region, focus, and activity level." },
       { "label": "Events Calendar",     "url": "/events/",               "title": "Upcoming conferences, conventions, meetups, and observances relevant to freethinkers, browsable by month, week, or day with filtering." },
@@ -37,6 +38,7 @@
   },
   {
     "heading": "Contribute to Our Projects",
+    "headingUrl": "/submit/",
     "links": [
       { "label": "Recommend a Book",          "url": "/bookshelf/submit/",          "title": "Tell us about a book worth adding to the Freethought Reading list. Contemporary or classic, fiction or non-fiction, we want titles that reward serious readers." },
       { "label": "Recommend a Song",          "url": "/music/submit/",              "title": "Suggest a track for our Freethought Music playlists, instrumental or vocal, any genre, chosen for reading, thinking, or working." },
@@ -52,6 +54,7 @@
   },
   {
     "heading": "Contact",
+    "headingUrl": "/contact/",
     "links": [
       { "label": "Contact Us",         "url": "/contact/",           "title": "The general contact form, goes directly to the editorial inbox. Every message is read by a person, usually within one business day." },
       { "label": "Send Feedback",       "url": "/feedback/",          "title": "Tell us about a bug, feature idea, or general site issue. We read everything; we fix what we can." },
@@ -79,6 +82,7 @@
   },
   {
     "heading": "About",
+    "headingUrl": "/about/",
     "links": [
       { "label": "About Us",            "url": "/about/",        "title": "What this publication is, why it exists, what it will and will not do, and the standards we hold ourselves to." },
       { "label": "Masthead",            "url": "/masthead/",     "title": "Who makes editorial decisions, who writes, and who is accountable for what appears on this site." },
