@@ -116,11 +116,6 @@ layout: layouts/base.njk
 
 </div>{# /.library-body-wrapper #}
 
-<div class="reading-floats" id="reading-floats" aria-hidden="true">
-  <span class="reading-pct" id="reading-pct"></span>
-  <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top">↑</button>
-</div>
-
 <div id="print-footnotes" class="print-footnotes" aria-hidden="true"></div>
 <div id="print-citations" class="print-citations" aria-hidden="true"></div>
 
@@ -249,7 +244,7 @@ layout: layouts/base.njk
 </div>
 
 {% block scripts %}
-<script src="/assets/js/progress.js?v={{ buildTime }}" defer></script>
+
 <script src="/assets/js/reading-list.js?v={{ buildTime }}" defer></script>
 <script src="/assets/js/download.js?v={{ buildTime }}" defer></script>
 <script src="/assets/js/reading-settings.js?v={{ buildTime }}" defer></script>

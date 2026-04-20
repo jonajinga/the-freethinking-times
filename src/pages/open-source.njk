@@ -53,7 +53,7 @@ permalink: /open-source/
         <li><strong>Public domain library</strong> with chapter navigation, floating TOC, bookmarks, annotations, and reading progress</li>
         <li><strong>Resources hub</strong> with sub-pages for education, legal rights, personal support, and tools</li>
         <li><strong>Interactive events calendar</strong> with recurrence engine, dot-based month grid, slide-in detail panel, sidebar, keyboard navigation, URL state persistence</li>
-        <li><strong>14 submission forms</strong> via Web3Forms with hCaptcha, articles, letters, quotes, events, timeline entries, books, texts, glossary terms, trials, thought experiments, corrections, feedback, tips, and contact</li>
+        <li><strong>18 submission forms</strong> via Web3Forms with hCaptcha, articles, letters, quotes, events, timeline entries, books, texts, glossary terms, trials, thought experiments, corrections, feedback, tips, contact, gallery, community groups, and music suggestions</li>
         <li><strong>Web Speech API</strong> integration, voice search, glossary pronunciation, and form dictation</li>
         <li><strong>Highlight colours</strong>, 6 colour options with WYSIWYG rich-text note editor</li>
         <li><strong>Interactive timelines</strong>, vertical alternating CSS timelines for freethought history, quotes, bookshelf, and trials</li>
@@ -98,7 +98,9 @@ permalink: /open-source/
 
       <h2 id="how-to-use">How to use it</h2>
 
-      <p>Everything you need to customise is in one file: <code>src/_data/site.json</code>. This controls your publication name, description, URL, email, fonts, analytics, newsletter, comments, section definitions, and navigation. Change the values in that file and the entire site updates.</p>
+      <p>Site-wide configuration lives in two files: <code>src/_data/site-settings.json</code> (editor-facing: title, tagline, tipping URLs, newsletter config, social links — editable via Pages CMS) and <code>src/_data/site.js</code> (secrets and environment overrides: API keys, analytics IDs, loaded from <code>.env</code> or CI). Change the values and the entire site updates on the next build.</p>
+
+      <p>Analytics is dual-layered: <strong>Umami</strong> as the primary cookieless pageview tracker and <strong>Cloudflare Web Analytics</strong> as a secondary cookieless measurement tool.</p>
 
       <p>The visual design is controlled by CSS custom properties in <code>src/assets/css/tokens.css</code>. Swap the colours and fonts to match your brand.</p>
 

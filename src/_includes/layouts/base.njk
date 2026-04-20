@@ -125,8 +125,15 @@
 
   </div>{# /.site-wrapper #}
 
+  {# ── Reading floats (back-to-top + % through) — site-wide ── #}
+  <div class="reading-floats" id="reading-floats" aria-hidden="true">
+    <span class="reading-pct" id="reading-pct"></span>
+    <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top">&uarr;</button>
+  </div>
+
   {# ── Scripts ── #}
   <script src="/assets/js/drawer.js?v={{ buildTime }}" defer></script>
+  <script src="/assets/js/progress.js?v={{ buildTime }}" defer></script>
   <script src="/assets/js/smart-header.js?v={{ buildTime }}" defer></script>
   <script src="/assets/js/search.js?v={{ buildTime }}" defer></script>
   <script src="/assets/js/subscribe.js?v={{ buildTime }}" defer></script>

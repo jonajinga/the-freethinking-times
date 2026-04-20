@@ -13,17 +13,24 @@
   var pctEl  = document.getElementById('reading-pct');
   var bttBtn = document.getElementById('back-to-top');
 
-  // Floats visibility (back-to-top + %) — active on any page that has #reading-floats
+  // Floats visibility (back-to-top + %), active on any page that has
+  // #reading-floats. Uses .article-body as the scroll target when present
+  // (so % reflects article progress, not footer), otherwise falls back to
+  // the full document so the feature works everywhere on the site.
   if (floats) {
     var floatTarget = document.querySelector('.article-body');
     function updateFloats() {
       var scrollTop = window.scrollY;
       floats.classList.toggle('is-visible', scrollTop > 400);
-      if (pctEl && floatTarget) {
-        var dist = floatTarget.getBoundingClientRect().bottom + scrollTop - window.innerHeight;
-        var pct = dist > 0 ? Math.min((scrollTop / dist) * 100, 100) : 0;
-        pctEl.textContent = Math.round(pct) + '% through';
+      if (!pctEl) return;
+      var dist;
+      if (floatTarget) {
+        dist = floatTarget.getBoundingClientRect().bottom + scrollTop - window.innerHeight;
+      } else {
+        dist = document.documentElement.scrollHeight - window.innerHeight;
       }
+      var pct = dist > 0 ? Math.min((scrollTop / dist) * 100, 100) : 0;
+      pctEl.textContent = Math.round(pct) + '%';
     }
     window.addEventListener('scroll', updateFloats, { passive: true });
     updateFloats();

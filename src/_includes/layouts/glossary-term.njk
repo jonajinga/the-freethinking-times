@@ -282,18 +282,13 @@ layout: base
 
 </div>
 
-<div class="reading-floats" id="reading-floats" aria-hidden="true">
-  <span class="reading-pct" id="reading-pct"></span>
-  <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top">↑</button>
-</div>
-
 <footer class="print-footer" aria-hidden="true">
   <span>{{ site.title }}, {{ site.url }}{{ page.url }}</span>
   <span>Published {{ page.date | readableDate }}</span>
 </footer>
 
 {% block scripts %}
-<script src="/assets/js/progress.js" defer></script>
+
 <script src="/assets/js/reading-list.js" defer></script>
 <script src="/assets/js/reading-settings.js" defer></script>
 {% endblock %}
