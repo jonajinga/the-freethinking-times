@@ -278,8 +278,10 @@ eleventyExcludeFromCollections: true
     else if (e.key === 'Escape') window.location.href = '/quotes/';
   });
 
-  // Click anywhere advances
-  document.getElementById('showcase').addEventListener('click', function () {
+  // Click anywhere advances — except on interactive controls, so the
+  // prev/next/pause buttons and the Exit link keep their own behavior.
+  document.getElementById('showcase').addEventListener('click', function (e) {
+    if (e.target.closest('a, button, input, select')) return;
     show(idx + 1);
   });
 
