@@ -41,6 +41,7 @@
     "small": false,
     "links": [
       { "label": "Archives",        "url": "/archives/",         "title": "Every article indexed by date, author, section, and topic." },
+      { "label": "Documents",       "url": "/documents/",        "title": "Primary sources: FOIA responses, public records, court filings, and government reports underlying our reporting." },
       { "label": "Editions",        "url": "/editions/",         "title": "Articles grouped into numbered editions, a periodical-style view." },
       { "label": "Topics",          "url": "/topics/",           "title": "Browse every topic we've covered." },
       { "label": "Search",          "url": "/search/",           "title": "Full-text search across every article, library work, quote, and glossary entry. Press / anywhere to open." },

@@ -68,6 +68,7 @@
     "links": [
       { "label": "Archives",      "url": "/archives/",      "title": "Every article we've ever published, indexed by date, author, section, and topic. The definitive record of our work." },
       { "label": "Community Guidelines","url": "/community-guidelines/","title": "The standards we apply to comments, letters, and any discussion we host on our articles, disagreement welcome, bad-faith argument isn't." },
+      { "label": "Documents",     "url": "/documents/",     "title": "Primary source materials, FOIA responses, public records, court filings, and government reports underlying our reporting." },
       { "label": "Editions",      "url": "/editions/",      "title": "Articles grouped into numbered editions, a periodical-style view that collects a week's or a month's work in one place." },
       { "label": "Newsletter",    "url": "/newsletter/",    "title": "An occasional email. One message at a time. No tracking pixels, no third-party data sharing, one-click unsubscribe." },
       { "label": "Notes & Highlights","url": "/notes/",     "title": "Your personal highlights, margin notes, and bookmarks across every article and library text you've read on the site, stored locally in your browser." },
