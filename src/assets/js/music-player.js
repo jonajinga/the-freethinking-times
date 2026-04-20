@@ -108,6 +108,59 @@
     document.body.appendChild(wrap);
   }
 
+  // Initialise the background player for a single video ID. Parallel to
+  // initPlayer() but uses `videoId` instead of `list`.
+  function initPlayerForVideo(videoId, cb, resumeTime) {
+    createPlayerBar();
+    if (player) { try { player.destroy(); } catch (e) {} player = null; }
+    var wrap = document.getElementById('tft-yt-wrap');
+    wrap.innerHTML = '<div id="tft-yt-player"></div>';
+    player = new YT.Player('tft-yt-player', {
+      height: '1',
+      width: '1',
+      videoId: videoId,
+      playerVars: {
+        autoplay: 1,
+        controls: 0,
+        disablekb: 1,
+        fs: 0,
+        modestbranding: 1,
+        rel: 0,
+        playsinline: 1,
+        mute: 1
+      },
+      events: {
+        onReady: function () {
+          ready = true;
+          player.setVolume(0);
+          player.unMute();
+          fadeIn();
+          if (resumeTime > 0) {
+            setTimeout(function () {
+              if (player) player.seekTo(resumeTime, true);
+            }, 400);
+          }
+          if (cb) cb();
+          setTimeout(updateNowPlaying, 2000);
+        },
+        onStateChange: function (e) {
+          if (e.data === YT.PlayerState.PLAYING) {
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = '';
+            saveState();
+          } else {
+            playIcon.style.display = '';
+            pauseIcon.style.display = 'none';
+          }
+          updateNowPlaying();
+        },
+        onError: function () {
+          titleEl.textContent = 'Could not load song';
+        }
+      }
+    });
+  }
+
   function initPlayer(playlistId, cb, resumeIndex, resumeTime) {
     createPlayerBar();
 
@@ -253,6 +306,35 @@
       }
     },
 
+    // Play a single song by YouTube video ID. Works just like loadPlaylist
+    // but uses videoId rather than a list; persists across navigation.
+    loadSong: function (videoId, name) {
+      if (!videoId) return;
+      currentName = name || 'Song';
+      createPlayerBar();
+      bar.hidden = false;
+      if (nameEl) nameEl.textContent = currentName;
+      if (titleEl) titleEl.textContent = 'Loading\u2026';
+
+      try {
+        localStorage.setItem(K.playlist, 'VIDEO:' + videoId); // prefix to mark single video
+        localStorage.setItem(K.name, currentName);
+        localStorage.setItem(K.playing, '1');
+        localStorage.removeItem(K.index);
+        localStorage.removeItem(K.time);
+      } catch (e) {}
+
+      function start() { ready = true; initPlayerForVideo(videoId); }
+      loadYouTubeAPI();
+      if (ready || (window.YT && window.YT.Player)) start();
+      else {
+        var wait = setInterval(function () {
+          if (window.YT && window.YT.Player) { clearInterval(wait); start(); }
+        }, 200);
+        setTimeout(function () { clearInterval(wait); }, 10000);
+      }
+    },
+
     stop: function () {
       if (player) {
         try { player.stopVideo(); player.destroy(); } catch (e) {}
@@ -283,8 +365,14 @@
         createPlayerBar();
         bar.hidden = false;
         if (nameEl) nameEl.textContent = currentName;
-        if (titleEl) titleEl.textContent = 'Resuming...';
-        initPlayer(savedPlaylist, null, savedIndex, savedTime);
+        if (titleEl) titleEl.textContent = 'Resuming\u2026';
+        // 'VIDEO:<id>' prefix marks a single-song playback; anything else
+        // is a playlist id.
+        if (savedPlaylist.indexOf('VIDEO:') === 0) {
+          initPlayerForVideo(savedPlaylist.slice(6), null, savedTime);
+        } else {
+          initPlayer(savedPlaylist, null, savedIndex, savedTime);
+        }
       }
     }, 300);
     setTimeout(function () { clearInterval(resumeCheck); }, 10000);

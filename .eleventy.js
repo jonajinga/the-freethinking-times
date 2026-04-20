@@ -350,6 +350,13 @@ module.exports = function (eleventyConfig) {
     return eraMap[era] || 0;
   });
 
+  // Extract YouTube video ID from assorted URL shapes (watch?v=, youtu.be/, embed/)
+  eleventyConfig.addFilter("ytVideoId", (url) => {
+    if (!url) return "";
+    const m = String(url).match(/(?:youtube\.com\/watch\?(?:.*&)?v=|youtu\.be\/|youtube\.com\/embed\/)([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : "";
+  });
+
   eleventyConfig.addFilter("quoteSlug", (q) => {
     const author = (q.author || "unknown").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
     const words = (q.quote || "").split(/\s+/).slice(0, 6).join(" ").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
