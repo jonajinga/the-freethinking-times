@@ -240,7 +240,11 @@
   align-items: start;
 }
 
-.section-grid__main { }
+/* min-width: 0 is load-bearing — grid items default to min-width:auto
+   which prevents children with overflow-x:auto (filter pill bars) from
+   actually clipping. Without this, the bar's full width escapes the
+   column and blows the page out on narrow viewports. */
+.section-grid__main { min-width: 0; }
 
 .section-grid__sidebar {
   position: sticky;

@@ -174,5 +174,15 @@ layout: layouts/base.njk
       }, 50);
     }
   }
+
+  // Toggle is-fit on filter bars when no overflow, so the right-edge
+  // fade mask disappears (looks odd on a bar that doesn't actually scroll).
+  function checkFit() {
+    document.querySelectorAll('.subsection-filter, .reading-filter').forEach(function (bar) {
+      bar.classList.toggle('is-fit', bar.scrollWidth <= bar.clientWidth + 1);
+    });
+  }
+  checkFit();
+  window.addEventListener('resize', checkFit, { passive: true });
 }());
 </script>

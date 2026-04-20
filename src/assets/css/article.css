@@ -1164,9 +1164,20 @@
   align-items: center;
   gap: var(--space-3);
   flex-wrap: nowrap;
+  max-width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  /* Nudge users on touch devices: a tiny gradient fade on the right edge
+     signals there's more content to scroll to. */
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
+          mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
+}
+/* Drop the fade mask when there's nothing overflowing (scrollWidth fits) */
+.subsection-filter.is-fit,
+.reading-filter.is-fit {
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 .subsection-filter::-webkit-scrollbar,
 .reading-filter::-webkit-scrollbar { display: none; }
@@ -1244,9 +1255,21 @@
 @media (max-width: 560px) {
   .reading-filter__hint { display: none; }
   .subsection-filter,
-  .reading-filter { gap: var(--space-2); }
+  .reading-filter {
+    gap: var(--space-2);
+    margin-inline: calc(-1 * var(--space-4)); /* escape container padding so pills reach edges */
+    padding-inline: var(--space-4);
+  }
   .subsection-filter__label,
-  .reading-filter__label { margin-right: var(--space-1); }
+  .reading-filter__label {
+    margin-right: var(--space-1);
+    font-size: 0.62rem;
+  }
+  .subsection-filter__btn,
+  .reading-filter__btn {
+    padding: 0.35rem 0.7rem;
+    min-height: 28px;
+  }
 }
 
 .reading-filter__empty {
