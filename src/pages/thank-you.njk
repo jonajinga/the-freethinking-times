@@ -52,13 +52,11 @@ eleventyExcludeFromCollections: true
       </ol>
     </section>
 
-    {# ── Subscribe card — inlined form, no partial, to control styling tightly ── #}
-    <aside class="ty-card" aria-label="Subscribe to the newsletter">
-      <div class="ty-card__text">
-        <p class="ty-card__kicker">While you&rsquo;re here</p>
-        <h2 class="ty-card__title">Get our next piece in your inbox</h2>
-        <p class="ty-card__body">One email, occasionally. No tracking pixels, no third-party data sharing, unsubscribe with one click.</p>
-      </div>
+    {# ── Subscribe card — matches site subscribe-block pattern ── #}
+    <aside class="ty-subscribe" aria-label="Subscribe to the newsletter">
+      <p class="ty-subscribe__eyebrow">While you&rsquo;re here</p>
+      <h2 class="ty-subscribe__heading">Get our next piece in your inbox</h2>
+      <p class="ty-subscribe__body">One email, occasionally. No tracking pixels, no third-party data sharing, unsubscribe with one click.</p>
       <form class="ty-form subscribe-form" data-action="https://buttondown.com/api/emails/embed-subscribe/{{ site.newsletter.username }}" novalidate>
         <label for="ty-subscribe-email" class="visually-hidden">Your email address</label>
         <input
@@ -71,33 +69,46 @@ eleventyExcludeFromCollections: true
           required>
         <button class="ty-form__btn subscribe-form__btn" type="submit">Subscribe</button>
       </form>
-      <div class="subscribe-status ty-card__status" role="alert" aria-live="polite"></div>
+      <div class="subscribe-status ty-subscribe__status" role="alert" aria-live="polite"></div>
     </aside>
 
-    {# ── Read next grid ── #}
+    {# ── Read next grid — matches .article-card editorial pattern ── #}
     <section class="ty-next" aria-label="Read next">
       <h2 class="ty-section__heading">Read next</h2>
       <div class="ty-next__grid">
-        <a class="ty-next__card" href="/start-here/">
-          <p class="ty-next__kicker">Orientation</p>
-          <p class="ty-next__title">Start here <span aria-hidden="true">&rarr;</span></p>
-          <p class="ty-next__desc">What this publication is, who pays for it, and how it works.</p>
-        </a>
-        <a class="ty-next__card" href="/editorial/">
-          <p class="ty-next__kicker">Policy</p>
-          <p class="ty-next__title">Editorial handbook <span aria-hidden="true">&rarr;</span></p>
-          <p class="ty-next__desc">Our standards for accuracy, sourcing, corrections, and tone.</p>
-        </a>
-        <a class="ty-next__card" href="/library/">
-          <p class="ty-next__kicker">Deep reading</p>
-          <p class="ty-next__title">The library <span aria-hidden="true">&rarr;</span></p>
-          <p class="ty-next__desc">Public-domain works &mdash; freethought, philosophy, dissent.</p>
-        </a>
-        <a class="ty-next__card" href="/archives/">
-          <p class="ty-next__kicker">Everything</p>
-          <p class="ty-next__title">Browse archives <span aria-hidden="true">&rarr;</span></p>
-          <p class="ty-next__desc">Search and filter by section, author, and year.</p>
-        </a>
+
+        <article class="ty-next__card">
+          <p class="ty-next__eyebrow">
+            <span class="section-badge section-badge--news">Orientation</span>
+          </p>
+          <a href="/start-here/" class="ty-next__headline">Start here</a>
+          <p class="ty-next__dek">What this publication is, who pays for it, and how it works.</p>
+        </article>
+
+        <article class="ty-next__card">
+          <p class="ty-next__eyebrow">
+            <span class="section-badge section-badge--analysis">Policy</span>
+          </p>
+          <a href="/editorial/" class="ty-next__headline">Editorial handbook</a>
+          <p class="ty-next__dek">Our standards for accuracy, sourcing, corrections, and tone.</p>
+        </article>
+
+        <article class="ty-next__card">
+          <p class="ty-next__eyebrow">
+            <span class="section-badge section-badge--history">Deep reading</span>
+          </p>
+          <a href="/library/" class="ty-next__headline">The library</a>
+          <p class="ty-next__dek">Public-domain works &mdash; freethought, philosophy, dissent.</p>
+        </article>
+
+        <article class="ty-next__card">
+          <p class="ty-next__eyebrow">
+            <span class="section-badge section-badge--opinion">Everything</span>
+          </p>
+          <a href="/archives/" class="ty-next__headline">Browse archives</a>
+          <p class="ty-next__dek">Search and filter by section, author, and year.</p>
+        </article>
+
       </div>
     </section>
 
@@ -231,16 +242,14 @@ eleventyExcludeFromCollections: true
   max-width: 60ch;
 }
 
-/* ── Subscribe card ── */
-.ty-card {
-  background: var(--color-bg-alt);
-  border: 1px solid var(--color-rule);
-  border-left: 4px solid var(--color-accent);
-  padding: clamp(var(--space-5), 4vw, var(--space-8));
+/* ── Subscribe block — borderless, matches site .subscribe-block pattern ── */
+.ty-subscribe {
+  padding: var(--space-8) 0;
   margin-bottom: clamp(var(--space-10), 6vw, var(--space-16));
+  border-top: 3px solid var(--color-ink);
+  border-bottom: 1px solid var(--color-rule);
 }
-.ty-card__text { margin-bottom: var(--space-5); }
-.ty-card__kicker {
+.ty-subscribe__eyebrow {
   font-family: var(--font-ui);
   font-size: var(--text-xs);
   font-weight: 700;
@@ -249,31 +258,32 @@ eleventyExcludeFromCollections: true
   color: var(--color-accent);
   margin: 0 0 var(--space-2);
 }
-.ty-card__title {
+.ty-subscribe__heading {
   font-family: var(--font-headline);
   font-size: clamp(var(--text-lg), 2.6vw, var(--text-xl));
   font-weight: 700;
   color: var(--color-ink);
   line-height: var(--leading-snug);
-  margin: 0 0 var(--space-2);
+  margin: 0 0 var(--space-3);
+  max-width: 22ch;
 }
-.ty-card__body {
+.ty-subscribe__body {
   font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--color-ink-muted);
   line-height: var(--leading-relaxed);
-  margin: 0;
+  margin: 0 0 var(--space-4);
   max-width: 55ch;
 }
 
-/* Inline form inside the card — overrides any subscribe-form defaults */
+/* Inline form — clean, borderless wrapper, just the input + submit */
 .ty-form {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 0;
-  border: 1px solid var(--color-rule);
+  border: 1px solid var(--color-ink);
   background: var(--color-bg);
-  max-width: 480px;
+  max-width: 460px;
 }
 .ty-form__input.ty-form__input {
   border: none;
@@ -310,64 +320,56 @@ eleventyExcludeFromCollections: true
   .ty-form { grid-template-columns: 1fr; }
   .ty-form__btn { padding-block: var(--space-3); }
 }
-.ty-card__status:empty { display: none; }
-.ty-card__status {
+.ty-subscribe__status:empty { display: none; }
+.ty-subscribe__status {
   margin-top: var(--space-3);
   font-family: var(--font-ui);
   font-size: var(--text-xs);
   color: var(--color-ink-muted);
 }
 
-/* ── Read next grid ── */
+/* ── Read next grid — uses .article-card editorial pattern ── */
 .ty-next { margin-bottom: var(--space-12); }
 .ty-next__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4);
+  gap: var(--space-8) var(--space-6);
 }
 @media (max-width: 600px) {
-  .ty-next__grid { grid-template-columns: 1fr; }
+  .ty-next__grid { grid-template-columns: 1fr; gap: var(--space-6); }
 }
 .ty-next__card {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  padding: var(--space-5);
-  min-height: 140px;
-  background: var(--color-bg);
-  border: 1px solid var(--color-rule);
-  border-top: 3px solid var(--color-ink);
-  text-decoration: none;
-  transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  padding: 0;
+  border: none;
+  background: transparent;
 }
-.ty-next__card:hover {
-  border-top-color: var(--color-accent);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  text-decoration: none;
-}
-.ty-next__kicker {
-  font-family: var(--font-ui);
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--color-ink-faint);
+.ty-next__eyebrow {
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
-.ty-next__title {
+.ty-next__headline {
   font-family: var(--font-headline);
   font-weight: 700;
-  font-size: var(--text-md);
+  font-size: var(--text-lg);
   color: var(--color-ink);
+  text-decoration: none;
   line-height: var(--leading-snug);
   margin: 0;
 }
-.ty-next__desc {
+.ty-next__headline:hover {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+.ty-next__dek {
   font-family: var(--font-body);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   color: var(--color-ink-muted);
-  line-height: var(--leading-relaxed);
+  line-height: var(--leading-normal);
   margin: 0;
 }
 

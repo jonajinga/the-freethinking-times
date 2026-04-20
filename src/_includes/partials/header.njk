@@ -411,16 +411,24 @@
 
   <div class="nav-drawer__scroll">
 
-    {# ── Search button row ── #}
-    <button
-      class="nav-drawer__search"
-      type="button"
-      aria-label="Open search"
-      onclick="var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-drawer-overlay'),t=document.getElementById('nav-drawer-toggle');if(d){d.classList.remove('is-open');d.setAttribute('aria-hidden','true');}if(o)o.classList.remove('is-open');if(t)t.setAttribute('aria-expanded','false');document.body.style.overflow='';setTimeout(function(){var m=document.getElementById('search-modal'),ov=document.getElementById('search-overlay');if(m){m.classList.add('is-open');m.setAttribute('aria-hidden','false');ov&&ov.classList.add('is-open');document.body.style.overflow='hidden';var i=document.getElementById('search-input');i&&i.focus();}},150);">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <span>Search articles, topics, authors…</span>
-      <kbd class="nav-drawer__search-kbd" aria-hidden="true">/</kbd>
-    </button>
+    {# ── Search form — in-place, submits to /search/ without leaving the drawer ── #}
+    <form class="nav-drawer__search" role="search" action="/search/" method="get" aria-label="Site search">
+      <svg class="nav-drawer__search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <label for="nav-drawer-search-input" class="visually-hidden">Search</label>
+      <input
+        id="nav-drawer-search-input"
+        class="nav-drawer__search-input"
+        type="search"
+        name="q"
+        placeholder="Search articles, topics, authors…"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+        aria-label="Search query">
+      <button type="submit" class="nav-drawer__search-submit" aria-label="Submit search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </form>
 
     {# ── Quick actions grid ── #}
     <div class="nav-drawer__quick" role="group" aria-label="Quick actions">

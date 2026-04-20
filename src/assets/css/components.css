@@ -1368,44 +1368,60 @@ a.dateline:hover { color: var(--color-accent); }
   padding-bottom: var(--space-4);
 }
 
-/* Search button — mimics search input */
+/* In-drawer search form — real input, submits to /search/ */
 .nav-drawer__search {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: var(--space-3);
-  width: calc(100% - var(--space-12));
-  margin: var(--space-5) var(--space-6) var(--space-4);
-  padding: var(--space-3) var(--space-4);
+  gap: var(--space-2);
+  margin: var(--space-4) var(--space-6);
+  padding: 0 var(--space-3);
   min-height: 48px;
   background: var(--color-bg-alt);
   border: 1px solid var(--color-rule);
-  color: var(--color-ink-faint);
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-  text-align: left;
-  cursor: pointer;
-  transition: border-color var(--transition-fast), color var(--transition-fast), background var(--transition-fast);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
 }
-.nav-drawer__search:hover,
-.nav-drawer__search:focus-visible {
+.nav-drawer__search:focus-within {
   border-color: var(--color-ink);
-  color: var(--color-ink);
   background: var(--color-bg);
-  outline: none;
 }
-.nav-drawer__search span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-.nav-drawer__search-kbd {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.7rem;
+.nav-drawer__search-icon {
   color: var(--color-ink-faint);
-  padding: 2px 6px;
-  border: 1px solid var(--color-rule);
-  border-radius: 3px;
-  background: var(--color-bg);
   flex-shrink: 0;
 }
-@media (max-width: 640px) {
-  .nav-drawer__search-kbd { display: none; }
+.nav-drawer__search-input {
+  border: none;
+  background: transparent;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-ink);
+  min-height: 44px;
+  padding: 0;
+  width: 100%;
+  min-width: 0;
+}
+.nav-drawer__search-input:focus { outline: none; }
+.nav-drawer__search-input::placeholder {
+  color: var(--color-ink-faint);
+  font-style: italic;
+}
+.nav-drawer__search-input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.nav-drawer__search-submit {
+  background: var(--color-ink);
+  color: var(--color-bg);
+  border: none;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--transition-fast);
+}
+.nav-drawer__search-submit:hover,
+.nav-drawer__search-submit:focus-visible {
+  background: var(--color-accent);
+  outline: none;
 }
 
 /* Quick actions grid */
