@@ -1615,11 +1615,18 @@ a.dateline:hover { color: var(--color-accent); }
   bottom: 0;
   left: 0;
   right: 0;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  padding: var(--space-2) var(--space-6);
+  min-height: 52px;
+  padding: var(--space-2) var(--space-4);
+  /* Respect device safe-area insets (notches, rounded corners, home bar)
+     so the bar isn't clipped on iPhones / gesture-nav phones. */
+  padding-left: max(var(--space-4), env(safe-area-inset-left, 0));
+  padding-right: max(var(--space-4), env(safe-area-inset-right, 0));
+  padding-bottom: max(var(--space-2), env(safe-area-inset-bottom, 0));
   background: #111;
   color: #eee;
   z-index: var(--z-overlay);
@@ -1684,21 +1691,28 @@ a.dateline:hover { color: var(--color-accent); }
   right: auto;
   bottom: auto;
   padding: 0;
+  min-height: 0;
   gap: var(--space-2);
   background: transparent;
   box-shadow: none;
   border: none;
-  width: auto;
+  width: 100%;
   max-width: 100%;
   font-size: var(--text-xs);
   z-index: auto;
+  justify-content: space-between;
 }
 .annotation-toolbar .music-bar__info {
   min-width: 0;
-  max-width: min(240px, 30vw);
+  flex: 1;
+  max-width: none;
 }
 .annotation-toolbar .music-bar__title { font-size: var(--text-xs); }
-.annotation-toolbar .music-bar__vol { width: 60px; }
+.annotation-toolbar .music-bar__vol { width: 80px; }
+@media (max-width: 480px) {
+  .annotation-toolbar .music-bar__vol { display: none; }
+  .annotation-toolbar .music-bar__name { display: none; }
+}
 
 /* Push the reading-floats (percentage + back-to-top) up above the
    annotation-toolbar so they don't sit behind it. */
@@ -1718,10 +1732,21 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
 }
 
 @media (max-width: 480px) {
-  .music-bar { padding: var(--space-1) var(--space-3); gap: var(--space-1); }
+  .music-bar {
+    gap: var(--space-2);
+    min-height: 56px;
+    padding-top: var(--space-2);
+    padding-bottom: max(var(--space-2), env(safe-area-inset-bottom, 0));
+    padding-left: max(var(--space-3), env(safe-area-inset-left, 0));
+    padding-right: max(var(--space-3), env(safe-area-inset-right, 0));
+  }
   .music-bar__vol { display: none; }
   .music-bar__name { display: none; }
-  .music-bar__title { font-size: var(--text-xs); }
+  .music-bar__title { font-size: var(--text-sm); }
+  .music-bar__controls { gap: var(--space-1); }
+  .music-bar__btn { padding: var(--space-1); }
+  .music-bar__btn svg { width: 14px; height: 14px; }
+  .music-bar__btn--play svg { width: 18px; height: 18px; }
 }
 
 /* ── Glossary Tooltips (Tippy.js) ──────────────────────────── */
@@ -3551,11 +3576,19 @@ select.w3f__input option {
 .sg-nav {
   position: sticky;
   top: 5.4rem; /* drops to 3rem on tablet via media query below */
+  max-height: calc(100vh - 5.4rem - var(--space-4));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  padding-right: var(--space-2);
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   font-family: var(--font-ui);
   font-size: 0.88rem;
+}
+@media (max-width: 1180px) {
+  .sg-nav { max-height: calc(100vh - 3rem - var(--space-4)); }
 }
 .sg-nav a {
   display: block;
