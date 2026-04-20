@@ -14,7 +14,6 @@
     "links": [
       { "label": "Community Directory", "url": "/community/",            "title": "A curated directory of freethought, humanist, and secular organizations worldwide — filterable by region, focus, and activity level." },
       { "label": "Events Calendar",     "url": "/events/",               "title": "Upcoming conferences, conventions, meetups, and observances relevant to freethinkers — browsable by month, week, or day with filtering." },
-      { "label": "Community Guidelines","url": "/community-guidelines/", "title": "The standards we apply to comments, letters, and any discussion we host — disagreement welcome, bad-faith argument isn't." },
       { "label": "RSS Reader",          "url": "/reader/",               "title": "A built-in reader for following freethought-adjacent publications via RSS, without needing a separate app." },
       { "label": "Suggest a Group",     "url": "/community/submit/",     "title": "Know a freethought, humanist, or secular group we should list? Send us the name, city, and what they do — we'll evaluate and add qualifying groups." }
     ]
@@ -65,6 +64,7 @@
     "headingUrl": "/reader-tools/",
     "links": [
       { "label": "Archives",      "url": "/archives/",      "title": "Every article we've ever published, indexed by date, author, section, and topic. The definitive record of our work." },
+      { "label": "Community Guidelines","url": "/community-guidelines/","title": "The standards we apply to comments, letters, and any discussion we host on our articles — disagreement welcome, bad-faith argument isn't." },
       { "label": "Editions",      "url": "/editions/",      "title": "Articles grouped into numbered editions — a periodical-style view that collects a week's or a month's work in one place." },
       { "label": "Newsletter",    "url": "/newsletter/",    "title": "An occasional email — one message, no tracking pixels, no third-party data sharing, one-click unsubscribe." },
       { "label": "Notes & Highlights","url": "/notes/",     "title": "Your personal highlights, margin notes, and bookmarks across every article and library text you've read on the site — stored locally in your browser." },
