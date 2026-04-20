@@ -1158,11 +1158,15 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   margin-bottom: var(--space-6);
   padding-bottom: var(--space-4);
   border-bottom: 1px solid var(--color-rule);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
+.reading-filter::-webkit-scrollbar { display: none; }
 
 .reading-filter__label {
   font-family: var(--font-ui);
@@ -1172,6 +1176,7 @@
   letter-spacing: 0.08em;
   color: var(--color-ink-faint);
   margin-right: var(--space-1);
+  flex-shrink: 0;
 }
 
 .reading-filter__btn {
@@ -1184,7 +1189,14 @@
   color: var(--color-ink-muted);
   cursor: pointer;
   border-radius: var(--radius-sm);
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: border-color var(--transition-fast), color var(--transition-fast), background var(--transition-fast);
+}
+
+/* Drop the "(<5 min)" / "(>15 min)" hints on narrow viewports so buttons stay on one line */
+@media (max-width: 560px) {
+  .reading-filter__hint { display: none; }
 }
 
 .reading-filter__btn:hover {

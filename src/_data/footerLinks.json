@@ -73,6 +73,7 @@
       { "label": "API",           "url": "/api/",           "title": "Public JSON API for developers" },
       { "label": "Search",        "url": "/search/",        "title": "Full-text search across the site" },
       { "label": "Start Here",    "url": "/start-here/",    "title": "A curated introduction for new readers" },
+      { "label": "Topics",        "url": "/topics/",        "title": "Browse every topic covered on the site" },
       { "label": "Your Data",     "url": "/your-data/",     "title": "Export, import, or clear your data" }
     ]
   },

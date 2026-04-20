@@ -16,5 +16,17 @@
   },
   "social": {
     "rss": "/feed.xml"
-  }
+  },
+  "contactSubjects": [
+    "General enquiry",
+    "Correction request",
+    "Story tip",
+    "Letter to the editor",
+    "Submission / pitch",
+    "Partnership or collaboration",
+    "Press enquiry",
+    "Feedback on coverage",
+    "Technical issue",
+    "Other"
+  ]
 }
