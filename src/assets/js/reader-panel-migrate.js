@@ -24,10 +24,9 @@
   var toolbar = document.getElementById('annotation-toolbar');
   if (!panel && !toolbar) return;
 
-  // ── Bottom toolbar slots (Save / Listen / Focus stay here)
+  // ── Bottom toolbar slots (Save / Listen stay here)
   move('bookmark-btn', 'ann-save-slot');
   move('tts-btn',      'ann-listen-slot');
-  move('focus-btn',    'ann-focus-slot');
 
   // Hide the panel-footer "Comments" button if the page has no comments
   // section to scroll to (e.g. comments aren't configured for this site).

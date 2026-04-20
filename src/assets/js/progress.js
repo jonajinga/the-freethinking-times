@@ -263,10 +263,14 @@
       var ttsHighlightEl = null;
       var ttsWordSpans = [];    // NodeList of .tts-word spans, in order
       var ttsWords = [];        // [{ charStart, span }] for onboundary mapping
-      var ttsWordIdx = 0;
+      var ttsWordIdx = 0;       // index into ttsWords (position in current utterance)
+      var ttsSpanOffset = 0;    // article word index where the current utterance begins
       var ttsTimer = null;
       var ttsWrapped = false;   // wrapped this body yet?
       var _ttsBoundaryFired = false;
+
+      // Global (article-absolute) word index at the current moment.
+      function currentGlobalWord() { return ttsSpanOffset + ttsWordIdx; }
 
       function clearTtsHighlight() {
         if (ttsTimer) { clearInterval(ttsTimer); ttsTimer = null; }
@@ -342,20 +346,35 @@
         ttsWrapped = true;
       }
 
-      // Build a char->span map from the utterance text so onboundary's
-      // charIndex can find the right span. We map by counting word
-      // boundaries in the utterance text, then pairing each regex match
-      // to the next unused word span in document order.
-      function buildWordIndex(text) {
+      // Build a char->span map from the utterance text. Pairs each word
+      // in the utterance text with a pre-wrapped span in document order,
+      // starting at `spanOffset` so that we can resume mid-article (e.g.
+      // when the user changes speed or voice while speech is playing).
+      function buildWordIndex(text, spanOffset) {
         ttsWords = [];
         if (!ttsWordSpans.length) return;
         var re = /\S+/g;
         var m;
-        var spanIdx = 0;
+        var spanIdx = spanOffset || 0;
         while ((m = re.exec(text)) && spanIdx < ttsWordSpans.length) {
           ttsWords.push({ charStart: m.index, span: ttsWordSpans[spanIdx] });
           spanIdx++;
         }
+      }
+
+      // Given the full article text and a word index, return the slice
+      // of the text starting at that word. Used when speed / voice
+      // changes while speaking so we don't restart from the beginning.
+      function textFromWord(text, wordIdx) {
+        if (!wordIdx || wordIdx <= 0) return text;
+        var re = /\S+/g;
+        var m;
+        var count = 0;
+        while ((m = re.exec(text))) {
+          if (count === wordIdx) return text.slice(m.index);
+          count++;
+        }
+        return text;
       }
 
       function highlightWord(i) {
@@ -385,12 +404,23 @@
       function startTimerAdvance() {
         if (ttsTimer) clearInterval(ttsTimer);
         ttsStartAt = Date.now();
-        // Rough estimate: average English word ≈ 5 chars + space = 6 chars.
-        // Default TTS ≈ 3 words/sec at rate 1. Scale by the utterance rate.
+        // Rough estimate: default TTS ≈ 3 words/sec at rate 1. Scale by
+        // the utterance rate.
         var wps = 3 * (ttsRate || 1);
         var interval = Math.max(140, Math.round(1000 / wps));
         ttsTimer = setInterval(function () {
-          if (!ttsSpeaking || ttsPaused) return;
+          if (ttsPaused) return;
+          // Source of truth for 'is audio actually playing' is the native
+          // API, not our ttsSpeaking flag — Chrome fires spurious onend
+          // events that would flip our flag while audio continues. If the
+          // API says neither speaking nor pending, AND our flag is false,
+          // playback is truly done — stop the timer.
+          var sysActive = window.speechSynthesis.speaking || window.speechSynthesis.pending;
+          if (!sysActive && !ttsSpeaking) {
+            clearInterval(ttsTimer);
+            ttsTimer = null;
+            return;
+          }
           ttsWordIdx++;
           if (ttsWordIdx >= ttsWords.length) {
             clearInterval(ttsTimer);
@@ -402,7 +432,7 @@
       }
 
       /* — Helpers — */
-      function buildUtterance(text) {
+      function buildUtterance(text, spanOffset) {
         var utt = new SpeechSynthesisUtterance(text);
         utt.rate  = ttsRate;
         // Only set voice if we actually picked one — setting voice=null on
@@ -410,12 +440,23 @@
         // browser uses its default system voice which is reliable on mobile.
         if (ttsVoice) utt.voice = ttsVoice;
         utt.lang  = (ttsVoice && ttsVoice.lang) || 'en-US';
-        utt.onend = function () { clearTtsHighlight(); stopTts(); };
+        // Chrome fires onend spuriously for local voices — sometimes seconds
+        // before audio actually finishes. Verify the API agrees before
+        // tearing down highlight + timer state.
+        utt.onend = function () {
+          setTimeout(function () {
+            if (window.speechSynthesis.speaking || window.speechSynthesis.pending) return;
+            clearTtsHighlight();
+            stopTts();
+          }, 60);
+        };
+        var _offset = spanOffset || 0;
 
         utt.onstart = function () {
           _ttsBoundaryFired = false;
           wrapWordsOnce();
-          buildWordIndex(text);
+          buildWordIndex(text, _offset);
+          ttsSpanOffset = _offset;
           ttsWordIdx = 0;
           if (ttsWords.length) {
             highlightWord(0);
@@ -498,7 +539,8 @@
           if (!ttsSpeaking) return;                   // already cancelled
           if (ttsWords.length && ttsHighlightEl) return; // onstart did fire
           wrapWordsOnce();
-          buildWordIndex(ttsText);
+          buildWordIndex(ttsText, 0);
+          ttsSpanOffset = 0;
           ttsWordIdx = 0;
           if (ttsWords.length) {
             highlightWord(0);
@@ -543,6 +585,17 @@
         if (ttsSpeaking) window.speechSynthesis.cancel();
       });
 
+      // Resume speaking from the current word position — used by the
+      // speed and voice change handlers so the reader doesn't lose their
+      // place when they adjust settings mid-article.
+      function resumeFromCurrent() {
+        if (!ttsSpeaking || ttsPaused) return;
+        var globalIdx = currentGlobalWord();
+        var remaining = textFromWord(ttsText, globalIdx);
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(buildUtterance(remaining, globalIdx));
+      }
+
       /* — Speed — */
       speedBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -550,10 +603,7 @@
           try { localStorage.setItem(_p + '-tts-rate', ttsRate); } catch (e) {}
           speedBtns.forEach(function (b) { b.classList.remove('is-active'); });
           btn.classList.add('is-active');
-          if (ttsSpeaking && !ttsPaused) {
-            window.speechSynthesis.cancel();
-            window.speechSynthesis.speak(buildUtterance(ttsText));
-          }
+          resumeFromCurrent();
         });
       });
 
@@ -563,34 +613,10 @@
           var voices = window.speechSynthesis.getVoices();
           ttsVoice = voices.find(function (v) { return v.name === voiceSelect.value; }) || null;
           try { localStorage.setItem(_p + '-tts-voice', voiceSelect.value); } catch (e) {}
-          if (ttsSpeaking && !ttsPaused) {
-            window.speechSynthesis.cancel();
-            window.speechSynthesis.speak(buildUtterance(ttsText));
-          }
+          resumeFromCurrent();
         });
       }
     }
-  }
-
-  /* ── Focus mode ───────────────────────────────────────────── */
-  var focusBtn = document.getElementById('focus-btn');
-  if (focusBtn) {
-    var root = document.documentElement;
-    var focusLabel = focusBtn.querySelector('.btn-label');
-
-    function syncFocusLabel() {
-      var on = root.getAttribute('data-focus-mode') === 'on';
-      if (focusLabel) focusLabel.textContent = on ? 'Exit focus' : 'Focus';
-      focusBtn.setAttribute('aria-pressed', String(on));
-    }
-    syncFocusLabel();
-
-    focusBtn.addEventListener('click', function () {
-      var on = root.getAttribute('data-focus-mode') === 'on';
-      root.setAttribute('data-focus-mode', on ? 'off' : 'on');
-      try { localStorage.setItem(_p + '-focus', on ? 'off' : 'on'); } catch (e) {}
-      syncFocusLabel();
-    });
   }
 
   /* ── Heading anchor links ─────────────────────────────────── */
@@ -792,7 +818,6 @@
     if (!snProseEl) return false;
     if (window.innerWidth < SIDENOTE_BREAK) return false;
     if (snProseEl.getAttribute('data-rs-width') === 'wide') return false;
-    if (document.documentElement.getAttribute('data-focus-mode') === 'on') return false;
     return true;
   }
 
@@ -850,18 +875,16 @@
       snResizeTimer = setTimeout(buildSidenotes, 150);
     }, { passive: true });
 
-    // Rebuild when focus mode or reading width changes
-    document.documentElement.addEventListener('data-focus-mode', buildSidenotes);
+    // Rebuild when reading width changes
     if (snProseEl) {
       var snObserver = new MutationObserver(function (mutations) {
         mutations.forEach(function (m) {
-          if (m.attributeName === 'data-rs-width' || m.attributeName === 'data-focus-mode') {
+          if (m.attributeName === 'data-rs-width') {
             buildSidenotes();
           }
         });
       });
       snObserver.observe(snProseEl, { attributes: true });
-      snObserver.observe(document.documentElement, { attributes: true });
     }
   }
 

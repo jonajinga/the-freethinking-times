@@ -1405,55 +1405,6 @@
   margin: var(--space-8) 0;
 }
 
-/* ── Focus / reading mode ───────────────────────────────────── */
-/* Chrome-hiding only applies when the page is a reading page. On section
-   hubs and index pages the masthead and footer stay visible so the user
-   can navigate out of a section even with focus mode still toggled on. */
-[data-focus-mode="on"]:has(.article-body, .library-body, .glossary-layout, .book-layout) .masthead,
-[data-focus-mode="on"]:has(.article-body, .library-body, .glossary-layout, .book-layout) .site-footer {
-  display: none;
-}
-
-/* Keep reading header visible in focus mode — gives readers a way out */
-[data-focus-mode="on"] .article-reading-header,
-[data-focus-mode="on"] .library-reading-header {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-[data-focus-mode="on"] .article-layout__inner {
-  grid-template-columns: 1fr;
-}
-
-[data-focus-mode="on"] .article-layout__aside {
-  display: none;
-}
-
-[data-focus-mode="on"] .article-body {
-  font-size: 1.2rem;
-  max-width: 70ch;
-  margin-inline: auto;
-}
-
-[data-focus-mode="on"] .article-layout {
-  max-width: 800px;
-  margin-inline: auto;
-}
-
-[data-focus-mode="on"] .related-articles,
-[data-focus-mode="on"] .subscribe-block { display: none; }
-
-/* Focus mode for glossary and bookshelf project layouts */
-[data-focus-mode="on"] .glossary-layout,
-[data-focus-mode="on"] .book-layout {
-  grid-template-columns: 1fr;
-}
-
-[data-focus-mode="on"] .glossary-sidebar,
-[data-focus-mode="on"] .book-sidebar {
-  display: none;
-}
-
 /* ── Argument map ───────────────────────────────────────────── */
 .argument-map {
   border: 1px solid var(--color-rule-heavy);
@@ -2033,21 +1984,6 @@
   .article-body[data-rs-width="wide"] + * .sidenote,
   [data-rs-width="wide"] .sidenote { display: none; }
 
-  /* In focus mode the article centers and the wide aside disappears,
-     so sidenotes have no margin to live in. Convert them to inline
-     "expanded" boxes that flow with the prose so footnote content
-     stays visible. */
-  [data-focus-mode="on"] .sidenote {
-    position: static;
-    width: auto;
-    max-width: none;
-    margin: var(--space-4) 0;
-    padding: var(--space-3) var(--space-4);
-    background: var(--color-bg-alt);
-    border-left: 3px solid var(--color-accent);
-    font-size: 0.95rem;
-    color: var(--color-ink-muted);
-  }
 }
 
 /* ── Reading list page ──────────────────────────────────────── */

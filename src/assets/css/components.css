@@ -1477,7 +1477,7 @@ a.dateline:hover { color: var(--color-accent); }
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: var(--space-2);
-  margin: var(--space-4) var(--space-6);
+  margin: var(--space-6) var(--space-6) var(--space-4);
   padding: 0 var(--space-3);
   min-height: 48px;
   background: var(--color-bg-alt);
@@ -1829,12 +1829,20 @@ body:has(.annotation-toolbar) .reading-floats {
 body:has(.annotation-toolbar .music-bar:not([hidden])) .reading-floats {
   bottom: 8.5rem; /* extra clearance for the music row */
 }
+/* When TTS controls are visible, lift reading-floats above them so the
+   back-to-top and % indicators don't get hidden behind the TTS bar. */
+body:has(.tts-controls:not([hidden])) .reading-floats {
+  bottom: 11rem;
+}
 @media (max-width: 600px) {
   body:has(.annotation-toolbar) .reading-floats {
     bottom: 7rem;
   }
   body:has(.annotation-toolbar .music-bar:not([hidden])) .reading-floats {
     bottom: 10rem;
+  }
+  body:has(.tts-controls:not([hidden])) .reading-floats {
+    bottom: 12rem;
   }
 }
 

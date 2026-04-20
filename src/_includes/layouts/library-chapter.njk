@@ -27,7 +27,7 @@ layout: layouts/base.njk
 <div id="annotations-context" data-page-slug="{{ workSlug }}-{{ page.fileSlug }}" data-page-url="{{ page.url }}" data-page-title="{{ workTitle }}: {{ title | escape }}" hidden></div>
 
 {# Inline script: apply focus mode before paint to avoid layout shift #}
-<script>document.documentElement.classList.add('is-library-reading');(function(){if(localStorage.getItem((window.__PREFIX||'tft')+'-focus')==='on')document.documentElement.setAttribute('data-focus-mode','on');}());</script>
+<script>document.documentElement.classList.add('is-library-reading');(function(){if(localStorage.getItem((window.__PREFIX||
 
 {# ── Reading progress bar ── #}
 <div class="library-reading-progress" aria-hidden="true">

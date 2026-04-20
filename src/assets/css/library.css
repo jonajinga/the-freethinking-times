@@ -2228,23 +2228,6 @@
   margin: 0 0 var(--space-3);
 }
 
-/* Hide floating TOC in focus mode (masthead gone, reading header
-   occupies full top — but panel still provides chapter nav) */
-html.is-library-reading[data-focus-mode="on"] .library-toc-float:not([hidden]) {
-  display: none;
-}
-
-/* ─────────────────────────────────────────────
-   Focus mode
-   ───────────────────────────────────────────── */
-
-/* On library reading pages, hide the site masthead so the reading
-   header becomes the sole navigation chrome. All reader tools and
-   the reading header itself remain fully visible. */
-html.is-library-reading[data-focus-mode="on"] .masthead {
-  display: none;
-}
-
 /* ─────────────────────────────────────────────
    Print styles
    ───────────────────────────────────────────── */
