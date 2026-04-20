@@ -6,7 +6,7 @@
       { "label": "Write for Us",      "url": "/contribute/",         "title": "Our contributor guidelines, who we publish, what we look for, how the editorial process works, and how to pitch us a piece." },
       { "label": "Submit an Article", "url": "/submit/",             "title": "Pitch a piece of reported news, analysis, opinion, or review. Pitches are read by an editor within two weeks; selective publication." },
       { "label": "Write a Letter",    "url": "/letters/submit/",     "title": "Respond to a specific piece we've published. Letters are selected, edited for length and clarity, and published in the Letters section." },
-      { "label": "Support Us",        "url": "/support/",            "title": "How reader contributions are used, no ads, no paywalls, no corporate parent. One-time tips via Ko-fi keep the lights on." }
+      { "label": "Support Us",        "url": "/support/",            "title": "How reader contributions are used. No ads, no paywalls, no corporate parent. One-time tips via Ko-fi keep the lights on." }
     ]
   },
   {
@@ -66,7 +66,7 @@
       { "label": "Archives",      "url": "/archives/",      "title": "Every article we've ever published, indexed by date, author, section, and topic. The definitive record of our work." },
       { "label": "Community Guidelines","url": "/community-guidelines/","title": "The standards we apply to comments, letters, and any discussion we host on our articles, disagreement welcome, bad-faith argument isn't." },
       { "label": "Editions",      "url": "/editions/",      "title": "Articles grouped into numbered editions, a periodical-style view that collects a week's or a month's work in one place." },
-      { "label": "Newsletter",    "url": "/newsletter/",    "title": "An occasional email, one message, no tracking pixels, no third-party data sharing, one-click unsubscribe." },
+      { "label": "Newsletter",    "url": "/newsletter/",    "title": "An occasional email. One message at a time. No tracking pixels, no third-party data sharing, one-click unsubscribe." },
       { "label": "Notes & Highlights","url": "/notes/",     "title": "Your personal highlights, margin notes, and bookmarks across every article and library text you've read on the site, stored locally in your browser." },
       { "label": "Reading List",  "url": "/reading-list/",  "title": "Articles you've saved to read later, bookmark from any piece, pick up where you left off on any device." },
       { "label": "RSS Feed",      "url": "/feed.xml",       "title": "Subscribe in any RSS reader, Feedly, NetNewsWire, Inoreader, or our built-in reader. Full-text, no ads, no tracking." },

@@ -331,19 +331,19 @@ body, .masthead, .site-footer, .nav-dropdown, .global-settings-panel {
   border-bottom-color: var(--color-accent);
 }
 
-/* ── Projects dropdown ───────────────────────────────────────── */
+/* ── Section dropdowns ───────────────────────────────────────── */
 .nav-dropdown {
   position: absolute;
   top: 100%;
   left: 0;        /* overridden by JS to centre under the trigger */
-  width: min(560px, 90vw);
+  width: min(780px, 92vw);
   background: var(--color-bg);
   border: 1px solid var(--color-rule);
   border-top: 3px solid var(--color-ink);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   z-index: calc(var(--z-nav) + 1);
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1.4fr;
   padding: var(--space-2);
   gap: var(--space-1);
   opacity: 0;
@@ -351,6 +351,12 @@ body, .masthead, .site-footer, .nav-dropdown, .global-settings-panel {
   transform: translateY(-6px);
   pointer-events: none;
   transition: opacity 0.12s ease 0.08s, visibility 0.12s ease 0.08s, transform 0.12s ease 0.08s;
+}
+
+/* Fall back to 2 columns if a section has no 'Sections' column */
+.nav-dropdown:not(:has(.nav-section-col + .nav-section-col + .nav-section-col)) {
+  grid-template-columns: 1fr 1.4fr;
+  width: min(640px, 92vw);
 }
 
 /* Show each dropdown only on its own trigger — one rule per nav item */
@@ -485,6 +491,47 @@ body, .masthead, .site-footer, .nav-dropdown, .global-settings-panel {
   color: var(--color-ink-faint);
   font-style: italic;
   margin: 0;
+}
+
+/* Latest-articles column: stacked title + date entries (NYT-style) */
+.nav-section-col--latest {
+  padding-inline: var(--space-5);
+}
+.nav-section-col__article {
+  display: block;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-rule);
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.1s;
+}
+.nav-section-col__article:last-child { border-bottom: none; }
+.nav-section-col__article:hover .nav-section-col__article-title {
+  color: var(--color-accent);
+}
+.nav-section-col__article-title {
+  display: block;
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--color-ink);
+  line-height: var(--leading-snug);
+  margin-bottom: 2px;
+  /* clamp to 2 lines so dropdown stays predictable height */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.1s;
+}
+.nav-section-col__article-date {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-faint);
 }
 
 /* Quotes dropdown: single column, centered on page */
