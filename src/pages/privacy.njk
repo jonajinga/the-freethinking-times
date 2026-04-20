@@ -57,10 +57,12 @@ permalink: /privacy/
 
       <h2 id="analytics">Analytics</h2>
 
-      <p>We use <a href="https://umami.is" target="_blank" rel="noopener noreferrer">Umami</a> for site analytics. Umami is designed to be privacy-first: it collects no personally identifiable information, sets no cookies, and does not track visitors across sites or sessions. It records page views, referrer, browser type, and general country — in aggregate, never linked to an individual.</p>
+      <p>We use <a href="https://umami.is" target="_blank" rel="noopener noreferrer">Umami</a> as our primary site analytics. Umami is designed to be privacy-first: it collects no personally identifiable information, sets no cookies, and does not track visitors across sites or sessions. It records page views, referrer, browser type, and general country &mdash; in aggregate, never linked to an individual.</p>
+
+      <p>We also use <a href="https://www.cloudflare.com/web-analytics/" target="_blank" rel="noopener noreferrer">Cloudflare Web Analytics</a> as a secondary measurement tool. Like Umami, it is cookieless and privacy-preserving: it does not use fingerprinting, does not track visitors across sites, and does not build profiles of individual users. It reports aggregate page-view counts, referrers, and coarse geography derived from the same request metadata Cloudflare already processes to serve the site. Cloudflare&rsquo;s handling of this data is governed by <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">their privacy policy</a>.</p>
 
       {% if site.analytics and site.analytics.dashboardUrl %}
-      <p>Our analytics dashboard is public. You can view the same data we see at <a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer">our public analytics page</a>.</p>
+      <p>Our Umami analytics dashboard is public &mdash; you can view the same data we see at <a href="{{ site.analytics.dashboardUrl }}" target="_blank" rel="noopener noreferrer">our public analytics page</a>.</p>
       {% endif %}
 
       <h2 id="comments">Comments</h2>
@@ -138,7 +140,7 @@ permalink: /privacy/
 
       <p>Questions: <a href="/contact/">our contact form</a></p>
 
-      <p><em>Last updated: April 18, 2026</em></p>
+      <p><em>Last updated: April 20, 2026</em></p>
 
     </div>
   </div>
