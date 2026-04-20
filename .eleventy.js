@@ -523,15 +523,35 @@ module.exports = function (eleventyConfig) {
     return 0;
   };
 
+  // Load author profiles once so we can resolve slugs -> display names.
+  const authorProfiles = (() => {
+    try {
+      const dir = path.join(__dirname, "src", "_data", "authorProfiles");
+      const map = {};
+      if (fs.existsSync(dir)) {
+        fs.readdirSync(dir).filter(f => f.endsWith(".json")).forEach(f => {
+          const data = JSON.parse(fs.readFileSync(path.join(dir, f), "utf8"));
+          const slug = data.slug || f.replace(/\.json$/, "");
+          map[slug] = data;
+        });
+      }
+      return map;
+    } catch (e) { return {}; }
+  })();
+
   // Per-author stats: [{ name, count, totalWords, avgWords, totalReadingMin, sections }]
+  // Groups by the author SLUG (item.data.author), not the byline, so every
+  // role-based byline (The Editors / Staff Reporter / Staff Critic / Letters
+  // Editor) collapses under the real person or staff record.
   eleventyConfig.addFilter("authorStats", (allContent) => {
     const stats = {};
     allContent.forEach(item => {
-      const name = item.data.authorName || item.data.author || "Unknown";
-      if (!stats[name]) stats[name] = { name, count: 0, totalWords: 0, sections: new Set() };
-      stats[name].count++;
-      stats[name].totalWords += countWords(item);
-      if (item.data.section) stats[name].sections.add(item.data.section);
+      const slug = item.data.author || "unknown";
+      const displayName = (authorProfiles[slug] && authorProfiles[slug].name) || slug;
+      if (!stats[slug]) stats[slug] = { slug, name: displayName, count: 0, totalWords: 0, sections: new Set() };
+      stats[slug].count++;
+      stats[slug].totalWords += countWords(item);
+      if (item.data.section) stats[slug].sections.add(item.data.section);
     });
     return Object.values(stats).map(s => ({
       name: s.name,

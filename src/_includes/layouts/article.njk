@@ -67,6 +67,18 @@ layout: layouts/base.njk
     {# ── Article Body ── #}
     <div class="article-layout__body" data-pagefind-body>
 
+      {# Hidden author/byline text so Pagefind indexes it as searchable
+         content. The visible byline block below is data-pagefind-ignore'd,
+         so without this readers who search for an author name would only
+         get the /author/ page itself, not the articles. #}
+      {% if author %}
+      <span class="visually-hidden">
+        Written by {{ authors[author].name or authorName or author }}
+        {% if authorName and authors[author] and authorName != authors[author].name %}({{ authorName }}){% endif %}
+        for {{ site.title }}.
+      </span>
+      {% endif %}
+
       {# Article Header #}
       <header class="article-header">
         <div class="article-header__eyebrow">

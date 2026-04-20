@@ -276,13 +276,25 @@
         }
       }
 
-      // Wrap every word in .article-body in a <span class="tts-word"> once
-      // on first play. This is DOM-stable: subsequent highlights just
-      // toggle a class on the pre-existing spans.
+      // Wrap every word in .article-body in a <span class="tts-word"> on
+      // first play (or after SPA nav replaces the body). DOM-stable:
+      // subsequent highlights just toggle a class on pre-existing spans.
       function wrapWordsOnce() {
-        if (ttsWrapped) return;
         var body = document.querySelector('.article-body');
-        if (!body) return;
+        if (!body) { ttsWordSpans = []; ttsWrapped = false; return; }
+
+        // If the current body already has tts-word spans (same session,
+        // just toggled play again), just collect them. If the stored
+        // spans are detached from the DOM (SPA nav swapped the body),
+        // we need a fresh wrap.
+        var currentSpans = body.querySelectorAll('.tts-word');
+        if (currentSpans.length) {
+          ttsWordSpans = Array.prototype.slice.call(currentSpans);
+          ttsWrapped = true;
+          return;
+        }
+        ttsWrapped = false;
+        ttsWordSpans = [];
 
         // Collect all text nodes up-front so we can mutate without breaking
         // the tree walker mid-iteration.
@@ -407,16 +419,23 @@
           }
         };
 
-        // If onboundary does fire (Edge, cloud voices on Chrome), resync the
-        // highlight + timer to the actual audio position.
+        // onboundary is only reliable on Edge and cloud voices. On Chrome's
+        // default local voices it often fires once with charIndex at the
+        // start or end of the utterance, which would jump the highlight
+        // straight past every word. So we ignore any onboundary event that
+        // would jump more than a handful of words from where the timer
+        // thinks we are — let the timer carry the load.
         utt.onboundary = function (e) {
           if (e.name !== 'word') return;
-          _ttsBoundaryFired = true;
           var i = findWordIndexByChar(e.charIndex);
+          // Only accept boundary events that nudge us forward by a small
+          // amount. Anything bigger is treated as spurious.
+          if (i < ttsWordIdx || i > ttsWordIdx + 3) return;
           if (i === ttsWordIdx) return;
+          _ttsBoundaryFired = true;
           ttsWordIdx = i;
           highlightWord(i);
-          startTimerAdvance();
+          // Don't restart the timer every boundary, just let it continue.
         };
 
         return utt;
