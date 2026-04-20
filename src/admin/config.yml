@@ -9,7 +9,7 @@ backend:
   name: github
   repo: jonajinga/the-freethinking-times
   branch: main
-  base_url: https://the-freethinking-times.pages.dev
+  base_url: https://thefreethinkingtimes.com
   auth_endpoint: api/auth
 
 publish_mode: editorial_workflow
