@@ -356,7 +356,13 @@
   }
 
   // ─── Init: Chapter reading page ───────────────────────────
-  document.addEventListener('DOMContentLoaded', function () {
+  // SPA-compatible: spa-nav re-injects library.js on every content swap,
+  // so we run the init immediately if the DOM is already parsed instead
+  // of waiting for a DOMContentLoaded that'll never fire a second time.
+  var isFirstRun = !window.__libraryJsBootstrapped;
+  window.__libraryJsBootstrapped = true;
+
+  function initLibraryPage() {
 
     // ── Progress bar ──
     var progressBar = document.querySelector('.library-reading-progress__bar');
@@ -381,7 +387,7 @@
       ReadingPosition.restore(chapterSlug);
     }
 
-    window.addEventListener('scroll', function () {
+    if (isFirstRun) window.addEventListener('scroll', function () {
       updateProgress();
       savePosition();
     }, { passive: true });
@@ -612,7 +618,13 @@
     }
     } // end annotations-context panel guard
 
-  }); // end DOMContentLoaded
+  } // end initLibraryPage
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLibraryPage);
+  } else {
+    initLibraryPage();
+  }
 
   // ─── Expose for work landing page (continue reading) ──────
   window.LibraryChapterCompletion = ChapterCompletion;

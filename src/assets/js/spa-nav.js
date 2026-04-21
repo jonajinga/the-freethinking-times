@@ -34,20 +34,13 @@
     if (link.hasAttribute('data-no-spa')) return false;
     // Skip if inside a form
     if (link.closest('form')) return false;
-    // Library chapters have complex page-specific JS (annotations, chapter
-    // nav, TOC highlighting) that still needs a full reload.
-    var path = link.pathname;
-    if (path.match(/^\/library\/.+\/.+/)) return false;
-    // Article pages now SPA-nav so the background music iframe survives the
-    // transition. Article-specific scripts (progress.js, annotations.js,
-    // reading-list.js, download.js) are loaded on first visit and
-    // re-initialise on the `spa:contentswap` event.
-    if (path.match(/^\/glossary\/.+/) && path !== '/glossary/') return false;
-    if (path.match(/^\/bookshelf\/.+/) && path !== '/bookshelf/') return false;
-    if (path.match(/^\/trials\/.+/) && !path.match(/\/(timeline|showcase|submit)\//)) return false;
-    if (path.match(/^\/thought-experiments\/.+/) && !path.match(/\/(showcase|submit)\//)) return false;
-    // Pages with complex page-specific JS
-    if (path === '/reader/' || path === '/search/' || path === '/notes/' || path === '/reading-list/' || path === '/dashboard/' || path === '/events/') return false;
+    // All internal pages SPA-nav by default so the background music
+    // iframe survives. Page-specific scripts that need per-navigation
+    // rebinding are listed in the re-inject array further down (progress,
+    // annotations, reading-list, download, reading-settings, reader-panel
+    // migration, footnotes, cite-inline, revision-history, keyboard
+    // shortcuts). Opt individual links out with data-no-spa if they
+    // need a genuine full reload (e.g. the showcase overlay).
     return true;
   }
 
@@ -205,7 +198,7 @@
       // Each script has a one-time bootstrap guard (e.g. `isFirstRun` in
       // progress.js) so window-level listeners aren't duplicated across
       // executions.
-      ['progress.js', 'annotations.js', 'reading-list.js', 'download.js', 'reader-panel-migrate.js', 'keyboard-shortcuts.js', 'footnotes.js', 'cite-inline.js', 'revision-history.js'].forEach(function (name) {
+      ['progress.js', 'annotations.js', 'reading-list.js', 'download.js', 'reader-panel-migrate.js', 'keyboard-shortcuts.js', 'footnotes.js', 'cite-inline.js', 'revision-history.js', 'library.js'].forEach(function (name) {
         var tag = document.querySelector('script[src*="/assets/js/' + name + '"]');
         if (!tag || !tag.parentNode) return;
         var tagSrc = tag.src;
