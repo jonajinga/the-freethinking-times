@@ -7,227 +7,434 @@ eleventyExcludeFromCollections: true
 ---
 
 {% set editorialSections = ["news", "opinion", "analysis", "arts-culture", "science-technology", "history", "letters", "reviews"] %}
-{% set tbl = 'style="width:100%;font-size:var(--text-sm);border-collapse:collapse;margin:var(--space-6) 0;"' %}
-{% set th = 'style="padding:var(--space-2);text-align:left;"' %}
-{% set thr = 'style="padding:var(--space-2);text-align:right;"' %}
-{% set td = 'style="padding:var(--space-2);"' %}
-{% set tdr = 'style="padding:var(--space-2);text-align:right;"' %}
-{% set rowb = 'style="border-bottom:1px solid var(--color-rule);"' %}
-{% set headb = 'style="border-bottom:2px solid var(--color-ink);text-align:left;"' %}
-{% set footb = 'style="border-top:2px solid var(--color-ink);font-weight:700;"' %}
+{% set sc = collections.allContent | statusCounts %}
+{% set assignments = collections.allContent | activeAssignments %}
 
-<div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
+<div class="container dash">
 
-  <header style="padding-bottom: var(--space-8); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);">
-    <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-2);">Editorial Dashboard</h1>
-    <p style="color: var(--color-ink-muted); font-size: var(--text-md);">
-      Content overview across all sections.
-    </p>
-    <div style="display:flex;gap:var(--space-3);margin-top:var(--space-4);flex-wrap:wrap;">
-      <a href="/editorial/board/" class="btn" style="font-size:var(--text-xs);">Editorial Board</a>
-      <a href="/templates/" class="btn" style="font-size:var(--text-xs);">Content Templates</a>
-      <a href="/abbreviations/" class="btn" style="font-size:var(--text-xs);">Abbreviations</a>
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol class="breadcrumbs__list">
+      <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/">Home</a></li>
+      <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">Editorial Dashboard</li>
+    </ol>
+  </nav>
+
+  <header class="dash__header">
+    <p class="dash__kicker">Editorial</p>
+    <h1 class="dash__title">Dashboard</h1>
+    <p class="dash__lede">Content status, assignments, and production pulse across the masthead.</p>
+    <div class="dash__tools">
+      <a href="/editorial/board/" class="btn">Editorial Board</a>
+      <a href="/templates/" class="btn">Content Templates</a>
+      <a href="/abbreviations/" class="btn">Abbreviations</a>
       {% if site.comments and site.comments.appId %}
-      <a href="https://cusdis.com/dashboard/project/{{ site.comments.appId }}" target="_blank" rel="noopener noreferrer" class="btn" style="font-size:var(--text-xs);">Moderate Comments &nearr;</a>
+      <a href="https://cusdis.com/dashboard/project/{{ site.comments.appId }}" target="_blank" rel="noopener noreferrer" class="btn">Moderate Comments &nearr;</a>
       {% endif %}
     </div>
   </header>
 
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-6);margin-bottom:var(--space-10);">
+  {# ── Top stats row ── #}
+  <div class="dash__stats">
+    <div class="dash-stat">
+      <p class="dash-stat__label">Total articles</p>
+      <p class="dash-stat__value">{{ collections.allContent.length }}</p>
+    </div>
+    <div class="dash-stat">
+      <p class="dash-stat__label">Published</p>
+      <p class="dash-stat__value">{{ sc.published }}</p>
+    </div>
+    <div class="dash-stat dash-stat--warn">
+      <p class="dash-stat__label">In review</p>
+      <p class="dash-stat__value">{{ sc.review }}</p>
+    </div>
+    <div class="dash-stat dash-stat--alert">
+      <p class="dash-stat__label">Drafts</p>
+      <p class="dash-stat__value">{{ sc.draft }}</p>
+    </div>
+    <div class="dash-stat">
+      <p class="dash-stat__label">Active assignments</p>
+      <p class="dash-stat__value">{{ assignments.length }}</p>
+    </div>
+  </div>
+
+  <div class="dash__grid">
 
     {# ── Articles by Section ── #}
-    <div>
-      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Articles by Section</h2>
-      <table {{ tbl | safe }}>
-        <thead><tr {{ headb | safe }}><th {{ th | safe }}>Section</th><th {{ thr | safe }}>Count</th></tr></thead>
+    <section class="dash-card">
+      <h2 class="dash-card__title">Articles by section</h2>
+      <table class="dash-table">
+        <thead>
+          <tr><th>Section</th><th class="dash-table__num">Count</th></tr>
+        </thead>
         <tbody>
           {% for key in editorialSections %}
           {% if collections[key] %}
-          <tr {{ rowb | safe }}>
-            <td {{ td | safe }}><a href="/{{ key }}/">{{ site.sections[key].label }}</a></td>
-            <td {{ tdr | safe }}>{{ collections[key].length }}</td>
+          <tr>
+            <td><a href="/{{ key }}/">{{ site.sections[key].label }}</a></td>
+            <td class="dash-table__num">{{ collections[key].length }}</td>
           </tr>
           {% endif %}
           {% endfor %}
-          <tr {{ footb | safe }}><td {{ td | safe }}>Total</td><td {{ tdr | safe }}>{{ collections.allContent.length }}</td></tr>
         </tbody>
+        <tfoot>
+          <tr><td>Total</td><td class="dash-table__num">{{ collections.allContent.length }}</td></tr>
+        </tfoot>
       </table>
-    </div>
+    </section>
 
-    {# ── Articles by Status ── #}
-    <div>
-      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Articles by Status</h2>
-      {% set sc = collections.allContent | statusCounts %}
-      <table {{ tbl | safe }}>
-        <thead><tr {{ headb | safe }}><th {{ th | safe }}>Status</th><th {{ thr | safe }}>Count</th></tr></thead>
+    {# ── Projects ── #}
+    <section class="dash-card">
+      <h2 class="dash-card__title">Projects</h2>
+      <table class="dash-table">
+        <thead><tr><th>Project</th><th class="dash-table__num">Entries</th></tr></thead>
         <tbody>
-          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/editorial/board/">Published</a></td><td {{ tdr | safe }}>{{ sc.published }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/editorial/board/">In Review</a></td><td {{ tdr | safe }}>{{ sc.review }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/editorial/board/">Draft</a></td><td {{ tdr | safe }}>{{ sc.draft }}</td></tr>
+          <tr><td><a href="/glossary/">Glossary</a></td><td class="dash-table__num">{{ collections.glossary.length }}</td></tr>
+          <tr><td><a href="/bookshelf/">Recommended Reading</a></td><td class="dash-table__num">{{ collections.bookshelf.length }}</td></tr>
+          <tr><td><a href="/thought-experiments/">Thought Experiments</a></td><td class="dash-table__num">{{ collections["thought-experiments"].length }}</td></tr>
+          <tr><td><a href="/trials/">Trials of Thought</a></td><td class="dash-table__num">{{ collections["trials-of-thought"].length }}</td></tr>
+          <tr><td><a href="/quotes/">Quotes</a></td><td class="dash-table__num">{{ quotes | length }}</td></tr>
+          <tr><td><a href="/timeline/">Timeline</a></td><td class="dash-table__num">{{ timeline | length }}</td></tr>
+          <tr><td><a href="/music/">Songs</a></td><td class="dash-table__num">{{ songs | length }}</td></tr>
+          <tr><td><a href="/videos/">Videos</a></td><td class="dash-table__num">{{ videos | length }}</td></tr>
+          <tr><td><a href="/gallery/">Gallery</a></td><td class="dash-table__num">{{ gallery | length }}</td></tr>
+          <tr><td><a href="/events/">Events</a></td><td class="dash-table__num">{{ events | length }}</td></tr>
+          <tr><td><a href="/music/">Playlists</a></td><td class="dash-table__num">{{ playlists | length }}</td></tr>
         </tbody>
       </table>
-    </div>
+    </section>
 
-    {# ── Active Assignments ── #}
-    <div style="grid-column: span 2;">
-      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Active Assignments</h2>
-      {% set assignments = collections.allContent | activeAssignments %}
+    {# ── Library ── #}
+    <section class="dash-card">
+      <h2 class="dash-card__title">Library</h2>
+      <table class="dash-table">
+        <thead><tr><th>Metric</th><th class="dash-table__num">Count</th></tr></thead>
+        <tbody>
+          <tr><td>Works</td><td class="dash-table__num">{{ library.works | length }}</td></tr>
+          <tr><td>Chapters</td><td class="dash-table__num">{{ collections.libraryChapters.length }}</td></tr>
+          <tr><td>Authors</td><td class="dash-table__num">{{ library.authors | length }}</td></tr>
+          <tr><td>Subjects</td><td class="dash-table__num">{{ library.subjects | length }}</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    {# ── Infrastructure ── #}
+    <section class="dash-card">
+      <h2 class="dash-card__title">Infrastructure</h2>
+      <table class="dash-table">
+        <thead><tr><th>Item</th><th class="dash-table__num">Count</th></tr></thead>
+        <tbody>
+          <tr><td>RSS feeds</td><td class="dash-table__num">{{ feeds | length }}</td></tr>
+          <tr><td>Changelog entries</td><td class="dash-table__num">{{ changelog | length }}</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    {# ── Active Assignments (wide) ── #}
+    <section class="dash-card dash-card--wide">
+      <h2 class="dash-card__title">Active assignments</h2>
       {% if assignments.length %}
-      <table {{ tbl | safe }}>
+      <table class="dash-table">
         <thead>
-          <tr {{ headb | safe }}>
-            <th {{ th | safe }}>Article</th>
-            <th {{ th | safe }}>Assigned to</th>
-            <th {{ th | safe }}>Status</th>
-            <th {{ thr | safe }}>Due</th>
+          <tr>
+            <th>Article</th>
+            <th>Assigned to</th>
+            <th>Status</th>
+            <th class="dash-table__num">Due</th>
           </tr>
         </thead>
         <tbody>
           {% for a in assignments %}
-          <tr {{ rowb | safe }}>
-            <td {{ td | safe }}><a href="{{ a.url }}">{{ a.title }}</a></td>
-            <td {{ td | safe }}>{{ a.assignedTo }}</td>
-            <td {{ td | safe }}>{{ a.status }}</td>
-            <td {{ tdr | safe }}>
-              {% if a.overdue %}<strong style="color:var(--color-accent);">{{ a.dueDate }} ({{ a.daysUntilDue * -1 }}d late)</strong>
-              {% elif a.dueDate %}{{ a.dueDate }}{% if a.daysUntilDue <= 2 %} <span style="color:var(--color-history);">({{ a.daysUntilDue }}d)</span>{% endif %}
-              {% else %}<span style="color:var(--color-ink-faint);">no due date</span>{% endif %}
+          <tr>
+            <td><a href="{{ a.url }}">{{ a.title }}</a></td>
+            <td>{{ a.assignedTo }}</td>
+            <td><span class="dash-status dash-status--{{ a.status | lower | replace(' ', '-') }}">{{ a.status }}</span></td>
+            <td class="dash-table__num">
+              {% if a.overdue %}<strong class="dash-due dash-due--late">{{ a.dueDate }} &middot; {{ a.daysUntilDue * -1 }}d late</strong>
+              {% elif a.dueDate %}{{ a.dueDate }}{% if a.daysUntilDue <= 2 %} <span class="dash-due dash-due--soon">({{ a.daysUntilDue }}d)</span>{% endif %}
+              {% else %}<span class="dash-due dash-due--none">no due date</span>{% endif %}
             </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
       {% else %}
-      <p style="font-family:var(--font-ui);font-size:var(--text-sm);color:var(--color-ink-faint);font-style:italic;">No active assignments. Add <code>assignedTo:</code> and <code>dueDate:</code> to article front matter to track work.</p>
+      <p class="dash-card__empty">No active assignments. Add <code>assignedTo:</code> and <code>dueDate:</code> to article front matter to track work.</p>
       {% endif %}
-    </div>
+    </section>
 
-    {# ── Author Productivity ── #}
-    <div style="grid-column: span 2;">
-      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Author Productivity</h2>
-      <table {{ tbl | safe }}>
+    {# ── Author Productivity (wide) ── #}
+    <section class="dash-card dash-card--wide">
+      <h2 class="dash-card__title">Author productivity</h2>
+      <table class="dash-table">
         <thead>
-          <tr {{ headb | safe }}>
-            <th {{ th | safe }}>Author</th>
-            <th {{ thr | safe }}>Articles</th>
-            <th {{ thr | safe }}>Total Words</th>
-            <th {{ thr | safe }}>Avg Length</th>
-            <th {{ thr | safe }}>Reading Time</th>
+          <tr>
+            <th>Author</th>
+            <th class="dash-table__num">Articles</th>
+            <th class="dash-table__num">Total words</th>
+            <th class="dash-table__num">Avg length</th>
+            <th class="dash-table__num">Reading time</th>
           </tr>
         </thead>
         <tbody>
           {% for stat in collections.allContent | authorStats %}
-          <tr {{ rowb | safe }}>
-            <td {{ td | safe }}>{{ stat.name }}</td>
-            <td {{ tdr | safe }}>{{ stat.count }}</td>
-            <td {{ tdr | safe }}>{{ stat.totalWords }}</td>
-            <td {{ tdr | safe }}>{{ stat.avgWords }}</td>
-            <td {{ tdr | safe }}>{{ stat.totalReadingMin }} min</td>
+          <tr>
+            <td>{{ stat.name }}</td>
+            <td class="dash-table__num">{{ stat.count }}</td>
+            <td class="dash-table__num">{{ stat.totalWords }}</td>
+            <td class="dash-table__num">{{ stat.avgWords }}</td>
+            <td class="dash-table__num">{{ stat.totalReadingMin }} min</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
-    </div>
+    </section>
 
-    {# ── Reading Time by Section ── #}
-    <div style="grid-column: span 2;">
-      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Reading Time by Section</h2>
-      <table {{ tbl | safe }}>
+    {# ── Reading Time by Section (wide) ── #}
+    <section class="dash-card dash-card--wide">
+      <h2 class="dash-card__title">Reading time by section</h2>
+      <table class="dash-table">
         <thead>
-          <tr {{ headb | safe }}>
-            <th {{ th | safe }}>Section</th>
-            <th {{ thr | safe }}>Articles</th>
-            <th {{ thr | safe }}>Total Words</th>
-            <th {{ thr | safe }}>Avg Length</th>
-            <th {{ thr | safe }}>Total Reading</th>
+          <tr>
+            <th>Section</th>
+            <th class="dash-table__num">Articles</th>
+            <th class="dash-table__num">Total words</th>
+            <th class="dash-table__num">Avg length</th>
+            <th class="dash-table__num">Total reading</th>
           </tr>
         </thead>
         <tbody>
           {% for stat in collections.allContent | sectionStats %}
-          <tr {{ rowb | safe }}>
-            <td {{ td | safe }}>{{ stat.section }}</td>
-            <td {{ tdr | safe }}>{{ stat.count }}</td>
-            <td {{ tdr | safe }}>{{ stat.totalWords }}</td>
-            <td {{ tdr | safe }}>{{ stat.avgWords }}</td>
-            <td {{ tdr | safe }}>{{ stat.totalReadingMin }} min</td>
+          <tr>
+            <td>{{ stat.section }}</td>
+            <td class="dash-table__num">{{ stat.count }}</td>
+            <td class="dash-table__num">{{ stat.totalWords }}</td>
+            <td class="dash-table__num">{{ stat.avgWords }}</td>
+            <td class="dash-table__num">{{ stat.totalReadingMin }} min</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
-    </div>
+    </section>
 
-    {# ── Projects ── #}
-    <div>
-      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Projects</h2>
-      <table {{ tbl | safe }}>
-        <thead><tr {{ headb | safe }}><th {{ th | safe }}>Project</th><th {{ thr | safe }}>Entries</th></tr></thead>
-        <tbody>
-          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/glossary/">Glossary</a></td><td {{ tdr | safe }}>{{ collections.glossary.length }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/bookshelf/">Recommended Reading</a></td><td {{ tdr | safe }}>{{ collections.bookshelf.length }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/thought-experiments/">Thought Experiments</a></td><td {{ tdr | safe }}>{{ collections["thought-experiments"].length }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/trials/">Trials of Thought</a></td><td {{ tdr | safe }}>{{ collections["trials-of-thought"].length }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/quotes/">Quotes</a></td><td {{ tdr | safe }}>{{ quotes | length }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/timeline/">Timeline</a></td><td {{ tdr | safe }}>{{ timeline | length }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/music/">Songs</a></td><td {{ tdr | safe }}>{{ songs | length }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/videos/">Videos</a></td><td {{ tdr | safe }}>{{ videos | length }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/gallery/">Gallery</a></td><td {{ tdr | safe }}>{{ gallery | length }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/events/">Events</a></td><td {{ tdr | safe }}>{{ events | length }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}><a href="/music/">Playlists</a></td><td {{ tdr | safe }}>{{ playlists | length }}</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    {# ── Library ── #}
-    <div>
-      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Library</h2>
-      <table {{ tbl | safe }}>
-        <thead><tr {{ headb | safe }}><th {{ th | safe }}>Metric</th><th {{ thr | safe }}>Count</th></tr></thead>
-        <tbody>
-          <tr {{ rowb | safe }}><td {{ td | safe }}>Works</td><td {{ tdr | safe }}>{{ library.works | length }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}>Chapters</td><td {{ tdr | safe }}>{{ collections.libraryChapters.length }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}>Authors</td><td {{ tdr | safe }}>{{ library.authors | length }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}>Subjects</td><td {{ tdr | safe }}>{{ library.subjects | length }}</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    {# ── Data Collections ── #}
-    <div>
-      <h2 style="font-family:var(--font-headline);font-size:var(--text-md);margin-bottom:var(--space-2);">Infrastructure</h2>
-      <table {{ tbl | safe }}>
-        <thead><tr {{ headb | safe }}><th {{ th | safe }}>Item</th><th {{ thr | safe }}>Count</th></tr></thead>
-        <tbody>
-          <tr {{ rowb | safe }}><td {{ td | safe }}>RSS Feeds</td><td {{ tdr | safe }}>{{ feeds | length }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}>Changelog Entries</td><td {{ tdr | safe }}>{{ changelog | length }}</td></tr>
-          <tr {{ rowb | safe }}><td {{ td | safe }}>Total Pages (build)</td><td {{ tdr | safe }}>545+</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-  </div>
-
-  <div class="container--prose">
-    <div class="article-body">
-
-      <h2>Recent Articles</h2>
-
-      <ul>
-        {% for article in collections.allContent | limit(10) %}
+    {# ── Recent articles (wide) ── #}
+    <section class="dash-card dash-card--wide">
+      <h2 class="dash-card__title">Recent articles</h2>
+      <ul class="dash-recent">
+        {% for article in collections.allContent | limit(12) %}
         <li>
-          <a href="{{ article.url }}">{{ article.data.title }}</a>
-          <span style="color:var(--color-ink-faint);font-size:var(--text-xs);">
+          <a href="{{ article.url }}" class="dash-recent__title">{{ article.data.title }}</a>
+          <span class="dash-recent__meta">
             {{ article.data.section }} &middot; {{ article.date | readableDate }}
-            {% if article.data.status == "draft" or article.data.draft %} &middot; <strong style="color:var(--color-accent);">DRAFT</strong>{% endif %}
-            {% if article.data.status == "review" %} &middot; <strong style="color:var(--color-history);">IN REVIEW</strong>{% endif %}
+            {% if article.data.status == "draft" or article.data.draft %} &middot; <span class="dash-recent__flag dash-recent__flag--draft">DRAFT</span>{% endif %}
+            {% if article.data.status == "review" %} &middot; <span class="dash-recent__flag dash-recent__flag--review">IN REVIEW</span>{% endif %}
           </span>
         </li>
         {% endfor %}
       </ul>
+    </section>
 
-      <h2>Manage Content</h2>
-
-      <p>Use <a href="/admin/" target="_blank" rel="noopener noreferrer">Decap CMS</a> to add and edit content without touching code. Sign in with your GitHub account to get started.</p>
-
-    </div>
   </div>
+
+  <section class="dash__note">
+    <h2 class="dash-card__title">Manage content</h2>
+    <p>Use <a href="/admin/" target="_blank" rel="noopener noreferrer">Decap CMS</a> to add and edit content without touching code. Sign in with your GitHub account to get started.</p>
+  </section>
+
 </div>
+
+<style>
+.dash { padding-top: var(--space-10); padding-bottom: var(--space-20); }
+
+.dash__header {
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 3px solid var(--color-ink);
+}
+.dash__kicker {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-2);
+}
+.dash__title {
+  font-family: var(--font-masthead, var(--font-headline));
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin: 0 0 var(--space-3);
+  line-height: var(--leading-tight);
+}
+.dash__lede {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  color: var(--color-ink-muted);
+  max-width: 62ch;
+  font-style: italic;
+  margin: 0 0 var(--space-5);
+}
+.dash__tools { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.dash__tools .btn { font-size: var(--text-xs); }
+
+/* Top strip of at-a-glance stats */
+.dash__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-10);
+}
+.dash-stat {
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-rule);
+  border-left: 3px solid var(--color-ink);
+}
+.dash-stat--warn  { border-left-color: var(--color-history, #b78900); }
+.dash-stat--alert { border-left-color: var(--color-accent); }
+.dash-stat__label {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-ink-faint);
+  margin: 0 0 var(--space-2);
+}
+.dash-stat__value {
+  font-family: var(--font-masthead, var(--font-headline));
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  line-height: 1;
+  color: var(--color-ink);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Card grid + tables */
+.dash__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-5);
+  margin-bottom: var(--space-10);
+}
+.dash-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-rule);
+  border-top: 3px solid var(--color-ink);
+  padding: var(--space-5) var(--space-5) var(--space-4);
+}
+.dash-card--wide { grid-column: 1 / -1; }
+.dash-card__title {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-ink);
+  padding-bottom: var(--space-2);
+  margin: 0 0 var(--space-4);
+  border-bottom: 1px solid var(--color-rule);
+}
+.dash-card__empty {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-style: italic;
+  color: var(--color-ink-muted);
+  margin: 0;
+  padding: var(--space-2) 0;
+}
+
+.dash-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+}
+.dash-table th,
+.dash-table td {
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+  border-bottom: 1px solid var(--color-rule);
+}
+.dash-table th {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-ink-faint);
+}
+.dash-table tfoot td {
+  border-top: 2px solid var(--color-ink);
+  border-bottom: none;
+  font-weight: 700;
+}
+.dash-table tbody tr:last-child td { border-bottom: none; }
+.dash-table__num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.dash-table a { color: var(--color-ink); }
+.dash-table a:hover { color: var(--color-accent); }
+
+/* Status pills + due flags */
+.dash-status {
+  display: inline-block;
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 2px var(--space-2);
+  border: 1px solid var(--color-rule);
+  color: var(--color-ink-muted);
+}
+.dash-status--published { border-color: var(--color-ink); color: var(--color-ink); }
+.dash-status--review    { border-color: var(--color-history, #b78900); color: var(--color-history, #b78900); }
+.dash-status--draft     { border-color: var(--color-accent); color: var(--color-accent); }
+.dash-due--late { color: var(--color-accent); }
+.dash-due--soon { color: var(--color-history, #b78900); font-size: 0.72rem; }
+.dash-due--none { color: var(--color-ink-faint); font-style: italic; }
+
+/* Recent articles list */
+.dash-recent {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.dash-recent li {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-rule);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.dash-recent li:last-child { border-bottom: none; }
+.dash-recent__title {
+  font-family: var(--font-headline);
+  font-weight: 600;
+  color: var(--color-ink);
+  font-size: var(--text-md);
+  text-decoration: none;
+}
+.dash-recent__title:hover { color: var(--color-accent); }
+.dash-recent__meta {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-ink-faint);
+}
+.dash-recent__flag {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.dash-recent__flag--draft  { color: var(--color-accent); }
+.dash-recent__flag--review { color: var(--color-history, #b78900); }
+
+.dash__note {
+  border-top: 2px solid var(--color-ink);
+  padding-top: var(--space-5);
+  max-width: 62ch;
+  font-family: var(--font-body);
+  color: var(--color-ink-muted);
+}
+.dash__note a { color: var(--color-accent); }
+</style>

@@ -171,12 +171,11 @@ eleventyExcludeFromCollections: true
     right: var(--space-4);
   }
   .as-showcase__filter { display: none; }
-  .as-showcase__brand {
-    max-width: 60%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  .as-showcase__brand-full { display: none; }
+}
+.as-showcase__brand-short { display: none; }
+@media (max-width: 640px) {
+  .as-showcase__brand-short { display: inline; letter-spacing: 0.18em; }
 }
 
 /* Short viewport (landscape phones, small laptops, split-screen). The
@@ -304,7 +303,10 @@ eleventyExcludeFromCollections: true
 
 <div class="as-showcase" id="as-showcase">
   <div class="as-showcase__topbar">
-    <a class="as-showcase__brand" href="/" data-no-spa>The Freethinking Times</a>
+    <a class="as-showcase__brand" href="/" data-no-spa>
+      <span class="as-showcase__brand-full">The Freethinking Times</span>
+      <span class="as-showcase__brand-short" aria-hidden="true">TFT</span>
+    </a>
     <span class="as-showcase__filter" id="as-filter"></span>
     <a class="as-showcase__exit" id="as-exit" href="/archives/" data-no-spa>&larr; Exit</a>
   </div>

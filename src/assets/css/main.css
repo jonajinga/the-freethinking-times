@@ -49,10 +49,81 @@
   .music-bar,
   .reading-settings-wrap,
   .gs-panel,
-  .global-settings-overlay { display: none !important; }
+  .global-settings-overlay,
+  /* Navigation / secondary chrome that shouldn't survive a print */
+  .nav-drawer,
+  .nav-drawer-overlay,
+  .breadcrumbs,
+  .back-to-top,
+  .kb-shortcuts-overlay,
+  /* In-content controls */
+  .heading-anchor,
+  .archive-views,
+  .archive-toolbar,
+  .share-panel,
+  .share-popover,
+  .cite-inline__copy { display: none !important; }
 
   @page { margin: 0.5in; }
-  body { orphans: 2; widows: 2; }
+  body {
+    orphans: 3;
+    widows: 3;
+    background: #fff !important;
+    color: #000 !important;
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+
+  /* Keep headings with the paragraph they introduce. */
+  .article-body h2,
+  .article-body h3,
+  .article-body h4,
+  .library-body h2,
+  .library-body h3,
+  .library-body h4 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+    page-break-inside: avoid;
+    color: #000 !important;
+  }
+
+  /* Keep paragraphs from splitting too aggressively. */
+  .article-body p,
+  .library-body p { orphans: 3; widows: 3; }
+
+  /* Pullquotes + blockquotes should ride with their surroundings. */
+  .article-body blockquote,
+  .article-body figure,
+  .library-body blockquote,
+  .library-body figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Constrain imagery so nothing bleeds off the page. */
+  .article-body img,
+  .library-body img,
+  figure img {
+    max-width: 100% !important;
+    height: auto !important;
+    page-break-inside: avoid;
+  }
+
+  /* Tables: thin rules only. */
+  .article-body table,
+  .library-body table {
+    border-collapse: collapse;
+    width: 100%;
+    page-break-inside: auto;
+  }
+  .article-body th,
+  .article-body td {
+    border: 1px solid #999;
+    padding: 0.3rem 0.5rem;
+    font-size: 9pt;
+  }
+
+  /* Drop cap off — it doesn't print well and looks stranded. */
+  .article-body > p:first-of-type::first-letter { all: unset; }
 
   /* Show link URLs in print (skip internal/anchor links) */
   .article-body a[href^="http"]:not(.archive-link)::after,
