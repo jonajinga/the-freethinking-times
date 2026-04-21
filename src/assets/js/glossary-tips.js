@@ -104,6 +104,28 @@
     delay: [200, 0],
     maxWidth: 320,
     interactive: false,
-    appendTo: document.body
+    appendTo: document.body,
+    // Mobile fix: dismiss on any outside tap AND make sure tapping the
+    // trigger again closes the tooltip rather than leaving it open.
+    hideOnClick: true,
+    touch: ['hold', 500]
   });
+
+  // Hide any visible tooltips when the page is about to change. Without
+  // this, tapping a glossary term on mobile → tapping a link inside it
+  // (or navigating away) leaves the tooltip portal floating on the next
+  // page because SPA-nav swaps #main-content but not document.body.
+  function hideAllTips() {
+    if (typeof tippy !== 'undefined' && tippy.hideAll) {
+      tippy.hideAll({ duration: 0 });
+    }
+  }
+  document.addEventListener('spa:beforeswap', hideAllTips);
+  window.addEventListener('pagehide', hideAllTips);
+  // Also dismiss on any link click — covers the case where a glossary
+  // term itself contains the destination URL (the tap both opens the
+  // tooltip and starts navigation on mobile).
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('a[href]')) hideAllTips();
+  }, true);
 })();

@@ -41,10 +41,14 @@ permalink: /search/
   </div>
 
   {# ── Page title (sits below the sticky bar) ─────────────────── #}
-  <header class="archive-header" style="margin-top: var(--space-8); margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
-    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-2);">Search</h1>
-    <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic; margin: 0;">
-      Articles, quotes, library texts, glossary terms, timeline, and more.
+  <header class="sp-header">
+    <p class="sp-header__kicker">Search</p>
+    <h1 class="sp-header__title">Find anything we&rsquo;ve published</h1>
+    <p class="sp-header__lede">
+      Articles, quotes, library texts, glossary terms, timeline, and more &mdash; across every section.
+    </p>
+    <p class="sp-header__hint">
+      <kbd>/</kbd> focuses search from anywhere. Use <kbd>&darr;</kbd>&thinsp;<kbd>&uarr;</kbd> to navigate results. Press <kbd>Enter</kbd> to open the focused result.
     </p>
   </header>
 
@@ -68,8 +72,8 @@ permalink: /search/
       </div>
     </div>
 
-    <div id="sp-loading" class="sp-state" hidden>
-      <p style="font-family:var(--font-ui);font-size:var(--text-sm);color:var(--color-ink-faint);">Searching…</p>
+    <div id="sp-loading" class="sp-state sp-loading" hidden>
+      <p class="sp-loading__label">Searching&hellip;</p>
     </div>
 
     <div id="sp-active" class="sp-state" hidden>
@@ -94,16 +98,17 @@ permalink: /search/
       </div>
     </div>
 
-    <div id="sp-empty" class="sp-state" hidden>
-      <p style="font-family:var(--font-headline);font-size:var(--text-lg);color:var(--color-ink);margin:0 0 var(--space-2);">No results found</p>
-      <p style="font-family:var(--font-body);font-size:var(--text-sm);color:var(--color-ink-muted);margin:0 0 var(--space-6);">Try a different search term, or browse by section:</p>
-      <div style="display:flex;flex-wrap:wrap;gap:var(--space-3);">
+    <div id="sp-empty" class="sp-state sp-empty" hidden>
+      <p class="sp-empty__title">No results found</p>
+      <p class="sp-empty__lede">Try a different spelling, fewer words, or broaden the section filter. Or browse by project:</p>
+      <div class="sp-empty__browse">
+        <a href="/archives/" class="sp-browse">Archives</a>
+        <a href="/topics/" class="sp-browse">Topics</a>
         <a href="/quotes/" class="sp-browse">Quotes</a>
         <a href="/library/" class="sp-browse">Library</a>
         <a href="/glossary/" class="sp-browse">Glossary</a>
         <a href="/timeline/" class="sp-browse">Timeline</a>
         <a href="/videos/" class="sp-browse">Videos</a>
-        <a href="/topics/" class="sp-browse">Topics</a>
         <a href="/bookshelf/" class="sp-browse">Bookshelf</a>
       </div>
     </div>
@@ -113,6 +118,87 @@ permalink: /search/
 
 <style>
 /* ── Search page ─────────────────────────────────────────────── */
+
+/* Header card */
+.sp-header {
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 3px solid var(--color-ink);
+}
+.sp-header__kicker {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-2);
+}
+.sp-header__title {
+  font-family: var(--font-masthead, var(--font-headline));
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  line-height: var(--leading-tight);
+  color: var(--color-ink);
+  margin: 0 0 var(--space-3);
+}
+.sp-header__lede {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  color: var(--color-ink-muted);
+  font-style: italic;
+  margin: 0 0 var(--space-3);
+  max-width: 62ch;
+}
+.sp-header__hint {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  color: var(--color-ink-faint);
+  margin: 0;
+}
+.sp-header__hint kbd {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border: 1px solid var(--color-rule);
+  background: var(--color-bg-alt);
+  color: var(--color-ink);
+  border-radius: 3px;
+}
+
+/* Empty + loading polish */
+.sp-loading__label {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-ink-faint);
+  margin: 0;
+}
+.sp-empty {
+  text-align: center;
+  padding: var(--space-10) 0;
+}
+.sp-empty__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-ink);
+  margin: 0 0 var(--space-2);
+}
+.sp-empty__lede {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  margin: 0 0 var(--space-6);
+  max-width: 52ch;
+  margin-inline: auto;
+}
+.sp-empty__browse {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: center;
+}
 
 /* Sticky bar: input + filter pills. Same behavior as .archive-toolbar,
    sits flush below the sticky masthead (7rem full / 4.5rem below 1180px). */
@@ -415,7 +501,7 @@ permalink: /search/
     if (initial) resultsEl.innerHTML = html; else resultsEl.insertAdjacentHTML('beforeend', html);
     countEl.textContent = allResults.length + ' result' + (allResults.length !== 1 ? 's' : '');
     moreWrap.hidden = shown >= allResults.length;
-    moreBtn.textContent = 'Load more (' + (allResults.length, shown) + ' remaining)';
+    moreBtn.textContent = 'Load more (' + (allResults.length - shown) + ' remaining)';
     focusIdx = -1;
   }
 

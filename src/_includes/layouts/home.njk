@@ -4,6 +4,19 @@ layout: layouts/base.njk
 
 <div class="container front-page">
 
+  {# ─── Pulse flag: today's date + edition counter ─────────── #}
+  <div class="front-pulse" aria-label="Today's edition">
+    <span class="front-pulse__date">
+      <time datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time>
+    </span>
+    <span class="front-pulse__title">Today on The Freethinking Times</span>
+    <span class="front-pulse__count">
+      {{ collections.allContent | length }} published &middot;
+      {{ collections.glossary | length }} glossary &middot;
+      {{ library.works | length }} library
+    </span>
+  </div>
+
   {# ─── Lead / Hero ─────────────────────────────────────────── #}
   <section class="front-hero" aria-label="Lead stories">
     {% set leadStory = collections.featured | first or collections.allContent | first %}
@@ -66,6 +79,52 @@ layout: layouts/base.njk
   </section>
   {% endif %}
   {% endfor %}
+
+  {# ─── Cross-project discovery ─────────────────────────────── #}
+  <section class="front-projects" aria-label="Explore our projects">
+    <header class="front-projects__header">
+      <p class="front-projects__kicker">Beyond the page</p>
+      <h2 class="front-projects__title">Explore our projects</h2>
+    </header>
+    <div class="front-projects__grid">
+      <a href="/timeline/" class="front-project">
+        <span class="front-project__kicker">Interactive</span>
+        <span class="front-project__name">Timeline</span>
+        <span class="front-project__desc">2,400 years of reason against orthodoxy.</span>
+        <span class="front-project__count">{{ timeline | length }} entries</span>
+      </a>
+      <a href="/library/" class="front-project">
+        <span class="front-project__kicker">Primary sources</span>
+        <span class="front-project__name">Library</span>
+        <span class="front-project__desc">Public-domain texts in a modern reader.</span>
+        <span class="front-project__count">{{ library.works | length }} works</span>
+      </a>
+      <a href="/bookshelf/" class="front-project">
+        <span class="front-project__kicker">Recommended</span>
+        <span class="front-project__name">Reading list</span>
+        <span class="front-project__desc">Books worth serious attention.</span>
+        <span class="front-project__count">{{ collections.bookshelf.length }} titles</span>
+      </a>
+      <a href="/quotes/" class="front-project">
+        <span class="front-project__kicker">Curated</span>
+        <span class="front-project__name">Quotes</span>
+        <span class="front-project__desc">Freethought, pithily stated.</span>
+        <span class="front-project__count">{{ quotes | length }} entries</span>
+      </a>
+      <a href="/glossary/" class="front-project">
+        <span class="front-project__kicker">Reference</span>
+        <span class="front-project__name">Glossary</span>
+        <span class="front-project__desc">The vocabulary we cover, defined precisely.</span>
+        <span class="front-project__count">{{ collections.glossary.length }} terms</span>
+      </a>
+      <a href="/music/" class="front-project">
+        <span class="front-project__kicker">Background</span>
+        <span class="front-project__name">Music</span>
+        <span class="front-project__desc">A soundtrack for thinking.</span>
+        <span class="front-project__count">{{ songs | length }} songs</span>
+      </a>
+    </div>
+  </section>
 
   {# ─── Quick Sections ──────────────────────────────────────── #}
   <section class="front-quick" aria-label="More sections">
