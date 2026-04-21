@@ -159,6 +159,22 @@ layout: layouts/base.njk
     });
   });
 
+  // Keep the Showcase / Timeline buttons' hrefs in sync with the active
+  // subsection so the filtered views always match what's visible on the
+  // page.
+  var viewLinks = document.querySelectorAll('.archive-views .archive-views__btn');
+  var sectionSlugAttr = (document.querySelector('.section-badge[class*="section-badge--"]') || {}).className || '';
+  var sectionSlug = (sectionSlugAttr.match(/section-badge--([a-z0-9-]+)/) || [])[1] || '';
+  function updateViewLinks() {
+    if (!viewLinks.length || !sectionSlug) return;
+    viewLinks.forEach(function (a) {
+      var base = a.getAttribute('href').split('?')[0];
+      var qs = 'section=' + encodeURIComponent(sectionSlug);
+      if (state.sub && state.sub !== 'all') qs += '&subsection=' + encodeURIComponent(state.sub);
+      a.setAttribute('href', base + '?' + qs);
+    });
+  }
+
   sBtns.forEach(function (btn) {
     btn.addEventListener('click', function () {
       state.sub = btn.getAttribute('data-sub');
@@ -169,6 +185,7 @@ layout: layouts/base.njk
       else url.searchParams.set('s', state.sub);
       window.history.replaceState({}, '', url.toString());
       apply();
+      updateViewLinks();
     });
   });
 
@@ -183,6 +200,7 @@ layout: layouts/base.njk
       state.sub = initSub;
       setActive(sBtns, initSub);
       apply();
+      updateViewLinks();
       // Scroll the filter into view so the reader sees they're on a subsection
       setTimeout(function () {
         var bar = document.getElementById('subsection-filter');
@@ -190,6 +208,8 @@ layout: layouts/base.njk
       }, 50);
     }
   }
+  // First paint: lock the view links to the current (possibly default) state.
+  updateViewLinks();
 
   // Filter-row arrow: shows a rightward chevron beside a scrollable bar
   // when it overflows. Click advances the scroll by one viewport; when

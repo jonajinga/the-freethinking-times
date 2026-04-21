@@ -258,8 +258,32 @@ permalink: /archives/
     }
   }
 
+  // ── URL state persistence ─────────────────────────────────────
+  // Filters mirror to ?q=&section=&author=&year=&month= so the view is
+  // shareable and survives browser back/forward. Hydrated on load below.
+  function writeUrlState() {
+    var p = new URLSearchParams();
+    var q = searchEl.value.trim();
+    if (q)              p.set('q', q);
+    if (sectionEl.value) p.set('section', sectionEl.value);
+    if (authorEl.value)  p.set('author', authorEl.value);
+    if (yearEl.value)    p.set('year', yearEl.value);
+    if (monthEl.value)   p.set('month', monthEl.value);
+    var qs = p.toString();
+    var next = location.pathname + (qs ? '?' + qs : '') + location.hash;
+    history.replaceState(null, '', next);
+  }
+  function readUrlState() {
+    var p = new URLSearchParams(location.search);
+    if (p.has('q'))       searchEl.value  = p.get('q');
+    if (p.has('section')) sectionEl.value = p.get('section');
+    if (p.has('author'))  authorEl.value  = p.get('author');
+    if (p.has('year'))    yearEl.value    = p.get('year');
+    if (p.has('month'))   monthEl.value   = p.get('month');
+  }
+
   // ── Core filter function ──────────────────────────────────────
-  function applyFilters() {
+  function applyFilters(skipUrl) {
     var q       = searchEl.value.trim().toLowerCase();
     var section = sectionEl.value;
     var author  = authorEl.value;
@@ -290,6 +314,7 @@ permalink: /archives/
 
     updateCount(visible);
     emptyEl.hidden = visible > 0;
+    if (!skipUrl) writeUrlState();
   }
 
   // ── Event listeners ───────────────────────────────────────────
@@ -328,5 +353,16 @@ permalink: /archives/
   // ── Init ─────────────────────────────────────────────────────
   updateCount(total);
   updateSelectStates();
+  // Hydrate filters from the URL and run once. skipUrl avoids rewriting
+  // the URL to an identical value on the first paint.
+  readUrlState();
+  if (searchEl.value || sectionEl.value || authorEl.value || yearEl.value || monthEl.value) {
+    applyFilters(true);
+  }
+  // Back/forward should re-sync the filters to match the restored URL.
+  window.addEventListener('popstate', function () {
+    readUrlState();
+    applyFilters(true);
+  });
 })();
 </script>
