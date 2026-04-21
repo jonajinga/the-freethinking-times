@@ -258,6 +258,24 @@ permalink: /archives/
     }
   }
 
+  // Sync Showcase / Timeline hrefs in the archive header so the
+  // alternate views always reflect the current filter state. Search
+  // (?q=) is omitted — neither view supports free-text filtering.
+  var viewLinks = document.querySelectorAll('.archive-header .archive-views__btn');
+  function updateViewLinks() {
+    if (!viewLinks.length) return;
+    var p = new URLSearchParams();
+    if (sectionEl.value) p.set('section', sectionEl.value.toLowerCase());
+    if (authorEl.value)  p.set('author',  authorEl.value);
+    if (yearEl.value)    p.set('year',    yearEl.value);
+    if (monthEl.value)   p.set('month',   monthEl.value);
+    var qs = p.toString();
+    viewLinks.forEach(function (a) {
+      var base = a.getAttribute('href').split('?')[0];
+      a.setAttribute('href', base + (qs ? '?' + qs : ''));
+    });
+  }
+
   // ── URL state persistence ─────────────────────────────────────
   // Filters mirror to ?q=&section=&author=&year=&month= so the view is
   // shareable and survives browser back/forward. Hydrated on load below.
@@ -314,6 +332,7 @@ permalink: /archives/
 
     updateCount(visible);
     emptyEl.hidden = visible > 0;
+    updateViewLinks();
     if (!skipUrl) writeUrlState();
   }
 

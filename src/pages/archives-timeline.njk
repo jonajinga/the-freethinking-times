@@ -383,7 +383,8 @@ eleventyExcludeFromCollections: true
       section:    (p.get('section')    || '').toLowerCase(),
       subsection: (p.get('subsection') || '').toLowerCase(),
       topic:      (p.get('topic')      || '').toLowerCase(),
-      year:       p.get('year')       || ''
+      year:       p.get('year')       || '',
+      month:      p.get('month')      || ''
     };
   }
   function writeParams(state) {
@@ -393,6 +394,7 @@ eleventyExcludeFromCollections: true
     if (state.subsection) p.set('subsection', state.subsection);
     if (state.topic)      p.set('topic', state.topic);
     if (state.year)       p.set('year', state.year);
+    if (state.month)      p.set('month', state.month);
     var qs = p.toString();
     history.replaceState(null, '', location.pathname + (qs ? '?' + qs : ''));
   }
@@ -426,9 +428,10 @@ eleventyExcludeFromCollections: true
         var tags = (a.tags || []).map(function (t) { return normSlug(t); });
         if (tags.indexOf(state.topic) === -1) return false;
       }
-      if (state.year) {
-        var y = new Date(a.date).getUTCFullYear();
-        if (String(y) !== String(state.year)) return false;
+      if (state.year || state.month) {
+        var d2 = new Date(a.date);
+        if (state.year  && String(d2.getUTCFullYear()) !== String(state.year))  return false;
+        if (state.month && String(d2.getUTCMonth() + 1) !== String(parseInt(state.month, 10))) return false;
       }
       return true;
     }).sort(function (a, b) { return new Date(b.date) - new Date(a.date); });

@@ -79,7 +79,31 @@ layout: layouts/base.njk
     else if (opt.value) { seen[opt.value] = true; }
   });
 
-  function filter() {
+  // URL state: ?q=&section= so filtered author views are shareable
+  // (e.g. link to "every News article by Jon"). history.replaceState
+  // keeps keystrokes from flooding the browser back stack.
+  function writeUrl() {
+    var p = new URLSearchParams();
+    var q = search.value.trim();
+    if (q) p.set('q', q);
+    if (select.value) p.set('section', select.value);
+    var qs = p.toString();
+    history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+  }
+  function readUrl() {
+    var p = new URLSearchParams(location.search);
+    if (p.has('q')) search.value = p.get('q');
+    if (p.has('section')) {
+      var s = p.get('section');
+      // Select value is case-insensitive (options are lowercased).
+      var opt = Array.prototype.find.call(select.options, function (o) {
+        return o.value.toLowerCase() === s.toLowerCase();
+      });
+      if (opt) select.value = opt.value;
+    }
+  }
+
+  function filter(skipUrl) {
     var q = search.value.trim().toLowerCase();
     var sec = select.value.toLowerCase();
     var items = list.querySelectorAll('.article-list__item');
@@ -90,9 +114,22 @@ layout: layouts/base.njk
       if (show) visible++;
     });
     if (empty) empty.hidden = visible > 0;
+    if (!skipUrl) writeUrl();
   }
 
-  search.addEventListener('input', filter);
-  select.addEventListener('change', filter);
+  var searchTimer;
+  search.addEventListener('input', function () {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(filter, 200);
+  });
+  select.addEventListener('change', function () { filter(); });
+
+  // Hydrate from URL on first paint, then respond to back/forward.
+  readUrl();
+  if (search.value || select.value) filter(true);
+  window.addEventListener('popstate', function () {
+    readUrl();
+    filter(true);
+  });
 })();
 </script>

@@ -358,6 +358,8 @@ eleventyExcludeFromCollections: true
   var section = (params.get('section') || '').toLowerCase();
   var subsection = (params.get('subsection') || '').toLowerCase();
   var topic = (params.get('topic') || '').toLowerCase();
+  var year = params.get('year') || '';
+  var month = params.get('month') || '';
 
   function normSlug(s) { return (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
 
@@ -368,6 +370,11 @@ eleventyExcludeFromCollections: true
     if (topic) {
       var tags = (a.tags || []).map(function (t) { return normSlug(t); });
       if (tags.indexOf(topic) === -1) return false;
+    }
+    if (year || month) {
+      var d = new Date(a.date);
+      if (year  && String(d.getUTCFullYear()) !== String(year))  return false;
+      if (month && String(d.getUTCMonth() + 1) !== String(parseInt(month, 10))) return false;
     }
     return true;
   });
