@@ -1693,10 +1693,114 @@ a.dateline:hover { color: var(--color-accent); }
   border-color: var(--color-accent);
   color: var(--color-accent);
 }
-
 .btn--accent:hover {
   background: var(--color-accent);
   color: #fff;
+}
+
+/* Primary: solid ink-filled call-to-action for the most important action
+   in a region. Inverts to accent on hover. */
+.btn--primary {
+  background: var(--color-ink);
+  color: var(--color-bg);
+  border-color: var(--color-ink);
+}
+.btn--primary:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* Secondary: quieter than .btn, sits at the rule-weight and uses faint
+   ink so it doesn't compete with a primary / accent in the same row. */
+.btn--secondary {
+  border-color: var(--color-rule);
+  color: var(--color-ink-muted);
+}
+.btn--secondary:hover {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-bg);
+}
+
+/* ── Divider utilities ─────────────────────────────────────────
+   Three weights with explicit intent. Prefer these over ad-hoc border
+   declarations so the hierarchy is enforced: heavy for major section
+   breaks, regular for list rows, accent for calling attention. */
+.divider,
+.divider--heavy,
+.divider--accent {
+  border: none;
+  margin: var(--space-6) 0;
+}
+.divider          { border-top: 1px solid var(--color-rule); }
+.divider--heavy   { border-top: 2px solid var(--color-ink); }
+.divider--accent  { border-top: 3px solid var(--color-accent); }
+
+/* ── Unified empty state ───────────────────────────────────────
+   Matches the .library-panel__empty pattern so "no results" regions
+   across the site share one voice. Use alongside __title and __hint
+   sub-elements for consistent typography. */
+.empty-state {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-ink-faint);
+  line-height: var(--leading-relaxed);
+  text-align: center;
+  padding: var(--space-10) var(--space-4);
+  margin: 0;
+}
+.empty-state__title {
+  display: block;
+  font-weight: 700;
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 var(--space-2);
+}
+.empty-state__hint {
+  display: block;
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--color-ink-faint);
+  font-style: italic;
+}
+
+/* ── Reusable page-header ─────────────────────────────────────
+   kicker (accent caps) + masthead-family title + italic lede.
+   Replaces the inline <header style="..."> pattern found on the
+   legal / about / accessibility / contact / ethics / stack / etc.
+   pages. Drop into any static page that needs a section opener. */
+.page-header {
+  margin-bottom: var(--space-10);
+  padding-bottom: var(--space-6);
+  border-bottom: 3px solid var(--color-ink);
+}
+.page-header__kicker {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-3);
+}
+.page-header__title {
+  font-family: var(--font-masthead, var(--font-headline));
+  font-size: clamp(1.8rem, 5vw, 3.815rem);
+  line-height: var(--leading-tight);
+  color: var(--color-ink);
+  margin: 0 0 var(--space-3);
+}
+.page-header__lede {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-ink-muted);
+  font-style: italic;
+  max-width: 55ch;
+  margin: 0;
+  line-height: var(--leading-relaxed);
 }
 
 /* ── Nav Drawer Toggle ──────────────────────────────────────── */

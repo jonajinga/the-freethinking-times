@@ -397,10 +397,32 @@
       b.addEventListener('click', function () { applyProfile(b.dataset.gsProfile); });
     });
 
-    // Close on outside click (with grace period for drawer button)
+    // Close on outside click (with grace period for drawer button).
+    // Also moves focus back to the trigger when the panel closes so
+    // keyboard users don't lose their place.
     var panelOpenTime = 0;
+    var panelOpener = null;
+    function closePanel() {
+      if (panel.hidden) return;
+      panel.hidden = true;
+      if (panelOpener && typeof panelOpener.focus === 'function') {
+        panelOpener.focus();
+        panelOpener = null;
+      }
+    }
     new MutationObserver(function () {
-      if (!panel.hidden) panelOpenTime = Date.now();
+      if (!panel.hidden) {
+        panelOpenTime = Date.now();
+        // Remember who opened the panel so focus can return on close.
+        if (document.activeElement && document.activeElement !== document.body) {
+          panelOpener = document.activeElement;
+        }
+        // Move focus into the panel for keyboard users.
+        var firstFocusable = panel.querySelector('button, [href], select, input, [tabindex]:not([tabindex="-1"])');
+        if (firstFocusable) {
+          try { firstFocusable.focus(); } catch (e) {}
+        }
+      }
     }).observe(panel, { attributes: true, attributeFilter: ['hidden'] });
 
     document.addEventListener('click', function (e) {
@@ -409,12 +431,28 @@
       var btn = document.getElementById('global-settings-btn');
       if (btn && btn.contains(e.target)) return;
       if (panel.contains(e.target)) return;
-      panel.hidden = true;
+      closePanel();
     });
 
-    // Escape closes
+    // Escape closes + returns focus.
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && !panel.hidden) panel.hidden = true;
+      if (e.key === 'Escape' && !panel.hidden) closePanel();
+    });
+
+    // Simple focus trap: Tab / Shift-Tab at the panel edges wraps.
+    panel.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab' || panel.hidden) return;
+      var focusables = panel.querySelectorAll('button:not([disabled]), [href], select:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])');
+      if (!focusables.length) return;
+      var first = focusables[0];
+      var last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     });
 
     // ── Article-tool controls ──

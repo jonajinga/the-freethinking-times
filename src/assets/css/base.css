@@ -43,6 +43,21 @@
 main:focus-visible,
 body:focus-visible { outline: none; }
 
+/* ── Reduced motion ─────────────────────────────────────────
+   Respect the user's vestibular-safety preference. Any transition or
+   animation collapses to a single frame. Individual components can
+   opt back in with a media query of their own if the movement is
+   genuinely functional (e.g. progress indicators), but the default
+   is: hold still. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 html {
   font-size: 16px;
   scroll-behavior: smooth;

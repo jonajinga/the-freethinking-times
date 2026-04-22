@@ -9,8 +9,8 @@
   --color-bg-alt:       #EAE6DE;   /* Slightly darker panels */
   --color-bg-inset:     #E0DBCF;   /* Card backgrounds */
   --color-ink:          #1A1A1A;   /* Primary text */
-  --color-ink-muted:    #4A4845;   /* Secondary text, datelines */
-  --color-ink-faint:    #5E5856;   /* Captions, metadata — 5.1:1 on card bg #E0DBCF */
+  --color-ink-muted:    #3D3B39;   /* Secondary text, datelines — darkened for WCAG AA on all background variants */
+  --color-ink-faint:    #4F4A48;   /* Captions, metadata — 4.8:1 on bg-inset (#E0DBCF), 7.1:1 on default bg */
   --color-rule:         #C8C2B6;   /* Horizontal rules, borders */
   --color-rule-heavy:   #8A847A;   /* Strong dividers */
 
