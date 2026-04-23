@@ -8,12 +8,23 @@ permalink: "/og/{{ article.url | ogSlug }}.svg"
 layout: false
 eleventyExcludeFromCollections: true
 ---
+{#- Resolve the author's display name. Articles store a slug on
+    `data.author`; the full name lives in authors[slug].name. Fall back
+    to the raw authorName field or the slug if the lookup is empty.
+    Never shows "Staff Reporter" unless that's literally what's on the
+    article. -#}
+{%- set _slug = article.data.author -%}
+{%- set _authorName = (authors[_slug].name if (_slug and authors[_slug]) else (article.data.authorName or _slug or "")) -%}
+{%- set _section = article.data.section or "" -%}
+{%- set _title = article.data.title or "" -%}
+{%- set _desc = article.data.description or "" -%}
+{%- set _date = article.date | readableDate -%}
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
      width="1200" height="630" viewBox="0 0 1200 630"
-     role="img" aria-label="{{ article.data.title | escape }}">
+     role="img" aria-label="{{ _title | escape }}">
 
-  <title>{{ article.data.title | escape }}</title>
+  <title>{{ _title | escape }}</title>
 
   <!-- Background -->
   <rect width="1200" height="630" fill="#F4F1EB"/>
@@ -21,55 +32,82 @@ eleventyExcludeFromCollections: true
   <!-- Left accent rule -->
   <rect x="0" y="0" width="8" height="630" fill="#C0392B"/>
 
-  <!-- Top rule -->
-  <rect x="8" y="0" width="1192" height="1" fill="#C8C2B6"/>
+  <!-- Top masthead bar -->
+  <rect x="0" y="0" width="1200" height="56" fill="#1A1A1A"/>
+  <text x="80" y="37"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="20"
+        font-weight="700"
+        letter-spacing="0.04em"
+        fill="#F4F1EB">The Freethinking Times</text>
+  <text x="1120" y="37"
+        font-family="Helvetica Neue, Arial, sans-serif"
+        font-size="12"
+        letter-spacing="0.16em"
+        fill="#A8A49C"
+        text-anchor="end">INDEPENDENT JOURNALISM</text>
 
-  <!-- Main content via foreignObject for text wrapping -->
-  <foreignObject x="80" y="60" width="1060" height="460">
+  <!-- Main content via foreignObject so long titles + descriptions wrap -->
+  <foreignObject x="80" y="104" width="1040" height="420">
     <div xmlns="http://www.w3.org/1999/xhtml"
-         style="font-family: Georgia, 'Times New Roman', serif; color: #1A1A1A; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-start;">
+         style="font-family: Georgia, 'Times New Roman', serif; color: #1A1A1A; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center;">
 
-      <!-- Section label -->
-      {% if article.data.section %}
-      <div style="font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #C0392B; margin-bottom: 24px;">
-        {{ article.data.section | escape }}
+      <!-- Section kicker -->
+      {% if _section %}
+      <div style="font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: #C0392B; margin-bottom: 20px;">
+        {{ _section | escape }}{% if article.data.subsection %} &#x203A; {{ article.data.subsection | escape }}{% endif %}
       </div>
       {% endif %}
 
       <!-- Title -->
-      <h1 style="font-family: Georgia, 'Times New Roman', serif; font-size: 56px; font-weight: 700; line-height: 1.1; color: #1A1A1A; margin: 0 0 24px 0; letter-spacing: -0.01em;">
-        {{ article.data.title | escape }}
+      <h1 style="font-family: Georgia, 'Times New Roman', serif; font-size: 56px; font-weight: 700; line-height: 1.1; color: #1A1A1A; margin: 0 0 22px 0; letter-spacing: -0.01em;">
+        {{ _title | escape }}
       </h1>
 
-      <!-- Description -->
-      {% if article.data.description %}
-      <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 22px; line-height: 1.5; color: #4A4845; margin: 0; font-style: italic; max-width: 800px;">
-        {{ article.data.description | escape }}
+      <!-- Description / deck -->
+      {% if _desc %}
+      <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 22px; line-height: 1.45; color: #3D3B39; margin: 0; font-style: italic; max-width: 920px;">
+        {{ _desc | escape }}
       </p>
       {% endif %}
 
     </div>
   </foreignObject>
 
-  <!-- Bottom bar -->
-  <rect x="0" y="560" width="1200" height="70" fill="#1A1A1A"/>
+  <!-- Byline bar: author + date + site colophon -->
+  <rect x="0" y="556" width="1200" height="74" fill="#1A1A1A"/>
+  <rect x="0" y="554" width="1200" height="2" fill="#C0392B"/>
 
-  <!-- Site name in bottom bar -->
-  <text x="80" y="604"
+  <!-- Author on the left -->
+  {% if _authorName %}
+  <text x="80" y="590"
+        font-family="Helvetica Neue, Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        letter-spacing="0.18em"
+        fill="#A8A49C">BY</text>
+  <text x="80" y="614"
         font-family="Georgia, 'Times New Roman', serif"
         font-size="22"
         font-weight="700"
-        letter-spacing="0.02em"
-        fill="#F4F1EB">The Freethinking Times</text>
-
-  <!-- Author + date in bottom bar -->
-  {% if article.data.authorName %}
-  <text x="1120" y="604"
-        font-family="'Helvetica Neue', Arial, sans-serif"
-        font-size="14"
-        letter-spacing="0.04em"
-        fill="#888380"
-        text-anchor="end">{{ article.data.authorName | escape }}</text>
+        letter-spacing="0.01em"
+        fill="#F4F1EB">{{ _authorName | escape }}</text>
   {% endif %}
+
+  <!-- Date on the right -->
+  <text x="1120" y="590"
+        font-family="Helvetica Neue, Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        letter-spacing="0.18em"
+        fill="#A8A49C"
+        text-anchor="end">PUBLISHED</text>
+  <text x="1120" y="614"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="22"
+        font-weight="700"
+        letter-spacing="0.01em"
+        fill="#F4F1EB"
+        text-anchor="end">{{ _date | escape }}</text>
 
 </svg>

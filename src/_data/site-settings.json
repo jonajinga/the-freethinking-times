@@ -17,6 +17,15 @@
   "social": {
     "rss": "/feed.xml"
   },
+  "subscribe": {
+    "eyebrow": "Newsletter",
+    "heading": "One email, one article.",
+    "body": "New pieces in your inbox the moment they publish. No digest, no tracking, no selling your address.",
+    "notice": "Free. Unsubscribe anytime.",
+    "sidebarBody": "Direct to your inbox when pieces publish. No algorithms.",
+    "footerHeading": "Subscribe to the newsletter",
+    "footerBody": "New pieces the moment they publish. One email, one article."
+  },
   "contactSubjects": [
     "General enquiry",
     "Correction request",

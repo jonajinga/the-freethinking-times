@@ -893,12 +893,19 @@
   font-size: var(--text-base);
   cursor: pointer;
   opacity: 0;
+  /* visibility: hidden removes the button from the tab order AND the
+     accessibility tree until .is-visible is set. Previously opacity:0 +
+     pointer-events:none only hid it visually; keyboard users could still
+     tab into an invisible control, and Lighthouse flagged the
+     aria-hidden wrapper around a focusable descendant. */
+  visibility: hidden;
   pointer-events: none;
   transform: translateY(6px);
   transition:
     opacity var(--transition-fast),
     transform var(--transition-fast),
-    border-color var(--transition-fast);
+    border-color var(--transition-fast),
+    visibility 0s linear var(--transition-fast);
 }
 
 .back-to-top:hover {
@@ -907,8 +914,16 @@
 
 .reading-floats.is-visible .back-to-top {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   transform: translateY(0);
+  /* When becoming visible, swap visibility immediately so the fade-in
+     starts with the button already in the tree. */
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast),
+    border-color var(--transition-fast),
+    visibility 0s linear 0s;
 }
 
 /* ── Series navigation ──────────────────────────────────────── */

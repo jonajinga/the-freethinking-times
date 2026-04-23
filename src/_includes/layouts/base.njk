@@ -142,7 +142,12 @@
   </div>{# /.site-wrapper #}
 
   {# ── Reading floats (back-to-top + % through) — site-wide ── #}
-  <div class="reading-floats" id="reading-floats" aria-hidden="true">
+  {# aria-hidden removed: the back-to-top button inside is focusable, so
+     hiding the wrapper from assistive tech while leaving the button in
+     the tab order was a Lighthouse a11y failure. Visibility is handled
+     in CSS via visibility: hidden, which removes the button from both
+     the tab order and the accessibility tree until is-visible is set. #}
+  <div class="reading-floats" id="reading-floats">
     <span class="reading-pct" id="reading-pct"></span>
     <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top">&uarr;</button>
   </div>

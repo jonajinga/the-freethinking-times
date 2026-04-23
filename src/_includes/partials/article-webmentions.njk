@@ -12,7 +12,16 @@
   an empty "No mentions" block, so fresh articles don't carry dead space.
 #}
 {% set _wm = webmentions[page.url] %}
+{# Demo fallback: when WEBMENTIONS_DEMO=1 is set at build time, the data
+   file injects a __demo bundle. Show it on any article that has no
+   real mentions so the layout can be previewed. Never fires in
+   production because the env var is not set there. #}
+{% if (not _wm or _wm.total == 0) and webmentions.__demo and section %}
+  {% set _wm = webmentions.__demo %}
+  {% set _isDemo = true %}
+{% endif %}
 {% if _wm and _wm.total > 0 %}
+{% if _isDemo %}<p style="max-width:62ch;margin:var(--space-8) auto 0;padding:var(--space-3) var(--space-4);background:#fef3c7;color:#78350f;font-family:var(--font-ui);font-size:0.78rem;border-left:3px solid #d97706;">Preview mode. These mentions are synthesised; real ones arrive via webmention.io once the site receives them.</p>{% endif %}
 <section class="wm" aria-label="Webmentions">
   <header class="wm__header">
     <p class="wm__kicker">Elsewhere on the web</p>
