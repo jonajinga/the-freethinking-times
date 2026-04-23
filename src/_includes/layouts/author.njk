@@ -63,6 +63,9 @@ layout: layouts/base.njk
   <p class="author-filter__empty" hidden>No articles match your filter.</p>
   {% endif %}
 
+  {# Webmentions for this author page specifically. Silent if none. #}
+  {% include "partials/article-webmentions.njk" %}
+
 </div>
 
 <script>

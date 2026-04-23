@@ -171,6 +171,11 @@ module.exports = function (eleventyConfig) {
               /library-annotation/,
               /library-bookmark/,
               /library-highlight/,
+              // Webmentions partial only renders when webmentions[page.url]
+              // has entries, so PurgeCSS may miss the classes on a dry build.
+              /^wm-/,
+              /^wm$/,
+              /^wm__/,
               // Dynamic dropdown IDs not visible to PurgeCSS (id="dropdown-{{ item.key }}")
               /dropdown-more/,    // Explore mega-menu width override
               /dropdown-quotes/,  // Quotes fixed-position override

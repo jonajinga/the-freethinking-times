@@ -697,6 +697,10 @@ layout: layouts/base.njk
       {% endif %}
 
 
+      {# Webmentions, replies, likes, reposts pulled from webmention.io
+         at build time. Silent empty state if nothing yet. #}
+      {% include "partials/article-webmentions.njk" %}
+
       {# Comments, always rendered, comments provider is always
          configured (cusdis app id is set in site.js with a fallback). #}
       <div class="article-comments">

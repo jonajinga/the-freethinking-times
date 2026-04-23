@@ -1,0 +1,104 @@
+{#
+  article-webmentions.njk — renders webmentions for the current page.
+
+  Usage: include this partial inside an article / author layout. It
+  reads `webmentions[page.url]` (populated by _data/webmentions.js) and
+  prints three sections:
+    - Replies: full cards with author + excerpt + link
+    - Likes:   facepile of author avatars linking out
+    - Reposts: same facepile treatment
+
+  If no mentions yet, renders nothing (silent empty state) rather than
+  an empty "No mentions" block, so fresh articles don't carry dead space.
+#}
+{% set _wm = webmentions[page.url] %}
+{% if _wm and _wm.total > 0 %}
+<section class="wm" aria-label="Webmentions">
+  <header class="wm__header">
+    <p class="wm__kicker">Elsewhere on the web</p>
+    <h2 class="wm__title">
+      {{ _wm.total }}
+      {% if _wm.total == 1 %}mention{% else %}mentions{% endif %}
+      of this piece
+    </h2>
+    <p class="wm__lede">
+      Replies, bookmarks, and shares collected via
+      <a href="https://webmention.io" target="_blank" rel="noopener">webmention.io</a>.
+      <a href="https://indieweb.org/Webmention" target="_blank" rel="noopener">What&rsquo;s a webmention?</a>
+    </p>
+  </header>
+
+  {% if _wm.replies.length %}
+  <div class="wm-block" aria-labelledby="wm-replies-head">
+    <p class="wm-block__head" id="wm-replies-head">
+      Replies
+      <span class="wm-block__count">{{ _wm.replies.length }}</span>
+    </p>
+    <ul class="wm-replies" role="list">
+      {% for r in _wm.replies %}
+      <li class="wm-reply">
+        <div class="wm-reply__meta">
+          {% if r.author.photo %}
+          <img class="wm-reply__avatar" src="{{ r.author.photo }}" alt="" width="32" height="32" loading="lazy" decoding="async" onerror="this.style.display='none'">
+          {% else %}
+          <span class="wm-reply__avatar wm-reply__avatar--placeholder" aria-hidden="true">{{ (r.author.name or r.author.url or '?') | first | upper }}</span>
+          {% endif %}
+          <span class="wm-reply__author">
+            {% if r.author.url %}<a href="{{ r.author.url }}" target="_blank" rel="noopener ugc">{{ r.author.name or r.author.url | replace('https://', '') | replace('http://', '') }}</a>{% else %}{{ r.author.name or 'Anonymous' }}{% endif %}
+          </span>
+          {% if r.published %}
+          <time class="wm-reply__time" datetime="{{ r.published }}">{{ r.published | readableDate }}</time>
+          {% endif %}
+          <a class="wm-reply__link" href="{{ r.url }}" target="_blank" rel="noopener ugc" aria-label="View original reply">&nearr;</a>
+        </div>
+        {% if r.content %}
+        <div class="wm-reply__content">{{ r.content | striptags(true) | truncate(500) }}</div>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {% if _wm.likes.length or _wm.reposts.length %}
+  <div class="wm-block">
+    <p class="wm-block__head">
+      Shares &amp; likes
+      <span class="wm-block__count">{{ _wm.likes.length + _wm.reposts.length }}</span>
+    </p>
+    <ul class="wm-facepile" role="list">
+      {% for face in _wm.likes | concat(_wm.reposts) %}
+      <li class="wm-facepile__item">
+        <a href="{{ face.url }}" target="_blank" rel="noopener ugc" title="{{ (face.author.name or face.author.url or 'Anonymous') | replace('"', '') }}{% if face.property == 'repost-of' %} reposted this{% else %} liked this{% endif %}" aria-label="{{ face.author.name or 'Anonymous' }}{% if face.property == 'repost-of' %} reposted this{% else %} liked this{% endif %}">
+          {% if face.author.photo %}
+          <img class="wm-facepile__avatar" src="{{ face.author.photo }}" alt="{{ face.author.name or '' }}" width="32" height="32" loading="lazy" decoding="async" onerror="this.style.display='none'">
+          {% else %}
+          <span class="wm-facepile__avatar wm-facepile__avatar--placeholder" aria-hidden="true">{{ (face.author.name or face.author.url or '?') | first | upper }}</span>
+          {% endif %}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {% if _wm.mentions.length %}
+  <div class="wm-block">
+    <p class="wm-block__head">
+      Linked from
+      <span class="wm-block__count">{{ _wm.mentions.length }}</span>
+    </p>
+    <ul class="wm-mentions" role="list">
+      {% for m in _wm.mentions %}
+      <li class="wm-mention">
+        <a href="{{ m.url }}" target="_blank" rel="noopener ugc">
+          <span class="wm-mention__author">{{ m.author.name or m.author.url | replace('https://', '') | replace('http://', '') or 'A page' }}</span>
+          <span class="wm-mention__chev" aria-hidden="true">&nearr;</span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</section>
+{% endif %}

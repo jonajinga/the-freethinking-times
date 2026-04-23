@@ -53,13 +53,17 @@ module.exports = {
       "https://github.com/jonajinga"
     ]
   },
-  // Webmentions via webmention.io. Fill in the endpoint + pingback URL
-  // after signing in at https://webmention.io with this domain. Leave as
-  // empty strings and the <link> tags won't render, so it fails safe.
+  // Webmentions via webmention.io. Endpoint + pingback are public
+  // per-domain URLs. Token is read-only (can only retrieve mentions,
+  // can't modify the account) per webmention.io's own docs. Rotate via
+  // the "Generate New Token" button on webmention.io/settings if ever
+  // needed. Env vars override so redeploys can swap without touching
+  // code.
   webmention: {
-    endpoint: env.WEBMENTION_ENDPOINT || "",
-    pingback: env.WEBMENTION_PINGBACK || "",
-    token:    env.WEBMENTION_TOKEN || "",
+    endpoint: env.WEBMENTION_ENDPOINT || "https://webmention.io/thefreethinkingtimes.com/webmention",
+    pingback: env.WEBMENTION_PINGBACK || "https://webmention.io/thefreethinkingtimes.com/xmlrpc",
+    token:    env.WEBMENTION_TOKEN    || "TMF2ZfMO6mdePJm1NzA9Sw",
+    domain:   "thefreethinkingtimes.com",
     blocklist: [] // domains or author URLs to filter at build time
   },
   comments: {
