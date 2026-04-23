@@ -37,19 +37,19 @@ eleventyExcludeFromCollections: true
   <rect x="0" y="0" width="10" height="630" fill="#C0392B"/>
 
   <!-- Top masthead strip -->
-  <rect x="0" y="0" width="1200" height="56" fill="#1A1A1A"/>
-  <text x="80" y="36"
+  <rect x="0" y="0" width="1200" height="68" fill="#1A1A1A"/>
+  <text x="80" y="44"
         font-family="Georgia, 'Times New Roman', serif"
-        font-size="22"
+        font-size="26"
         font-weight="700"
         letter-spacing="0.04em"
-        fill="#F4F1EB">The Freethinking Times</text>
-  <text x="1120" y="36"
+        fill="#FFFFFF">The Freethinking Times</text>
+  <text x="1120" y="44"
         font-family="Helvetica, Arial, sans-serif"
-        font-size="13"
+        font-size="16"
         font-weight="700"
-        letter-spacing="0.18em"
-        fill="#C8C2B6"
+        letter-spacing="0.2em"
+        fill="#FFFFFF"
         text-anchor="end">INDEPENDENT JOURNALISM</text>
 
   <!-- Section kicker -->
@@ -90,39 +90,39 @@ eleventyExcludeFromCollections: true
   {% endif %}
 
   <!-- Accent rule above byline bar -->
-  <rect x="0" y="554" width="1200" height="2" fill="#C0392B"/>
+  <rect x="0" y="544" width="1200" height="3" fill="#C0392B"/>
 
   <!-- Byline bar -->
-  <rect x="0" y="556" width="1200" height="74" fill="#1A1A1A"/>
+  <rect x="0" y="547" width="1200" height="83" fill="#1A1A1A"/>
 
   {% if _authorName %}
-  <text x="80" y="586"
+  <text x="80" y="578"
         font-family="Helvetica, Arial, sans-serif"
-        font-size="12"
+        font-size="15"
         font-weight="700"
-        letter-spacing="0.22em"
-        fill="#C8C2B6">BY</text>
-  <text x="80" y="614"
+        letter-spacing="0.24em"
+        fill="#FFFFFF">BY</text>
+  <text x="80" y="612"
         font-family="Georgia, 'Times New Roman', serif"
-        font-size="24"
+        font-size="28"
         font-weight="700"
         letter-spacing="0.01em"
-        fill="#F4F1EB">{{ _authorName | escape }}</text>
+        fill="#FFFFFF">{{ _authorName | escape }}</text>
   {% endif %}
 
-  <text x="1120" y="586"
+  <text x="1120" y="578"
         font-family="Helvetica, Arial, sans-serif"
-        font-size="12"
+        font-size="15"
         font-weight="700"
-        letter-spacing="0.22em"
-        fill="#C8C2B6"
+        letter-spacing="0.24em"
+        fill="#FFFFFF"
         text-anchor="end">PUBLISHED</text>
-  <text x="1120" y="614"
+  <text x="1120" y="612"
         font-family="Georgia, 'Times New Roman', serif"
-        font-size="24"
+        font-size="28"
         font-weight="700"
         letter-spacing="0.01em"
-        fill="#F4F1EB"
+        fill="#FFFFFF"
         text-anchor="end">{{ _date | escape }}</text>
 
 </svg>
