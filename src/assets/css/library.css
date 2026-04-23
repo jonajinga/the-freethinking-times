@@ -682,7 +682,7 @@
   top: var(--space-16);
   right: 0;
   bottom: 56px; /* clear the bottom annotation toolbar so footer-links aren't hidden behind it */
-  width: min(616px, 90vw);
+  width: min(678px, 90vw);
   background: var(--color-bg);
   border-left: 1px solid var(--color-rule);
   box-shadow: -18px 0 48px rgba(0, 0, 0, 0.08), -2px 0 6px rgba(0, 0, 0, 0.04);

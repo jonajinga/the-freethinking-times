@@ -414,6 +414,29 @@ module.exports = function (eleventyConfig) {
     return (url || "").replace(/\//g, "-").replace(/^-|-$/g, "");
   });
 
+  // Word-wrap a string to an array of lines with at most `max` chars per
+  // line, breaking on word boundaries. Used by og-images.njk for native
+  // SVG <text> rendering since resvg-js doesn't support foreignObject.
+  // Long single words (> max) fall onto their own line uncut.
+  eleventyConfig.addFilter("wrap", (text, max) => {
+    if (!text) return [];
+    const words = String(text).split(/\s+/).filter(Boolean);
+    const limit = Math.max(1, max || 40);
+    const lines = [];
+    let current = "";
+    for (const w of words) {
+      if (!current.length) { current = w; continue; }
+      if (current.length + 1 + w.length > limit) {
+        lines.push(current);
+        current = w;
+      } else {
+        current += " " + w;
+      }
+    }
+    if (current) lines.push(current);
+    return lines;
+  });
+
   eleventyConfig.addFilter("where", (arr, key, value) => {
     return arr.filter(item => item.data[key] === value);
   });
