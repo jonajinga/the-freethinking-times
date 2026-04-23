@@ -37,6 +37,22 @@
   {# ── Canonical ── #}
   <link rel="canonical" href="{{ site.url }}{{ page.url }}">
 
+  {# ── IndieWeb identity + Webmentions ──
+     rel=me links out to profiles that link back (verified two-way) so
+     IndieLogin / IndieAuth can authenticate the domain. webmention and
+     pingback tell other sites where to send mentions for this page. #}
+  {% if site.indieweb and site.indieweb.me %}
+    {% for me in site.indieweb.me %}
+  <link rel="me" href="{{ me }}">
+    {% endfor %}
+  {% endif %}
+  {% if site.webmention and site.webmention.endpoint %}
+  <link rel="webmention" href="{{ site.webmention.endpoint }}">
+  {% endif %}
+  {% if site.webmention and site.webmention.pingback %}
+  <link rel="pingback" href="{{ site.webmention.pingback }}">
+  {% endif %}
+
   {# ── RSS Feeds ── #}
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ site.url }}/feed.xml">
   {% if authorSlug %}

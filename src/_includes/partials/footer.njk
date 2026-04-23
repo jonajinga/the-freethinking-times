@@ -110,6 +110,17 @@
       <p class="site-footer__powered">
         Powered by <a href="https://projectbroadsheet.com" target="_blank" rel="noopener noreferrer">Project Broadsheet</a>
       </p>
+      {# Visible IndieWeb rel=me anchors. Machine-readable copies live in
+         <head> via base.njk; the visible anchors here are the canonical
+         indieweb convention and serve as a fallback if the head link is
+         ever stripped by a reader-mode tool. #}
+      {% if site.indieweb and site.indieweb.me and site.indieweb.me.length %}
+      <p class="site-footer__identity" aria-label="IndieWeb identities">
+        {% for me in site.indieweb.me %}
+        <a rel="me" href="{{ me }}">{{ me | replace("https://", "") | replace("http://", "") }}</a>{% if not loop.last %} &middot; {% endif %}
+        {% endfor %}
+      </p>
+      {% endif %}
     </div>
 
   </div>{# /.container #}

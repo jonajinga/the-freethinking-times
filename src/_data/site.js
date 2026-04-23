@@ -44,6 +44,24 @@ module.exports = {
     provider: s.newsletter.provider,
     username: env.BUTTONDOWN_USERNAME || s.newsletter.username || ""
   },
+  // IndieWeb identity. Every URL listed here is rendered as a
+  // <link rel="me"> in <head>. Each URL must link BACK to the site
+  // (two-way verification) for IndieAuth to accept it. GitHub's reciprocal
+  // link is the "Website" field at github.com/settings/profile.
+  indieweb: {
+    me: [
+      "https://github.com/jonajinga"
+    ]
+  },
+  // Webmentions via webmention.io. Fill in the endpoint + pingback URL
+  // after signing in at https://webmention.io with this domain. Leave as
+  // empty strings and the <link> tags won't render, so it fails safe.
+  webmention: {
+    endpoint: env.WEBMENTION_ENDPOINT || "",
+    pingback: env.WEBMENTION_PINGBACK || "",
+    token:    env.WEBMENTION_TOKEN || "",
+    blocklist: [] // domains or author URLs to filter at build time
+  },
   comments: {
     provider: "cusdis",
     appId: env.CUSDIS_APP_ID || "2f9a4b07-2835-475d-98d5-90f6ac1087ae",
