@@ -73,7 +73,7 @@
       { "label": "Newsletter",    "url": "/newsletter/",    "title": "An occasional email. One message at a time. No tracking pixels, no third-party data sharing, one-click unsubscribe." },
       { "label": "Notes & Highlights","url": "/notes/",     "title": "Your personal highlights, margin notes, and bookmarks across every article and library text you've read on the site, stored locally in your browser." },
       { "label": "Reading List",  "url": "/reading-list/",  "title": "Articles you've saved to read later, bookmark from any piece, pick up where you left off on any device." },
-      { "label": "RSS Feed",      "url": "/feed.xml",       "title": "Subscribe in any RSS reader, Feedly, NetNewsWire, Inoreader, or our built-in reader. Full-text, no ads, no tracking." },
+      { "label": "Feeds",         "url": "/feeds/",         "title": "All RSS feeds in one place, the whole site, each editorial section, every author, every topic. Subscribe in any reader, no account, no algorithm." },
       { "label": "API",           "url": "/api/",           "title": "Public JSON API, articles, quotes, timeline entries, glossary terms, and more. Free for developers, academics, and other publications." },
       { "label": "Search",        "url": "/search/",        "title": "Full-text search across every article, library work, quote, glossary entry, and timeline event. Press / anywhere on the site to open it." },
       { "label": "Start Here",    "url": "/start-here/",    "title": "A curated introduction for new readers, the pieces that best represent what we do, organized by what you want to know first." },
@@ -112,11 +112,12 @@
     "heading": "Legal",
     "headingUrl": "/legal/",
     "links": [
-      { "label": "Privacy Policy",  "url": "/privacy/",       "title": "What data we collect (very little) and what we don't (almost everything else). Cookieless analytics, local-only reader data, no third-party tracking pixels." },
-      { "label": "Terms of Use",    "url": "/terms/",         "title": "The terms that govern your use of this site, content ownership, submissions, acceptable use, and third-party services we rely on." },
-      { "label": "Cookies Policy",  "url": "/cookies/",       "title": "A full accounting of zero first-party cookies, what localStorage stores in your browser, and exactly what third-party services do if you interact with them." },
-      { "label": "Accessibility",   "url": "/accessibility/", "title": "Our commitment to WCAG 2.2 AA, what we've built for accessibility, known limitations we're still working on, and how to report issues you encounter." },
-      { "label": "Site Map",        "url": "/site-map/",      "title": "A directory of every page on the site, handy if you're looking for something specific or want a lay of the land." }
+      { "label": "Privacy Policy",       "url": "/privacy/",       "title": "What data we collect (very little) and what we don't (almost everything else). Cookieless analytics, local-only reader data, no third-party tracking pixels." },
+      { "label": "Terms of Use",         "url": "/terms/",         "title": "The terms that govern your use of this site, content ownership, submissions, acceptable use, and third-party services we rely on." },
+      { "label": "Cookies Policy",       "url": "/cookies/",       "title": "A full accounting of zero first-party cookies, what localStorage stores in your browser, and exactly what third-party services do if you interact with them." },
+      { "label": "Accessibility",        "url": "/accessibility/", "title": "Our commitment to WCAG 2.2 AA, what we've built for accessibility, known limitations we're still working on, and how to report issues you encounter." },
+      { "label": "Republication Licence","url": "/license/",       "title": "Articles are released under CC BY-NC-ND 4.0. You can republish, quote, and translate our work freely, provided you follow four short rules — attribution, no derivatives, non-commercial, webmentions welcome." },
+      { "label": "Site Map",             "url": "/site-map/",      "title": "A directory of every page on the site, handy if you're looking for something specific or want a lay of the land." }
     ]
   }
 ]
