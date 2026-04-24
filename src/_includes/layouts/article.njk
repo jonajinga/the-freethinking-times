@@ -21,7 +21,8 @@ layout: layouts/base.njk
     "name": "{{ site.title }}",
     "url": "{{ site.url }}"
   },
-  "url": "{{ site.url }}{{ page.url }}"{% if image %},
+  "url": "{{ site.url }}{{ page.url }}",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/"{% if image %},
   "image": "{{ site.url }}{{ image }}"{% endif %}
 }
 </script>
@@ -698,6 +699,10 @@ layout: layouts/base.njk
       </aside>
       {% endif %}
 
+
+      {# Republish surface — CC BY-NC-ND grab code, only on articles
+         with `syndicate: true` in front matter. Sits above webmentions. #}
+      {% include "partials/republish.njk" %}
 
       {# Webmentions, replies, likes, reposts pulled from webmention.io
          at build time. Silent empty state if nothing yet. #}

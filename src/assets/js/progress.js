@@ -42,11 +42,32 @@
     if (pctEl) {
       pctEl.textContent = bar ? (pctRounded + '% through') : (pctRounded + '%');
     }
+
+    // Fire a one-shot Umami "finished-reading" event when the reader has
+    // scrolled through 90% of the article body. Gated by pathname so a
+    // single session across multiple articles fires once per article,
+    // and skipped entirely on non-article pages (no .reading-progress).
+    if (bar && pct >= 90) {
+      if (!window.__umamiFinished) window.__umamiFinished = {};
+      if (!window.__umamiFinished[location.pathname]) {
+        window.__umamiFinished[location.pathname] = true;
+        if (window.umami && typeof window.umami.track === 'function') {
+          umami.track('finished-reading', {
+            url: location.pathname,
+            title: document.title
+          });
+        }
+      }
+    }
   }
 
   if (isFirstRun) {
     window.addEventListener('scroll', updateReadingFloatsAndProgress, { passive: true });
     window.addEventListener('resize', updateReadingFloatsAndProgress, { passive: true });
+    // On SPA nav the previous article's "finished" mark is stale — a new
+    // article at the same pathname would never fire otherwise, and a new
+    // article at a different pathname is fine either way. Clear the mark
+    // for the OUTGOING page; the INCOMING page gets a fresh entry.
     document.addEventListener('spa:contentswap', updateReadingFloatsAndProgress);
   }
   updateReadingFloatsAndProgress();
@@ -77,13 +98,13 @@
     var bsky = document.getElementById('share-bluesky');
     var masto = document.getElementById('share-mastodon');
     var em = document.getElementById('share-email');
-    if (tw)   tw.href   = 'https://twitter.com/intent/tweet?url=' + encUrl + '&text=' + encTitle;
-    if (fb)   fb.href   = 'https://www.facebook.com/sharer/sharer.php?u=' + encUrl;
-    if (li)   li.href   = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encUrl;
-    if (rd)   rd.href   = 'https://www.reddit.com/submit?url=' + encUrl + '&title=' + encTitle;
-    if (bsky) bsky.href = 'https://bsky.app/intent/compose?text=' + encodeURIComponent(shareTitle + '\n\n' + shareUrl);
-    if (masto) masto.href = 'https://mastodon.social/share?text=' + encodeURIComponent(shareTitle + '\n\n' + shareUrl);
-    if (em)   em.href   = 'mailto:?subject=' + encTitle + '&body=' + encUrl;
+    if (tw)   { tw.href   = 'https://twitter.com/intent/tweet?url=' + encUrl + '&text=' + encTitle; tw.setAttribute('data-umami-event', 'share-twitter'); }
+    if (fb)   { fb.href   = 'https://www.facebook.com/sharer/sharer.php?u=' + encUrl; fb.setAttribute('data-umami-event', 'share-facebook'); }
+    if (li)   { li.href   = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encUrl; li.setAttribute('data-umami-event', 'share-linkedin'); }
+    if (rd)   { rd.href   = 'https://www.reddit.com/submit?url=' + encUrl + '&title=' + encTitle; rd.setAttribute('data-umami-event', 'share-reddit'); }
+    if (bsky) { bsky.href = 'https://bsky.app/intent/compose?text=' + encodeURIComponent(shareTitle + '\n\n' + shareUrl); bsky.setAttribute('data-umami-event', 'share-bluesky'); }
+    if (masto) { masto.href = 'https://mastodon.social/share?text=' + encodeURIComponent(shareTitle + '\n\n' + shareUrl); masto.setAttribute('data-umami-event', 'share-mastodon'); }
+    if (em)   { em.href   = 'mailto:?subject=' + encTitle + '&body=' + encUrl; em.setAttribute('data-umami-event', 'share-email'); }
 
     // Skip toggle/auto-close when panel has been relocated out of the
     // original header rail (into the Reader panel, or into the share

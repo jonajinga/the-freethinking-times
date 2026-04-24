@@ -1,0 +1,34 @@
+{#
+  republish.njk — renders the CC BY-NC-ND grab-code block on any article
+  whose front matter sets `syndicate: true`. Default is false (see
+  src/content/content.11tydata.js). The grab-code textarea holds an
+  attribution paragraph, the article title/author, the full article HTML
+  body, and the canonical backlink — ready for any partner editor to
+  paste into their own CMS.
+
+  No tracking pixel. Syndication reach is measured via referrer filters
+  in Umami on the canonical article URL.
+#}
+{% if syndicate %}
+<section class="republish" aria-labelledby="republish-heading">
+  <header class="republish__header">
+    <p class="republish__kicker">Open licence</p>
+    <h2 id="republish-heading" class="republish__title">Republish this story</h2>
+  </header>
+  <p class="republish__lede">
+    Free to republish under
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license" target="_blank" data-umami-event="license-learn">CC&nbsp;BY-NC-ND&nbsp;4.0</a>.
+    Attribution required. No editing (minor time/place relative changes only). Not for commercial resale.
+  </p>
+  <details class="republish__grab">
+    <summary class="republish__summary">Grab the HTML</summary>
+    <label class="republish__label" for="republish-html">Select all, copy, paste into your CMS&rsquo; HTML view:</label>
+    <textarea id="republish-html" class="republish__textarea" readonly rows="12" onclick="this.select()"><p><em>This story was originally published by <a href="{{ site.url }}{{ page.url }}">{{ site.title }}</a> under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> licence.</em></p>
+<h1>{{ title | escape }}</h1>
+<p><strong>By {% if authors[author].name %}{{ authors[author].name }}{% elif authorName %}{{ authorName }}{% else %}{{ author }}{% endif %}</strong> &mdash; <time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate }}</time></p>
+{{ content | safe }}
+<p><em>Originally: <a href="{{ site.url }}{{ page.url }}">{{ site.url }}{{ page.url }}</a></em></p></textarea>
+    <button type="button" class="republish__copy" data-umami-event="republish-copy" onclick="var t=document.getElementById('republish-html');t.select();document.execCommand('copy');this.textContent='Copied';setTimeout(function(b){return function(){b.textContent='Copy to clipboard';};}(this),1800);">Copy to clipboard</button>
+  </details>
+</section>
+{% endif %}

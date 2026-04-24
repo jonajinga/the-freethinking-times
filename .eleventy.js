@@ -864,6 +864,12 @@ module.exports = function (eleventyConfig) {
     if (hrefIdx >= 0) {
       const href = token.attrs[hrefIdx][1];
       const noArchive = token.attrGet('data-no-archive') !== null;
+      const isExternal = /^https?:\/\//i.test(href) && !/(?:^https?:\/\/)?(?:[a-z0-9.-]*\.)?thefreethinkingtimes\.com\b/i.test(href);
+      if (isExternal) {
+        // Every outbound citation — Umami event so we can see which
+        // sources readers actually verify.
+        token.attrSet('data-umami-event', 'citation-click');
+      }
       if (!noArchive && !isSkippedArchive(href)) {
         token.attrSet('rel', 'noopener');
         env.__archiveStack.push('https://web.archive.org/web/*/' + href);
@@ -883,7 +889,8 @@ module.exports = function (eleventyConfig) {
     if (archiveUrl) {
       return closeTag +
         '<a class="archive-link" href="' + archiveUrl + '" rel="noopener nofollow" ' +
-        'target="_blank" aria-label="Archived version" title="Archived version">' +
+        'target="_blank" aria-label="Archived version" title="Archived version" ' +
+        'data-umami-event="archive-click">' +
         '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
         '<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>' +
         '</a>';
