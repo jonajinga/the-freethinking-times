@@ -15,54 +15,43 @@
   window.__progressBootstrapped = true;
 
   /* ── Reading progress bar + % text + back-to-top ─────────── */
-  var bar    = document.querySelector('.reading-progress');
-  var floats = document.getElementById('reading-floats');
-  var pctEl  = document.getElementById('reading-pct');
+  // DOM refs are looked up FRESH inside the scroll handler so SPA-nav
+  // content swaps (which destroy and rebuild #main-content) don't leave
+  // the listener pointing at a stale detached element — a %through that
+  // updates a detached node silently produced the "needs a refresh to
+  // work" bug on the second article of a session.
+  function updateReadingFloatsAndProgress() {
+    var bar    = document.querySelector('.reading-progress');
+    var floats = document.getElementById('reading-floats');
+    var pctEl  = document.getElementById('reading-pct');
+    var target = document.querySelector('.article-body');
+    var scrollTop = window.scrollY;
+
+    if (floats) floats.classList.toggle('is-visible', scrollTop > 400);
+
+    var dist;
+    if (target) {
+      dist = target.getBoundingClientRect().bottom + scrollTop - window.innerHeight;
+    } else {
+      dist = document.documentElement.scrollHeight - window.innerHeight;
+    }
+    var pct = dist > 0 ? Math.min((scrollTop / dist) * 100, 100) : 0;
+    var pctRounded = Math.round(pct);
+
+    if (bar) bar.style.width = pct + '%';
+    if (pctEl) {
+      pctEl.textContent = bar ? (pctRounded + '% through') : (pctRounded + '%');
+    }
+  }
+
+  if (isFirstRun) {
+    window.addEventListener('scroll', updateReadingFloatsAndProgress, { passive: true });
+    window.addEventListener('resize', updateReadingFloatsAndProgress, { passive: true });
+    document.addEventListener('spa:contentswap', updateReadingFloatsAndProgress);
+  }
+  updateReadingFloatsAndProgress();
+
   var bttBtn = document.getElementById('back-to-top');
-
-  // Floats visibility (back-to-top + %), active on any page that has
-  // #reading-floats. Uses .article-body as the scroll target when present
-  // (so % reflects article progress, not footer), otherwise falls back to
-  // the full document so the feature works everywhere on the site.
-  if (floats) {
-    var floatTarget = document.querySelector('.article-body');
-    function updateFloats() {
-      var scrollTop = window.scrollY;
-      floats.classList.toggle('is-visible', scrollTop > 400);
-      if (!pctEl) return;
-      var dist;
-      if (floatTarget) {
-        dist = floatTarget.getBoundingClientRect().bottom + scrollTop - window.innerHeight;
-      } else {
-        dist = document.documentElement.scrollHeight - window.innerHeight;
-      }
-      var pct = dist > 0 ? Math.min((scrollTop / dist) * 100, 100) : 0;
-      pctEl.textContent = Math.round(pct) + '%';
-    }
-    if (isFirstRun) window.addEventListener('scroll', updateFloats, { passive: true });
-    updateFloats();
-  }
-
-  // Progress bar width + % text — article pages only
-  if (bar) {
-    var progressTarget = document.querySelector('.article-body');
-    function updateProgress() {
-      var scrollTop = window.scrollY;
-      var scrollDistance;
-      if (progressTarget) {
-        // Stop at end of article body, not end of footer
-        scrollDistance = progressTarget.getBoundingClientRect().bottom + scrollTop - window.innerHeight;
-      } else {
-        scrollDistance = document.documentElement.scrollHeight - window.innerHeight;
-      }
-      var pct = scrollDistance > 0 ? Math.min((scrollTop / scrollDistance) * 100, 100) : 0;
-
-      bar.style.width = pct + '%';
-      if (pctEl) pctEl.textContent = Math.round(pct) + '% through';
-    }
-    if (isFirstRun) window.addEventListener('scroll', updateProgress, { passive: true });
-    updateProgress();
-  }
 
   if (bttBtn) {
     bttBtn.addEventListener('click', function () {
@@ -252,10 +241,17 @@
   }
 
   /* ── Inline footnote tooltips ────────────────────────────── */
-  var fnTooltip = null;
-
-  function makeFnTooltip() {
-    var el = document.createElement('div');
+  // ONE tooltip element, ONE click handler, lifetime-of-session. The
+  // tooltip and its listeners live on document.body + document, both of
+  // which survive SPA-nav content swaps. Creating a fresh tooltip on
+  // each swap (the previous implementation) produced stacked tooltips
+  // and double-registered handlers — one of which wrote content into a
+  // detached node, which is why the popup appeared as a blank box.
+  function getOrCreateFnTooltip() {
+    var el = document.getElementById('fn-tooltip-global');
+    if (el) return el;
+    el = document.createElement('div');
+    el.id = 'fn-tooltip-global';
     el.className = 'fn-tooltip';
     el.setAttribute('role', 'tooltip');
     el.hidden = true;
@@ -274,19 +270,13 @@
   }
 
   function hideFnTooltip() {
-    if (fnTooltip) {
-      fnTooltip.hidden = true;
-      var prev = document.querySelector('.fn-btn[aria-expanded="true"]');
-      if (prev) prev.setAttribute('aria-expanded', 'false');
-    }
+    var t = document.getElementById('fn-tooltip-global');
+    if (t) t.hidden = true;
+    var prev = document.querySelector('.fn-btn[aria-expanded="true"]');
+    if (prev) prev.setAttribute('aria-expanded', 'false');
   }
 
-  // Use event delegation on document so the handler survives SPA-nav
-  // content swaps (which destroy and rebuild the article body).
-  if (document.querySelector('.fn-btn')) {
-    fnTooltip = makeFnTooltip();
-    var fnBody = fnTooltip.querySelector('.fn-tooltip__body');
-
+  if (isFirstRun) {
     document.addEventListener('click', function (e) {
       var btn = e.target.closest('.fn-btn');
       if (!btn) {
@@ -309,32 +299,39 @@
         return;
       }
 
+      var tip = getOrCreateFnTooltip();
+      var tipBody = tip.querySelector('.fn-tooltip__body');
+
       var already = btn.getAttribute('aria-expanded') === 'true';
       hideFnTooltip();
       if (already) return;
 
-      // Content lives in <span class="fn-content" hidden> inside <sup class="fn-ref">.
+      // Content lives in <span class="fn-content" hidden> inside
+      // <sup class="fn-ref">. Fall back to textContent then to a visible
+      // placeholder so the popup is never a silent blank square.
       var supEl = btn.closest('.fn-ref') || btn.parentElement;
       var contentEl = supEl ? supEl.querySelector('.fn-content') : null;
-      if (!contentEl) return;
-      var content = (contentEl.innerHTML || '').trim();
-      if (!content) content = (contentEl.textContent || '').trim();
+      var content = '';
+      if (contentEl) {
+        content = (contentEl.innerHTML || '').trim();
+        if (!content) content = (contentEl.textContent || '').trim();
+      }
       if (!content) content = '<em>Footnote content missing.</em>';
-      fnBody.innerHTML = content;
+      tipBody.innerHTML = content;
 
       // Position above the button, centred.
       var rect    = btn.getBoundingClientRect();
       var scrollY = window.scrollY;
-      fnTooltip.hidden = false;
-      var tipW = fnTooltip.offsetWidth;
-      var tipH = fnTooltip.offsetHeight;
+      tip.hidden = false;
+      var tipW = tip.offsetWidth;
+      var tipH = tip.offsetHeight;
       var left = rect.left + rect.width / 2 - tipW / 2;
       var top  = scrollY + rect.top - tipH - 10;
 
       // Reserve space for the bottom annotation toolbar so the tooltip
       // never lands behind it.
-      var bar  = document.getElementById('annotation-toolbar');
-      var barH = bar ? bar.offsetHeight : 0;
+      var annBar  = document.getElementById('annotation-toolbar');
+      var barH = annBar ? annBar.offsetHeight : 0;
       var maxBottomPx = scrollY + window.innerHeight - barH - 10;
 
       left = Math.max(8, Math.min(left, window.innerWidth - tipW - 8));
@@ -344,14 +341,17 @@
       }
       if (top + tipH > maxBottomPx) top = Math.max(scrollY + 8, maxBottomPx - tipH);
 
-      fnTooltip.style.left = left + 'px';
-      fnTooltip.style.top  = top  + 'px';
+      tip.style.left = left + 'px';
+      tip.style.top  = top  + 'px';
       btn.setAttribute('aria-expanded', 'true');
     });
 
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') hideFnTooltip();
     });
+
+    // Hide the tooltip before the next SPA navigation swaps content in.
+    document.addEventListener('spa:beforeswap', hideFnTooltip);
   }
 
   /* ── Sidenotes (margin notes on screens ≥ 1400px) ────────── */
@@ -462,11 +462,16 @@
           num.href = sup && sup.id ? '#' + sup.id : '#';
           num.textContent = '[' + (id || '') + ']';
           num.setAttribute('aria-label', 'Jump to footnote ' + (id || '') + ' in the article');
-          var text = document.createElement('span');
-          text.className = 'article-footnotes__text';
-          text.innerHTML = (contentEl.innerHTML || '').trim() || contentEl.textContent;
           li.appendChild(num);
           li.appendChild(document.createTextNode(' '));
+          // Flatten the fn-content into inline text so multi-paragraph
+          // footnotes don't break the mobile list layout (block-level
+          // <p> children inside an inline span produced cases where only
+          // the first footnote remained visible, with the rest pushed off
+          // the rendering stack by collapsed-height siblings).
+          var text = document.createElement('span');
+          text.className = 'article-footnotes__text';
+          text.textContent = (contentEl.textContent || '').trim();
           li.appendChild(text);
         }
         ol.appendChild(li);
@@ -476,7 +481,11 @@
 
     // Visible footnotes section — collapsed by default so long pieces
     // don't end in a wall of notes; reader reveals on demand.
-    if (articleFnEl) {
+    // Idempotent: if SPA-nav re-runs this script and the section has
+    // already been rendered for this page, leave it alone.
+    if (articleFnEl && !articleFnEl.dataset.fnRendered) {
+      articleFnEl.innerHTML = '';
+
       var fnHeader = document.createElement('div');
       fnHeader.className = 'article-footnotes__header';
       fnHeader.innerHTML = '<span class="article-footnotes__title">Footnotes</span>' +
@@ -505,13 +514,15 @@
         });
       });
 
-      document.getElementById('fn-toggle').addEventListener('click', function () {
+      fnHeader.querySelector('#fn-toggle').addEventListener('click', function () {
         var body = document.getElementById('fn-body');
         var isHidden = body.hidden;
         body.hidden = !isHidden;
         this.textContent = isHidden ? 'Hide footnotes' : 'Show footnotes';
         this.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
       });
+
+      articleFnEl.dataset.fnRendered = 'true';
     }
 
     // Print footnotes — always plain text, no clickable numbers.

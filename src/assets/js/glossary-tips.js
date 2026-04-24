@@ -108,7 +108,10 @@
     // Mobile fix: dismiss on any outside tap AND make sure tapping the
     // trigger again closes the tooltip rather than leaving it open.
     hideOnClick: true,
-    touch: ['hold', 500]
+    // `true` = open on tap (short press) and close on tap-outside. The
+    // previous `['hold', 500]` setting forced a 500 ms long-press which
+    // readers on mobile kept thinking was broken.
+    touch: true
   });
 
   // Hide any visible tooltips when the page is about to change. Without

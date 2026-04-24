@@ -169,6 +169,27 @@ layout: layouts/base.njk
         <div class="article-header__meta-tags">{% for tag in tags %}{% if tag != "post" %}<a href="/topics/{{ tag | slugify }}/">{{ tag }}</a>{% endif %}{% endfor %}</div>
         {% endif %}
 
+        {# Responses to this piece — sits right below the tags so readers
+           know up-front which other articles respond to this one. Only
+           renders when at least one response exists. #}
+        {% set responses = collections.allContent | responsesTo(page.url) %}
+        {% if responses.length %}
+        <aside class="responses-section responses-section--header">
+          <p class="responses-section__title">Responses to this piece</p>
+          <ul class="responses-section__list">
+            {% for resp in responses %}
+            <li class="responses-section__item">
+              {% if resp.data.section %}
+              <span class="responses-section__section">{{ resp.data.section }}</span>
+              {% endif %}
+              <a class="responses-section__link" href="{{ resp.url }}">{{ resp.data.title }}</a>
+              <time class="responses-section__date">{{ resp.date | readableDate }}</time>
+            </li>
+            {% endfor %}
+          </ul>
+        </aside>
+        {% endif %}
+
         <div class="article-header__actions" data-pagefind-ignore>
 
           {# 1. Reader panel #}
@@ -656,40 +677,7 @@ layout: layouts/base.njk
         </div>
         {% endif %}
 
-        {# Tags at article end — readers arriving here want a way to keep
-           reading on the same topic. Same link targets as the header
-           tags; restyled to read as a closing tags block, not hero meta. #}
-        {% if tags %}
-        <div class="article-footer__tags">
-          <p class="article-footer__tags-label">Topics</p>
-          <ul class="article-footer__tags-list">
-            {% for tag in tags %}{% if tag != "post" %}
-            <li class="article-footer__tags-item"><a href="/topics/{{ tag | slugify }}/">{{ tag }}</a></li>
-            {% endif %}{% endfor %}
-          </ul>
-        </div>
-        {% endif %}
-
       </footer>
-
-      {# Responses to this piece #}
-      {% set responses = collections.allContent | responsesTo(page.url) %}
-      {% if responses.length %}
-      <aside class="responses-section">
-        <p class="responses-section__title">Responses to this piece</p>
-        <ul class="responses-section__list">
-          {% for resp in responses %}
-          <li class="responses-section__item">
-            {% if resp.data.section %}
-            <span class="responses-section__section">{{ resp.data.section }}</span>
-            {% endif %}
-            <a class="responses-section__link" href="{{ resp.url }}">{{ resp.data.title }}</a>
-            <time class="responses-section__date">{{ resp.date | readableDate }}</time>
-          </li>
-          {% endfor %}
-        </ul>
-      </aside>
-      {% endif %}
 
       {# Backlinks, other articles that reference this one #}
       {% set backlinks = collections.allContent | backlinksTo(page.url) %}
