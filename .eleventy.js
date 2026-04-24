@@ -478,6 +478,10 @@ module.exports = function (eleventyConfig) {
     });
   });
 
+  // Flat list of section slugs — used by the per-section RSS feed
+  // template to paginate and emit /feed-{section}.xml for each one.
+  eleventyConfig.addCollection("sectionList", () => sections.slice());
+
   // All tags across all content (for tag pages)
   eleventyConfig.addCollection("tagList", (collectionApi) => {
     const tagSet = new Set();

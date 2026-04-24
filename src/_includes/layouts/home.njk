@@ -67,6 +67,21 @@ layout: layouts/base.njk
   {% endif %}
   {% endfor %}
 
+  {# ─── Subscribe via reader (open-web / RSS CTA) ──────────── #}
+  <section class="front-subscribe" aria-label="Subscribe by RSS">
+    <div class="front-subscribe__body">
+      <p class="front-subscribe__kicker">Follow the open way</p>
+      <h2 class="front-subscribe__title">Subscribe in any RSS reader</h2>
+      <p class="front-subscribe__lede">
+        No account. No algorithm. Every article, the moment it publishes, straight to your reader of choice. Pick the whole site, a section, an author, or a single topic.
+      </p>
+    </div>
+    <div class="front-subscribe__actions">
+      <a class="btn btn--primary" href="/feeds/" data-umami-event="subscribe-cta">Browse all feeds &rarr;</a>
+      <a class="btn btn--ghost" href="/feed.xml" data-umami-event="rss-sub" data-umami-event-feed="main">Grab the main feed</a>
+    </div>
+  </section>
+
   {# ─── Quick Sections ──────────────────────────────────────── #}
   <section class="front-quick" aria-label="More sections">
     {% set quickSections = ["arts-culture", "science-technology", "letters"] %}

@@ -18,6 +18,7 @@ permalink: /feeds/
 
     <aside class="sg-nav" aria-label="Page sections">
       <a href="#site">Whole site</a>
+      <a href="#sections">By section</a>
       <a href="#authors">By author</a>
       <a href="#topics">By topic</a>
       <a href="#external">External feeds we follow</a>
@@ -29,17 +30,28 @@ permalink: /feeds/
       <h2 id="site">Whole site</h2>
       <p>Everything we publish, in reverse chronological order. Most readers want this one.</p>
       <ul class="feeds-list">
-        <li><a href="/feed.xml" data-umami-event="rss-sub" class="feeds-list__link">
+        <li><a href="/feed.xml" data-umami-event="rss-sub" data-umami-event-feed="main" class="feeds-list__link">
           <span class="feeds-list__label">All articles</span>
           <span class="feeds-list__url">/feed.xml</span>
         </a></li>
+      </ul>
+
+      <h2 id="sections">By section</h2>
+      <p>Subscribe to a single editorial vertical. Useful if you only care about Opinion, or only Science.</p>
+      <ul class="feeds-list">
+        {% for secSlug in collections.sectionList %}
+        <li><a href="/feed-{{ secSlug }}.xml" data-umami-event="rss-sub" data-umami-event-feed="section-{{ secSlug }}" class="feeds-list__link">
+          <span class="feeds-list__label">{{ site.sections[secSlug].label }}</span>
+          <span class="feeds-list__url">/feed-{{ secSlug }}.xml</span>
+        </a></li>
+        {% endfor %}
       </ul>
 
       <h2 id="authors">By author</h2>
       <p>One feed per contributor. Useful if you follow a specific writer&rsquo;s beat.</p>
       <ul class="feeds-list feeds-list--two-col">
         {% for slug in authorList | sort %}
-        <li><a href="/feeds/{{ slug }}.xml" data-umami-event="rss-sub" class="feeds-list__link">
+        <li><a href="/feeds/{{ slug }}.xml" data-umami-event="rss-sub" data-umami-event-feed="author-{{ slug }}" class="feeds-list__link">
           <span class="feeds-list__label">{{ authors[slug].name or slug }}</span>
           <span class="feeds-list__url">/feeds/{{ slug }}.xml</span>
         </a></li>
@@ -50,7 +62,7 @@ permalink: /feeds/
       <p>One feed per tag. We publish a feed for every topic a piece has ever been tagged with &mdash; find the topic on <a href="/topics/">the topics page</a> or pick from the list below.</p>
       <ul class="feeds-list feeds-list--two-col">
         {% for tag in collections.tagList %}
-        <li><a href="/feeds/topics/{{ tag | slugify }}.xml" data-umami-event="rss-sub" class="feeds-list__link">
+        <li><a href="/feeds/topics/{{ tag | slugify }}.xml" data-umami-event="rss-sub" data-umami-event-feed="topic-{{ tag | slugify }}" class="feeds-list__link">
           <span class="feeds-list__label">{{ tag }}</span>
           <span class="feeds-list__url">/feeds/topics/{{ tag | slugify }}.xml</span>
         </a></li>
@@ -61,7 +73,7 @@ permalink: /feeds/
       <p>Our aggregated <a href="/wire/">wire page</a> pulls in other independent publications. Subscribe to them directly at the source:</p>
       <ul class="feeds-list">
         {% for feed in feeds %}
-        <li><a href="{{ feed.url }}" target="_blank" rel="noopener" data-umami-event="rss-sub" class="feeds-list__link">
+        <li><a href="{{ feed.url }}" target="_blank" rel="noopener" data-umami-event="rss-sub" data-umami-event-feed="external-{{ feed.name | slugify }}" class="feeds-list__link">
           <span class="feeds-list__label">{{ feed.name }}</span>
           <span class="feeds-list__url">{{ feed.url }}</span>
         </a></li>

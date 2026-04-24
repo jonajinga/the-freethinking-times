@@ -574,6 +574,55 @@ body:has(.article-body) .gs-article-only { display: block; }
 /* Word spacing — driven by --gs-word-spacing custom property on :root */
 body { word-spacing: var(--gs-word-spacing, 0); }
 
+/* ── Homepage: subscribe-via-RSS CTA band ──────────────────── */
+.front-subscribe {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-8);
+  align-items: center;
+  margin: var(--space-10) 0;
+  padding: var(--space-8);
+  background: var(--color-bg-alt);
+  border-left: 4px solid var(--color-accent);
+}
+.front-subscribe__kicker {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-2);
+}
+.front-subscribe__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-2xl);
+  margin: 0 0 var(--space-3);
+  color: var(--color-ink);
+}
+.front-subscribe__lede {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  color: var(--color-ink-muted);
+  line-height: var(--leading-normal);
+  margin: 0;
+  max-width: 60ch;
+}
+.front-subscribe__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  justify-self: end;
+  align-items: stretch;
+}
+@media (max-width: 720px) {
+  .front-subscribe {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  .front-subscribe__actions { justify-self: stretch; }
+}
+
 /* ── Feeds list (/feeds/ discovery page) ───────────────────── */
 .feeds-list {
   list-style: none;
@@ -581,38 +630,53 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   padding: 0;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0;
+  /* Column gap for the two-col variant; row-gap: 0 so bottom borders
+     on adjacent rows stack cleanly without a double rule. */
+  gap: 0 var(--space-8);
 }
 .feeds-list--two-col {
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }
 .feeds-list__link {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: baseline;
   column-gap: var(--space-4);
-  padding: var(--space-3) 0;
+  padding: var(--space-3) var(--space-2);
   border-bottom: 1px solid var(--color-rule);
   text-decoration: none;
   color: var(--color-ink);
+  min-height: calc(var(--space-3) * 2 + 1.4em);
 }
 .feeds-list__link:hover { background: var(--color-bg-alt); }
 .feeds-list__label {
   font-family: var(--font-headline);
   font-weight: 600;
   font-size: var(--text-base);
+  overflow-wrap: anywhere;
 }
 .feeds-list__url {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: var(--text-xs);
   color: var(--color-ink-faint);
   text-align: right;
+  overflow-wrap: anywhere;
 }
 .feeds-note {
   font-family: var(--font-ui);
   font-size: var(--text-xs);
   color: var(--color-ink-faint);
   margin: 0 0 var(--space-8);
+}
+@media (max-width: 600px) {
+  /* On narrow viewports collapse to single column and stack label
+     over URL inside each row so long topic slugs never overflow. */
+  .feeds-list--two-col { grid-template-columns: 1fr; }
+  .feeds-list__link {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-1);
+  }
+  .feeds-list__url { text-align: left; }
 }
 
 /* ── Republish (CC grab-code) ──────────────────────────────── */

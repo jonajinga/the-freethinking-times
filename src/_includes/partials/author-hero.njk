@@ -35,7 +35,9 @@
       {% include "partials/social-icons.njk" %}
       {% if authorSlug %}
       <a class="social-icons__link" href="/feeds/{{ authorSlug }}.xml"
-         aria-label="RSS feed for {{ authorData.name }}">
+         aria-label="RSS feed for {{ authorData.name }}"
+         data-umami-event="rss-sub"
+         data-umami-event-feed="author-{{ authorSlug }}">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <circle cx="5" cy="19" r="2"/>
           <path d="M4 4a16 16 0 0 1 16 16h-3A13 13 0 0 0 4 7V4z"/>

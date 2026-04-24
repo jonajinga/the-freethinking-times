@@ -2,6 +2,12 @@
 layout: layouts/base.njk
 ---
 
+{% block head %}
+{% if sectionSlug %}
+<link rel="alternate" type="application/rss+xml" title="{{ site.sections[sectionSlug].label or title }}, {{ site.title }}" href="{{ site.url }}/feed-{{ sectionSlug }}.xml">
+{% endif %}
+{% endblock %}
+
 <div class="container section-index">
 
   {# Section Header #}
@@ -13,6 +19,12 @@ layout: layouts/base.njk
     {% if description %}
     <p style="color: var(--color-ink-muted); font-size: var(--text-md); max-width: 60ch; font-style: italic;">
       {{ description }}
+      {% if sectionSlug %}
+      &middot;
+      <a href="/feed-{{ sectionSlug }}.xml" data-umami-event="rss-sub" data-umami-event-feed="section-{{ sectionSlug }}" aria-label="RSS feed for {{ site.sections[sectionSlug].label or title }}" style="color: var(--color-accent); font-style: normal;">
+        RSS &rsaquo;
+      </a>
+      {% endif %}
     </p>
     {% endif %}
     {% if sectionSlug == "letters" %}
