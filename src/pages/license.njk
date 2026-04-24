@@ -53,7 +53,46 @@ permalink: /license/
       <p>We read and display webmentions from every republisher, reply, like, and repost we receive. We link back to you. This is a two-way street &mdash; republishing our work means your readers may end up on our site, and our readers may end up on yours.</p>
 
       <h2 id="contact">Commercial licence</h2>
-      <p>Need to use {{ site.title }} work in a paid product, an educational anthology for sale, a broadcast, or a consulting deliverable? Commercial licences are case-by-case, mostly affordable, and money goes straight into more reporting. Email <a href="mailto:{{ site.email }}">{{ site.email }}</a> with the piece and the context and we&rsquo;ll get back to you.</p>
+      <p>Need to use {{ site.title }} work in a paid product, an educational anthology for sale, a broadcast, or a consulting deliverable? Commercial licences are case-by-case, mostly affordable, and money goes straight into more reporting. Tell us what you have in mind and we&rsquo;ll get back to you.</p>
+
+      <form action="https://api.web3forms.com/submit" method="POST" class="w3f">
+        <input type="hidden" name="access_key" value="{{ site.forms.accessKey }}">
+        <input type="hidden" name="subject" value="Commercial licence inquiry, {{ site.title }}">
+        <input type="hidden" name="redirect" value="{{ site.url }}/thank-you/">
+        <input type="hidden" name="from_name" value="{{ site.title }} Commercial Licence">
+        <input type="checkbox" name="botcheck" class="visually-hidden" style="display:none" tabindex="-1" autocomplete="off">
+
+        <div class="w3f__row">
+          <div class="w3f__group">
+            <label class="w3f__label" for="licence-name">Name <span class="w3f__required">*</span></label>
+            <input class="w3f__input" type="text" name="name" id="licence-name" required aria-required="true" autocomplete="name">
+          </div>
+          <div class="w3f__group">
+            <label class="w3f__label" for="licence-email">Email <span class="w3f__required">*</span></label>
+            <input class="w3f__input" type="email" name="email" id="licence-email" required aria-required="true" autocomplete="email">
+          </div>
+        </div>
+
+        <div class="w3f__group">
+          <label class="w3f__label" for="licence-org">Organisation</label>
+          <input class="w3f__input" type="text" name="organisation" id="licence-org" autocomplete="organization">
+        </div>
+
+        <div class="w3f__group">
+          <label class="w3f__label" for="licence-piece">Which article?</label>
+          <input class="w3f__input" type="text" name="article_url" id="licence-piece" placeholder="URL or title">
+        </div>
+
+        <div class="w3f__group">
+          <label class="w3f__label" for="licence-use">Intended use <span class="w3f__required">*</span></label>
+          <textarea class="w3f__textarea" name="message" id="licence-use" rows="6" required aria-required="true" maxlength="5000" placeholder="Paid product? Broadcast? Educational anthology? Tell us the context, the audience, the timeline, and whether money changes hands."></textarea>
+        </div>
+
+        <div class="h-captcha" data-captcha="true"></div>
+        <div class="w3f__status" role="status" aria-live="polite" aria-atomic="true"></div>
+        <button type="submit" class="w3f__submit" data-umami-event="license-inquiry-submit">Send inquiry</button>
+        <p class="w3f__privacy">Sent directly to our editorial inbox. We do not store, share, or sell your information. <a href="/privacy/">Privacy policy</a>.</p>
+      </form>
 
     </div>
 

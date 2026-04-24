@@ -2,6 +2,10 @@
 layout: layouts/base.njk
 ---
 
+{% block head %}
+<link rel="alternate" type="application/rss+xml" title="{{ tag }}, {{ site.title }}" href="{{ site.url }}/feeds/topics/{{ tag | slugify }}.xml">
+{% endblock %}
+
 <div class="container" style="padding-top: var(--space-12); padding-bottom: var(--space-16);">
 
   <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
@@ -10,7 +14,10 @@ layout: layouts/base.njk
     </p>
     <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-2);">{{ tag }}</h1>
     <p style="color: var(--color-ink-muted); font-size: var(--text-sm); margin-bottom: var(--space-4);">
-      {{ collections[tag].length }} article{% if collections[tag].length != 1 %}s{% endif %} across all sections
+      {{ collections[tag].length }} article{% if collections[tag].length != 1 %}s{% endif %} across all sections &middot;
+      <a href="/feeds/topics/{{ tag | slugify }}.xml" data-umami-event="rss-sub" aria-label="RSS feed for {{ tag }}" title="RSS feed for {{ tag }}" style="color: var(--color-accent);">
+        RSS &rsaquo;
+      </a>
     </p>
     {% if collections[tag] and collections[tag].length %}
     {% set viewFilter = "topic=" + (tag | slugify) %}
