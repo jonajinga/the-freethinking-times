@@ -116,7 +116,7 @@
       { "label": "Terms of Use",         "url": "/terms/",         "title": "The terms that govern your use of this site, content ownership, submissions, acceptable use, and third-party services we rely on." },
       { "label": "Cookies Policy",       "url": "/cookies/",       "title": "A full accounting of zero first-party cookies, what localStorage stores in your browser, and exactly what third-party services do if you interact with them." },
       { "label": "Accessibility",        "url": "/accessibility/", "title": "Our commitment to WCAG 2.2 AA, what we've built for accessibility, known limitations we're still working on, and how to report issues you encounter." },
-      { "label": "Republication Licence","url": "/license/",       "title": "Articles are released under CC BY-NC-ND 4.0. You can republish, quote, and translate our work freely, provided you follow four short rules — attribution, no derivatives, non-commercial, webmentions welcome." },
+      { "label": "Republication License","url": "/license/",       "title": "Articles are released under CC BY-NC-ND 4.0. You can republish, quote, and translate our work freely, provided you follow four short rules — attribution, no derivatives, non-commercial, webmentions welcome." },
       { "label": "Site Map",             "url": "/site-map/",      "title": "A directory of every page on the site, handy if you're looking for something specific or want a lay of the land." }
     ]
   }

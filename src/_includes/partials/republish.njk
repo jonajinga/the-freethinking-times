@@ -12,18 +12,19 @@
 {% if syndicate %}
 <section class="republish" aria-labelledby="republish-heading">
   <header class="republish__header">
-    <p class="republish__kicker">Open licence</p>
+    <p class="republish__kicker">Open license</p>
     <h2 id="republish-heading" class="republish__title">Republish this story</h2>
   </header>
   <p class="republish__lede">
     Free to republish under
     <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license" target="_blank" data-umami-event="license-learn">CC&nbsp;BY-NC-ND&nbsp;4.0</a>.
     Attribution required. No editing (minor time/place relative changes only). Not for commercial resale.
+    See our <a href="/license/" data-umami-event="license-learn">full republication terms</a>.
   </p>
   <details class="republish__grab">
     <summary class="republish__summary">Grab the HTML</summary>
     <label class="republish__label" for="republish-html">Select all, copy, paste into your CMS&rsquo; HTML view:</label>
-    <textarea id="republish-html" class="republish__textarea" readonly rows="12" onclick="this.select()"><p><em>This story was originally published by <a href="{{ site.url }}{{ page.url }}">{{ site.title }}</a> under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> licence.</em></p>
+    <textarea id="republish-html" class="republish__textarea" readonly rows="12" onclick="this.select()"><p><em>This story was originally published by <a href="{{ site.url }}{{ page.url }}">{{ site.title }}</a> under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> license.</em></p>
 <h1>{{ title | escape }}</h1>
 <p><strong>By {% if authors[author].name %}{{ authors[author].name }}{% elif authorName %}{{ authorName }}{% else %}{{ author }}{% endif %}</strong> &mdash; <time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate }}</time></p>
 {{ content | safe }}

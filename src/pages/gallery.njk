@@ -42,8 +42,8 @@ permalink: /gallery/
       {% for img in gallery %}{% if img.category and img.category not in cats %}{% set cats = cats.concat([img.category]) %}{% endif %}{% endfor %}
       {% for cat in cats %}<option value="{{ cat }}">{{ cat }}</option>{% endfor %}
     </select>
-    <select id="gallery-license" aria-label="Filter by licence" style="font-family:var(--font-ui);font-size:var(--text-sm);padding:var(--space-2) var(--space-3);border:1px solid var(--color-rule);background:var(--color-bg);color:var(--color-ink);">
-      <option value="">All licences</option>
+    <select id="gallery-license" aria-label="Filter by license" style="font-family:var(--font-ui);font-size:var(--text-sm);padding:var(--space-2) var(--space-3);border:1px solid var(--color-rule);background:var(--color-bg);color:var(--color-ink);">
+      <option value="">All licenses</option>
       {% set lics = [] %}
       {% for img in gallery %}{% if img.license and img.license not in lics %}{% set lics = lics.concat([img.license]) %}{% endif %}{% endfor %}
       {% for lic in lics %}<option value="{{ lic }}">{{ lic }}</option>{% endfor %}

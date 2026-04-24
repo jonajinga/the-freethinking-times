@@ -2326,9 +2326,34 @@
   }
 
   /* Sticky header: hide chapter title to save horizontal space.
-     The work title (back link) and Panel button are sufficient. */
+     The work title (back link) and Panel button are sufficient on
+     library chapter pages. ARTICLE pages override this below — the
+     back link only shows the section slug, so the title is the only
+     cue for what the reader is actually reading. */
   .library-reading-header__title {
     display: none;
+  }
+
+  /* Article sticky header: DO show the article title on mobile, but
+     fluidly scale the font so it stays on one line alongside the
+     section back-link. Ellipsis clips anything that still overflows
+     after scaling. */
+  .article-reading-header .library-reading-header__title {
+    display: block;
+    font-size: clamp(0.72rem, 3vw, var(--text-sm));
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* Keep the back link from hogging space when titles are long. */
+  .article-reading-header .library-reading-header__back {
+    flex-shrink: 0;
+    max-width: 40%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   /* Compact reading header on mobile */
