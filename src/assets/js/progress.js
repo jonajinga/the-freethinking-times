@@ -438,50 +438,89 @@
   var printFnEl = document.getElementById('print-footnotes');
 
   if (allFnBtns.length) {
-    // Build footnotes list
-    function buildFnList(className) {
+    // Build footnotes list. Clickable number jumps to the matching in-body
+    // reference (`#fn-ref-N`); the sup wrapper gets a stable id here if it
+    // doesn't already have one.
+    function buildFnList(className, opts) {
+      opts = opts || {};
       var ol = document.createElement('ol');
       ol.className = className;
       allFnBtns.forEach(function (btn) {
-        var contentEl = btn.parentElement.querySelector('.fn-content');
+        var sup = btn.closest('.fn-ref') || btn.parentElement;
+        var contentEl = sup ? sup.querySelector('.fn-content') : null;
         if (!contentEl) return;
-        var li = document.createElement('li');
         var id = btn.getAttribute('data-fn-id');
+        if (sup && !sup.id) sup.id = 'fn-ref-' + (id || '');
+
+        var li = document.createElement('li');
         if (id) li.setAttribute('value', id);
-        li.textContent = contentEl.textContent;
+        if (opts.plainText) {
+          li.textContent = contentEl.textContent;
+        } else {
+          var num = document.createElement('a');
+          num.className = 'article-footnotes__num';
+          num.href = sup && sup.id ? '#' + sup.id : '#';
+          num.textContent = '[' + (id || '') + ']';
+          num.setAttribute('aria-label', 'Jump to footnote ' + (id || '') + ' in the article');
+          var text = document.createElement('span');
+          text.className = 'article-footnotes__text';
+          text.innerHTML = (contentEl.innerHTML || '').trim() || contentEl.textContent;
+          li.appendChild(num);
+          li.appendChild(document.createTextNode(' '));
+          li.appendChild(text);
+        }
         ol.appendChild(li);
       });
       return ol;
     }
 
-    // Visible footnotes section
+    // Visible footnotes section — collapsed by default so long pieces
+    // don't end in a wall of notes; reader reveals on demand.
     if (articleFnEl) {
       var fnHeader = document.createElement('div');
       fnHeader.className = 'article-footnotes__header';
       fnHeader.innerHTML = '<span class="article-footnotes__title">Footnotes</span>' +
-        '<button class="article-footnotes__toggle" type="button" id="fn-toggle">Hide footnotes</button>';
+        '<button class="article-footnotes__toggle" type="button" id="fn-toggle" aria-expanded="false" aria-controls="fn-body">Show footnotes</button>';
       articleFnEl.appendChild(fnHeader);
 
       var fnBody = document.createElement('div');
       fnBody.id = 'fn-body';
+      fnBody.hidden = true;
       fnBody.appendChild(buildFnList('article-footnotes__list'));
       articleFnEl.appendChild(fnBody);
 
+      // Clicking a number in the footnotes section scrolls to the matching
+      // in-body reference and briefly flashes it, without leaving a jump
+      // entry in the browser history.
+      fnBody.querySelectorAll('.article-footnotes__num').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          var id = this.getAttribute('href').slice(1);
+          if (!id) return;
+          var target = document.getElementById(id);
+          if (!target) return;
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          target.classList.add('footnote-flash');
+          setTimeout(function () { target.classList.remove('footnote-flash'); }, 1400);
+        });
+      });
+
       document.getElementById('fn-toggle').addEventListener('click', function () {
         var body = document.getElementById('fn-body');
-        var hidden = body.hidden;
-        body.hidden = !hidden;
-        this.textContent = hidden ? 'Hide footnotes' : 'Show footnotes';
+        var isHidden = body.hidden;
+        body.hidden = !isHidden;
+        this.textContent = isHidden ? 'Hide footnotes' : 'Show footnotes';
+        this.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
       });
     }
 
-    // Print footnotes
+    // Print footnotes — always plain text, no clickable numbers.
     if (printFnEl) {
       var pfnHeading = document.createElement('p');
       pfnHeading.className = 'print-footnotes__heading';
       pfnHeading.textContent = 'Notes';
       printFnEl.appendChild(pfnHeading);
-      printFnEl.appendChild(buildFnList('print-footnotes__list'));
+      printFnEl.appendChild(buildFnList('print-footnotes__list', { plainText: true }));
     }
   }
 

@@ -576,12 +576,35 @@ body { word-spacing: var(--gs-word-spacing, 0); }
 
 /* ── Webmentions ────────────────────────────────────────────── */
 .wm {
-  max-width: 62ch;
+  max-width: var(--max-width-prose);
   margin: var(--space-10) auto 0;
   padding-top: var(--space-8);
   border-top: 2px solid var(--color-ink);
 }
-.wm__header { margin-bottom: var(--space-6); }
+.wm__header {
+  margin-bottom: var(--space-6);
+  position: relative;
+  padding-right: 72px; /* reserve space for the toggle button */
+}
+.wm__toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  background: transparent;
+  border: 1px solid var(--color-rule-heavy);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.wm__toggle:hover { background: var(--color-bg-inset); }
+.wm[data-wm-collapsed="true"] .wm__lede { display: none; }
+.wm[data-wm-collapsed="true"] .wm__header { margin-bottom: 0; }
 .wm__kicker {
   font-family: var(--font-ui);
   font-size: var(--text-xs);

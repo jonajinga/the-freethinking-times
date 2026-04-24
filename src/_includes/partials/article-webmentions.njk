@@ -22,7 +22,7 @@
 {% endif %}
 {% if _wm and _wm.total > 0 %}
 {% if _isDemo %}<p style="max-width:62ch;margin:var(--space-8) auto 0;padding:var(--space-3) var(--space-4);background:#fef3c7;color:#78350f;font-family:var(--font-ui);font-size:0.78rem;border-left:3px solid #d97706;">Preview mode. These mentions are synthesised; real ones arrive via webmention.io once the site receives them.</p>{% endif %}
-<section class="wm" aria-label="Webmentions">
+<section class="wm" aria-label="Webmentions" data-wm-collapsed="false">
   <header class="wm__header">
     <p class="wm__kicker">Elsewhere on the web</p>
     <h2 class="wm__title">
@@ -35,7 +35,9 @@
       <a href="https://webmention.io" target="_blank" rel="noopener">webmention.io</a>.
       <a href="https://indieweb.org/Webmention" target="_blank" rel="noopener">What&rsquo;s a webmention?</a>
     </p>
+    <button type="button" class="wm__toggle" aria-expanded="true" aria-controls="wm-body" data-wm-toggle>Hide</button>
   </header>
+  <div id="wm-body" class="wm__body">
 
   {% if _wm.replies.length %}
   <div class="wm-block" aria-labelledby="wm-replies-head">
@@ -109,5 +111,29 @@
     </ul>
   </div>
   {% endif %}
+  </div>{# /.wm__body #}
 </section>
+<script>
+(function () {
+  var section = document.currentScript && document.currentScript.previousElementSibling;
+  if (!section || !section.matches || !section.matches('.wm')) return;
+  var toggle = section.querySelector('[data-wm-toggle]');
+  var body   = section.querySelector('.wm__body');
+  if (!toggle || !body) return;
+  var prefix = (window.__PREFIX || 'tft');
+  var key    = prefix + '-wm-collapsed';
+  function apply(collapsed) {
+    section.setAttribute('data-wm-collapsed', collapsed ? 'true' : 'false');
+    toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    toggle.textContent = collapsed ? 'Show' : 'Hide';
+    body.hidden = collapsed;
+  }
+  try { apply(localStorage.getItem(key) === 'true'); } catch (e) { apply(false); }
+  toggle.addEventListener('click', function () {
+    var next = section.getAttribute('data-wm-collapsed') !== 'true';
+    apply(next);
+    try { localStorage.setItem(key, next ? 'true' : 'false'); } catch (e) {}
+  });
+})();
+</script>
 {% endif %}

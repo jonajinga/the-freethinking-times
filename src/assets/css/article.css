@@ -311,6 +311,30 @@
   color: var(--color-ink-faint);
   margin-bottom: var(--space-3);
 }
+.article-footer__tags-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+}
+.article-footer__tags-item a {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-ink);
+  text-decoration: none;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-rule-heavy);
+  background: var(--color-bg);
+  transition: background-color 120ms ease, color 120ms ease;
+}
+.article-footer__tags-item a:hover,
+.article-footer__tags-item a:focus-visible {
+  background: var(--color-ink);
+  color: var(--color-bg);
+}
 
 /* ── Author long bio (author page) ─────────────────────────── */
 .author-bio-long {
@@ -444,8 +468,11 @@
 .article-footnotes__toggle:hover { background: var(--color-accent); }
 
 .article-footnotes__list {
+  /* Drop the default list marker — the clickable [N] link IS the marker,
+     and we don't want two numbers (1. and [1]) stacked next to each other. */
+  list-style: none;
   margin: 0;
-  padding-left: var(--space-6);
+  padding-left: 0;
   font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--color-ink-muted);
@@ -455,6 +482,18 @@
 .article-footnotes__list li {
   margin-bottom: var(--space-2);
 }
+.article-footnotes__num {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  color: var(--color-accent);
+  text-decoration: none;
+  margin-right: var(--space-1);
+}
+.article-footnotes__num:hover,
+.article-footnotes__num:focus-visible {
+  text-decoration: underline;
+}
+.article-footnotes__text > :first-child { display: inline; }
 
 @media print {
   .article-footnotes { display: none !important; }
@@ -1797,8 +1836,12 @@
   /* Sits above the bottom annotation toolbar (which is at --z-overlay)
      so footnote popups near the bottom of the viewport aren't covered. */
   z-index: calc(var(--z-overlay) + 20);
-  max-width: 320px;
-  width: max-content;
+  /* Fluid width — never shrinks below 260px (keeps the popup readable on
+     phones where `width: max-content` used to produce a tiny blank square
+     for short footnote text) and never exceeds 360px or the viewport. */
+  box-sizing: border-box;
+  width: min(calc(100vw - 32px), 360px);
+  min-width: 260px;
   background: var(--color-bg);
   border: 1px solid var(--color-rule-heavy);
   border-top: 2px solid var(--color-accent);
@@ -1806,6 +1849,8 @@
   padding: var(--space-3) var(--space-4);
 }
 .fn-tooltip[hidden] { display: none; }
+.fn-tooltip__body > :first-child { margin-top: 0; }
+.fn-tooltip__body > :last-child  { margin-bottom: 0; }
 
 .fn-tooltip__close {
   float: right;

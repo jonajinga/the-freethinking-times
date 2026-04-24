@@ -656,6 +656,20 @@ layout: layouts/base.njk
         </div>
         {% endif %}
 
+        {# Tags at article end — readers arriving here want a way to keep
+           reading on the same topic. Same link targets as the header
+           tags; restyled to read as a closing tags block, not hero meta. #}
+        {% if tags %}
+        <div class="article-footer__tags">
+          <p class="article-footer__tags-label">Topics</p>
+          <ul class="article-footer__tags-list">
+            {% for tag in tags %}{% if tag != "post" %}
+            <li class="article-footer__tags-item"><a href="/topics/{{ tag | slugify }}/">{{ tag }}</a></li>
+            {% endif %}{% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
       </footer>
 
       {# Responses to this piece #}
