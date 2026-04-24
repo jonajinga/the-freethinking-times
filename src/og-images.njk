@@ -19,8 +19,10 @@ eleventyExcludeFromCollections: true
 {%- set _date = article.date | readableDate -%}
 {#- Pre-wrap title + description at build time because resvg-js (our
     SVG→PNG rasteriser) doesn't support SVG <foreignObject>. Native
-    <text> + <tspan> is the only layout path that actually renders. -#}
-{%- set _titleLines = _title | wrap(30) | limit(4) -%}
+    <text> + <tspan> is the only layout path that actually renders.
+    Title capped at 3 lines so author/date byline stays above X.com's
+    ~110px bottom overlay that hides anything past y≈520. -#}
+{%- set _titleLines = _title | wrap(30) | limit(3) -%}
 {%- set _descLines = _desc | wrap(62) | limit(3) -%}
 {%- set _kicker = _section -%}
 {%- if _section and _subsection %}{%- set _kicker = _section + " › " + _subsection -%}{%- endif -%}
@@ -63,8 +65,18 @@ eleventyExcludeFromCollections: true
   <line x1="80" y1="148" x2="200" y2="148" stroke="#C0392B" stroke-width="2"/>
   {% endif %}
 
+  <!-- Inline byline (dateline style) — sits in X.com's safe zone so
+       author + publish date remain visible even when the platform
+       overlays the bottom ~110px of the card with its own strip. -->
+  <text x="80" y="190"
+        font-family="Helvetica, Arial, sans-serif"
+        font-size="17"
+        font-weight="700"
+        letter-spacing="0.18em"
+        fill="#1A1A1A">{% if _authorName %}BY {{ _authorName | upper | escape }}{% endif %}{% if _authorName and _date %} &#8212; {% endif %}{% if _date %}PUBLISHED {{ _date | upper | escape }}{% endif %}</text>
+
   <!-- Title: native <text> with one <tspan> per wrapped line. -->
-  <text x="80" y="210"
+  <text x="80" y="260"
         font-family="Georgia, 'Times New Roman', serif"
         font-size="56"
         font-weight="700"
@@ -77,7 +89,7 @@ eleventyExcludeFromCollections: true
 
   <!-- Deck / description -->
   {% if _descLines.length %}
-  {%- set _titleBottomY = 210 + ((_titleLines.length - 1) * 68) + 40 -%}
+  {%- set _titleBottomY = 260 + ((_titleLines.length - 1) * 68) + 40 -%}
   <text x="80" y="{{ _titleBottomY }}"
         font-family="Georgia, 'Times New Roman', serif"
         font-size="24"
@@ -89,40 +101,10 @@ eleventyExcludeFromCollections: true
   </text>
   {% endif %}
 
-  <!-- Accent rule above byline bar -->
-  <rect x="0" y="544" width="1200" height="3" fill="#C0392B"/>
-
-  <!-- Byline bar -->
-  <rect x="0" y="547" width="1200" height="83" fill="#1A1A1A"/>
-
-  {% if _authorName %}
-  <text x="80" y="578"
-        font-family="Helvetica, Arial, sans-serif"
-        font-size="15"
-        font-weight="700"
-        letter-spacing="0.24em"
-        fill="#FFFFFF">BY</text>
-  <text x="80" y="612"
-        font-family="Georgia, 'Times New Roman', serif"
-        font-size="28"
-        font-weight="700"
-        letter-spacing="0.01em"
-        fill="#FFFFFF">{{ _authorName | escape }}</text>
-  {% endif %}
-
-  <text x="1120" y="578"
-        font-family="Helvetica, Arial, sans-serif"
-        font-size="15"
-        font-weight="700"
-        letter-spacing="0.24em"
-        fill="#FFFFFF"
-        text-anchor="end">PUBLISHED</text>
-  <text x="1120" y="612"
-        font-family="Georgia, 'Times New Roman', serif"
-        font-size="28"
-        font-weight="700"
-        letter-spacing="0.01em"
-        fill="#FFFFFF"
-        text-anchor="end">{{ _date | escape }}</text>
+  <!-- Slim bottom ornament — sits entirely inside X.com's overlay zone
+       so it never competes with the platform's own title/author strip;
+       gives the card a finished bottom edge on LinkedIn, Slack, etc. -->
+  <rect x="0" y="597" width="1200" height="3" fill="#C0392B"/>
+  <rect x="0" y="600" width="1200" height="30" fill="#1A1A1A"/>
 
 </svg>
