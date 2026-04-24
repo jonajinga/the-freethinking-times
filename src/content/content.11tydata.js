@@ -5,9 +5,13 @@
 // - Email-only posts: articles with `emailOnly: true` in front matter don't
 //   render a web page but still appear in the newsletter/RSS feed via collections.
 module.exports = {
-  // Articles are opt-in for the "Republish this story" CC grab-code block.
-  // Set `syndicate: true` in front matter to surface the republish surface.
-  syndicate: false,
+  // Articles are opt-OUT of the "Republish this story" CC grab-code
+  // block. Every piece is licensed CC BY-NC-ND 4.0 (see /license/), so
+  // the grab surface ships on by default; add `syndicate: false` in
+  // front matter for pieces that embed third-party material you don't
+  // have redistribution rights for (licensed photos, embedded tweets,
+  // one-time-permission long quotes) or have live legal exposure.
+  syndicate: true,
   eleventyComputed: {
     eleventyExcludeFromCollections: (data) => {
       if (process.env.SHOW_FUTURE === "1") return data.eleventyExcludeFromCollections || false;
