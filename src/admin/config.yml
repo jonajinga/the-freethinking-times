@@ -353,7 +353,12 @@ collections:
       - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
+      - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
+      - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
+      - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
+      - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
@@ -401,7 +406,12 @@ collections:
       - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
+      - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
+      - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
+      - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
+      - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
@@ -449,7 +459,12 @@ collections:
       - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
+      - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
+      - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
+      - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
+      - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
@@ -497,7 +512,12 @@ collections:
       - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
+      - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
+      - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
+      - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
+      - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
@@ -545,7 +565,12 @@ collections:
       - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
+      - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
+      - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
+      - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
+      - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
@@ -593,7 +618,12 @@ collections:
       - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
+      - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
+      - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
+      - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
+      - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
@@ -640,7 +670,12 @@ collections:
       - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
+      - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
+      - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
+      - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
+      - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
@@ -691,7 +726,12 @@ collections:
       - { name: edition,    widget: number, label: "Edition Number", required: false }
       - { name: featured,   widget: boolean, label: "Featured", default: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
+      - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
+      - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
+      - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
+      - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
       - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
@@ -781,7 +821,12 @@ collections:
       - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
       - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
+      - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
+      - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
+      - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
+      - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
       - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
@@ -820,7 +865,12 @@ collections:
       - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
       - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
       - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [draft, review, published], default: draft }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
+      - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
+      - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
+      - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
+      - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
       - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections

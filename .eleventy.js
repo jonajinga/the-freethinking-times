@@ -768,6 +768,347 @@ module.exports = function (eleventyConfig) {
     });
   });
 
+  // ── Enhanced editorial workflow filters ─────────────────────────────────────
+  // The five-column board (+ Spiked) uses this taxonomy:
+  //   pitched | drafting | review | scheduled | published | spiked
+  // Computed from front-matter `status` + a few overrides (future-dated
+  // pieces auto-read as scheduled regardless of explicit status; legacy
+  // `draft: true` maps to drafting; legacy `status: draft` maps to drafting).
+  function computeEnhancedStatus(item) {
+    const data = item.data || {};
+    const explicit = (data.status || "").toString().toLowerCase();
+    if (explicit === "spiked" || explicit === "killed" || explicit === "held") return "spiked";
+    // Future-dated articles are scheduled regardless of explicit status.
+    const itemDate = item.date || (data.page && data.page.date) || null;
+    if (itemDate && new Date(itemDate) > new Date()) return "scheduled";
+    if (explicit === "pitched") return "pitched";
+    if (explicit === "review") return "review";
+    if (explicit === "drafting" || explicit === "draft" || data.draft === true) return "drafting";
+    if (explicit === "scheduled") return "scheduled";
+    return "published";
+  }
+
+  // Object.keys() exposed as a Nunjucks filter — handy for iterating
+  // a dict's slugs without a `for k, v in obj` indirection.
+  eleventyConfig.addFilter("keys", (obj) => obj && typeof obj === "object" ? Object.keys(obj) : []);
+
+  eleventyConfig.addFilter("enhancedStatus", (item) => computeEnhancedStatus(item));
+
+  eleventyConfig.addFilter("byEnhancedStatus", (allContent, status) => {
+    return allContent.filter(item => computeEnhancedStatus(item) === status);
+  });
+
+  // Days the article has been in its current column. Falls back to
+  // article date when no `lastStatusChange` is set.
+  eleventyConfig.addFilter("daysInStatus", (item) => {
+    const data = item.data || {};
+    const ref = data.lastStatusChange ? new Date(data.lastStatusChange) :
+                (item.date ? new Date(item.date) : null);
+    if (!ref || isNaN(ref.getTime())) return null;
+    const days = Math.floor((Date.now() - ref.getTime()) / 86400000);
+    return days < 0 ? 0 : days;
+  });
+
+  // Editorial-board-ready cards with all the metadata the new board
+  // template needs, grouped by enhanced status. Returns:
+  //   { pitched: [card,...], drafting: [...], review: [...],
+  //     scheduled: [...], published: [...], spiked: [...] }
+  // Each card: { url, title, section, sectionSlug, author, authorName,
+  //   authorSlug, daysInStatus, stuckLevel ('','amber','red'),
+  //   editor, reviewer, dueDate, isOverdue, wordCount, dueDateLabel }
+  eleventyConfig.addFilter("editorialBoard", (allContent) => {
+    const buckets = { pitched: [], drafting: [], review: [], scheduled: [], published: [], spiked: [] };
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    allContent.forEach(item => {
+      const status = computeEnhancedStatus(item);
+      const data = item.data || {};
+      const ref = data.lastStatusChange ? new Date(data.lastStatusChange) :
+                  (item.date ? new Date(item.date) : null);
+      const daysInStatus = ref && !isNaN(ref.getTime())
+        ? Math.max(0, Math.floor((Date.now() - ref.getTime()) / 86400000))
+        : null;
+      let stuckLevel = "";
+      if (daysInStatus != null && status !== "published" && status !== "spiked") {
+        if (daysInStatus >= 14) stuckLevel = "red";
+        else if (daysInStatus >= 7) stuckLevel = "amber";
+      }
+      const due = data.dueDate ? new Date(data.dueDate) : null;
+      const isOverdue = due && !isNaN(due.getTime()) && due < today && (status === "pitched" || status === "drafting" || status === "review");
+      const wordCount = item.templateContent
+        ? String(item.templateContent).replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length
+        : null;
+      const card = {
+        url: item.url,
+        title: data.title || "(untitled)",
+        section: data.section || "",
+        sectionSlug: (data.section || "").toLowerCase().replace(/\s+/g, "-").replace(/&/g, ""),
+        author: data.authorName || data.author || "",
+        authorSlug: data.author || "",
+        date: item.date,
+        daysInStatus,
+        stuckLevel,
+        editor: data.editor || null,
+        reviewer: data.reviewer || null,
+        dueDate: due && !isNaN(due.getTime()) ? due.toISOString().slice(0, 10) : null,
+        isOverdue,
+        wordCount,
+        spikedReason: data.spikedReason || null,
+        tags: (data.tags || []).filter(t => t !== "post" && t !== "all")
+      };
+      if (buckets[status]) buckets[status].push(card);
+    });
+    // Sort each bucket sensibly:
+    //  - overdue first in active columns
+    //  - then by daysInStatus desc (most stuck first)
+    //  - published most recent first
+    //  - spiked most recent first
+    Object.keys(buckets).forEach(k => {
+      if (k === "published") {
+        buckets[k].sort((a, b) => (b.date || 0) - (a.date || 0));
+      } else if (k === "spiked") {
+        buckets[k].sort((a, b) => (b.date || 0) - (a.date || 0));
+      } else {
+        buckets[k].sort((a, b) => {
+          if (a.isOverdue !== b.isOverdue) return a.isOverdue ? -1 : 1;
+          return (b.daysInStatus || 0) - (a.daysInStatus || 0);
+        });
+      }
+    });
+    return buckets;
+  });
+
+  // Per-column "median age Xd · oldest Yd" stats for the SLA bands.
+  eleventyConfig.addFilter("editorialBoardStats", (board) => {
+    const out = {};
+    Object.keys(board).forEach(col => {
+      const ages = board[col].map(c => c.daysInStatus).filter(d => d != null);
+      if (!ages.length) { out[col] = { count: 0, median: null, oldest: null }; return; }
+      const sorted = [...ages].sort((a, b) => a - b);
+      const median = sorted.length % 2 === 1
+        ? sorted[(sorted.length - 1) / 2]
+        : Math.round((sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2);
+      out[col] = { count: ages.length, median, oldest: sorted[sorted.length - 1] };
+    });
+    return out;
+  });
+
+  // Stale-content alert generator for the dashboard.
+  // Returns three lists: oldDrafts, recentCorrections, fastSectionStale.
+  eleventyConfig.addFilter("staleAlerts", (allContent) => {
+    const today = Date.now();
+    const FAST_SECTIONS = new Set(["news", "opinion", "politics"]);
+    const oldDrafts = [];
+    const recentCorrections = [];
+    const fastSectionStale = [];
+    const brokenResponses = [];
+    const urlSet = new Set(allContent.map(i => i.url));
+    allContent.forEach(item => {
+      const data = item.data || {};
+      const status = computeEnhancedStatus(item);
+      const itemDate = item.date ? new Date(item.date).getTime() : null;
+      const ageDays = itemDate ? Math.floor((today - itemDate) / 86400000) : null;
+      // 1. Drafts older than 14 days
+      if ((status === "drafting" || status === "pitched" || status === "review") && ageDays != null && ageDays >= 14) {
+        oldDrafts.push({
+          url: item.url,
+          title: data.title || "(untitled)",
+          author: data.authorName || data.author || "",
+          status,
+          ageDays
+        });
+      }
+      // 2. Articles with corrections in the last 30 days
+      if (Array.isArray(data.corrections) && data.corrections.length) {
+        const last = data.corrections[data.corrections.length - 1];
+        const lastDate = last && last.date ? new Date(last.date).getTime() : null;
+        if (lastDate != null && (today - lastDate) <= 30 * 86400000) {
+          recentCorrections.push({
+            url: item.url,
+            title: data.title || "(untitled)",
+            correctionDate: last.date,
+            description: last.description || ""
+          });
+        }
+      }
+      // 3. Fast-section articles with lastUpdated > 6 months
+      const sectionSlug = (data.section || "").toString().toLowerCase().replace(/\s+/g, "-");
+      if (status === "published" && FAST_SECTIONS.has(sectionSlug)) {
+        const lu = data.lastUpdated ? new Date(data.lastUpdated).getTime() :
+                   (itemDate || null);
+        if (lu != null && (today - lu) > 180 * 86400000) {
+          fastSectionStale.push({
+            url: item.url,
+            title: data.title || "(untitled)",
+            section: data.section,
+            ageDays: Math.floor((today - lu) / 86400000)
+          });
+        }
+      }
+      // 4. Broken inResponseTo chains
+      if (data.inResponseTo) {
+        const target = data.inResponseTo;
+        const isInternal = target.startsWith("/") || target.includes((siteData.url || "").replace(/^https?:\/\//, ""));
+        if (isInternal) {
+          const path = target.replace(/^https?:\/\/[^/]+/, "").replace(/[?#].*$/, "");
+          if (path && !urlSet.has(path) && !urlSet.has(path.endsWith("/") ? path : path + "/")) {
+            brokenResponses.push({
+              url: item.url,
+              title: data.title || "(untitled)",
+              missingTarget: target
+            });
+          }
+        }
+      }
+    });
+    oldDrafts.sort((a, b) => b.ageDays - a.ageDays);
+    fastSectionStale.sort((a, b) => b.ageDays - a.ageDays);
+    return { oldDrafts, recentCorrections, fastSectionStale, brokenResponses };
+  });
+
+  // Coverage-gap report: per-section pulse over 14d / 90d windows.
+  eleventyConfig.addFilter("coverageGaps", (allContent, sectionSlugs) => {
+    const sections = Array.isArray(sectionSlugs) ? sectionSlugs : Object.keys(siteData.sections || {});
+    const today = Date.now();
+    return sections.map(slug => {
+      const label = (siteData.sections && siteData.sections[slug] && siteData.sections[slug].label) || slug;
+      const items = allContent.filter(item => {
+        const sec = (item.data.section || "").toString().toLowerCase().replace(/\s+/g, "-");
+        return sec === slug && computeEnhancedStatus(item) === "published";
+      });
+      let last14 = 0, last90 = 0, lastDate = null;
+      items.forEach(item => {
+        const t = item.date ? new Date(item.date).getTime() : null;
+        if (t == null) return;
+        if (today - t <= 14 * 86400000) last14++;
+        if (today - t <= 90 * 86400000) last90++;
+        if (lastDate == null || t > lastDate) lastDate = t;
+      });
+      let healthLevel = "ok";
+      if (last90 === 0) healthLevel = "red";
+      else if (last14 === 0) healthLevel = "amber";
+      return {
+        slug,
+        label,
+        last14,
+        last90,
+        lastDate: lastDate ? new Date(lastDate).toISOString().slice(0, 10) : null,
+        daysSince: lastDate ? Math.floor((today - lastDate) / 86400000) : null,
+        healthLevel
+      };
+    });
+  });
+
+  // Production pulse: weekly published-article counts for the last N weeks.
+  eleventyConfig.addFilter("productionPulse", (allContent, weeks) => {
+    const N = weeks || 12;
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    // Find Monday of current week.
+    const day = now.getDay();
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - ((day + 6) % 7));
+    const buckets = [];
+    for (let i = N - 1; i >= 0; i--) {
+      const start = new Date(monday);
+      start.setDate(monday.getDate() - i * 7);
+      const end = new Date(start);
+      end.setDate(start.getDate() + 7);
+      buckets.push({ start, end, count: 0, label: start.toISOString().slice(5, 10) });
+    }
+    allContent.forEach(item => {
+      if (computeEnhancedStatus(item) !== "published") return;
+      const t = item.date ? new Date(item.date).getTime() : null;
+      if (t == null) return;
+      buckets.forEach(b => {
+        if (t >= b.start.getTime() && t < b.end.getTime()) b.count++;
+      });
+    });
+    const max = Math.max(1, ...buckets.map(b => b.count));
+    return buckets.map(b => ({ label: b.label, count: b.count, pct: Math.round((b.count / max) * 100) }));
+  });
+
+  // Per-author scoreboard for the dashboard.
+  eleventyConfig.addFilter("authorScoreboard", (allContent, authorList) => {
+    const stats = {};
+    (authorList || []).forEach(slug => {
+      stats[slug] = { slug, articles: 0, drafts: 0, words: 0, lastDate: null, lastTitles: [] };
+    });
+    allContent.forEach(item => {
+      const data = item.data || {};
+      const slug = data.author;
+      if (!slug || !stats[slug]) return;
+      const status = computeEnhancedStatus(item);
+      if (status === "published") {
+        stats[slug].articles++;
+        const wc = item.templateContent
+          ? String(item.templateContent).replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length
+          : 0;
+        stats[slug].words += wc;
+        const t = item.date ? new Date(item.date).getTime() : null;
+        if (t != null && (stats[slug].lastDate == null || t > stats[slug].lastDate)) stats[slug].lastDate = t;
+        stats[slug].lastTitles.push({ title: data.title || "(untitled)", url: item.url, date: t });
+      } else if (status === "pitched" || status === "drafting" || status === "review") {
+        stats[slug].drafts++;
+      }
+    });
+    return Object.values(stats).map(s => {
+      s.lastTitles.sort((a, b) => (b.date || 0) - (a.date || 0));
+      s.lastTitles = s.lastTitles.slice(0, 3);
+      s.lastDateIso = s.lastDate ? new Date(s.lastDate).toISOString().slice(0, 10) : null;
+      s.avgWords = s.articles ? Math.round(s.words / s.articles) : 0;
+      return s;
+    }).sort((a, b) => b.words - a.words);
+  });
+
+  // 14-day scheduling agenda — count of scheduled posts per day.
+  eleventyConfig.addFilter("schedulingAgenda", (allContent, days) => {
+    const N = days || 14;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const slots = [];
+    for (let i = 0; i < N; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+      slots.push({
+        iso: d.toISOString().slice(0, 10),
+        weekday: d.toLocaleDateString("en-US", { weekday: "short" }),
+        dayOfMonth: d.getDate(),
+        items: []
+      });
+    }
+    allContent.forEach(item => {
+      const t = item.date ? new Date(item.date) : null;
+      if (!t || isNaN(t.getTime())) return;
+      const iso = t.toISOString().slice(0, 10);
+      const slot = slots.find(s => s.iso === iso);
+      if (!slot) return;
+      // Only future-dated published articles or explicit scheduled.
+      if (t.getTime() < today.getTime()) return;
+      slot.items.push({ url: item.url, title: item.data.title || "(untitled)", section: item.data.section || "" });
+    });
+    return slots;
+  });
+
+  // Recent edits to article content — pulled from git log at build time.
+  eleventyConfig.addFilter("recentEdits", (limit) => {
+    const N = limit || 30;
+    try {
+      const { execSync } = require("child_process");
+      const out = execSync(
+        'git log -n ' + N + ' --pretty=format:"%h%x09%an%x09%aI%x09%s" -- src/content/',
+        { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }
+      );
+      return out.split("\n").filter(Boolean).map(line => {
+        const [hash, author, iso, ...rest] = line.split("\t");
+        return { hash, author, iso, message: rest.join("\t") };
+      });
+    } catch (e) {
+      // git not available (e.g. CF Pages preview without history). Return [].
+      return [];
+    }
+  });
+
   // Primary source documents library, newest first
   eleventyConfig.addCollection("documents", (collectionApi) => {
     return collectionApi

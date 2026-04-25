@@ -9,6 +9,13 @@ eleventyExcludeFromCollections: true
 {% set editorialSections = ["news", "opinion", "analysis", "arts-culture", "science-technology", "history", "letters", "reviews"] %}
 {% set sc = collections.allContent | statusCounts %}
 {% set assignments = collections.allContent | activeAssignments %}
+{% set board = collections.allContent | editorialBoard %}
+{% set stale = collections.allContent | staleAlerts %}
+{% set coverage = collections.allContent | coverageGaps(editorialSections) %}
+{% set pulse = collections.allContent | productionPulse(12) %}
+{% set scoreboard = collections.allContent | authorScoreboard(authors | keys) %}
+{% set agenda = collections.allContent | schedulingAgenda(14) %}
+{% set staleTotal = stale.oldDrafts.length + stale.recentCorrections.length + stale.fastSectionStale.length + stale.brokenResponses.length %}
 
 <div class="container dash">
 
@@ -35,27 +42,125 @@ eleventyExcludeFromCollections: true
 
   {# ── Top stats row ── #}
   <div class="dash__stats">
-    <div class="dash-stat">
-      <p class="dash-stat__label">Total articles</p>
-      <p class="dash-stat__value">{{ collections.allContent.length }}</p>
-    </div>
-    <div class="dash-stat">
-      <p class="dash-stat__label">Published</p>
-      <p class="dash-stat__value">{{ sc.published }}</p>
-    </div>
-    <div class="dash-stat dash-stat--warn">
-      <p class="dash-stat__label">In review</p>
-      <p class="dash-stat__value">{{ sc.review }}</p>
-    </div>
-    <div class="dash-stat dash-stat--alert">
-      <p class="dash-stat__label">Drafts</p>
-      <p class="dash-stat__value">{{ sc.draft }}</p>
-    </div>
-    <div class="dash-stat">
-      <p class="dash-stat__label">Active assignments</p>
-      <p class="dash-stat__value">{{ assignments.length }}</p>
-    </div>
+    <div class="dash-stat"><p class="dash-stat__label">Total</p><p class="dash-stat__value">{{ collections.allContent.length }}</p></div>
+    <div class="dash-stat"><p class="dash-stat__label">Pitched</p><p class="dash-stat__value">{{ board.pitched.length }}</p></div>
+    <div class="dash-stat dash-stat--alert"><p class="dash-stat__label">Drafting</p><p class="dash-stat__value">{{ board.drafting.length }}</p></div>
+    <div class="dash-stat dash-stat--warn"><p class="dash-stat__label">In review</p><p class="dash-stat__value">{{ board.review.length }}</p></div>
+    <div class="dash-stat"><p class="dash-stat__label">Scheduled</p><p class="dash-stat__value">{{ board.scheduled.length }}</p></div>
+    <div class="dash-stat"><p class="dash-stat__label">Published</p><p class="dash-stat__value">{{ board.published.length }}</p></div>
+    {% if staleTotal %}
+    <div class="dash-stat dash-stat--alert" style="border-left-color: var(--color-accent);"><p class="dash-stat__label">Needs attention</p><p class="dash-stat__value">{{ staleTotal }}</p></div>
+    {% endif %}
   </div>
+
+  {# ── Production pulse: weekly published-article counts (last 12 weeks) ── #}
+  <section class="dash-pulse" aria-label="Production pulse, last 12 weeks">
+    <header class="dash-pulse__head">
+      <h2 class="dash-card__title">Production pulse</h2>
+      <p class="dash-pulse__sub">Articles published per week, last 12 weeks.</p>
+    </header>
+    <div class="dash-pulse__chart">
+      {% for w in pulse %}
+      <div class="dash-pulse__col" title="{{ w.label }}: {{ w.count }} article{% if w.count != 1 %}s{% endif %}">
+        <div class="dash-pulse__bar" style="height: {{ w.pct }}%;"></div>
+        <div class="dash-pulse__count">{{ w.count }}</div>
+        <div class="dash-pulse__week">{{ w.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  {# ── Stale-content alerts ── #}
+  {% if staleTotal %}
+  <section class="dash-stale" aria-label="Editorial alerts needing attention">
+    <header class="dash-stale__head">
+      <h2 class="dash-card__title dash-card__title--alert">Needs attention</h2>
+      <p class="dash-stale__sub">Surfaces drafts gone stale, recent corrections, fast-section pieces with old <code>lastUpdated</code>, and broken response chains.</p>
+    </header>
+    <div class="dash-stale__grid">
+      {% if stale.oldDrafts.length %}
+      <div class="dash-stale__group">
+        <h3 class="dash-stale__group-title">Drafts &gt; 14 days old <span class="dash-stale__group-count">{{ stale.oldDrafts.length }}</span></h3>
+        <ul class="dash-stale__list">
+          {% for d in stale.oldDrafts | limit(8) %}
+          <li><a href="{{ d.url }}">{{ d.title }}</a> <span class="dash-stale__meta">{{ d.author }} &middot; {{ d.ageDays }}d in {{ d.status }}</span></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if stale.recentCorrections.length %}
+      <div class="dash-stale__group">
+        <h3 class="dash-stale__group-title">Corrections in last 30 days <span class="dash-stale__group-count">{{ stale.recentCorrections.length }}</span></h3>
+        <ul class="dash-stale__list">
+          {% for c in stale.recentCorrections | limit(8) %}
+          <li><a href="{{ c.url }}">{{ c.title }}</a> <span class="dash-stale__meta">{{ c.correctionDate }}</span></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if stale.fastSectionStale.length %}
+      <div class="dash-stale__group">
+        <h3 class="dash-stale__group-title">Fast sections, stale <span class="dash-stale__group-count">{{ stale.fastSectionStale.length }}</span></h3>
+        <ul class="dash-stale__list">
+          {% for s in stale.fastSectionStale | limit(8) %}
+          <li><a href="{{ s.url }}">{{ s.title }}</a> <span class="dash-stale__meta">{{ s.section }} &middot; {{ s.ageDays }}d since update</span></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if stale.brokenResponses.length %}
+      <div class="dash-stale__group">
+        <h3 class="dash-stale__group-title">Broken response chains <span class="dash-stale__group-count">{{ stale.brokenResponses.length }}</span></h3>
+        <ul class="dash-stale__list">
+          {% for r in stale.brokenResponses %}
+          <li><a href="{{ r.url }}">{{ r.title }}</a> <span class="dash-stale__meta">→ {{ r.missingTarget }}</span></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+  {% endif %}
+
+  {# ── Coverage gap report ── #}
+  <section class="dash-coverage" aria-label="Section coverage health">
+    <header>
+      <h2 class="dash-card__title">Section coverage</h2>
+      <p class="dash-pulse__sub">Last published date and counts in the last 14 / 90 days, per section. Amber: zero in 14d. Red: zero in 90d.</p>
+    </header>
+    <ul class="dash-coverage__grid">
+      {% for c in coverage %}
+      <li class="dash-coverage__cell dash-coverage__cell--{{ c.healthLevel }}">
+        <a href="/{{ c.slug }}/" class="dash-coverage__label">{{ c.label }}</a>
+        <p class="dash-coverage__counts"><strong>{{ c.last14 }}</strong>/14d &middot; <strong>{{ c.last90 }}</strong>/90d</p>
+        <p class="dash-coverage__last">{% if c.daysSince != null %}last {{ c.daysSince }}d ago{% else %}never{% endif %}</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  {# ── 14-day scheduling agenda ── #}
+  {% set agendaHasItems = false %}
+  {% for slot in agenda %}{% if slot.items.length %}{% set agendaHasItems = true %}{% endif %}{% endfor %}
+  {% if agendaHasItems %}
+  <section class="dash-agenda" aria-label="14-day scheduling agenda">
+    <header><h2 class="dash-card__title">Next 14 days</h2></header>
+    <div class="dash-agenda__strip">
+      {% for slot in agenda %}
+      <div class="dash-agenda__slot{% if slot.items.length %} dash-agenda__slot--filled{% endif %}">
+        <div class="dash-agenda__weekday">{{ slot.weekday }}</div>
+        <div class="dash-agenda__day">{{ slot.dayOfMonth }}</div>
+        <div class="dash-agenda__count">{{ slot.items.length }}</div>
+        {% if slot.items.length %}
+        <ul class="dash-agenda__list">
+          {% for item in slot.items %}<li><a href="{{ item.url }}">{{ item.title }}</a></li>{% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
 
   <div class="dash__grid">
 
@@ -162,28 +267,37 @@ eleventyExcludeFromCollections: true
       {% endif %}
     </section>
 
-    {# ── Author Productivity (wide) ── #}
+    {# ── Per-author scoreboard ── #}
     <section class="dash-card dash-card--wide">
-      <h2 class="dash-card__title">Author productivity</h2>
-      <table class="dash-table">
+      <h2 class="dash-card__title">Per-author scoreboard</h2>
+      <p class="dash-pulse__sub" style="margin-bottom: var(--space-3);">Sorted by lifetime words. Drafts column shows pieces in the pipeline (pitched + drafting + review). Last 3 lists the most recent published titles.</p>
+      <table class="dash-table dash-scoreboard">
         <thead>
           <tr>
             <th>Author</th>
             <th class="dash-table__num">Articles</th>
-            <th class="dash-table__num">Total words</th>
-            <th class="dash-table__num">Avg length</th>
-            <th class="dash-table__num">Reading time</th>
+            <th class="dash-table__num">Drafts</th>
+            <th class="dash-table__num">Words</th>
+            <th class="dash-table__num">Avg</th>
+            <th class="dash-table__num">Last published</th>
+            <th>Recent</th>
           </tr>
         </thead>
         <tbody>
-          {% for stat in collections.allContent | authorStats %}
+          {% for s in scoreboard %}
+          {% if s.articles or s.drafts %}
           <tr>
-            <td>{{ stat.name }}</td>
-            <td class="dash-table__num">{{ stat.count }}</td>
-            <td class="dash-table__num">{{ stat.totalWords }}</td>
-            <td class="dash-table__num">{{ stat.avgWords }}</td>
-            <td class="dash-table__num">{{ stat.totalReadingMin }} min</td>
+            <td>{% if authors[s.slug].name %}<a href="/author/{{ s.slug }}/">{{ authors[s.slug].name }}</a>{% else %}{{ s.slug }}{% endif %}</td>
+            <td class="dash-table__num">{{ s.articles }}</td>
+            <td class="dash-table__num">{% if s.drafts %}<strong>{{ s.drafts }}</strong>{% else %}0{% endif %}</td>
+            <td class="dash-table__num">{{ (s.words / 1000) | round(1) }}k</td>
+            <td class="dash-table__num">{{ s.avgWords }}</td>
+            <td class="dash-table__num">{{ s.lastDateIso or "—" }}</td>
+            <td>
+              {% for t in s.lastTitles %}<a href="{{ t.url }}" class="dash-scoreboard__title">{{ t.title | truncate(48) }}</a>{% if not loop.last %} &middot; {% endif %}{% endfor %}
+            </td>
           </tr>
+          {% endif %}
           {% endfor %}
         </tbody>
       </table>
@@ -308,6 +422,198 @@ eleventyExcludeFromCollections: true
   margin: 0;
   font-variant-numeric: tabular-nums;
 }
+
+/* Production pulse sparkline */
+.dash-pulse {
+  margin: 0 0 var(--space-10);
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  background: var(--color-bg);
+  border: 1px solid var(--color-rule);
+  border-top: 3px solid var(--color-ink);
+}
+.dash-pulse__head { margin-bottom: var(--space-4); }
+.dash-pulse__sub {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-ink-faint);
+  margin: 0;
+}
+.dash-pulse__chart {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 4px;
+  align-items: end;
+  height: 110px;
+  margin-top: var(--space-3);
+}
+.dash-pulse__col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  position: relative;
+}
+.dash-pulse__bar {
+  width: 100%;
+  background: var(--color-ink);
+  min-height: 2px;
+  transition: opacity 120ms;
+}
+.dash-pulse__col:hover .dash-pulse__bar { background: var(--color-accent); }
+.dash-pulse__count {
+  position: absolute;
+  top: -16px;
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  color: var(--color-ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+.dash-pulse__week {
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  color: var(--color-ink-faint);
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Stale-content alert section */
+.dash-stale {
+  margin: 0 0 var(--space-10);
+  padding: var(--space-5);
+  background: color-mix(in srgb, var(--color-accent) 6%, var(--color-bg));
+  border: 1px solid var(--color-accent);
+  border-left-width: 3px;
+}
+.dash-stale__head { margin-bottom: var(--space-4); }
+.dash-card__title--alert { color: var(--color-accent); border-bottom-color: var(--color-accent); }
+.dash-stale__sub {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+  margin: 0;
+}
+.dash-stale__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+}
+.dash-stale__group { background: var(--color-bg); padding: var(--space-3) var(--space-4); border: 1px solid var(--color-rule); }
+.dash-stale__group-title {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  margin: 0 0 var(--space-2);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.dash-stale__group-count {
+  font-size: 0.7rem;
+  color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+.dash-stale__list { list-style: none; padding: 0; margin: 0; font-family: var(--font-ui); font-size: var(--text-sm); }
+.dash-stale__list li { padding: 4px 0; border-bottom: 1px solid var(--color-rule); }
+.dash-stale__list li:last-child { border-bottom: 0; }
+.dash-stale__list a { color: var(--color-ink); text-decoration: none; }
+.dash-stale__list a:hover { color: var(--color-accent); }
+.dash-stale__meta { font-size: var(--text-xs); color: var(--color-ink-faint); margin-left: var(--space-2); }
+
+/* Coverage gap grid */
+.dash-coverage {
+  margin: 0 0 var(--space-10);
+  padding: var(--space-5);
+  background: var(--color-bg);
+  border: 1px solid var(--color-rule);
+  border-top: 3px solid var(--color-ink);
+}
+.dash-coverage__grid {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-3) 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-2);
+}
+.dash-coverage__cell {
+  padding: var(--space-3);
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-rule);
+  border-left-width: 3px;
+}
+.dash-coverage__cell--ok    { border-left-color: var(--color-rule-heavy); }
+.dash-coverage__cell--amber { border-left-color: #d97706; }
+.dash-coverage__cell--red   { border-left-color: var(--color-accent); }
+.dash-coverage__label {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-ink);
+  text-decoration: none;
+}
+.dash-coverage__label:hover { color: var(--color-accent); }
+.dash-coverage__counts {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  margin: 4px 0 2px;
+  color: var(--color-ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+.dash-coverage__last {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  color: var(--color-ink-faint);
+  margin: 0;
+}
+
+/* 14-day scheduling agenda */
+.dash-agenda {
+  margin: 0 0 var(--space-10);
+  padding: var(--space-5);
+  background: var(--color-bg);
+  border: 1px solid var(--color-rule);
+  border-top: 3px solid var(--color-ink);
+}
+.dash-agenda__strip {
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 4px;
+  margin-top: var(--space-3);
+}
+@media (max-width: 1100px) { .dash-agenda__strip { grid-template-columns: repeat(7, 1fr); } }
+.dash-agenda__slot {
+  padding: var(--space-2);
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-rule);
+  text-align: center;
+  font-family: var(--font-ui);
+  min-height: 70px;
+}
+.dash-agenda__slot--filled { background: color-mix(in srgb, var(--color-accent) 8%, var(--color-bg)); border-color: var(--color-accent); }
+.dash-agenda__weekday { font-size: 0.6rem; color: var(--color-ink-faint); text-transform: uppercase; letter-spacing: 0.08em; }
+.dash-agenda__day { font-size: var(--text-md); font-weight: 700; color: var(--color-ink); }
+.dash-agenda__count { font-size: var(--text-xs); color: var(--color-ink-muted); }
+.dash-agenda__slot--filled .dash-agenda__count { color: var(--color-accent); font-weight: 700; }
+.dash-agenda__list {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+  font-size: 0.65rem;
+  text-align: left;
+}
+.dash-agenda__list a { color: var(--color-ink); text-decoration: none; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dash-agenda__list a:hover { color: var(--color-accent); }
+
+/* Per-author scoreboard refinements */
+.dash-scoreboard__title { display: inline-block; color: var(--color-ink-muted); text-decoration: none; font-size: 0.85em; }
+.dash-scoreboard__title:hover { color: var(--color-accent); }
 
 /* Card grid + tables */
 .dash__grid {
