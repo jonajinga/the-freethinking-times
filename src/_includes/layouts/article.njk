@@ -156,14 +156,12 @@ layout: layouts/base.njk
             <button type="button" class="tip-badge tip-badge--cta" aria-expanded="false" aria-controls="funding-panel"
                     aria-label="Open the funding disclosure"
                     data-umami-event="funding-learn"
-                    onclick="var p=document.getElementById('funding-panel');var open=p.hasAttribute('hidden');if(open){p.removeAttribute('hidden');this.setAttribute('aria-expanded','true');p.scrollIntoView({behavior:'smooth',block:'nearest'});}else{p.setAttribute('hidden','');this.setAttribute('aria-expanded','false');}">How We're Funded</button>
+                    onclick="toggleArticleDisclosure(this)">How We're Funded</button>
             {% if syndicate %}
             <button type="button" class="tip-badge tip-badge--cta" aria-expanded="false" aria-controls="republish-panel"
-                    data-tippy-content="Free to republish under CC BY-NC-ND 4.0. Click to grab the HTML, attribution and canonical link included."
-                    data-tippy-theme="badge"
-                    data-tippy-placement="top"
+                    aria-label="Open republication terms and grab-code"
                     data-umami-event="license-learn"
-                    onclick="var p=document.getElementById('republish-panel');var open=p.hasAttribute('hidden');if(open){p.removeAttribute('hidden');this.setAttribute('aria-expanded','true');p.scrollIntoView({behavior:'smooth',block:'nearest'});}else{p.setAttribute('hidden','');this.setAttribute('aria-expanded','false');}">Republish This Story</button>
+                    onclick="toggleArticleDisclosure(this)">Republish This Story</button>
             {% endif %}
           </div>
           {% endif %}
@@ -171,10 +169,31 @@ layout: layouts/base.njk
 
           {# Author-support, funding-disclosure, and open-license panels —
              hidden by default, opened by the matching tip-badge buttons
-             in the support row. #}
+             in the support row. Mutual exclusion: only one open at a
+             time; opening any closes the others. #}
           {% include "partials/author-support.njk" %}
           {% include "partials/funding.njk" %}
           {% include "partials/republish.njk" %}
+          <script>
+            window.toggleArticleDisclosure = window.toggleArticleDisclosure || function (btn) {
+              var id = btn.getAttribute('aria-controls');
+              if (!id) return;
+              var panel = document.getElementById(id);
+              if (!panel) return;
+              var willOpen = panel.hasAttribute('hidden');
+              // Close every article-disclosure panel + reset its trigger.
+              document.querySelectorAll('[data-article-disclosure]').forEach(function (p) {
+                if (!p.hasAttribute('hidden')) p.setAttribute('hidden', '');
+                var t = document.querySelector('[aria-controls="' + p.id + '"]');
+                if (t) t.setAttribute('aria-expanded', 'false');
+              });
+              if (willOpen) {
+                panel.removeAttribute('hidden');
+                btn.setAttribute('aria-expanded', 'true');
+                panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              }
+            };
+          </script>
         </div>
 
         <div class="article-header__meta-row" data-pagefind-ignore>

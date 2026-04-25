@@ -13,7 +13,7 @@
 {% if asAuthor %}
 {% set asAuthorTipUrl = asAuthor.tipping.kofi or asAuthor.tipping.bmac or asAuthor.tipping.patreon %}
 {% set asTipPlatform = "Ko-fi" if asAuthor.tipping.kofi else ("Buy Me a Coffee" if asAuthor.tipping.bmac else ("Patreon" if asAuthor.tipping.patreon else "")) %}
-<div id="author-support-panel" class="author-support author-support--panel" hidden aria-labelledby="author-support-heading">
+<div id="author-support-panel" class="author-support author-support--panel" data-article-disclosure hidden aria-labelledby="author-support-heading">
   <div class="author-support__body">
     <div class="author-support__head">
       {% if asAuthor.photo %}
@@ -40,7 +40,7 @@
     {% endif %}
 
     <p class="author-support__how">
-      Contributions sent to {{ asAuthor.name }} go <strong>directly to the author</strong> &mdash; {{ site.title }} takes no cut, no platform fee, no retention. Authors at {{ site.title }} are paid an honorarium per piece from the publication&rsquo;s general fund (<a href="/costs/">disclosed line by line</a>); reader tips are an additional, optional thank-you that lets writers cover their own time.
+      Contributions sent to {{ asAuthor.name }} go <strong>directly to the author</strong> &mdash; {{ site.title }} takes no cut, no platform fee, no retention. {{ site.title }} <strong>does not pay contributors a fee or salary</strong>; reader tips are how writers are compensated for what they publish here. If a piece was worth your time, a tip is the most direct way to thank the author and help them keep writing.
     </p>
 
     <div class="author-support__actions">

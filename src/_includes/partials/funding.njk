@@ -6,18 +6,18 @@
 {% set fundAuthor = authors[author] if author and authors[author] else null %}
 {% set authorTipUrl = fundAuthor.tipping.kofi or fundAuthor.tipping.bmac or fundAuthor.tipping.patreon if fundAuthor else null %}
 {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
-<div id="funding-panel" class="funding funding--panel" hidden aria-labelledby="funding-heading">
+<div id="funding-panel" class="funding funding--panel" data-article-disclosure hidden aria-labelledby="funding-heading">
   <div class="funding__body">
     <p class="funding__kicker">No ads. No sponsors. No paywalls.</p>
     <h2 id="funding-heading" class="funding__heading">Funded entirely by readers</h2>
     <p class="funding__lede">
-      {{ site.title }} runs on direct reader contributions, not advertising or platform deals. Tips go to the publication&rsquo;s operating costs (hosting, FOIA fees, the occasional travel for reporting) or directly to the writer of an individual piece. We take no money from advertisers, sponsors, partner networks, or syndication platforms.
+      {{ site.title }} runs on direct reader contributions and the unpaid time of its contributors, not advertising or platform deals. Reader tips go either to the publication&rsquo;s operating costs (hosting, public-records fees, the occasional travel for reporting) or, when sent through an author&rsquo;s individual link, directly to that writer. We take no money from advertisers, sponsors, partner networks, or syndication platforms.
     </p>
 
     <ul class="funding__bullets">
-      <li><strong>What your support pays for:</strong> hosting and infrastructure, contributor honoraria, public-records requests, and a minimal editorial budget. Itemised on the <a href="/costs/">costs page</a>.</li>
-      <li><strong>What it doesn&rsquo;t pay for:</strong> ads, sponsorships, native content, tracking pixels, paywalls, or syndication-network fees. There are none.</li>
-      <li><strong>Editorial independence:</strong> contributors are paid the same regardless of how a piece performs. We don&rsquo;t track per-article tip totals to set rates. Editorial decisions are not influenced by individual reader contributions.</li>
+      <li><strong>What publication-level support pays for:</strong> hosting and infrastructure, public-records and FOIA fees, archival and software costs, and the occasional reporting expense. Itemised on the <a href="/costs/">costs page</a>.</li>
+      <li><strong>How contributors are compensated:</strong> {{ site.title }} does not currently pay contributors a fee or salary. Writers publish here because they want their work read; reader tips through a writer&rsquo;s individual link are the only compensation they receive for a piece.</li>
+      <li><strong>What this funding model doesn&rsquo;t include:</strong> ads, sponsorships, native content, tracking pixels, paywalls, or syndication-network fees. There are none, and editorial decisions are not influenced by individual reader contributions.</li>
     </ul>
 
     <div class="funding__actions">

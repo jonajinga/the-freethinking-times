@@ -1202,6 +1202,26 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   align-items: center;
   font-size: var(--text-xs);
 }
+/* Mobile: shrink the Showcase / Timeline / RSS trio so all three
+   sit on one line on a 320px-ish viewport. Keeps flex-wrap on as
+   a safety net for ridiculously narrow widths. */
+@media (max-width: 640px) {
+  .archive-views { gap: 4px; flex-wrap: nowrap; }
+  .archive-views__btn {
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 0.3rem 0.55rem;
+    letter-spacing: 0.08em;
+    border-width: 1px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .archive-views__btn--rss svg {
+    width: 11px;
+    height: 11px;
+    margin-right: 4px !important;
+  }
+}
 /* Compact sibling variant sized to sit inline with a big h1.
    Thinner border, tighter padding, smaller caps so the pair reads as
    secondary chrome next to the author name instead of dominating it. */
@@ -4237,6 +4257,29 @@ body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar .music-bar)) .re
   border: 1px solid var(--color-rule-heavy);
   padding: var(--space-3);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+/* iOS auto-zoom kicks in whenever a form control's computed font-size
+   is below 16px. Bump every interactive control on mobile to 16px so
+   focusing a field doesn't punch the viewport sideways. The visual
+   weight at 16px is fine on a phone; it would look heavy on desktop,
+   so this is a mobile-only override. */
+@media (max-width: 720px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="url"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="password"],
+  input[type="date"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="time"],
+  input[type="week"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
 }
 
 .w3f__input::placeholder,
