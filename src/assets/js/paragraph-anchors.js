@@ -93,13 +93,24 @@
       try { history.replaceState(null, '', a.getAttribute('href')); } catch (_) {}
     });
 
-    // Highlight a paragraph briefly when arriving via #pN — gives the
-    // reader a visual cue that the URL pointed somewhere specific.
+    // Highlight + scroll to a paragraph when arriving via a #pN URL.
+    // The browser's automatic fragment scroll fires before this script
+    // can assign id="pN" to the matching <p>, so anyone who lands
+    // directly on /article/#p42 ends up at the top of the page. We
+    // re-scroll once ids are in place (block: 'start' with a small
+    // top offset to clear the sticky reading header).
     var flashTarget = function () {
       var hash = location.hash || '';
       if (!/^#p\d+$/.test(hash)) return;
       var el = document.getElementById(hash.slice(1));
       if (!el) return;
+      // Only re-scroll on initial arrival, not on hashchange (where the
+      // browser handles the scroll natively because the id exists by now).
+      if (el.dataset.paraScrolled !== 'true') {
+        el.dataset.paraScrolled = 'true';
+        var top = el.getBoundingClientRect().top + window.scrollY - 96;
+        window.scrollTo({ top: Math.max(0, top), behavior: 'auto' });
+      }
       el.classList.add('para-anchor-target');
       setTimeout(function () { el.classList.remove('para-anchor-target'); }, 2000);
     };

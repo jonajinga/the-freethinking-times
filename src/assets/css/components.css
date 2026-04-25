@@ -4828,6 +4828,47 @@ select.w3f__input option {
 }
 .author-card__link:hover { text-decoration: underline; }
 
+/* Mobile: contributor cards collapse vertical padding, shrink the
+   avatar, tighten the card body, and let the cards run flush on
+   narrow screens so the page is scannable on a phone instead of
+   demanding three thumb-strokes per contributor. */
+@media (max-width: 700px) {
+  .contributors-grid { gap: var(--space-4); }
+  .author-card {
+    padding: var(--space-5) var(--space-4) var(--space-4);
+  }
+  .author-card__avatar {
+    width: 72px;
+    height: 72px;
+    margin-bottom: var(--space-3);
+  }
+  .author-card__photo,
+  .author-card__initials { width: 72px; height: 72px; }
+  .author-card__initials { font-size: 1.25rem; }
+  .author-card__name { font-size: var(--text-md); margin-bottom: var(--space-2); }
+  .author-card__bio {
+    font-size: 0.85rem;
+    margin-bottom: var(--space-3);
+    /* Cap the bio at 4 lines on phones so cards stay roughly
+       uniform height; tap the name to read full bio on author page. */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+  }
+  .author-card__socials-row { gap: 6px; margin-bottom: var(--space-3); }
+  .author-card__stats {
+    gap: 2px var(--space-2);
+    padding: var(--space-2) 0;
+  }
+  .author-card__stat { font-size: 0.7rem; }
+  .author-card__footer {
+    gap: var(--space-2);
+    padding-top: var(--space-3);
+  }
+}
+
 /* ── Social icon strip (used on hero + card + footer bios) ── */
 .social-icons {
   display: flex;

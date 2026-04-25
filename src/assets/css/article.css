@@ -920,22 +920,13 @@
   margin-left: 0.4em;
   color: var(--color-accent);
 }
-/* Margin-position the anchor on viewports wide enough to spare the
-   gutter (sidenote-style). On narrow screens it stays inline at the
-   end of the paragraph. */
-@media (min-width: 1100px) {
-  .para-anchor {
-    position: absolute;
-    left: 100%;
-    top: 0.15em;
-    margin-left: 0.6em;
-    padding: 0 0.35em;
-  }
-}
-/* Always-on at low opacity for touch devices (no hover state). */
-@media (hover: none) {
-  .para-anchor { opacity: 0.35; }
-}
+/* Anchor stays inline at the end of the paragraph on every viewport
+   width — no sidenote-style margin position. Only visible on hover or
+   keyboard focus, on every device that supports either. On pure-touch
+   devices the anchor stays hidden by default and reveals when the
+   reader long-presses or focuses the paragraph (any browser that
+   sets :focus-within on tap).
+*/
 
 /* Brief flash when arriving via a #pN URL. */
 .para-anchor-target {
