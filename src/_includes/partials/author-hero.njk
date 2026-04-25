@@ -33,22 +33,13 @@
     <div class="author-hero__socials">
       {% set social = authorData.social %}
       {% include "partials/social-icons.njk" %}
-      {% if authorSlug %}
-      <a class="social-icons__link" href="/feeds/{{ authorSlug }}.xml"
-         aria-label="RSS feed for {{ authorData.name }}"
-         data-umami-event="rss-sub"
-         data-umami-event-feed="author-{{ authorSlug }}">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <circle cx="5" cy="19" r="2"/>
-          <path d="M4 4a16 16 0 0 1 16 16h-3A13 13 0 0 0 4 7V4z"/>
-          <path d="M4 11a9 9 0 0 1 9 9H10a6 6 0 0 0-6-6v-3z"/>
-        </svg>
-      </a>
-      {% endif %}
       {% if authorArticles is defined and authorArticles.length and authorSlug %}
       <span class="author-hero__socials-divider" aria-hidden="true"></span>
       {% set viewFilter = "author=" + authorSlug %}
       {% set viewsSize = "sm" %}
+      {% set rssHref = "/feeds/" + authorSlug + ".xml" %}
+      {% set rssFeed = "author-" + authorSlug %}
+      {% set rssLabel = authorData.name %}
       {% include "partials/archive-views-buttons.njk" %}
       {% endif %}
     </div>

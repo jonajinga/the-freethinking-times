@@ -55,6 +55,9 @@ permalink: /contributors/
           <span class="author-card__socials-divider" aria-hidden="true"></span>
           {% set viewFilter = "author=" + slug %}
           {% set viewsSize = "sm" %}
+          {% set rssHref = "/feeds/" + slug + ".xml" %}
+          {% set rssFeed = "author-" + slug %}
+          {% set rssLabel = authorData.name %}
           {% include "partials/archive-views-buttons.njk" %}
           {% endif %}
         </div>

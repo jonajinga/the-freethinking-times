@@ -741,16 +741,25 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   cursor: pointer;
 }
 .republish__copy:hover { background: var(--color-accent); }
-/* Tip-badge variant for the republish trigger button — matches the
-   "How We're Funded" badge in the support row. */
+/*
+ * .tip-badge--cta — just a marker for the press-state when the
+ * republish panel is open. The base .tip-badge already gives us
+ * the ink-on-paper look that matches "How We're Funded"; we only
+ * reset the native <button> chrome and recolor on aria-expanded.
+ */
 .tip-badge.tip-badge--cta {
+  border: 0;
   cursor: pointer;
-  background: transparent;
-  border: 1px solid currentColor;
+  font: inherit;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 .tip-badge.tip-badge--cta[aria-expanded="true"] {
-  background: var(--color-ink);
-  color: var(--color-bg);
+  opacity: 1;
+  background: var(--color-accent);
+  color: #fff;
 }
 
 /* ── Webmentions ────────────────────────────────────────────── */
