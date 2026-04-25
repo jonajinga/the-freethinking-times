@@ -14,13 +14,13 @@ layout: layouts/base.njk
     </p>
     <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-2);">{{ tag }}</h1>
     <p style="color: var(--color-ink-muted); font-size: var(--text-sm); margin-bottom: var(--space-4);">
-      {{ collections[tag].length }} article{% if collections[tag].length != 1 %}s{% endif %} across all sections &middot;
-      <a href="/feeds/topics/{{ tag | slugify }}.xml" data-umami-event="rss-sub" data-umami-event-feed="topic-{{ tag | slugify }}" aria-label="RSS feed for {{ tag }}" title="RSS feed for {{ tag }}" style="color: var(--color-accent);">
-        RSS &rsaquo;
-      </a>
+      {{ collections[tag].length }} article{% if collections[tag].length != 1 %}s{% endif %} across all sections
     </p>
     {% if collections[tag] and collections[tag].length %}
     {% set viewFilter = "topic=" + (tag | slugify) %}
+    {% set rssHref = "/feeds/topics/" + (tag | slugify) + ".xml" %}
+    {% set rssFeed = "topic-" + (tag | slugify) %}
+    {% set rssLabel = tag %}
     {% include "partials/archive-views-buttons.njk" %}
     {% endif %}
   </header>
