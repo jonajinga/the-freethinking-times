@@ -679,19 +679,22 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   .feeds-list__url { text-align: left; }
 }
 
-/* ── Republish (open-license panel, opened by tip-badge button) ──── */
+/* ── Article disclosure panels (Republish + How We're Funded) ──── */
 /*
- * Trigger lives in article-header__support-row as a `.tip-badge`
- * button next to "How We're Funded". Click toggles `[hidden]` on
- * #republish-panel below the support row.
+ * Both triggers live in article-header__support-row as `.tip-badge`
+ * buttons. Click toggles `[hidden]` on the matching panel below the
+ * support row. Same visual chrome — vermillion-accented muted-alt
+ * card — so the two read as a matched pair.
  */
-.republish.republish--panel {
+.republish.republish--panel,
+.funding.funding--panel {
   margin: var(--space-4) 0;
   border: 1px solid var(--color-rule);
   border-left: 3px solid var(--color-accent);
   background: var(--color-bg-alt);
 }
-.republish__body {
+.republish__body,
+.funding__body {
   padding: var(--space-4) var(--space-5) var(--space-5);
   background: var(--color-bg-alt);
 }
@@ -741,6 +744,98 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   cursor: pointer;
 }
 .republish__copy:hover { background: var(--color-accent); }
+
+/* Funding disclosure panel ----------------------------------- */
+.funding__kicker {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-2);
+}
+.funding__heading {
+  font-family: var(--font-headline);
+  font-size: var(--text-md);
+  margin: 0 0 var(--space-3);
+  color: var(--color-ink);
+}
+.funding__lede {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  line-height: var(--leading-normal);
+  margin: 0 0 var(--space-4);
+}
+.funding__bullets {
+  list-style: none;
+  margin: 0 0 var(--space-5);
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  line-height: var(--leading-normal);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.funding__bullets li {
+  padding-left: var(--space-4);
+  position: relative;
+}
+.funding__bullets li::before {
+  content: "·";
+  position: absolute;
+  left: var(--space-2);
+  color: var(--color-accent);
+  font-weight: 700;
+}
+.funding__bullets strong { color: var(--color-ink); }
+.funding__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+.funding__action {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-ink);
+  background: transparent;
+  color: var(--color-ink);
+  transition: background-color 120ms ease, color 120ms ease;
+}
+.funding__action:hover,
+.funding__action:focus-visible { background: var(--color-ink); color: var(--color-bg); outline: none; }
+.funding__action--primary {
+  background: var(--color-ink);
+  color: var(--color-bg);
+}
+.funding__action--primary:hover,
+.funding__action--primary:focus-visible {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+.funding__action--ghost {
+  border-color: transparent;
+  padding-inline: 0;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-muted);
+}
+.funding__action--ghost:hover,
+.funding__action--ghost:focus-visible {
+  background: transparent;
+  color: var(--color-accent);
+  border-color: transparent;
+}
+
 /*
  * .tip-badge--cta — just a marker for the press-state when the
  * republish panel is open. The base .tip-badge already gives us

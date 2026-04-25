@@ -136,6 +136,10 @@ module.exports = function (eleventyConfig) {
               "library-panel__tabs-arrow",
               "library-panel__tabs-arrow--left",
               "library-panel__tabs-arrow--right",
+              // Per-paragraph permalinks — injected by paragraph-anchors.js.
+              "para-anchor",
+              "para-anchor--copied",
+              "para-anchor-target",
             ],
             // ── Keep any rule whose selector contains these patterns ─────────
             deep: [

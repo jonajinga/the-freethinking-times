@@ -868,6 +868,86 @@
 
 
 /* ── Floating reading tools (progress % + back to top) ─────── */
+/* ── Per-paragraph permalinks (¶ hover anchor) ─────────────── */
+/*
+ * Each top-level <p> in .article-body / .library-body gets an
+ * id="pN" assigned by paragraph-anchors.js, plus an appended
+ * <a class="para-anchor">¶</a>. The anchor sits in the right-hand
+ * margin on wide screens, slips inline at the end of the paragraph
+ * on narrow screens, and reveals on hover / focus-within.
+ */
+.article-body > p,
+.library-body > p {
+  position: relative;
+}
+.para-anchor {
+  font-family: var(--font-ui);
+  font-size: 1em;
+  line-height: 1;
+  color: var(--color-ink-faint);
+  text-decoration: none;
+  opacity: 0;
+  margin-left: 0.4em;
+  padding: 0 0.25em;
+  border-radius: 2px;
+  transition: opacity 120ms ease, color 120ms ease, background-color 120ms ease;
+  scroll-margin-top: 7rem;
+}
+.article-body > p:hover .para-anchor,
+.article-body > p:focus-within .para-anchor,
+.library-body > p:hover .para-anchor,
+.library-body > p:focus-within .para-anchor {
+  opacity: 0.7;
+}
+.para-anchor:hover,
+.para-anchor:focus-visible {
+  opacity: 1 !important;
+  color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  outline: none;
+}
+.para-anchor--copied {
+  opacity: 1 !important;
+  color: var(--color-accent);
+}
+.para-anchor--copied::after {
+  content: "Copied";
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-left: 0.4em;
+  color: var(--color-accent);
+}
+/* Margin-position the anchor on viewports wide enough to spare the
+   gutter (sidenote-style). On narrow screens it stays inline at the
+   end of the paragraph. */
+@media (min-width: 1100px) {
+  .para-anchor {
+    position: absolute;
+    left: 100%;
+    top: 0.15em;
+    margin-left: 0.6em;
+    padding: 0 0.35em;
+  }
+}
+/* Always-on at low opacity for touch devices (no hover state). */
+@media (hover: none) {
+  .para-anchor { opacity: 0.35; }
+}
+
+/* Brief flash when arriving via a #pN URL. */
+.para-anchor-target {
+  background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+  transition: background-color 600ms ease;
+}
+
+/* Hide the pilcrow when printing — paragraphs aren't clickable on paper. */
+@media print {
+  .para-anchor { display: none !important; }
+}
+
 /* The wrapper is presentational only — both children are independently
    fixed-positioned (% pill on the left, back-to-top on the right). */
 .reading-floats {
