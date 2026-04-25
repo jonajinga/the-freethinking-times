@@ -191,6 +191,10 @@ layout: layouts/base.njk
         </aside>
         {% endif %}
 
+        {# Open-license disclosure — slim toggle near the top metadata.
+           Click expands the full lede + grab-code textarea inline. #}
+        {% include "partials/republish.njk" %}
+
         <div class="article-header__actions" data-pagefind-ignore>
 
           {# 1. Reader panel #}
@@ -698,10 +702,6 @@ layout: layouts/base.njk
       </aside>
       {% endif %}
 
-
-      {# Republish surface — CC BY-NC-ND grab code, only on articles
-         with `syndicate: true` in front matter. Sits above webmentions. #}
-      {% include "partials/republish.njk" %}
 
       {# Webmentions, replies, likes, reposts pulled from webmention.io
          at build time. Silent empty state if nothing yet. #}

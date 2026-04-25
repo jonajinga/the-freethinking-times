@@ -1,35 +1,46 @@
 {#
-  republish.njk — renders the CC BY-NC-ND grab-code block on any article
-  whose front matter sets `syndicate: true`. Default is false (see
-  src/content/content.11tydata.js). The grab-code textarea holds an
-  attribution paragraph, the article title/author, the full article HTML
-  body, and the canonical backlink — ready for any partner editor to
-  paste into their own CMS.
+  republish.njk — renders the CC BY-NC-ND open-license disclosure as a
+  slim button in the article metadata. Click expands the full lede +
+  grab-code textarea inline. Default open state is closed so the
+  block sits as a quiet line of text most readers can ignore.
 
-  No tracking pixel. Syndication reach is measured via referrer filters
-  in Umami on the canonical article URL.
+  Renders only when front matter `syndicate` is truthy. Default is
+  `true` via src/content/content.11tydata.js; opt out per-article with
+  `syndicate: false` for pieces with restricted material.
+
+  No tracking pixel. Syndication reach is measured via referrer
+  filters in Umami on the canonical article URL.
 #}
 {% if syndicate %}
-<section class="republish" aria-labelledby="republish-heading">
-  <header class="republish__header">
-    <p class="republish__kicker">Open license</p>
-    <h2 id="republish-heading" class="republish__title">Republish this story</h2>
-  </header>
-  <p class="republish__lede">
-    Free to republish under
-    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license" target="_blank" data-umami-event="license-learn">CC&nbsp;BY-NC-ND&nbsp;4.0</a>.
-    Attribution required. No editing (minor time/place relative changes only). Not for commercial resale.
-    See our <a href="/license/" data-umami-event="license-learn">full republication terms</a>.
-  </p>
-  <details class="republish__grab">
-    <summary class="republish__summary">Grab the HTML</summary>
-    <label class="republish__label" for="republish-html">Select all, copy, paste into your CMS&rsquo; HTML view:</label>
-    <textarea id="republish-html" class="republish__textarea" readonly rows="12" onclick="this.select()"><p><em>This story was originally published by <a href="{{ site.url }}{{ page.url }}">{{ site.title }}</a> under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> license.</em></p>
+<details class="republish republish--inline" aria-labelledby="republish-heading">
+  <summary class="republish__cta" data-umami-event="license-learn">
+    <span class="republish__cta-icon" aria-hidden="true">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a3 3 0 1 1 3.5 3v2"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/></svg>
+    </span>
+    <span class="republish__cta-text">
+      <span class="republish__cta-kicker">Open license</span>
+      <span class="republish__cta-label">Republish this story <span class="republish__cta-meta">CC BY-NC-ND 4.0</span></span>
+    </span>
+    <span class="republish__cta-chevron" aria-hidden="true">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </span>
+  </summary>
+
+  <div class="republish__body">
+    <h2 id="republish-heading" class="republish__heading">Republish this story</h2>
+    <p class="republish__lede">
+      Free to republish under
+      <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license" target="_blank" data-umami-event="license-learn">CC&nbsp;BY-NC-ND&nbsp;4.0</a>.
+      Attribution required. No editing (minor time/place relative changes only). Not for commercial resale.
+      See our <a href="/license/" data-umami-event="license-learn">full republication terms</a>.
+    </p>
+    <label class="republish__label" for="republish-html">Select all, copy, and paste into your CMS&rsquo; HTML view:</label>
+    <textarea id="republish-html" class="republish__textarea" readonly rows="10" onclick="this.select()"><p><em>This story was originally published by <a href="{{ site.url }}{{ page.url }}">{{ site.title }}</a> under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> license.</em></p>
 <h1>{{ title | escape }}</h1>
 <p><strong>By {% if authors[author].name %}{{ authors[author].name }}{% elif authorName %}{{ authorName }}{% else %}{{ author }}{% endif %}</strong> &mdash; <time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate }}</time></p>
 {{ content | safe }}
 <p><em>Originally: <a href="{{ site.url }}{{ page.url }}">{{ site.url }}{{ page.url }}</a></em></p></textarea>
     <button type="button" class="republish__copy" data-umami-event="republish-copy" onclick="var t=document.getElementById('republish-html');t.select();document.execCommand('copy');this.textContent='Copied';setTimeout(function(b){return function(){b.textContent='Copy to clipboard';};}(this),1800);">Copy to clipboard</button>
-  </details>
-</section>
+  </div>
+</details>
 {% endif %}

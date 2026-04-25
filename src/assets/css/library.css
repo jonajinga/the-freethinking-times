@@ -2334,26 +2334,37 @@
     display: none;
   }
 
-  /* Article sticky header: DO show the article title on mobile, but
-     fluidly scale the font so it stays on one line alongside the
-     section back-link. Ellipsis clips anything that still overflows
-     after scaling. */
+  /* Article sticky header on mobile: show the FULL title. We allow the
+     title to wrap up to two lines, scaling the font down so the typical
+     newspaper headline still fits. The header height grows from one
+     line to two, which is a fine cost for not truncating context. */
+  .article-reading-header {
+    align-items: center;
+    min-height: 56px;
+    padding-block: var(--space-2);
+  }
   .article-reading-header .library-reading-header__title {
-    display: block;
-    font-size: clamp(0.72rem, 3vw, var(--text-sm));
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
     flex: 1 1 auto;
     min-width: 0;
-    white-space: nowrap;
+    font-size: clamp(0.7rem, 2.7vw, var(--text-sm));
+    line-height: 1.25;
+    white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  /* Keep the back link from hogging space when titles are long. */
+  /* Back link stays compact and on a single line. */
   .article-reading-header .library-reading-header__back {
     flex-shrink: 0;
-    max-width: 40%;
+    max-width: 35%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    align-self: flex-start;
+    padding-top: 2px;
   }
 
   /* Compact reading header on mobile */
