@@ -39,9 +39,7 @@
     var pctRounded = Math.round(pct);
 
     if (bar) bar.style.width = pct + '%';
-    if (pctEl) {
-      pctEl.textContent = bar ? (pctRounded + '% through') : (pctRounded + '%');
-    }
+    if (pctEl) pctEl.textContent = pctRounded + '%';
 
     // Fire a one-shot Umami "finished-reading" event when the reader has
     // scrolled through 90% of the article body. Gated by pathname so a
