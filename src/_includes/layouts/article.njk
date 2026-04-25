@@ -157,9 +157,21 @@ layout: layouts/base.njk
                data-tippy-content="We fund our journalism entirely through reader support. No ads. No paywalls. Learn how we operate and how contributors are compensated."
                data-tippy-theme="badge"
                data-tippy-placement="top">How We're Funded</a>
+            {% if syndicate %}
+            <button type="button" class="tip-badge tip-badge--cta" aria-expanded="false" aria-controls="republish-panel"
+                    data-tippy-content="Free to republish under CC BY-NC-ND 4.0. Click to grab the HTML, attribution and canonical link included."
+                    data-tippy-theme="badge"
+                    data-tippy-placement="top"
+                    data-umami-event="license-learn"
+                    onclick="var p=document.getElementById('republish-panel');var open=p.hasAttribute('hidden');if(open){p.removeAttribute('hidden');this.setAttribute('aria-expanded','true');p.scrollIntoView({behavior:'smooth',block:'nearest'});}else{p.setAttribute('hidden','');this.setAttribute('aria-expanded','false');}">Republish This Story</button>
+            {% endif %}
           </div>
           {% endif %}
           {% endif %}
+
+          {# Open-license panel — hidden by default, opened by the
+             "Republish This Story" tip-badge in the support row. #}
+          {% include "partials/republish.njk" %}
         </div>
 
         <div class="article-header__meta-row" data-pagefind-ignore>
@@ -190,10 +202,6 @@ layout: layouts/base.njk
           </ul>
         </aside>
         {% endif %}
-
-        {# Open-license disclosure — slim toggle near the top metadata.
-           Click expands the full lede + grab-code textarea inline. #}
-        {% include "partials/republish.njk" %}
 
         <div class="article-header__actions" data-pagefind-ignore>
 

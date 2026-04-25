@@ -15,7 +15,8 @@
     "username": "thefreethinkingtimes"
   },
   "social": {
-    "rss": "/feed.xml"
+    "rss": "/feeds/",
+    "bluesky": "https://bsky.app/profile/jonajinga.bsky.social"
   },
   "subscribe": {
     "eyebrow": "Newsletter",

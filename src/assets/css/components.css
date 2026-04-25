@@ -679,81 +679,20 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   .feeds-list__url { text-align: left; }
 }
 
-/* ── Republish (open-license disclosure, top of article) ──── */
+/* ── Republish (open-license panel, opened by tip-badge button) ──── */
 /*
- * The whole block is a <details> element. Closed by default it
- * renders as a slim button-shaped row in the article metadata —
- * kicker + label + chevron. Clicking opens an inline panel with the
- * lede, grab-code textarea, and copy button.
+ * Trigger lives in article-header__support-row as a `.tip-badge`
+ * button next to "How We're Funded". Click toggles `[hidden]` on
+ * #republish-panel below the support row.
  */
-.republish.republish--inline {
+.republish.republish--panel {
   margin: var(--space-4) 0;
   border: 1px solid var(--color-rule);
   border-left: 3px solid var(--color-accent);
-  background: transparent;
+  background: var(--color-bg-alt);
 }
-.republish__cta {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-2) var(--space-3);
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
-  color: var(--color-ink);
-  transition: background-color 120ms ease;
-}
-.republish__cta::-webkit-details-marker { display: none; }
-.republish__cta:hover,
-.republish__cta:focus-visible { background: var(--color-bg-alt); outline: none; }
-.republish__cta-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-accent);
-  flex-shrink: 0;
-}
-.republish__cta-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1 1 auto;
-  min-width: 0;
-}
-.republish__cta-kicker {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-}
-.republish__cta-label {
-  font-family: var(--font-headline);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--color-ink);
-}
-.republish__cta-meta {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--color-ink-faint);
-  margin-left: var(--space-2);
-  letter-spacing: 0.04em;
-}
-.republish__cta-chevron {
-  display: inline-flex;
-  color: var(--color-ink-faint);
-  transition: transform 180ms ease;
-  flex-shrink: 0;
-}
-.republish[open] .republish__cta-chevron { transform: rotate(180deg); }
-
-/* Open state — body is the inline panel */
 .republish__body {
   padding: var(--space-4) var(--space-5) var(--space-5);
-  border-top: 1px solid var(--color-rule);
   background: var(--color-bg-alt);
 }
 .republish__heading {
@@ -802,10 +741,16 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   cursor: pointer;
 }
 .republish__copy:hover { background: var(--color-accent); }
-@media (max-width: 600px) {
-  .republish__cta { padding: var(--space-2); gap: var(--space-2); }
-  .republish__cta-label { font-size: var(--text-xs); }
-  .republish__cta-meta { display: block; margin-left: 0; }
+/* Tip-badge variant for the republish trigger button — matches the
+   "How We're Funded" badge in the support row. */
+.tip-badge.tip-badge--cta {
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid currentColor;
+}
+.tip-badge.tip-badge--cta[aria-expanded="true"] {
+  background: var(--color-ink);
+  color: var(--color-bg);
 }
 
 /* ── Webmentions ────────────────────────────────────────────── */
