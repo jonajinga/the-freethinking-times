@@ -1,8 +1,17 @@
-{# Tip CTA buttons. Renders up to two buttons (author + publication)
-   based on configured tipping URLs. Set tipAuthor to an author record;
-   set tipHidePublication = true on author-page/card surfaces where
-   the publication button would be redundant. Precedence per entity:
-   kofi then bmac then patreon. #}
+{# Tip CTA buttons.
+
+   - Author button is a disclosure trigger (matches "How We're Funded"
+     and "Republish This Story"): click toggles #author-support-panel,
+     which is rendered separately by partials/author-support.njk and
+     surfaces the author's bio, social links, and tipping options.
+   - Publication button (renders only on non-author surfaces; article
+     pages set tipHidePublication = true) stays as a direct link with
+     a tippy tooltip.
+
+   Set tipAuthor to an author record. Set tipHidePublication = true on
+   author-page / article-card surfaces where the publication button
+   would be redundant. Precedence per entity: kofi then bmac then
+   patreon. #}
 {% set authorTipUrl = "" %}
 {% if tipAuthor and tipAuthor.tipping %}
   {% set authorTipUrl = tipAuthor.tipping.kofi or tipAuthor.tipping.bmac or tipAuthor.tipping.patreon %}
@@ -13,12 +22,11 @@
 {% endif %}
 {% if authorTipUrl or (pubTipUrl and not tipHidePublication) %}
 <div class="tip-buttons">
-  {% if authorTipUrl %}
-  <a class="tip-badge" href="{{ authorTipUrl }}" target="_blank" rel="noopener noreferrer"
-     aria-label="Support {{ tipAuthor.name }}"
-     data-tippy-content="Support {{ tipAuthor.name }} directly. Your tip goes entirely to the author and helps them continue their independent work."
-     data-tippy-theme="badge"
-     data-tippy-placement="top">Support {{ tipAuthor.name }}</a>
+  {% if authorTipUrl and tipAuthor %}
+  <button type="button" class="tip-badge tip-badge--cta" aria-expanded="false" aria-controls="author-support-panel"
+          aria-label="Open support details for {{ tipAuthor.name }}"
+          data-umami-event="support-learn"
+          onclick="var p=document.getElementById('author-support-panel');var open=p.hasAttribute('hidden');if(open){p.removeAttribute('hidden');this.setAttribute('aria-expanded','true');p.scrollIntoView({behavior:'smooth',block:'nearest'});}else{p.setAttribute('hidden','');this.setAttribute('aria-expanded','false');}">Support {{ tipAuthor.name }}</button>
   {% endif %}
   {% if pubTipUrl and not tipHidePublication %}
   <a class="tip-badge" href="{{ pubTipUrl }}" target="_blank" rel="noopener noreferrer"

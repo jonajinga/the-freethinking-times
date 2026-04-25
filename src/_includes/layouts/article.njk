@@ -154,9 +154,7 @@ layout: layouts/base.njk
             {% include "partials/tip-buttons.njk" %}
             <span class="article-header__support-divider" aria-hidden="true"></span>
             <button type="button" class="tip-badge tip-badge--cta" aria-expanded="false" aria-controls="funding-panel"
-                    data-tippy-content="No ads. No sponsors. No paywalls. Click to read how reader support funds our journalism."
-                    data-tippy-theme="badge"
-                    data-tippy-placement="top"
+                    aria-label="Open the funding disclosure"
                     data-umami-event="funding-learn"
                     onclick="var p=document.getElementById('funding-panel');var open=p.hasAttribute('hidden');if(open){p.removeAttribute('hidden');this.setAttribute('aria-expanded','true');p.scrollIntoView({behavior:'smooth',block:'nearest'});}else{p.setAttribute('hidden','');this.setAttribute('aria-expanded','false');}">How We're Funded</button>
             {% if syndicate %}
@@ -171,8 +169,10 @@ layout: layouts/base.njk
           {% endif %}
           {% endif %}
 
-          {# Funding-disclosure + open-license panels — hidden by default,
-             opened by the matching tip-badge buttons in the support row. #}
+          {# Author-support, funding-disclosure, and open-license panels —
+             hidden by default, opened by the matching tip-badge buttons
+             in the support row. #}
+          {% include "partials/author-support.njk" %}
           {% include "partials/funding.njk" %}
           {% include "partials/republish.njk" %}
         </div>
