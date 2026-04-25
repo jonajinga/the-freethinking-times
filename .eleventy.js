@@ -835,9 +835,14 @@ module.exports = function (eleventyConfig) {
       }
       const due = data.dueDate ? new Date(data.dueDate) : null;
       const isOverdue = due && !isNaN(due.getTime()) && due < today && (status === "pitched" || status === "drafting" || status === "review");
-      const wordCount = item.templateContent
-        ? String(item.templateContent).replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length
-        : null;
+      // Eleventy throws TemplateContentPrematureUseError when another
+      // template tries to read .templateContent before it's been
+      // rendered. Tolerate that — word count on the board is decorative.
+      let wordCount = null;
+      try {
+        const tc = item.templateContent;
+        if (tc) wordCount = String(tc).replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
+      } catch (_) { /* not available yet — skip */ }
       const card = {
         url: item.url,
         title: data.title || "(untitled)",
@@ -1041,9 +1046,11 @@ module.exports = function (eleventyConfig) {
       const status = computeEnhancedStatus(item);
       if (status === "published") {
         stats[slug].articles++;
-        const wc = item.templateContent
-          ? String(item.templateContent).replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length
-          : 0;
+        let wc = 0;
+        try {
+          const tc = item.templateContent;
+          if (tc) wc = String(tc).replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
+        } catch (_) { /* templateContent not ready — count as 0 */ }
         stats[slug].words += wc;
         const t = item.date ? new Date(item.date).getTime() : null;
         if (t != null && (stats[slug].lastDate == null || t > stats[slug].lastDate)) stats[slug].lastDate = t;
