@@ -220,9 +220,16 @@ permalink: /knowledge-map/
   padding: var(--space-2) var(--space-3);
   font-family: var(--font-ui);
   font-size: var(--text-sm);
-  max-width: 280px;
+  max-width: min(280px, calc(100% - 16px));
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   z-index: 5;
+}
+@media (max-width: 600px) {
+  .km-tooltip {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+    max-width: calc(100% - 16px);
+  }
 }
 .km-tooltip__sub {
   display: block;
@@ -541,11 +548,20 @@ permalink: /knowledge-map/
       })
       .on('mousemove', function (e) {
         var rect = canvas.getBoundingClientRect();
+        var tw = tipEl.offsetWidth, th = tipEl.offsetHeight;
+        // On narrow viewports anchor the tooltip to the bottom-center
+        // of the canvas so a finger-tap doesn't push it off-screen.
+        if (rect.width < 600) {
+          tipEl.style.left = Math.max(8, (rect.width - tw) / 2) + 'px';
+          tipEl.style.top  = Math.max(8, rect.height - th - 12) + 'px';
+          return;
+        }
         var x = e.clientX - rect.left + 14;
         var y = e.clientY - rect.top + 14;
-        var tw = tipEl.offsetWidth, th = tipEl.offsetHeight;
         if (x + tw > rect.width)  x = e.clientX - rect.left - tw - 12;
         if (y + th > rect.height) y = e.clientY - rect.top - th - 12;
+        if (x < 8) x = 8;
+        if (y < 8) y = 8;
         tipEl.style.left = x + 'px';
         tipEl.style.top  = y + 'px';
       })

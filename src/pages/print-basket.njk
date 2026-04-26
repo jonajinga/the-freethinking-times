@@ -206,9 +206,18 @@ permalink: /print-basket/
           }
           if (!body) return { item: item, html: '<p style="color:#888">Article body not found.</p>' };
           // Pull the footnotes block out before we strip — we may want to
-          // keep it as an opt-in section.
-          var footnotesEl = doc.querySelector('.article-footnotes');
-          var footnotesHtml = footnotesEl ? footnotesEl.outerHTML : '';
+          // keep it as an opt-in section. The real markdown-it-footnote
+          // output is `section.footnotes` / `.footnotes` (the
+          // `.article-footnotes` div is just an empty slot for the
+          // reader-panel).
+          var footnotesEl = doc.querySelector('section.footnotes, .footnotes');
+          var footnotesHtml = '';
+          if (footnotesEl && footnotesEl.querySelector('ol')) {
+            // Strip back-to-text return arrows so the printout reads cleanly.
+            var fnClone = footnotesEl.cloneNode(true);
+            fnClone.querySelectorAll('a.footnote-backref, .footnote-backref').forEach(function (a) { a.remove(); });
+            footnotesHtml = '<section class="pb-print__footnotes"><h2>Footnotes</h2>' + (fnClone.querySelector('ol').outerHTML) + '</section>';
+          }
           // Strip every interactive / chrome surface that should never print.
           body.querySelectorAll([
             '.article-action-btn',
@@ -242,12 +251,12 @@ permalink: /print-basket/
       var footnoteToggle = document.getElementById('pb-include-footnotes');
       function buildPieces(includeFootnotes) {
         var totalChars = 0;
-        var pieces = parts.map(function (p) {
+        var pieces = parts.map(function (p, i) {
           var content = p.html || '';
           if (includeFootnotes && p.footnotes) content += p.footnotes;
           totalChars += content.replace(/<[^>]+>/g, '').length;
           var meta = [p.item.author, p.item.section, fmtDate(p.item.date)].filter(Boolean).join(' &middot; ');
-          return '<article class="pb-preview__article">' +
+          return '<article class="pb-preview__article" id="pb-art-' + (i + 1) + '">' +
             '<h1>' + escapeAttr(p.item.title || p.item.url) + '</h1>' +
             (meta ? '<div class="pb-preview__byline">' + meta + '</div>' : '') +
             content +
@@ -286,15 +295,19 @@ permalink: /print-basket/
       var html = window.__tftPrintBasketHTML || '';
       if (!html.trim()) return;
 
-      // Build the table-of-contents cover page from the current basket
-      // (titles + meta), then prepend it to the article stack.
+      // Build the table-of-contents cover page from the current basket.
+      // Each entry links to its article via #pb-art-N — both the
+      // browser print preview and saved-to-PDF retain these as
+      // clickable anchors.
       var current = load();
       var tocItems = current.map(function (item, i) {
         var meta = [item.author, item.section, fmtDate(item.date)].filter(Boolean).join(' &middot; ');
-        return '<li><span class="pb-toc__num">' + (i + 1) + '</span>' +
+        var anchor = 'pb-art-' + (i + 1);
+        return '<li><a href="#' + anchor + '" class="pb-toc__link">' +
+               '<span class="pb-toc__num">' + (i + 1) + '</span>' +
                '<span class="pb-toc__entry"><span class="pb-toc__title">' + escapeAttr(item.title || item.url) + '</span>' +
                (meta ? '<span class="pb-toc__meta">' + meta + '</span>' : '') +
-               '</span></li>';
+               '</span></a></li>';
       }).join('');
       var coverDate = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
       var cover =
@@ -351,11 +364,17 @@ permalink: /print-basket/
         ' .pb-cover__body { padding-top: 0.5in; flex: 1; }',
         ' .pb-cover__heading { font-family: Helvetica, Arial, sans-serif; font-size: 11pt; text-transform: uppercase; letter-spacing: 0.16em; color: #555; font-weight: 700; margin: 0 0 0.3in; }',
         ' .pb-toc { list-style: none; padding: 0; margin: 0; counter-reset: pbtoc; }',
-        ' .pb-toc li { display: grid; grid-template-columns: 0.4in 1fr; align-items: baseline; gap: 0.15in; padding: 8pt 0; border-bottom: 1px dotted #bbb; }',
+        ' .pb-toc li { padding: 0; border-bottom: 1px dotted #bbb; }',
+        ' .pb-toc__link { display: grid; grid-template-columns: 0.4in 1fr; align-items: baseline; gap: 0.15in; padding: 8pt 0; text-decoration: none; color: inherit; }',
+        ' .pb-toc__link:hover { background: #f3eeda; }',
         ' .pb-toc__num { font-family: Helvetica, Arial, sans-serif; font-size: 14pt; font-weight: 700; color: #555; }',
         ' .pb-toc__entry { display: flex; flex-direction: column; gap: 2pt; }',
-        ' .pb-toc__title { font-family: Georgia, serif; font-size: 13pt; line-height: 1.25; color: #111; }',
+        ' .pb-toc__title { font-family: Georgia, serif; font-size: 13pt; line-height: 1.25; color: #111; text-decoration: underline; text-decoration-color: #ccc; text-underline-offset: 2pt; }',
         ' .pb-toc__meta { font-family: Helvetica, Arial, sans-serif; font-size: 9pt; color: #777; text-transform: uppercase; letter-spacing: 0.06em; }',
+        ' .pb-print__footnotes { margin-top: 1.4em; padding-top: 0.8em; border-top: 1px solid #ccc; }',
+        ' .pb-print__footnotes h2 { font-size: 12pt; text-transform: uppercase; letter-spacing: 0.08em; color: #555; margin-bottom: 0.4em; }',
+        ' .pb-print__footnotes ol { padding-left: 1.4em; font-size: 10pt; color: #333; }',
+        ' .pb-print__footnotes li { margin-bottom: 0.4em; line-height: 1.45; }',
         ' .pb-cover__foot { padding-top: 0.4in; margin-top: 0.4in; border-top: 1px solid #bbb; text-align: center; }',
         ' .pb-cover__count { font-family: Helvetica, Arial, sans-serif; font-size: 10pt; color: #555; margin: 0 0 0.4em; }',
         ' .pb-cover__note { font-family: Helvetica, Arial, sans-serif; font-size: 8.5pt; color: #888; margin: 0; max-width: 4.6in; margin-left: auto; margin-right: auto; }',

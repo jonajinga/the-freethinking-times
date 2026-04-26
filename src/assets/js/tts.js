@@ -29,12 +29,26 @@
   var K_POS_PFX  = 'tft-tts-pos:';     // per-url sentence index
 
   // ── Kokoro source + model ──
-  // Pinning kokoro-js to a specific minor version so the API surface
-  // (KokoroTTS.from_pretrained, generate({voice})) doesn't drift on us.
-  var KOKORO_ESM = 'https://cdn.jsdelivr.net/npm/kokoro-js@1.2.1/+esm';
+  // esm.sh resolves transitive ESM deps (Transformers.js, ONNX
+  // Runtime, etc.) reliably for browser use. jsdelivr's `+esm` is
+  // hit-or-miss for packages with complex peer-dep graphs.
+  var KOKORO_ESM = 'https://esm.sh/kokoro-js@1.2.1';
   var KOKORO_MODEL_ID = 'onnx-community/Kokoro-82M-v1.0-ONNX';
   var KOKORO_DTYPE = 'q8'; // q4 ≈ 50 MB but lower quality; q8 is the sweet spot
   var DEFAULT_VOICE = 'af_heart';
+
+  // Browser pre-flight: WebAssembly is required (Transformers.js
+  // depends on it). WebGPU is optional but speeds things up if
+  // available. We don't gate on WebGPU — Kokoro falls back to WASM.
+  function browserSupportsKokoro() {
+    if (typeof WebAssembly !== 'object' || typeof WebAssembly.instantiate !== 'function') {
+      return { ok: false, reason: 'WebAssembly is not supported in this browser. Try a recent version of Chrome, Edge, Firefox, or Safari.' };
+    }
+    if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+      return { ok: false, reason: 'Kokoro needs HTTPS (or localhost) to use the browser cache. Visit the live site to download the model.' };
+    }
+    return { ok: true };
+  }
 
   // Curated voice catalog — Kokoro's full v1.0 voice list, grouped for
   // a sensible dropdown. Labels prefer the most natural human-readable
@@ -167,21 +181,37 @@
     if (state.kokoroTTS) return Promise.resolve(state.kokoroTTS);
     if (state.kokoroLoading) return state.kokoroLoading;
 
+    var pre = browserSupportsKokoro();
+    if (!pre.ok) return Promise.reject(new Error(pre.reason));
+
     state.kokoroLoading = import(/* webpackIgnore: true */ KOKORO_ESM)
+      .catch(function (err) {
+        // Friendly diagnostic for module-load failures (CSP, network,
+        // CDN outage). Re-throw so the caller's catch sees it.
+        console.error('[tts] kokoro-js ESM import failed:', err);
+        throw new Error('Could not load the Kokoro library from esm.sh. ' +
+          'Open the browser DevTools console for details.');
+      })
       .then(function (mod) {
-        if (!mod || !mod.KokoroTTS) throw new Error('kokoro-js missing KokoroTTS export');
+        if (!mod || !mod.KokoroTTS || typeof mod.KokoroTTS.from_pretrained !== 'function') {
+          throw new Error('Kokoro library loaded but the KokoroTTS class is missing.');
+        }
         return mod.KokoroTTS.from_pretrained(KOKORO_MODEL_ID, {
           dtype: KOKORO_DTYPE,
           progress_callback: function (p) {
-            // p: { status: 'progress' | 'ready' | ..., file, progress, loaded, total }
-            if (onProgress) {
-              try { onProgress(p); } catch (e) {}
-            }
+            try { if (onProgress) onProgress(p); } catch (e) { console.warn('[tts] progress cb error:', e); }
           }
         });
       })
-      .then(function (tts) { state.kokoroTTS = tts; return tts; })
+      .then(function (tts) {
+        if (!tts || typeof tts.generate !== 'function') {
+          throw new Error('Kokoro initialised but the generate() method is missing.');
+        }
+        state.kokoroTTS = tts;
+        return tts;
+      })
       .catch(function (err) {
+        console.error('[tts] Kokoro initialisation failed:', err);
         state.kokoroLoading = null;
         throw err;
       });
@@ -229,6 +259,10 @@
 
   function renderEnginePicker() {
     var pop = ensurePopover();
+    var pre = browserSupportsKokoro();
+    var kokoroDescription = pre.ok
+      ? 'One-time ~82 MB download. Cached for repeat use. Best on desktop.'
+      : 'Unavailable: ' + pre.reason;
     pop.innerHTML =
       '<div class="tts-popover__head">' +
         '<strong>Listen to this article</strong>' +
@@ -240,9 +274,9 @@
           '<strong>Device voice</strong>' +
           '<span>Instant. Quality depends on your browser/OS.</span>' +
         '</button>' +
-        '<button type="button" class="tts-popover__choice" data-tts-engine="kokoro">' +
+        '<button type="button" class="tts-popover__choice" data-tts-engine="kokoro"' + (pre.ok ? '' : ' disabled style="opacity:0.5;cursor:not-allowed"') + '>' +
           '<strong>Kokoro (studio quality)</strong>' +
-          '<span>One-time ~82 MB download. Cached after that.</span>' +
+          '<span>' + kokoroDescription + '</span>' +
         '</button>' +
       '</div>';
     pop.hidden = false;
@@ -250,6 +284,7 @@
     pop.querySelector('.tts-popover__close').addEventListener('click', function () { pop.hidden = true; });
     pop.querySelectorAll('[data-tts-engine]').forEach(function (b) {
       b.addEventListener('click', function () {
+        if (b.disabled) return;
         var eng = b.getAttribute('data-tts-engine');
         state.engine = eng;
         lset(K_ENGINE, eng);
@@ -293,14 +328,21 @@
     }).then(function () {
       renderKokoroSettings();
     }).catch(function (err) {
+      var msg = (err && err.message) ? err.message : 'Unknown error';
       pop.innerHTML =
-        '<div class="tts-popover__head"><strong>Kokoro failed to load</strong>' +
+        '<div class="tts-popover__head"><strong>Kokoro could not load</strong>' +
         '<button type="button" class="tts-popover__close" aria-label="Close">&times;</button></div>' +
-        '<p class="tts-popover__lede">' + (err && err.message || 'Unknown error') + '</p>' +
+        '<p class="tts-popover__lede">' + msg + '</p>' +
+        '<p class="tts-popover__lede" style="font-size: 0.7rem">Open browser DevTools (F12) → Console for full details.</p>' +
         '<div class="tts-popover__choices">' +
+          '<button type="button" class="tts-popover__choice" data-tts-retry>Try again</button>' +
           '<button type="button" class="tts-popover__choice" data-tts-fallback>Use device voice instead</button>' +
         '</div>';
       pop.querySelector('.tts-popover__close').addEventListener('click', function () { pop.hidden = true; });
+      pop.querySelector('[data-tts-retry]').addEventListener('click', function () {
+        state.kokoroLoading = null;
+        renderKokoroLoadingThenSettings();
+      });
       pop.querySelector('[data-tts-fallback]').addEventListener('click', function () {
         state.engine = 'webspeech';
         lset(K_ENGINE, 'webspeech');
@@ -430,8 +472,16 @@
     if (!state.kokoroTTS) return Promise.reject(new Error('Kokoro not loaded'));
     var sentence = state.sentences[index];
     if (!sentence) return Promise.reject(new Error('No sentence'));
-    var p = state.kokoroTTS.generate(sentence, { voice: state.voice })
-      .then(function (audio) { return URL.createObjectURL(audio.toBlob()); });
+    var p = Promise.resolve()
+      .then(function () { return state.kokoroTTS.generate(sentence, { voice: state.voice }); })
+      .then(function (audio) {
+        if (!audio) throw new Error('Kokoro returned no audio for sentence ' + index);
+        // kokoro-js exposes .toBlob() in v1.2+. Older versions use
+        // .audio (Float32Array) — fall back to wav blob building.
+        if (typeof audio.toBlob === 'function') return URL.createObjectURL(audio.toBlob());
+        if (typeof audio.toWav === 'function')  return URL.createObjectURL(new Blob([audio.toWav()], { type: 'audio/wav' }));
+        throw new Error('Kokoro audio object has no toBlob/toWav method');
+      });
     state.pipeline[index] = p;
     return p;
   }
@@ -440,7 +490,9 @@
     if (state.cursor >= state.sentences.length) { stop(); return; }
     var idx = state.cursor;
     // Kick off generation for the next sentence in parallel
-    if (idx + 1 < state.sentences.length) generateKokoroAudio(idx + 1);
+    if (idx + 1 < state.sentences.length) {
+      generateKokoroAudio(idx + 1).catch(function (e) { console.warn('[tts] prefetch failed:', e); });
+    }
     generateKokoroAudio(idx).then(function (url) {
       if (!state.speaking) { URL.revokeObjectURL(url); return; }
       var el = new Audio(url);
@@ -454,12 +506,33 @@
         savePos();
         speakKokoro();
       };
-      el.onerror = function () { stop(); };
-      el.play().catch(function () { stop(); });
-    }).catch(function () {
-      // Per-sentence failure: drop to Web Speech for the rest
-      state.engine = 'webspeech';
-      speakWebSpeech();
+      el.onerror = function (e) {
+        console.error('[tts] audio playback error for sentence', idx, e);
+        // Skip this sentence rather than killing the whole session
+        delete state.pipeline[idx];
+        URL.revokeObjectURL(url);
+        if (!state.speaking) return;
+        state.cursor += 1;
+        savePos();
+        speakKokoro();
+      };
+      el.play().catch(function (e) { console.error('[tts] play() rejected:', e); stop(); });
+    }).catch(function (err) {
+      console.error('[tts] Kokoro generate() failed for sentence', idx, err);
+      // First failure: try Web Speech for THIS sentence and continue
+      // (don't permanently switch engines — the next sentence may
+      // generate fine).
+      var fallback = new SpeechSynthesisUtterance(state.sentences[idx]);
+      fallback.rate = state.rate;
+      if (state.webSpeechVoice) { fallback.voice = state.webSpeechVoice; fallback.lang = state.webSpeechVoice.lang; }
+      fallback.onend = function () {
+        if (!state.speaking) return;
+        state.cursor += 1;
+        savePos();
+        speakKokoro();
+      };
+      fallback.onerror = function () { stop(); };
+      try { window.speechSynthesis.speak(fallback); } catch (e) { stop(); }
     });
   }
 

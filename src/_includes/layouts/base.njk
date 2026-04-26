@@ -145,73 +145,57 @@
       {{ content | safe }}
     </main>
 
+    {# ── Sitewide disclosure panels — render INSIDE the main content
+         area so they open inline above the footer rather than below
+         it when toggled from a footer / hero / non-article surface.
+         The funding panel is the publication-wide one; author-support
+         only renders when there's an author context (article page or
+         author page). On article pages, article.njk includes its own
+         versions inline next to the byline, which take precedence
+         (closer to the trigger = nicer scroll target). #}
+    {% if not author %}
+    <div class="sitewide-disclosures">
+      {% include "partials/funding.njk" %}
+      {% if authorSlug %}
+      {% set author = authorSlug %}
+      {% include "partials/author-support.njk" %}
+      {% endif %}
+    </div>
+    {% endif %}
+
     {# ── Footer ── #}
     {% include "partials/footer.njk" %}
 
-    {# ── Sitewide disclosure panels ──
-       The funding panel renders on every page so any tip-badge can
-       open it. Author-support is included by article.njk for the
-       per-article author, and here for author-page surfaces (where
-       authorSlug is set but `author` is not). All disclosures are
-       toggled via window.toggleArticleDisclosure, which opens them
-       as a centered modal overlay regardless of where they sit. #}
-    {% if not author %}
-    {% include "partials/funding.njk" %}
-    {% if authorSlug %}
-    {% set author = authorSlug %}
-    {% include "partials/author-support.njk" %}
-    {% endif %}
-    {% endif %}
-
-    {# Modal backdrop — created once, used by every disclosure modal #}
-    <div id="article-disclosure-backdrop" class="article-disclosure-backdrop" hidden aria-hidden="true"
-      onclick="window.__tftCloseDisclosures && window.__tftCloseDisclosures();"></div>
-
     <script>
-      // Open any [data-article-disclosure] panel as a centered modal.
-      // The panel keeps its semantic position in the DOM but renders
-      // fixed via the .is-modal-open class. Click-outside / Escape /
-      // re-clicking the trigger closes it.
-      window.__tftCloseDisclosures = function () {
-        document.querySelectorAll('[data-article-disclosure]').forEach(function (p) {
-          if (!p.hasAttribute('hidden')) p.setAttribute('hidden', '');
-          p.classList.remove('is-modal-open');
-          var t = document.querySelector('[aria-controls="' + p.id + '"][aria-expanded="true"]');
-          if (t) t.setAttribute('aria-expanded', 'false');
-        });
-        var bd = document.getElementById('article-disclosure-backdrop');
-        if (bd) bd.hidden = true;
-        document.body.classList.remove('is-disclosure-open');
-      };
+      // Inline disclosures — toggle hidden + scroll the panel into
+      // view in the same page. Mutual exclusion across all panels on
+      // the page so opening one closes the rest.
       window.toggleArticleDisclosure = function (btn) {
         var id = btn.getAttribute('aria-controls');
         if (!id) return;
         var panel = document.getElementById(id);
         if (!panel) return;
         var willOpen = panel.hasAttribute('hidden');
-        window.__tftCloseDisclosures();
+        document.querySelectorAll('[data-article-disclosure]').forEach(function (p) {
+          if (!p.hasAttribute('hidden')) p.setAttribute('hidden', '');
+          var t = document.querySelector('[aria-controls="' + p.id + '"][aria-expanded="true"]');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        });
         if (willOpen) {
           panel.removeAttribute('hidden');
-          panel.classList.add('is-modal-open');
           btn.setAttribute('aria-expanded', 'true');
-          var bd = document.getElementById('article-disclosure-backdrop');
-          if (bd) bd.hidden = false;
-          document.body.classList.add('is-disclosure-open');
-          // Focus the panel for keyboard users; scroll to top of panel
-          // content (the panel itself is now scroll-anchored to the
-          // viewport, so no page-level scrolling is needed).
+          // Scroll so the panel is visible. Use 'start' so its top
+          // sits below the masthead, with a manual offset for fixed
+          // header height.
+          var rect = panel.getBoundingClientRect();
+          var top = rect.top + window.scrollY - 80;
+          window.scrollTo({ top: top, behavior: 'smooth' });
           if (typeof panel.focus === 'function') {
             panel.setAttribute('tabindex', '-1');
-            try { panel.focus({ preventScroll: true }); } catch (e) { panel.focus(); }
+            try { panel.focus({ preventScroll: true }); } catch (e) {}
           }
-          panel.scrollTop = 0;
         }
       };
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && document.body.classList.contains('is-disclosure-open')) {
-          window.__tftCloseDisclosures();
-        }
-      });
     </script>
 
   </div>{# /.site-wrapper #}

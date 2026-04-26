@@ -169,8 +169,7 @@ module.exports = function (eleventyConfig) {
               // Article engagement buttons — toggled at runtime by
               // like-btn.js, read-state.js, pdf-basket.js, tts.js.
               "is-liked", "is-read", "is-in-basket", "is-playing",
-              "is-modal-open", "is-disclosure-open",
-              "article-disclosure-backdrop",
+              "sitewide-disclosures",
               "tts-popover", "tts-popover__head", "tts-popover__close",
               "tts-popover__lede", "tts-popover__choices", "tts-popover__choice",
               "tts-popover__row", "tts-popover__btn",

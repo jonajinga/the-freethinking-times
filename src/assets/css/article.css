@@ -472,15 +472,24 @@
 .article-footnotes__text > :first-child { display: inline; }
 
 @media print {
-  .article-footnotes { display: none !important; }
+  /* Hide the markdown-it-footnote output and the panel-feeder slot
+     by default; the article body already inlines superscripts. */
+  .article-footnotes,
+  section.footnotes,
+  .footnotes { display: none !important; }
   /* Opt-in: when the body has print-include-footnotes (set by the
      "Article with footnotes" share-popover button), surface the
-     article footnotes back into the printout. */
-  body.print-include-footnotes .article-footnotes {
+     real footnote list back into the printout. */
+  body.print-include-footnotes .article-footnotes,
+  body.print-include-footnotes section.footnotes,
+  body.print-include-footnotes .footnotes {
     display: block !important;
     page-break-before: always;
     margin-top: 2em;
+    border-top: 1px solid #ccc;
+    padding-top: 1em;
   }
+  body.print-include-footnotes .footnotes ol { padding-left: 1.4em; }
   /* Support / funding / republish badges and their disclosure panels
      are publication-state UI, not editorial content — never print them.
      Applies to single-article browser print, single-article PDF

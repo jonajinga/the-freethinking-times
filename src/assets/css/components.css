@@ -4819,44 +4819,21 @@ select.w3f__input option {
 .tts-btn.is-playing { color: var(--color-accent); }
 .tts-btn.is-playing svg { stroke: var(--color-accent); }
 
-/* ── Disclosure modal (How We're Funded / Support author / Republish) ── */
-.article-disclosure-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  z-index: 9000;
-  cursor: pointer;
-  animation: fade-in 0.18s ease-out;
+/* ── Sitewide disclosures (publication-funding + author-support
+     when triggered from non-article surfaces) — render inline
+     above the footer, max-width matched to article-prose so the
+     content doesn't run edge-to-edge on wide screens. */
+.sitewide-disclosures {
+  width: 100%;
+  max-width: var(--max-width-prose, 65ch);
+  margin: 0 auto;
+  padding: 0 var(--gutter, 1rem);
 }
-.article-disclosure-backdrop[hidden] { display: none; }
-@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-
-[data-article-disclosure].is-modal-open {
-  position: fixed;
-  inset: auto;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(640px, calc(100vw - 32px));
-  max-height: calc(100vh - 64px);
-  overflow-y: auto;
-  z-index: 9100;
-  background: var(--color-bg);
-  border: 1px solid var(--color-ink);
-  border-top: 4px solid var(--color-accent);
-  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.45), 0 8px 20px -8px rgba(0, 0, 0, 0.25);
-  padding: var(--space-4) var(--space-6);
-  outline: none;
-  animation: modal-pop 0.18s ease-out;
+.sitewide-disclosures [data-article-disclosure] {
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-6);
+  scroll-margin-top: 80px;
 }
-[data-article-disclosure].is-modal-open[hidden] { display: none; }
-@keyframes modal-pop {
-  from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); }
-  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-}
-body.is-disclosure-open { overflow: hidden; }
 
 /* ── TTS settings popover ───────────────────────────────────── */
 .tts-popover {
