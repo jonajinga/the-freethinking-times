@@ -162,6 +162,18 @@ function concatFloat32(arrays) {
   return out;
 }
 
+// Surface anything that would otherwise crash silently — without these
+// handlers, an unhandled promise rejection from inside Kokoro/ONNX can
+// terminate the process with no log at all.
+process.on('unhandledRejection', (reason) => {
+  console.error('\n[unhandledRejection]', reason && reason.stack || reason);
+  process.exit(1);
+});
+process.on('uncaughtException', (err) => {
+  console.error('\n[uncaughtException]', err && err.stack || err);
+  process.exit(1);
+});
+
 // ── Main ────────────────────────────────────────────────────────
 async function main() {
   ensureDir(AUDIO_DIR);
@@ -244,14 +256,37 @@ async function main() {
       const chunks = [];
       let sampleRate = 0;
       let chunkCount = 0;
-      for await (const out of tts.stream(item.text, { voice: item.voice })) {
-        // out: { text: '...', audio: { audio: Float32Array, sampling_rate: number, ... } }
-        if (!out || !out.audio || !out.audio.audio) continue;
-        chunks.push(out.audio.audio);
-        sampleRate = sampleRate || out.audio.sampling_rate;
-        chunkCount += 1;
+      process.stdout.write('         streaming');
+      try {
+        for await (const out of tts.stream(item.text, { voice: item.voice })) {
+          if (!out) continue;
+          // The shape varies by kokoro-js version. v1.2: { text, phonemes, audio }
+          // where audio has .audio (Float32Array), .sampling_rate.
+          // Fall back to scanning the object for a Float32Array if the
+          // expected key isn't there so we don't silently drop chunks.
+          let audioObj = out.audio;
+          if (!audioObj && out.samples) audioObj = out;
+          let pcm = null;
+          let rate = 0;
+          if (audioObj) {
+            pcm = audioObj.audio || audioObj.samples || audioObj.data;
+            rate = audioObj.sampling_rate || audioObj.sampleRate;
+          }
+          if (!pcm || !pcm.length) {
+            console.error('\n[chunk-shape]', Object.keys(out), audioObj ? Object.keys(audioObj) : '(no audio key)');
+            continue;
+          }
+          chunks.push(pcm);
+          sampleRate = sampleRate || rate;
+          chunkCount += 1;
+          process.stdout.write(' ' + chunkCount);
+        }
+      } catch (streamErr) {
+        process.stdout.write('\n');
+        throw new Error('Stream error after ' + chunkCount + ' chunks: ' + (streamErr.message || streamErr));
       }
-      if (!chunks.length || !sampleRate) throw new Error('Kokoro stream produced no audio');
+      process.stdout.write('\n');
+      if (!chunks.length || !sampleRate) throw new Error('Kokoro stream produced no audio (got ' + chunkCount + ' chunks, sampleRate=' + sampleRate + ')');
 
       const samples = concatFloat32(chunks);
       const durationSec = samples.length / sampleRate;
