@@ -7,7 +7,25 @@ permalink: /notes/
 
 <div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
 
-  <header style="padding-bottom: var(--space-8); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);">
+  {# ── Print-only cover page (hidden on screen via CSS below) ── #}
+  <div class="print-cover" aria-hidden="true">
+    <div class="print-cover__head">
+      <p class="print-cover__eyebrow">A reader compilation from</p>
+      <h1 class="print-cover__publication">{{ site.title }}</h1>
+      <p class="print-cover__line">{{ site.url }}</p>
+    </div>
+    <div class="print-cover__body">
+      <h2 class="print-cover__heading">Notes &amp; Highlights</h2>
+      <p class="print-cover__lede">Your annotations, highlights, and bookmarks across the site, exported on the date below. Each article appears as its own section starting on the next page.</p>
+      <div class="print-cover__contents" id="print-cover-contents"><!-- populated by notes-page.js at print time --></div>
+    </div>
+    <div class="print-cover__foot">
+      <p class="print-cover__date" id="print-cover-date"></p>
+      <p class="print-cover__note">Stored in the reader's browser. No copy of these notes is held by {{ site.title }}.</p>
+    </div>
+  </div>
+
+  <header style="padding-bottom: var(--space-8); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-8);" class="notes-screen-header">
     <h1 style="font-family: var(--font-masthead); font-size: var(--text-3xl); margin-bottom: var(--space-2);">Notes & Highlights</h1>
     <p style="color: var(--color-ink-muted); font-size: var(--text-md); font-style: italic;">
       Your highlights, notes, and bookmarks across the site. Stored in your browser, nothing is sent anywhere.
@@ -21,6 +39,7 @@ permalink: /notes/
 </div>
 
 <style>
+.print-cover { display: none; }
 @media print {
   button, input, select,
   .article-action-btn,
@@ -32,6 +51,9 @@ permalink: /notes/
   [style*="gap"] > a { display: none !important; }
 
   [data-page-section] a[style] { display: inline !important; }
+
+  .notes-screen-header { display: none !important; }
+  .print-cover { display: block !important; page-break-after: always; padding: 0; }
 }
 </style>
 

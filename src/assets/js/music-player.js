@@ -82,6 +82,19 @@
       else player.playVideo();
     });
 
+    // Mutual exclusion: pause the music whenever the article TTS bar
+    // starts playing. Fired by audio-bar.js. We don't unmute or
+    // resume — once interrupted by narration, the reader can hit
+    // play on the music bar to bring it back.
+    document.addEventListener('tft:tts-playing', function () {
+      if (!player) return;
+      try {
+        if (player.getPlayerState && player.getPlayerState() === YT.PlayerState.PLAYING) {
+          player.pauseVideo();
+        }
+      } catch (e) {}
+    });
+
     document.getElementById('mb-prev').addEventListener('click', function () {
       if (player) { player.previousVideo(); setTimeout(updateNowPlaying, 500); }
     });
@@ -155,6 +168,10 @@
               fadeIn();
             }
             saveState();
+            // Mutual exclusion with the article TTS bar: tell anyone
+            // listening that we just started, so audio-bar.js can pause
+            // its narration. One soundtrack at a time.
+            document.dispatchEvent(new CustomEvent('tft:music-playing'));
           } else {
             playIcon.style.display = '';
             pauseIcon.style.display = 'none';

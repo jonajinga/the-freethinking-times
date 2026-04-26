@@ -5,9 +5,26 @@
 (function () {
   'use strict';
 
-  var root = document.getElementById('notes-page-root');
-  if (!root) return;
+  // SPA-nav-aware bootstrap: the IIFE runs once on the initial
+  // page load; if `notes-page-root` isn't there yet we listen for
+  // spa:contentswap and try again whenever a new page lands.
+  // Without this, navigating from another page to /notes/ via the
+  // soft-router silently no-ops (only refresh worked).
+  var booted = false;
+  function tryBoot() {
+    if (booted) return;
+    var root = document.getElementById('notes-page-root');
+    if (!root) return;
+    booted = true;
+    boot(root);
+  }
+  document.addEventListener('spa:contentswap', function () {
+    booted = false;
+    tryBoot();
+  });
+  // Fall through to the initial boot at the bottom of this file.
 
+function boot(root) {
   var _p = window.__PREFIX || 'tft';
 
   // ── Scan localStorage for all annotation/bookmark keys ────
@@ -572,12 +589,12 @@
       addOption('Plain text (.txt)', function () { exportPageAs(singlePage, 'txt'); });
       addOption('Markdown (.md)', function () { exportPageAs(singlePage, 'md'); });
       addOption('JSON (.json)', function () { exportPageAs(singlePage, 'json'); });
-      addOption('PDF (print)', function () { window.print(); });
+      addOption('PDF (print)', function () { populateCover(); window.print(); });
     } else {
       addOption('Plain text (.txt)', exportText);
       addOption('Markdown (.md)', exportMarkdown);
       addOption('JSON (.json)', exportJSON);
-      addOption('PDF (print)', function () { window.print(); });
+      addOption('PDF (print)', function () { populateCover(); window.print(); });
     }
 
     document.body.appendChild(panel);
@@ -771,6 +788,39 @@
     input.click();
   }
 
+  // Populates the print-only cover page (in notes.njk) with a fresh
+  // dated TOC of every article whose notes are about to print. Run
+  // immediately before window.print(). The cover element only
+  // displays in @media print, so this populates harmlessly on screen.
+  function populateCover() {
+    var dateEl = document.getElementById('print-cover-date');
+    var listEl = document.getElementById('print-cover-contents');
+    if (dateEl) {
+      dateEl.textContent = 'Compiled ' + new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+    if (!listEl) return;
+    var pages = scanStorage();
+    var arr = Object.keys(pages).map(function (k) { return pages[k]; });
+    arr.sort(function (a, b) {
+      return (b.annotations.length + b.bookmarks.length) - (a.annotations.length + a.bookmarks.length);
+    });
+    if (!arr.length) {
+      listEl.innerHTML = '<p style="font-style:italic;color:#777;">No notes saved yet.</p>';
+      return;
+    }
+    var html = '<ol class="print-cover__list">';
+    arr.forEach(function (page) {
+      var meta = getPageMeta(page.slug, page.type);
+      var counts = [];
+      if (page.annotations.length) counts.push(page.annotations.length + ' note' + (page.annotations.length === 1 ? '' : 's'));
+      if (page.bookmarks.length)  counts.push(page.bookmarks.length  + ' bookmark' + (page.bookmarks.length === 1 ? '' : 's'));
+      html += '<li><span class="print-cover__title">' + meta.title + '</span>'
+           +  '<span class="print-cover__counts">' + counts.join(' · ') + '</span></li>';
+    });
+    html += '</ol>';
+    listEl.innerHTML = html;
+  }
+
   function downloadFile(filename, content, type) {
     var blob = new Blob([content], { type: (type || 'text/plain') + ';charset=utf-8' });
     var url = URL.createObjectURL(blob);
@@ -784,4 +834,7 @@
   }
 
   render();
+}
+
+  tryBoot();
 }());

@@ -20,6 +20,38 @@ eleventyComputed:
     <span>Edition No. {{ editionNum }}{% if edArts.length %} &middot; {{ edArts[0].date | readableDate }}{% endif %} &middot; {{ edArts.length }} article{% if edArts.length != 1 %}s{% endif %}</span>
   </div>
 
+  {# ── Print-only cover page (hidden on screen via CSS) ── #}
+  <div class="print-cover" aria-hidden="true">
+    <div class="print-cover__head">
+      <p class="print-cover__eyebrow">A reader compilation from</p>
+      <h1 class="print-cover__publication">{{ site.title }}</h1>
+      <p class="print-cover__line">{{ site.url }}</p>
+    </div>
+    <div class="print-cover__body">
+      <h2 class="print-cover__heading">Edition No. {{ editionNum }}</h2>
+      {% if edArts.length %}
+      <p class="print-cover__lede">{{ edArts.length }} article{% if edArts.length != 1 %}s{% endif %} &middot; {{ edArts[0].date | readableDate }}</p>
+      {% endif %}
+      {% if edArts.length %}
+      <ol class="print-cover__list">
+        {% for item in edArts %}
+        <li>
+          <span class="print-cover__title">{{ item.data.title }}</span>
+          <span class="print-cover__counts">
+            {% if item.data.section %}{{ item.data.section }}{% endif %}
+            {% if item.data.author %} &middot; By {{ item.data.author }}{% endif %}
+          </span>
+        </li>
+        {% endfor %}
+      </ol>
+      {% endif %}
+    </div>
+    <div class="print-cover__foot">
+      <p class="print-cover__date">Edition No. {{ editionNum }} &middot; {{ site.url }}/editions/{{ editionNum }}/</p>
+      <p class="print-cover__note">Articles released under <a href="{{ site.url }}/license/">CC BY-NC-ND 4.0</a>. Republish with attribution and a link back to the canonical URL.</p>
+    </div>
+  </div>
+
   <header class="edition-header">
     <a href="/editions/" class="edition-back">← All editions</a>
     <p class="edition-header__number">No. {{ editionNum }}</p>

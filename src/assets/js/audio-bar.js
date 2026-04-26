@@ -41,6 +41,8 @@
     if (!btnPlay || !audio) return;
     var playing = !audio.paused && !audio.ended;
     btnPlay.setAttribute('aria-pressed', playing ? 'true' : 'false');
+    btnPlay.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+    btnPlay.setAttribute('title', playing ? 'Pause' : 'Play');
     if (iconPlay)  iconPlay.hidden  = playing;
     if (iconPause) iconPause.hidden = !playing;
   }
@@ -118,11 +120,9 @@
     }
     if (timeDur && durationHint) timeDur.textContent = fmt(durationHint);
     show();
-    // Pause music if it's playing — mutual exclusion as discussed
-    try {
-      var music = document.querySelector('.music-bar audio, .music-bar [data-yt-player]');
-      if (music && typeof music.pause === 'function') music.pause();
-    } catch (e) {}
+    // Mutual exclusion with the music player: dispatch a public event
+    // that music-player.js listens for and pauses its YouTube player.
+    document.dispatchEvent(new CustomEvent('tft:tts-playing'));
     var p = audio.play();
     if (p && typeof p.catch === 'function') p.catch(function (err) {
       console.warn('[audio-bar] play() failed:', err);
@@ -142,6 +142,16 @@
     btnClose  = document.getElementById('audio-bar-close');
     if (!bar || !audio) return;
 
+    // Pause TTS bar whenever the music player starts (custom event
+    // dispatched from music-player.js). Mutual exclusion: only one
+    // soundtrack at a time. Fired on first run only — this is a
+    // document-level listener so it survives SPA-nav.
+    if (isFirstRun) {
+      document.addEventListener('tft:music-playing', function () {
+        if (audio && !audio.paused) { try { audio.pause(); } catch (e) {} }
+      });
+    }
+
     // Wire native audio events
     audio.addEventListener('loadedmetadata', function () {
       if (timeDur && Number.isFinite(audio.duration)) timeDur.textContent = fmt(audio.duration);
@@ -152,7 +162,10 @@
         scrub.value = String(Math.round((audio.currentTime / audio.duration) * 1000));
       }
     });
-    audio.addEventListener('play',  refreshBtn);
+    audio.addEventListener('play',  function () {
+      refreshBtn();
+      document.dispatchEvent(new CustomEvent('tft:tts-playing'));
+    });
     audio.addEventListener('pause', refreshBtn);
     audio.addEventListener('ended', refreshBtn);
 
