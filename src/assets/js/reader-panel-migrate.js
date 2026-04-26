@@ -33,7 +33,20 @@
   if (!panel && !toolbar) return;
 
   // ── Bottom toolbar slots
-  move('bookmark-btn', 'ann-save-slot');
+  move('bookmark-btn',   'ann-save-slot');
+  move('like-btn',       'ann-like-slot');
+  move('mark-read-btn',  'ann-mark-read-slot');
+  move('pdf-basket-btn', 'ann-pdf-basket-slot');
+  move('tts-btn',        'ann-tts-slot');
+
+  // After migration, give each engagement button the toolbar look while
+  // keeping its existing id-based bindings intact.
+  ['like-btn', 'mark-read-btn', 'pdf-basket-btn', 'tts-btn'].forEach(function (id) {
+    var b = document.getElementById(id);
+    if (!b) return;
+    b.classList.add('annotation-toolbar__btn');
+    b.classList.remove('article-action-btn');
+  });
 
   // Hide the panel-footer "Comments" button if the page has no comments
   // section to scroll to (e.g. comments aren't configured for this site).

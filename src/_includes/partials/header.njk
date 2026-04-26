@@ -17,6 +17,17 @@
           <line x1="3" y1="18" x2="21" y2="18"/>
         </svg>
       </button>
+
+      {# ── Watch Live (desktop only, hides on mobile where hamburger panel surfaces it) ── #}
+      {% if site.live and site.live.active and site.live.url %}
+      <a class="masthead__live" href="{{ site.live.url }}" target="_blank" rel="noopener"
+         data-umami-event="watch-live"
+         aria-label="Watch live{% if site.live.title %} — {{ site.live.title }}{% endif %}"
+         title="{{ site.live.title or 'Watch live' }}{% if site.live.platform %} on {{ site.live.platform | capitalize }}{% endif %}">
+        <span class="masthead__live-dot" aria-hidden="true"></span>
+        <span class="masthead__live-label">Watch live</span>
+      </a>
+      {% endif %}
       <a href="/" class="masthead__title notranslate" aria-label="{{ site.title }}, Home">
         {{ site.title }}
       </a>

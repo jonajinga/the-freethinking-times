@@ -145,18 +145,15 @@ module.exports = function (eleventyConfig) {
               // render when site.live.active or site.announcement.active
               // is flipped on, so PurgeCSS may scan a build where they
               // are absent and strip them.
-              "site-live",
-              "site-live__link",
-              "site-live__dot",
-              "site-live__label",
-              "site-live__title",
-              "site-live__sub",
-              "site-live__cta",
+              "masthead__live",
+              "masthead__live-dot",
+              "masthead__live-label",
               "site-announce",
               "site-announce--info",
               "site-announce--warning",
               "site-announce--breaking",
-              "site-announce__icon",
+              "site-announce__inner",
+              "site-announce__badge",
               "site-announce__text",
               "site-announce__cta",
               "site-announce__close",

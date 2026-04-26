@@ -3,10 +3,13 @@
     "heading": "Contribute",
     "headingUrl": "/contribute/",
     "links": [
-      { "label": "Write for Us",      "url": "/contribute/",         "title": "Our contributor guidelines, who we publish, what we look for, how the editorial process works, and how to pitch us a piece." },
-      { "label": "Submit an Article", "url": "/submit/",             "title": "Pitch a piece of reported news, analysis, opinion, or review. Pitches are read by an editor within two weeks; selective publication." },
-      { "label": "Write a Letter",    "url": "/letters/submit/",     "title": "Respond to a specific piece we've published. Letters are selected, edited for length and clarity, and published in the Letters section." },
-      { "label": "Support Us",        "url": "/support/",            "title": "How reader contributions are used. No ads, no paywalls, no corporate parent. One-time tips via Ko-fi keep the lights on." }
+      { "label": "Write for Us",          "url": "/contribute/",            "title": "Our contributor guidelines, who we publish, what we look for, how the editorial process works, and how to pitch us a piece." },
+      { "label": "Submit an Article",     "url": "/submit/",                "title": "Pitch a piece of reported news, analysis, opinion, or review. Pitches are read by an editor within two weeks; selective publication." },
+      { "label": "Write a Letter",        "url": "/letters/submit/",        "title": "Respond to a specific piece we've published. Letters are selected, edited for length and clarity, and published in the Letters section." },
+      { "label": "Volunteer With Us",     "url": "/volunteer/",             "title": "Open volunteer roles, fact-checker, copy editor, researcher, translator, moderator, and more." },
+      { "label": "Reader Survey",         "url": "/survey/",                "title": "Five-minute reader survey: what you read, what's missing, and what would make the site better." },
+      { "label": "Contributor Contract",  "url": "/contributor-contract/",  "title": "The written terms between writers and the publication. Plain English, no surprises later." },
+      { "label": "Support Us",            "url": "/support/",               "title": "How reader contributions are used. No ads, no paywalls, no corporate parent. One-time tips via Ko-fi keep the lights on." }
     ]
   },
   {
@@ -72,8 +75,12 @@
       { "label": "Editions",      "url": "/editions/",      "title": "Articles grouped into numbered editions, a periodical-style view that collects a week's or a month's work in one place." },
       { "label": "Newsletter",    "url": "/newsletter/",    "title": "An occasional email. One message at a time. No tracking pixels, no third-party data sharing, one-click unsubscribe." },
       { "label": "Notes & Highlights","url": "/notes/",     "title": "Your personal highlights, margin notes, and bookmarks across every article and library text you've read on the site, stored locally in your browser." },
-      { "label": "Reading List",  "url": "/reading-list/",  "title": "Articles you've saved to read later, bookmark from any piece, pick up where you left off on any device." },
-      { "label": "Feeds",         "url": "/feeds/",         "title": "All RSS feeds in one place, the whole site, each editorial section, every author, every topic. Subscribe in any reader, no account, no algorithm." },
+      { "label": "Reading List",      "url": "/reading-list/",     "title": "Articles you've saved to read later, bookmark from any piece, pick up where you left off on any device." },
+      { "label": "Reading History",   "url": "/reading-history/",  "title": "Articles you've finished or marked as read on this device, kept locally in your browser." },
+      { "label": "Print Basket",      "url": "/print-basket/",     "title": "Articles you've added with the Add-to-PDF button, ready to print as one combined PDF in your browser." },
+      { "label": "Most Read",         "url": "/most-read/",        "title": "Ranked bar chart of articles by Umami pageviews, what readers are spending the most time with." },
+      { "label": "Knowledge Map",     "url": "/knowledge-map/",    "title": "Force-directed visual map of every article, clustered by shared topics and authors. Drag, zoom, click any node to read." },
+      { "label": "Feeds",             "url": "/feeds/",            "title": "All RSS feeds in one place, the whole site, each editorial section, every author, every topic. Subscribe in any reader, no account, no algorithm." },
       { "label": "API",           "url": "/api/",           "title": "Public JSON API, articles, quotes, timeline entries, glossary terms, and more. Free for developers, academics, and other publications." },
       { "label": "Search",        "url": "/search/",        "title": "Full-text search across every article, library work, quote, glossary entry, and timeline event. Press / anywhere on the site to open it." },
       { "label": "Start Here",    "url": "/start-here/",    "title": "A curated introduction for new readers, the pieces that best represent what we do, organized by what you want to know first." },

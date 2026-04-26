@@ -16,7 +16,9 @@
       { "label": "Trials of Thought",   "url": "/trials/",                "title": "Landmark trials in which an idea, not just a person, was on the defendant's bench." },
       { "label": "Music",               "url": "/music/",                 "title": "Curated YouTube playlists, music chosen for reading, thinking, and working. Persistent background player follows you across pages." },
       { "label": "Gallery",             "url": "/gallery/",               "title": "Natural-world photography, landscapes, wildlife, and the cosmos, with full license and credit information." },
-      { "label": "Games",               "url": "/games/",                 "title": "A small collection of thinking games, crossy-road, trivia, word scramble, and more." }
+      { "label": "Games",               "url": "/games/",                 "title": "A small collection of thinking games, crossy-road, trivia, word scramble, and more." },
+      { "label": "Knowledge Map",       "url": "/knowledge-map/",         "title": "Force-directed map of every article, clustered by topic and author. Drag, zoom, click to read." },
+      { "label": "Most Read",           "url": "/most-read/",             "title": "What readers are spending the most time with, ranked by Umami pageviews." }
     ]
   },
   {
@@ -30,7 +32,9 @@
       { "label": "Newsletter",      "url": "/newsletter/",         "title": "An occasional email. No tracking pixels, no third-party data sharing, one-click unsubscribe." },
       { "label": "RSS Reader",      "url": "/reader/",             "title": "A built-in reader for following freethought-adjacent publications via RSS, without a separate app." },
       { "label": "Contribute",      "url": "/contribute/",         "title": "Our contributor guidelines, who we publish, what we look for, and how the editorial process works." },
+      { "label": "Volunteer",       "url": "/volunteer/",          "title": "Open volunteer positions, fact-checker, copy editor, researcher, translator, moderator, and more." },
       { "label": "Submit",          "url": "/submit/",             "title": "Pitch an article, suggest a book, a song, a timeline entry, an event, a photo, or a thought experiment." },
+      { "label": "Reader Survey",   "url": "/survey/",             "title": "A short reader survey, what you read, what's missing, and what would make the site better." },
       { "label": "Suggest a Group", "url": "/community/submit/",   "title": "Know a freethought, humanist, or secular group we should list? Tell us." }
     ]
   },
@@ -47,6 +51,10 @@
       { "label": "Search",          "url": "/search/",           "title": "Full-text search across every article, library work, quote, and glossary entry. Press / anywhere to open." },
       { "label": "Notes",           "url": "/notes/",            "title": "Your personal highlights, margin notes, and bookmarks across every piece you've read, stored locally." },
       { "label": "Reading List",    "url": "/reading-list/",     "title": "Articles you've saved to read later." },
+      { "label": "Reading History", "url": "/reading-history/",  "title": "Articles you've finished or marked as read, stored locally." },
+      { "label": "Print Basket",    "url": "/print-basket/",     "title": "Articles you've added with the Add-to-PDF button, ready to print as one combined PDF." },
+      { "label": "Most Read",       "url": "/most-read/",        "title": "Articles other readers are spending the most time with, ranked by pageviews." },
+      { "label": "Knowledge Map",   "url": "/knowledge-map/",    "title": "Visual map of every article, clustered by topic and author. Drag, zoom, click to read." },
       { "label": "Start Here",      "url": "/start-here/",       "title": "A curated introduction for new readers." },
       { "label": "Surprise Me",     "url": "/random/",           "title": "A random article from the archive, for when you don't know what you want." },
       { "label": "RSS Feed",        "url": "/feed.xml",          "title": "Subscribe in any RSS reader, full-text, no ads, no tracking." },
@@ -61,16 +69,17 @@
     "showSupportBadgeAfter": false,
     "small": false,
     "links": [
-      { "label": "About Us",            "url": "/about/",              "title": "What this publication is, why it exists, and what it will and will not do." },
-      { "label": "Masthead",            "url": "/masthead/",           "title": "Who runs this publication and who is accountable for what appears in it." },
-      { "label": "Contributors",        "url": "/contributors/",       "title": "Writers and editors whose work appears here, with bios and article counts." },
-      { "label": "Editorial Handbook",  "url": "/editorial/",          "title": "Mission, accuracy rules, sourcing, editorial independence, corrections, tone, and contributor expectations." },
-      { "label": "Editorial Ethics",    "url": "/ethics/",             "title": "Our standards for accuracy, sourcing, conflicts of interest, and the relationship between reporting and opinion." },
-      { "label": "Corrections Log",     "url": "/corrections/",        "title": "Every correction we've published, with the original claim, the correction, and the date." },
-      { "label": "Report a Correction", "url": "/corrections/report/", "title": "Spot an error? Send us the specifics, we correct quickly, publicly, and with a labeled notice." },
-      { "label": "Contact",             "url": "/contact/",            "title": "The general contact form. Every message is read by a person, usually within one business day." },
-      { "label": "Send Feedback",       "url": "/feedback/",           "title": "Bug reports, feature ideas, general site feedback." },
-      { "label": "Tip Line",            "url": "/tips/",               "title": "Anonymous channel for tips on stories we should be covering." }
+      { "label": "About Us",             "url": "/about/",                "title": "What this publication is, why it exists, and what it will and will not do." },
+      { "label": "Masthead",             "url": "/masthead/",             "title": "Who runs this publication and who is accountable for what appears in it." },
+      { "label": "Contributors",         "url": "/contributors/",         "title": "Writers and editors whose work appears here, with bios and article counts." },
+      { "label": "Contributor Contract", "url": "/contributor-contract/", "title": "The written terms between writers and the publication, plain English, no surprises." },
+      { "label": "Editorial Handbook",   "url": "/editorial/",            "title": "Mission, accuracy rules, sourcing, editorial independence, corrections, tone, and contributor expectations." },
+      { "label": "Editorial Ethics",     "url": "/ethics/",               "title": "Our standards for accuracy, sourcing, conflicts of interest, and the relationship between reporting and opinion." },
+      { "label": "Corrections Log",      "url": "/corrections/",          "title": "Every correction we've published, with the original claim, the correction, and the date." },
+      { "label": "Report a Correction",  "url": "/corrections/report/",   "title": "Spot an error? Send us the specifics, we correct quickly, publicly, and with a labeled notice." },
+      { "label": "Contact",              "url": "/contact/",              "title": "The general contact form. Every message is read by a person, usually within one business day." },
+      { "label": "Send Feedback",        "url": "/feedback/",             "title": "Bug reports, feature ideas, general site feedback." },
+      { "label": "Tip Line",             "url": "/tips/",                 "title": "Anonymous channel for tips on stories we should be covering." }
     ]
   },
   {
@@ -86,6 +95,7 @@
       { "label": "Changelog",        "url": "/changelog/",   "title": "Public record of every change we make to the site and the publication." },
       { "label": "Open Source",      "url": "/open-source/", "title": "The entire site is open source. Fork it, study it, adapt it, contribute back." },
       { "label": "Style Guide",      "url": "/style-guide/", "title": "Brand identity, colour palette, typography, components, and interaction patterns." },
+      { "label": "License (CC)",     "url": "/license/",     "title": "All articles are CC BY-NC-ND 4.0 — free to republish under attribution, no derivatives, no commercial reuse." },
       { "label": "Site Map",         "url": "/site-map/",    "title": "A directory of every page on the site." }
     ]
   },

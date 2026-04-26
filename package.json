@@ -21,6 +21,7 @@
     "dev": "npx @11ty/eleventy --quiet && npx pagefind --site _site --output-path _site/pagefind && npx @11ty/eleventy --serve --quiet",
     "build": "npx @11ty/eleventy && npx pagefind --site _site --output-path _site/pagefind",
     "build:search": "npx pagefind --site _site --output-path _site/pagefind",
+    "sync-stats": "node scripts/sync-stats.mjs",
     "debug": "DEBUG=Eleventy* npx @11ty/eleventy"
   },
   "dependencies": {
