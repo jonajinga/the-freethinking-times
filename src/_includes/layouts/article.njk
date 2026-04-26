@@ -219,8 +219,20 @@ layout: layouts/base.njk
             {% if _stats.likes %}<span class="article-meta-item article-meta-item--stat" title="Reader likes">{{ _stats.likes | numberFmt }} {{ "like" if _stats.likes == 1 else "likes" }}</span>{% endif %}
           {% endif %}
         </div>
+        {# Article topics — its own section, separated by hairline
+           rules, distinct from the dense meta-row above. #}
         {% if tags %}
-        <div class="article-header__meta-tags">{% for tag in tags %}{% if tag != "post" %}<a href="/topics/{{ tag | slugify }}/">{{ tag }}</a>{% endif %}{% endfor %}</div>
+        {% set _topicTags = tags | rejectAttr if false else tags %}
+        {% set _hasTopics = false %}
+        {% for tag in tags %}{% if tag != "post" %}{% set _hasTopics = true %}{% endif %}{% endfor %}
+        {% if _hasTopics %}
+        <nav class="article-topics" aria-label="Topics" data-pagefind-ignore>
+          <span class="article-topics__label">Topics</span>
+          <ul class="article-topics__list" role="list">
+            {% for tag in tags %}{% if tag != "post" %}<li><a href="/topics/{{ tag | slugify }}/">{{ tag }}</a></li>{% endif %}{% endfor %}
+          </ul>
+        </nav>
+        {% endif %}
         {% endif %}
 
         {# Build-time Kokoro MP3 player, only rendered when an MP3

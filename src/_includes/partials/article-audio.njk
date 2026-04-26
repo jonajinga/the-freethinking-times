@@ -13,13 +13,19 @@
 {% set _aud = audioManifest[page.url] %}
 {% if _aud %}
 <figure class="article-audio" data-pagefind-ignore>
-  <figcaption class="article-audio__label">
-    <span class="article-audio__title">Listen to this article</span>
-    <span class="article-audio__meta">
-      {% if _aud.duration %}{{ (_aud.duration / 60) | round(0, 'floor') }} min{% endif %}
-      {% if _aud.voice %} &middot; voice: {{ _aud.voice }}{% endif %}
+  <div class="article-audio__head">
+    <span class="article-audio__icon" aria-hidden="true">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+      </svg>
     </span>
-  </figcaption>
+    <figcaption class="article-audio__label">
+      <span class="article-audio__title">Listen to this article</span>
+      {% if _aud.duration %}<span class="article-audio__meta">{% set _mins = (_aud.duration / 60) | round(0, 'ceil') %}{{ _mins }} {{ "minute" if _mins == 1 else "minutes" }}</span>{% endif %}
+    </figcaption>
+  </div>
   <audio class="article-audio__player" controls preload="none" data-tft-audio
          src="{{ _aud.mp3 }}"
          data-umami-event="article-audio-play">

@@ -171,9 +171,12 @@ module.exports = function (eleventyConfig) {
               // like-btn.js, read-state.js, pdf-basket.js, tts.js.
               "is-liked", "is-read", "is-in-basket", "is-playing",
               "sitewide-disclosures",
-              "article-audio", "article-audio__label",
+              "article-audio", "article-audio__head",
+              "article-audio__icon", "article-audio__label",
               "article-audio__title", "article-audio__meta",
               "article-audio__player",
+              "article-topics", "article-topics__label",
+              "article-topics__list",
               "tts-popover", "tts-popover__head", "tts-popover__close",
               "tts-popover__lede", "tts-popover__choices", "tts-popover__choice",
               "tts-popover__row", "tts-popover__btn",
