@@ -29,6 +29,9 @@ permalink: /print-basket/
 
     <div id="print-basket-controls" style="display: flex; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-6); font-family: var(--font-ui); font-size: var(--text-sm); align-items: center;" hidden>
       <span><strong data-pb-count>0</strong> articles &middot; estimated <strong data-pb-pages>0</strong> pages &middot; <span data-pb-status>preparing…</span></span>
+      <label style="display: inline-flex; gap: 6px; align-items: center; margin-left: var(--space-2); cursor: pointer;">
+        <input type="checkbox" id="pb-include-footnotes"> Include footnotes
+      </label>
       <button type="button" id="pb-print" disabled style="margin-left: auto; background: var(--color-ink); color: var(--color-bg); border: 0; padding: var(--space-2) var(--space-4); cursor: pointer; font-family: inherit; font-size: inherit; font-weight: 700; opacity: 0.5;"
         onclick="window.__tftPrintBasket && window.__tftPrintBasket();" data-umami-event="pdf-basket-print">Print &rarr; Save as PDF</button>
       <button type="button" id="pb-clear" style="background: none; border: 1px solid var(--color-rule); padding: var(--space-2) var(--space-3); cursor: pointer; font-family: inherit; font-size: inherit; color: var(--color-ink-muted);"
@@ -202,6 +205,10 @@ permalink: /print-basket/
             if (body) body.querySelectorAll('.article-header, .library-header').forEach(function (n) { n.remove(); });
           }
           if (!body) return { item: item, html: '<p style="color:#888">Article body not found.</p>' };
+          // Pull the footnotes block out before we strip — we may want to
+          // keep it as an opt-in section.
+          var footnotesEl = doc.querySelector('.article-footnotes');
+          var footnotesHtml = footnotesEl ? footnotesEl.outerHTML : '';
           // Strip every interactive / chrome surface that should never print.
           body.querySelectorAll([
             '.article-action-btn',
@@ -211,6 +218,7 @@ permalink: /print-basket/
             '.responses-section',
             '.reading-progress',
             '.article-header__actions',
+            '.article-footnotes',
             // Support / funding / republish badges and panels
             '.tip-buttons', '.tip-badge',
             '.article-header__support-row',
@@ -223,37 +231,50 @@ permalink: /print-basket/
             '[data-tts-skip]',
             'script', 'style'
           ].join(',')).forEach(function (n) { n.remove(); });
-          return { item: item, html: body.innerHTML };
+          return { item: item, html: body.innerHTML, footnotes: footnotesHtml };
         })
         .catch(function () { progress(); return { item: item, html: '<p style="color:#888">Fetch error.</p>' }; });
     })).then(function (parts) {
-      var totalChars = 0;
-      var pieces = parts.map(function (p) {
-        totalChars += (p.html || '').replace(/<[^>]+>/g, '').length;
-        var meta = [p.item.author, p.item.section, fmtDate(p.item.date)].filter(Boolean).join(' &middot; ');
-        return '<article class="pb-preview__article">' +
-          '<h1>' + escapeAttr(p.item.title || p.item.url) + '</h1>' +
-          (meta ? '<div class="pb-preview__byline">' + meta + '</div>' : '') +
-          p.html +
-        '</article>';
-      });
-      preview.innerHTML = pieces.join('');
-      preview.hidden = false;
-      previewHeading.hidden = false;
-      previewNote.hidden = false;
+      // Stash the parts so the print function can re-render based on
+      // the user's "Include footnotes" choice each time they click Print.
+      window.__tftPrintBasketParts = parts;
 
-      // Estimate
-      var est = Math.max(1, Math.ceil(totalChars / 2400));
-      var pagesEl = controls.querySelector('[data-pb-pages]');
-      if (pagesEl) pagesEl.textContent = est;
+      var footnoteToggle = document.getElementById('pb-include-footnotes');
+      function buildPieces(includeFootnotes) {
+        var totalChars = 0;
+        var pieces = parts.map(function (p) {
+          var content = p.html || '';
+          if (includeFootnotes && p.footnotes) content += p.footnotes;
+          totalChars += content.replace(/<[^>]+>/g, '').length;
+          var meta = [p.item.author, p.item.section, fmtDate(p.item.date)].filter(Boolean).join(' &middot; ');
+          return '<article class="pb-preview__article">' +
+            '<h1>' + escapeAttr(p.item.title || p.item.url) + '</h1>' +
+            (meta ? '<div class="pb-preview__byline">' + meta + '</div>' : '') +
+            content +
+          '</article>';
+        });
+        return { pieces: pieces, totalChars: totalChars };
+      }
+      function renderPreview() {
+        var includeFootnotes = footnoteToggle && footnoteToggle.checked;
+        var built = buildPieces(includeFootnotes);
+        preview.innerHTML = built.pieces.join('');
+        preview.hidden = false;
+        previewHeading.hidden = false;
+        previewNote.hidden = false;
+        var est = Math.max(1, Math.ceil(built.totalChars / 2400));
+        var pagesEl = controls.querySelector('[data-pb-pages]');
+        if (pagesEl) pagesEl.textContent = est;
+        // Stash the latest assembled HTML for the iframe printer
+        window.__tftPrintBasketHTML = built.pieces.join('');
+      }
+      renderPreview();
+      if (footnoteToggle) footnoteToggle.addEventListener('change', renderPreview);
       if (statusEl) statusEl.textContent = 'ready';
       if (printBtn) {
         printBtn.disabled = false;
         printBtn.style.opacity = '1';
       }
-
-      // Stash content for the iframe printer
-      window.__tftPrintBasketHTML = pieces.join('');
     });
 
     // ── Print via a hidden iframe — sidesteps the fragile CSS print

@@ -143,11 +143,12 @@
   // ── Print buttons inside the share popover (all standardized: each
   // calls window.print() with a body class controlling which sections
   // appear in the printout).
-  //   article             → no class, just the article
-  //   article-with-notes  → .print-include-notes (article + appendix)
-  //   notes-only          → .print-notes-only (only the appendix)
+  //   article                → no class, just the article (footnotes hidden)
+  //   article-with-footnotes → .print-include-footnotes (article + footnotes)
+  //   article-with-notes     → .print-include-notes (article + appendix)
+  //   notes-only             → .print-notes-only (only the appendix)
   function clearPrintMode() {
-    document.body.classList.remove('print-include-notes', 'print-notes-only');
+    document.body.classList.remove('print-include-notes', 'print-notes-only', 'print-include-footnotes');
     stripInlineNotes();
   }
   // Populate panel sections that render lazily (highlights / notes /
@@ -185,6 +186,8 @@
       } else if (mode === 'notes-only') {
         document.body.classList.add('print-notes-only');
         populatePanelForPrint();
+      } else if (mode === 'article-with-footnotes') {
+        document.body.classList.add('print-include-footnotes');
       }
       // Give the populators a tick to finish before opening the print dialog.
       setTimeout(function () {

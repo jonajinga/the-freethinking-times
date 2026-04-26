@@ -41,24 +41,37 @@ jobs:
 
       - name: Commit if changed
         run: |
-          if [ -n "$(git status --porcelain src/_data/articleStats.json)" ]; then
-            git config user.name  "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -z "$(git status --porcelain src/_data/articleStats.json)" ]; then
+            echo "No changes to articleStats.json."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Snapshot the freshly-generated stats to a temp file so we can
+          # reapply it onto the latest origin/main on each retry attempt.
+          # This avoids the brittle "rebase a commit through unrelated
+          # main changes" path that kept failing on conflict resolution.
+          cp src/_data/articleStats.json /tmp/articleStats.json
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git checkout main
+            git reset --hard origin/main
+            cp /tmp/articleStats.json src/_data/articleStats.json
+            if [ -z "$(git status --porcelain src/_data/articleStats.json)" ]; then
+              echo "Stats already up to date on origin/main."
+              exit 0
+            fi
             git add src/_data/articleStats.json
             git commit -m "chore(stats): sync Umami article stats"
-            # Rebase against any commits that landed while we were running,
-            # then push. Retry once on transient race conditions.
-            for attempt in 1 2 3; do
-              if git pull --rebase origin main && git push; then
-                echo "Pushed on attempt $attempt"
-                break
-              fi
-              echo "Push attempt $attempt failed; sleeping and retrying"
-              sleep 3
-            done
-          else
-            echo "No changes to articleStats.json."
-          fi
+            if git push origin HEAD:main; then
+              echo "Pushed on attempt $attempt"
+              exit 0
+            fi
+            echo "Push attempt $attempt failed; refetching and retrying"
+            sleep 4
+          done
+          echo "All push attempts failed."
+          exit 1
 
       - name: Trigger Cloudflare Pages rebuild
         if: success()

@@ -473,6 +473,14 @@
 
 @media print {
   .article-footnotes { display: none !important; }
+  /* Opt-in: when the body has print-include-footnotes (set by the
+     "Article with footnotes" share-popover button), surface the
+     article footnotes back into the printout. */
+  body.print-include-footnotes .article-footnotes {
+    display: block !important;
+    page-break-before: always;
+    margin-top: 2em;
+  }
   /* Support / funding / republish badges and their disclosure panels
      are publication-state UI, not editorial content — never print them.
      Applies to single-article browser print, single-article PDF

@@ -2001,6 +2001,11 @@ a.dateline:hover { color: var(--color-accent); }
   line-height: 1.4;
   font-weight: 500;
 }
+/* The announce bar uses bg = var(--color-ink) and text = var(--color-bg).
+ * Buttons inherit text colour and use a transparent border that matches.
+ * On hover the button "fills" with the bar's text colour and the icon
+ * flips to the bar's bg colour — high contrast in both light and dark
+ * modes without any currentColor self-reference. */
 .site-announce__cta {
   display: inline-flex;
   align-items: center;
@@ -2012,26 +2017,30 @@ a.dateline:hover { color: var(--color-accent); }
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  border: 1px solid currentColor;
+  border: 1px solid var(--color-bg);
   background: transparent;
   flex-shrink: 0;
-  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  transition: background 0.12s, color 0.12s;
 }
 .site-announce__cta:hover {
-  background: currentColor;
+  background: var(--color-bg);
   color: var(--color-ink);
+}
+.site-announce--breaking .site-announce__cta,
+.site-announce--warning  .site-announce__cta {
+  border-color: rgba(255, 255, 255, 0.7);
+  color: #fff;
 }
 .site-announce--breaking .site-announce__cta:hover,
 .site-announce--warning  .site-announce__cta:hover {
-  /* On colored severity bands the bg colour is already strong; flip to a
-     filled white state on hover instead of the currentColor swap. */
-  background: rgba(255, 255, 255, 0.95);
+  background: #fff;
   color: var(--color-accent);
+  border-color: #fff;
 }
 
 .site-announce__close {
   background: transparent;
-  border: 1px solid currentColor;
+  border: 1px solid var(--color-bg);
   color: inherit;
   width: 28px;
   height: 28px;
@@ -2045,13 +2054,19 @@ a.dateline:hover { color: var(--color-accent); }
 }
 .site-announce__close:hover {
   opacity: 1;
-  background: currentColor;
+  background: var(--color-bg);
   color: var(--color-ink);
+}
+.site-announce--breaking .site-announce__close,
+.site-announce--warning  .site-announce__close {
+  border-color: rgba(255, 255, 255, 0.7);
+  color: #fff;
 }
 .site-announce--breaking .site-announce__close:hover,
 .site-announce--warning  .site-announce__close:hover {
-  background: rgba(255, 255, 255, 0.95);
+  background: #fff;
   color: var(--color-accent);
+  border-color: #fff;
 }
 
 .site-announce--warning {
@@ -4804,19 +4819,210 @@ select.w3f__input option {
 .tts-btn.is-playing { color: var(--color-accent); }
 .tts-btn.is-playing svg { stroke: var(--color-accent); }
 
+/* ── Disclosure modal (How We're Funded / Support author / Republish) ── */
+.article-disclosure-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 9000;
+  cursor: pointer;
+  animation: fade-in 0.18s ease-out;
+}
+.article-disclosure-backdrop[hidden] { display: none; }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+[data-article-disclosure].is-modal-open {
+  position: fixed;
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(640px, calc(100vw - 32px));
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+  z-index: 9100;
+  background: var(--color-bg);
+  border: 1px solid var(--color-ink);
+  border-top: 4px solid var(--color-accent);
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.45), 0 8px 20px -8px rgba(0, 0, 0, 0.25);
+  padding: var(--space-4) var(--space-6);
+  outline: none;
+  animation: modal-pop 0.18s ease-out;
+}
+[data-article-disclosure].is-modal-open[hidden] { display: none; }
+@keyframes modal-pop {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+body.is-disclosure-open { overflow: hidden; }
+
+/* ── TTS settings popover ───────────────────────────────────── */
+.tts-popover {
+  position: fixed;
+  z-index: calc(var(--z-modal, 1000) + 1);
+  width: min(320px, calc(100vw - 16px));
+  background: var(--color-bg);
+  color: var(--color-ink);
+  border: 1px solid var(--color-ink);
+  border-top: 3px solid var(--color-accent);
+  box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.3), 0 4px 12px -4px rgba(0, 0, 0, 0.15);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  padding: var(--space-3) var(--space-4);
+}
+.tts-popover[hidden] { display: none; }
+
+.tts-popover__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+.tts-popover__head strong {
+  font-family: var(--font-headline);
+  font-size: var(--text-base);
+}
+.tts-popover__close {
+  background: none;
+  border: 0;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--color-ink-muted);
+  padding: 0 4px;
+}
+.tts-popover__close:hover { color: var(--color-ink); }
+
+.tts-popover__lede {
+  margin: 0 0 var(--space-3);
+  color: var(--color-ink-muted);
+  line-height: var(--leading-snug);
+  font-size: var(--text-xs);
+}
+
+.tts-popover__choices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.tts-popover__choice {
+  text-align: left;
+  background: var(--color-bg);
+  border: 1px solid var(--color-rule);
+  padding: var(--space-3);
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--color-ink);
+  transition: border-color 0.12s, background 0.12s;
+}
+.tts-popover__choice:hover {
+  border-color: var(--color-ink);
+  background: var(--color-bg-alt);
+}
+.tts-popover__choice strong {
+  font-family: var(--font-headline);
+  font-size: var(--text-sm);
+}
+.tts-popover__choice span {
+  color: var(--color-ink-muted);
+  font-size: var(--text-xs);
+  line-height: var(--leading-snug);
+}
+
+.tts-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tts-progress__bar {
+  height: 8px;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-rule);
+  position: relative;
+  overflow: hidden;
+}
+.tts-progress__fill {
+  display: block;
+  height: 100%;
+  background: var(--color-accent);
+  transition: width 0.18s ease-out;
+}
+.tts-progress__line {
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.tts-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: var(--space-3);
+}
+.tts-field > span {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-faint);
+  display: flex;
+  justify-content: space-between;
+}
+.tts-field > span em {
+  font-style: normal;
+  color: var(--color-ink);
+  font-weight: 700;
+}
+.tts-field select,
+.tts-field input[type="range"] {
+  font-family: inherit;
+  font-size: var(--text-sm);
+  padding: 6px 8px;
+  border: 1px solid var(--color-rule);
+  background: var(--color-bg);
+  color: var(--color-ink);
+  width: 100%;
+}
+.tts-field input[type="range"] { padding: 0; accent-color: var(--color-accent); }
+
+.tts-popover__row {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.tts-popover__btn {
+  flex: 1;
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: var(--text-xs);
+  background: var(--color-bg);
+  color: var(--color-ink);
+  border: 1px solid var(--color-rule);
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+}
+.tts-popover__btn:hover {
+  border-color: var(--color-ink);
+  background: var(--color-bg-alt);
+}
+
 /* article-stat: legacy class, replaced by .article-meta-item--stat in
    article.css. Keep no rule here so PurgeCSS can drop it. */
 
 /* ── PDF basket floating button ─────────────────────────────── */
-/* Stacks immediately above the back-to-top button (which sits at
- * bottom: 6rem; right: var(--space-6)) so the two read as a paired
- * vertical column at the right edge. Same 44×44 dimensions and
- * border treatment for visual continuity. Hidden when basket is
- * empty. */
+/* Default: bottom-right corner of the viewport. When the article
+ * reader toolbar OR the reading-floats (back-to-top + % pill) are
+ * present, the button moves up to stack with them. Hidden when the
+ * basket is empty. */
 .pdf-basket-tray {
   position: fixed;
   right: var(--space-6);
-  bottom: calc(6rem + 44px + var(--space-2));
+  bottom: var(--space-4);
   z-index: var(--z-nav);
   width: 44px;
   height: 44px;
@@ -4835,6 +5041,18 @@ select.w3f__input option {
   color: var(--color-accent);
 }
 .pdf-basket-tray svg { width: 18px; height: 18px; }
+
+/* Article pages: the bottom annotation toolbar is always visible, so
+ * lift the basket above its 52px height + a small gap. Also matches
+ * back-to-top's bottom (6rem) so they stack when scrolled. */
+body:has(.annotation-toolbar) .pdf-basket-tray {
+  bottom: calc(6rem + 44px + var(--space-2));
+}
+/* On any page where the reading-floats are visible (back-to-top and
+ * % pill flipped to is-visible after scroll), stack above them. */
+body:has(.reading-floats.is-visible) .pdf-basket-tray {
+  bottom: calc(6rem + 44px + var(--space-2));
+}
 .pdf-basket-tray__count {
   position: absolute;
   top: -7px;
@@ -4854,13 +5072,17 @@ select.w3f__input option {
   line-height: 1;
 }
 @media (max-width: 600px) {
-  /* Match back-to-top's mobile right offset and stack height so the
-     two buttons read as a tight vertical pair. */
+  /* Phones: tighter dimensions; smart-position rules above still apply. */
   .pdf-basket-tray {
-    right: var(--space-6);
-    bottom: calc(6rem + 44px + var(--space-2));
+    right: var(--space-4);
+    bottom: var(--space-3);
     width: 40px;
     height: 40px;
+  }
+  body:has(.annotation-toolbar) .pdf-basket-tray,
+  body:has(.reading-floats.is-visible) .pdf-basket-tray {
+    bottom: calc(7rem + 40px + var(--space-2));
+    right: var(--space-6);
   }
   .pdf-basket-tray svg { width: 16px; height: 16px; }
 }
