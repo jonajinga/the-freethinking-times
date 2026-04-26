@@ -759,7 +759,7 @@ layout: layouts/base.njk
             <a class="article-comments__guidelines" href="/community-guidelines/">Community guidelines</a>
           </div>
           <button type="button" class="article-comments__toggle" id="comments-toggle"
-            onclick="var el=document.getElementById('comments-body');el.hidden=!el.hidden;this.textContent=el.hidden?'Show comments':'Hide comments';">
+            onclick="(function(b){var el=document.getElementById('comments-body');var willShow=el.hidden;el.hidden=!willShow;b.textContent=willShow?'Hide comments':'Show comments';if(willShow){var t=document.getElementById('cusdis_thread');if(t){t.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')||'light');}if(window.CUSDIS&&typeof window.CUSDIS.initial==='function'){try{window.CUSDIS.initial();}catch(e){}}else if(!document.querySelector('script[data-cusdis]')){var s=document.createElement('script');s.async=true;s.defer=true;s.dataset.cusdis='true';s.src='{{ site.comments.host }}/js/cusdis.es.js';document.body.appendChild(s);}}})(this);">
             Show comments
           </button>
         </div>
@@ -771,26 +771,6 @@ layout: layouts/base.njk
             data-page-url="{{ site.url }}{{ page.url }}"
             data-page-title="{{ title }}">
           </div>
-          <script>
-            (function () {
-              var thread = document.getElementById('cusdis_thread');
-              if (!thread) return;
-              function syncTheme() {
-                var t = document.documentElement.getAttribute('data-theme') || 'light';
-                thread.setAttribute('data-theme', t);
-              }
-              syncTheme();
-              new MutationObserver(function (mutations) {
-                mutations.forEach(function (m) {
-                  if (m.attributeName === 'data-theme') {
-                    syncTheme();
-                    if (window.CUSDIS) window.CUSDIS.initial();
-                  }
-                });
-              }).observe(document.documentElement, { attributes: true });
-            })();
-          </script>
-          <script async defer src="{{ site.comments.host }}/js/cusdis.es.js"></script>
         </div>
       </div>
 

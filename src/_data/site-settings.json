@@ -19,24 +19,24 @@
     "bluesky": "https://bsky.app/profile/jonajinga.bsky.social"
   },
   "googleNews": {
-    "followUrl": "",
+    "followUrl": "https://news.google.com/publications/CAAqJQgKIh9DQklTRVFnTWFnMEtDM1JvWVhSemRHaGxiR2x1ZHcoQVAB",
     "publicationId": ""
   },
   "announcement": {
-    "active": false,
+    "active": true,
     "severity": "info",
-    "id": "",
-    "text": "",
-    "linkText": "",
-    "linkUrl": "",
+    "id": "preview-2026-04-25",
+    "text": "Preview: this is what an editorial announcement looks like.",
+    "linkText": "Read why we publish editorial state",
+    "linkUrl": "/dashboard/guide/",
     "dismissible": true
   },
   "live": {
-    "active": false,
-    "platform": "",
-    "url": "",
-    "title": "",
-    "subtitle": ""
+    "active": true,
+    "platform": "youtube",
+    "url": "https://www.youtube.com/@TheFreethinkingTimes",
+    "title": "Sample stream — replace this with your live URL",
+    "subtitle": "Edit site.live in src/_data/site-settings.json to wire a real broadcast"
   },
   "subscribe": {
     "eyebrow": "Newsletter",

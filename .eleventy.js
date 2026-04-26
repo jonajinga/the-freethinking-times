@@ -52,6 +52,7 @@ module.exports = function (eleventyConfig) {
   // Copy assets but exclude CSS (concatenated at build time below)
   eleventyConfig.addPassthroughCopy({ "src/assets/js": "assets/js" });
   eleventyConfig.addPassthroughCopy({ "src/assets/favicon.svg": "assets/favicon.svg" });
+  eleventyConfig.addPassthroughCopy({ "src/assets/favicon-dark.svg": "assets/favicon-dark.svg" });
   eleventyConfig.addPassthroughCopy({ "src/assets/img": "assets/img" });
   eleventyConfig.addPassthroughCopy({ "src/humans.txt": "humans.txt" });
   eleventyConfig.addPassthroughCopy({ "src/admin": "admin" });
@@ -159,6 +160,14 @@ module.exports = function (eleventyConfig) {
               "site-announce__text",
               "site-announce__cta",
               "site-announce__close",
+              // Search-result tag chips — injected at runtime by
+              // search.js, so PurgeCSS doesn't see them in templates.
+              "search-result__section",
+              "search-result__tag",
+              // Form checkbox grids — used by /survey/ and similar
+              // multi-select forms.
+              "w3f__checklist",
+              "w3f__check",
               // PDF viewer modal — built lazily by pdf-viewer.js on
               // first PDF link click; never present in the source scan.
               "pdf-modal",

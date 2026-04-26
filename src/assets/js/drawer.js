@@ -53,7 +53,6 @@
   var keys = ['news', 'opinion', 'analysis', 'arts-culture', 'science-tech', 'history', 'letters', 'reviews', 'library', 'projects', 'games', 'more'];
 
   function positionDropdown(trigger, dropdown) {
-    if (dropdown.id === 'dropdown-quotes') return;
     var navRect     = nav.getBoundingClientRect();
     var triggerRect = trigger.getBoundingClientRect();
     var dropW       = dropdown.offsetWidth;
@@ -64,7 +63,7 @@
     dropdown.style.right = 'auto';
   }
 
-  var pairs = keys.map(function (key) {
+  var pairs = keys.concat(['quotes']).map(function (key) {
     var trigger  = document.getElementById('nav-' + key);
     var dropdown = document.getElementById('dropdown-' + key);
     return (trigger && dropdown) ? { trigger: trigger, dropdown: dropdown } : null;

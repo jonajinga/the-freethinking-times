@@ -112,22 +112,23 @@
         return;
       }
 
-      // Render up to 4 tag chips alongside the section meta. Tags
-      // come from pagefind's per-page meta capture (data-pagefind-meta
-      // ="tags") wired in article.njk. Mobile CSS pills these into
-      // wrap-friendly chips so the meta line never breaks awkwardly.
+      // Render up to 4 tag chips as direct flex children of
+      // .search-result__meta so they always wrap horizontally and
+      // never stack vertically on narrow viewports. Tags come from
+      // pagefind's per-page meta capture (data-pagefind-meta="tags")
+      // wired in article.njk.
       const tagChipsFor = (item) => {
         const raw = item.meta?.tags || '';
         if (!raw) return '';
         const tags = String(raw).split(',').map(t => t.trim()).filter(Boolean).slice(0, 4);
         if (!tags.length) return '';
-        return `<span class="search-result__tags">${tags.map(t => `<span class="search-result__tag">${t}</span>`).join('')}</span>`;
+        return tags.map(t => `<span class="search-result__tag">${t}</span>`).join('');
       };
 
       let html = data.map(item => `
         <a class="search-result" href="${item.url}">
           <span class="search-result__meta">
-            <span>${item.meta?.section || ''}</span>
+            ${item.meta?.section ? `<span class="search-result__section">${item.meta.section}</span>` : ''}
             ${tagChipsFor(item)}
           </span>
           <span class="search-result__title">${item.meta?.title || 'Untitled'}</span>
@@ -159,7 +160,7 @@
           const moreHtml = nextBatch.map(item => `
             <a class="search-result" href="${item.url}">
               <span class="search-result__meta">
-                <span>${item.meta?.section || ''}</span>
+                ${item.meta?.section ? `<span class="search-result__section">${item.meta.section}</span>` : ''}
                 ${tagChipsFor(item)}
               </span>
               <span class="search-result__title">${item.meta?.title || 'Untitled'}</span>
