@@ -180,6 +180,7 @@ module.exports = function (eleventyConfig) {
               "listen-btn", "listen-btn--sm", "listen-btn--md",
               "listen-btn__icon", "listen-btn__label",
               "listen-btn__sep", "listen-btn__time",
+              "article-card__listen", "archive-entry__listen",
               "is-current",
               "audio-bar", "audio-bar__play",
               "audio-bar__icon-play", "audio-bar__icon-pause",

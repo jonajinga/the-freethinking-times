@@ -49,12 +49,21 @@
   <p class="article-card__dek">{{ article.data.description }}</p>
   {% endif %}
 
-  {# Byline + listen button (when this article has a generated MP3) #}
-  <p class="article-card__byline">
-    {% set listenUrl = article.url %}
-    {% set listenTitle = article.data.title %}
-    {% set listenSize = "sm" %}
+  {# Listen button — its own row so the byline below stays a clean
+     single-line text flow instead of wrapping awkwardly around a
+     30 px pill. #}
+  {% set listenUrl = article.url %}
+  {% set listenTitle = article.data.title %}
+  {% set listenSize = "sm" %}
+  {% set _aud = audioManifest[listenUrl] %}
+  {% if _aud %}
+  <div class="article-card__listen">
     {% include "partials/listen-button.njk" %}
+  </div>
+  {% endif %}
+
+  {# Byline #}
+  <p class="article-card__byline">
     {% if article.data.author %}
     By <a href="/author/{{ article.data.author | slugify }}/"
       {% if authors[article.data.author] and authors[article.data.author].bio %}data-tippy-content="{{ authors[article.data.author].bio }}" data-tippy-theme="author-bio"{% endif %}>{{ authors[article.data.author].name or article.data.authorName or article.data.author }}</a>

@@ -139,12 +139,20 @@ permalink: /archives/
           <p class="archive-entry__desc">{{ itemDesc }}</p>
           {% endif %}
 
-          {# Meta row: listen button · author · reading time · word count #}
-          <div class="article-list__meta">
-            {% set listenUrl = item.url %}
-            {% set listenTitle = itemTitle %}
-            {% set listenSize = "sm" %}
+          {# Listen button — own row so the byline below stays a
+             clean single line. Auto-skips when no MP3 exists. #}
+          {% set listenUrl = item.url %}
+          {% set listenTitle = itemTitle %}
+          {% set listenSize = "sm" %}
+          {% set _aud = audioManifest[item.url] %}
+          {% if _aud %}
+          <div class="archive-entry__listen">
             {% include "partials/listen-button.njk" %}
+          </div>
+          {% endif %}
+
+          {# Meta row: author · reading time · word count #}
+          <div class="article-list__meta">
             <span>BY
               <a href="/author/{{ authorSlug }}/" class="archive-entry__author">{{ authorName | upper }}</a>
             </span>

@@ -4924,6 +4924,14 @@ select.w3f__input option {
   .listen-btn__sep { display: none; }
 }
 
+/* Listen-button wrappers: own row above the byline so the byline
+ * text doesn't wrap around the 30 px pill. */
+.article-card__listen,
+.archive-entry__listen {
+  margin: var(--space-1) 0 var(--space-2);
+}
+.archive-entry__listen { margin-top: var(--space-2); }
+
 /* ── Global audio bar (persistent TTS player) ──────────────── */
 .audio-bar {
   position: fixed;
