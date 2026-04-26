@@ -203,6 +203,18 @@
   {# ── Per-article reading progress tracking + card indicators ── #}
   <script src="/assets/js/reading-progress.js?v={{ buildTime }}" defer></script>
 
+  {# ── Manual mark-as-read toggle + reading history ── #}
+  <script src="/assets/js/read-state.js?v={{ buildTime }}" defer></script>
+
+  {# ── Like / heart button ── #}
+  <script src="/assets/js/like-btn.js?v={{ buildTime }}" defer></script>
+
+  {# ── PDF basket: collect articles, print as one PDF ── #}
+  <script src="/assets/js/pdf-basket.js?v={{ buildTime }}" defer></script>
+
+  {# ── Article TTS (Kokoro lazy-loaded on first click + Web Speech fallback) ── #}
+  <script src="/assets/js/tts.js?v={{ buildTime }}" defer></script>
+
   {# ── hCaptcha + dictation for Web3Forms pages ── #}
   {% if site.forms and site.forms.accessKey %}
   <script src="https://web3forms.com/client/script.js" async defer></script>

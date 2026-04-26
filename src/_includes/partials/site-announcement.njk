@@ -43,7 +43,8 @@
   <a class="site-announce__cta" href="{{ _ann.linkUrl }}" data-umami-event="announce-cta">{{ _ann.linkText }} &rarr;</a>
   {% endif %}
   {% if _ann.dismissible %}
-  <button type="button" class="site-announce__close" aria-label="Dismiss announcement">&times;</button>
+  <button type="button" class="site-announce__close" aria-label="Dismiss announcement"
+    onclick="(function(b){var el=b.closest('.site-announce');if(!el)return;var id=el.dataset.announceId;var key='tft-announce-dismissed';var list=[];try{list=JSON.parse(localStorage.getItem(key)||'[]');}catch(e){}if(list.indexOf(id)===-1)list.push(id);try{localStorage.setItem(key,JSON.stringify(list));}catch(e){}el.hidden=true;})(this);">&times;</button>
   {% endif %}
 </aside>
 <script>
@@ -51,17 +52,10 @@
   var el = document.getElementById('site-announce');
   if (!el || el.dataset.pinned === 'true') return;
   var id = el.dataset.announceId;
-  var key = (window.__PREFIX || 'tft') + '-announce-dismissed';
-  function load() { try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) { return []; } }
-  function save(list) { try { localStorage.setItem(key, JSON.stringify(list)); } catch (e) {} }
-  if (load().indexOf(id) !== -1) { el.hidden = true; return; }
-  var btn = el.querySelector('.site-announce__close');
-  if (btn) btn.addEventListener('click', function () {
-    el.hidden = true;
-    var list = load();
-    if (list.indexOf(id) === -1) list.push(id);
-    save(list);
-  });
+  var key = 'tft-announce-dismissed';
+  var list = [];
+  try { list = JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) {}
+  if (list.indexOf(id) !== -1) el.hidden = true;
 })();
 </script>
 {% endif %}

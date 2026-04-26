@@ -53,14 +53,12 @@
   var keys = ['news', 'opinion', 'analysis', 'arts-culture', 'science-tech', 'history', 'letters', 'reviews', 'library', 'projects', 'games', 'more'];
 
   function positionDropdown(trigger, dropdown) {
-    var navRect     = nav.getBoundingClientRect();
-    var triggerRect = trigger.getBoundingClientRect();
-    var dropW       = dropdown.offsetWidth;
-    var centre      = triggerRect.left + triggerRect.width / 2 - navRect.left;
-    var left        = Math.round(centre - dropW / 2);
-    left = Math.max(0, Math.min(left, navRect.width - dropW));
-    dropdown.style.left  = left + 'px';
-    dropdown.style.right = 'auto';
+    // Page-width dropdowns: every panel spans the full nav width so
+    // they all read as one consistent strip instead of variable-width
+    // popovers floating under each trigger.
+    dropdown.style.left  = '0';
+    dropdown.style.right = '0';
+    dropdown.style.width = '100%';
   }
 
   var pairs = keys.concat(['quotes']).map(function (key) {

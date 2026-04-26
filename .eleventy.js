@@ -168,6 +168,29 @@ module.exports = function (eleventyConfig) {
               // multi-select forms.
               "w3f__checklist",
               "w3f__check",
+              // Article engagement buttons — toggled at runtime by
+              // like-btn.js, read-state.js, pdf-basket.js, tts.js.
+              "is-liked", "is-read", "is-in-basket", "is-playing",
+              "like-count", "article-stat",
+              "mark-read-btn__label", "pdf-basket-btn__label", "tts-btn__label",
+              // Floating PDF-basket tray — appended to <body> when basket
+              // first becomes non-empty; never present in template source.
+              "pdf-basket-tray",
+              "pdf-basket-tray__link",
+              "pdf-basket-tray__label",
+              // Reading-history list — rendered client-side from
+              // localStorage on /reading-history/.
+              "reading-history-list",
+              "rh-meta", "rh-pill", "rh-pill--manual", "rh-actions",
+              // Print-basket renderer — built client-side from fetched
+              // article HTML on /print-basket/.
+              "pb-list", "pb-meta", "pb-render",
+              "pb-render__article", "pb-render__byline",
+              // Most-read chart rows — rendered from Umami-stats JSON.
+              "mr-row", "mr-row__label", "mr-row__title", "mr-row__sub",
+              "mr-row__bar", "mr-row__bar-fill", "mr-row__count",
+              // Knowledge-map nodes/links — created by D3.
+              "km-node", "km-node--article", "km-node--tag", "km-node--author",
               // PDF viewer modal — built lazily by pdf-viewer.js on
               // first PDF link click; never present in the source scan.
               "pdf-modal",
@@ -285,6 +308,16 @@ module.exports = function (eleventyConfig) {
     const text = content.replace(/(<([^>]+)>)/gi, "");
     const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
     return Math.max(1, Math.ceil(words / 200));
+  });
+
+  // Compact number formatter for engagement stats (1.2k, 3.4M, 850).
+  eleventyConfig.addFilter("numberFmt", (n) => {
+    const v = Number(n);
+    if (!Number.isFinite(v)) return "";
+    const abs = Math.abs(v);
+    if (abs >= 1e6) return (v / 1e6).toFixed(1).replace(/\.0$/, "") + "M";
+    if (abs >= 1e3) return (v / 1e3).toFixed(1).replace(/\.0$/, "") + "k";
+    return String(Math.round(v));
   });
 
   // Word count — formatted with thousands separator

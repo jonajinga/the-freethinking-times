@@ -1,0 +1,241 @@
+---
+layout: base
+title: Knowledge map
+description: A force-directed map of every article on the site, linked by shared topics and authors. Hover any node to see the piece, drag to rearrange, scroll to zoom.
+permalink: /knowledge-map/
+---
+
+{# Build the graph server-side from collections.allContent.
+   Nodes: each article + each tag (topics) + each author profile.
+   Links: article→tag for every tag the article carries, article→author for the byline.
+#}
+
+{% set _items = collections.allContent %}
+
+{# Collect unique tags + authors #}
+{% set tagSet = [] %}
+{% set authorSet = [] %}
+{% for item in _items %}
+  {% if item.data.tags %}
+    {% for t in item.data.tags %}
+      {% if t != "post" and t not in tagSet %}{% set tagSet = (tagSet.push(t), tagSet) %}{% endif %}
+    {% endfor %}
+  {% endif %}
+  {% if item.data.author and item.data.author not in authorSet %}{% set authorSet = (authorSet.push(item.data.author), authorSet) %}{% endif %}
+{% endfor %}
+
+<div class="container" style="padding-top: var(--space-8); padding-bottom: var(--space-12);">
+
+  <header style="margin-bottom: var(--space-6); padding-bottom: var(--space-4); border-bottom: 3px solid var(--color-ink); max-width: var(--max-width-prose);">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol class="breadcrumbs__list">
+        <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/">Home</a></li>
+        <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">Knowledge map</li>
+      </ol>
+    </nav>
+    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-3);">Knowledge map</h1>
+    <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 60ch;">
+      Every published piece, plotted by topic and byline. Articles cluster around the topics they share. Drag any node to pull its cluster aside; scroll to zoom; click an article to read it.
+    </p>
+  </header>
+
+  <div id="km-controls" style="display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin-bottom: var(--space-3); font-family: var(--font-ui); font-size: var(--text-sm); align-items: center;">
+    <label><input type="checkbox" id="km-show-tags" checked> Show topics</label>
+    <label><input type="checkbox" id="km-show-authors" checked> Show authors</label>
+    <input type="search" id="km-search" placeholder="Filter by title…" style="padding: 4px 8px; font-family: inherit; font-size: inherit; border: 1px solid var(--color-rule); background: var(--color-bg);">
+    <span id="km-count" style="margin-left: auto; color: var(--color-ink-muted);"></span>
+  </div>
+
+  <div id="km-canvas" style="width: 100%; height: 70vh; min-height: 480px; border: 1px solid var(--color-rule); background: var(--color-bg-alt); position: relative; overflow: hidden;">
+    <svg id="km-svg" width="100%" height="100%" style="display: block;"></svg>
+    <div id="km-tooltip" style="position: absolute; pointer-events: none; background: var(--color-bg); border: 1px solid var(--color-ink); padding: var(--space-2) var(--space-3); font-family: var(--font-ui); font-size: var(--text-sm); max-width: 280px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: none; z-index: 5;"></div>
+  </div>
+
+  <p style="font-family: var(--font-ui); font-size: var(--text-xs); color: var(--color-ink-muted); margin-top: var(--space-3);">
+    Built with <a href="https://d3js.org/" rel="noopener">D3.js</a>. Force-directed layout — heavier nodes (more links) settle at the centre of their cluster.
+  </p>
+
+</div>
+
+<script id="km-data" type="application/json">
+{
+  "nodes": [
+    {% set _firstNode = true %}
+    {% for item in _items %}
+      {% if _firstNode == false %},{% endif %}
+      {"id": {{ item.url | dump | safe }}, "label": {{ item.data.title | dump | safe }}, "type": "article", "url": {{ item.url | dump | safe }}, "section": {{ (item.data.section or "") | dump | safe }}}
+      {% set _firstNode = false %}
+    {% endfor %}
+    {% for t in tagSet %},{"id": "tag:{{ t | slugify }}", "label": {{ t | dump | safe }}, "type": "tag"}{% endfor %}
+    {% for a in authorSet %},{"id": "author:{{ a | slugify }}", "label": {{ (authors[a].name or a) | dump | safe }}, "type": "author", "url": "/author/{{ a | slugify }}/"}{% endfor %}
+  ],
+  "links": [
+    {% set _firstLink = true %}
+    {% for item in _items %}
+      {% if item.data.tags %}
+        {% for t in item.data.tags %}
+          {% if t != "post" %}
+            {% if _firstLink == false %},{% endif %}
+            {"source": {{ item.url | dump | safe }}, "target": "tag:{{ t | slugify }}"}
+            {% set _firstLink = false %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      {% if item.data.author %}
+        {% if _firstLink == false %},{% endif %}
+        {"source": {{ item.url | dump | safe }}, "target": "author:{{ item.data.author | slugify }}"}
+        {% set _firstLink = false %}
+      {% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js" defer></script>
+<script defer>
+(function () {
+  'use strict';
+  function init() {
+    if (typeof d3 === 'undefined') { setTimeout(init, 50); return; }
+    var raw = document.getElementById('km-data');
+    var canvas = document.getElementById('km-canvas');
+    var svgEl = document.getElementById('km-svg');
+    var tipEl = document.getElementById('km-tooltip');
+    var countEl = document.getElementById('km-count');
+    if (!raw || !canvas) return;
+    var data;
+    try { data = JSON.parse(raw.textContent); } catch (e) { return; }
+    if (!data.nodes || !data.nodes.length) {
+      canvas.innerHTML = '<p style="padding: var(--space-6); text-align: center; color: var(--color-ink-muted); font-family: var(--font-ui);">No content to map yet — publish an article first.</p>';
+      return;
+    }
+
+    var w = canvas.clientWidth;
+    var h = canvas.clientHeight;
+
+    var svg = d3.select(svgEl);
+    var root = svg.append('g');
+
+    svg.call(d3.zoom().scaleExtent([0.2, 4]).on('zoom', function (e) {
+      root.attr('transform', e.transform);
+    }));
+
+    var color = function (d) {
+      if (d.type === 'tag')    return 'var(--color-link)';
+      if (d.type === 'author') return 'var(--color-accent)';
+      return 'var(--color-ink)';
+    };
+    var radius = function (d) {
+      if (d.type === 'tag')    return 5;
+      if (d.type === 'author') return 7;
+      return 4;
+    };
+
+    // Pre-compute degree so we can size articles by how many topics they touch
+    var deg = {};
+    data.links.forEach(function (l) {
+      deg[l.source] = (deg[l.source] || 0) + 1;
+      deg[l.target] = (deg[l.target] || 0) + 1;
+    });
+
+    var sim = d3.forceSimulation(data.nodes)
+      .force('link', d3.forceLink(data.links).id(function (d) { return d.id; }).distance(function (d) {
+        if (d.target.type === 'tag')    return 60;
+        if (d.target.type === 'author') return 90;
+        return 50;
+      }).strength(0.4))
+      .force('charge', d3.forceManyBody().strength(-80))
+      .force('center', d3.forceCenter(w / 2, h / 2))
+      .force('collide', d3.forceCollide().radius(function (d) { return radius(d) + 4; }));
+
+    var link = root.append('g').attr('stroke', 'var(--color-rule)').attr('stroke-opacity', 0.5)
+      .selectAll('line').data(data.links).enter().append('line').attr('stroke-width', 1);
+
+    var node = root.append('g').selectAll('g').data(data.nodes).enter().append('g')
+      .attr('class', function (d) { return 'km-node km-node--' + d.type; })
+      .style('cursor', function (d) { return d.url ? 'pointer' : 'default'; })
+      .call(d3.drag()
+        .on('start', function (e, d) { if (!e.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+        .on('drag', function (e, d) { d.fx = e.x; d.fy = e.y; })
+        .on('end', function (e, d) { if (!e.active) sim.alphaTarget(0); d.fx = null; d.fy = null; }))
+      .on('mouseover', function (e, d) {
+        tipEl.style.display = 'block';
+        tipEl.innerHTML = '<strong>' + (d.label || d.id) + '</strong>' +
+          (d.type === 'article' && d.section ? '<br><span style="color:var(--color-ink-muted); text-transform:uppercase; letter-spacing:0.06em; font-size:0.65rem">' + d.section + '</span>' : '') +
+          (d.type === 'tag'    ? '<br><span style="color:var(--color-ink-muted)">topic — ' + ((deg[d.id] || 0)) + ' articles</span>' : '') +
+          (d.type === 'author' ? '<br><span style="color:var(--color-ink-muted)">author — ' + ((deg[d.id] || 0)) + ' pieces</span>' : '');
+      })
+      .on('mousemove', function (e) {
+        var rect = canvas.getBoundingClientRect();
+        var x = e.clientX - rect.left + 12;
+        var y = e.clientY - rect.top + 12;
+        if (x + 280 > rect.width)  x = e.clientX - rect.left - 292;
+        if (y + 100 > rect.height) y = e.clientY - rect.top - 100;
+        tipEl.style.left = x + 'px';
+        tipEl.style.top  = y + 'px';
+      })
+      .on('mouseout', function () { tipEl.style.display = 'none'; })
+      .on('click', function (e, d) { if (d.url) location.href = d.url; });
+
+    node.append('circle')
+      .attr('r', radius)
+      .attr('fill', color)
+      .attr('stroke', 'var(--color-bg)')
+      .attr('stroke-width', 1.5);
+
+    node.filter(function (d) { return d.type !== 'article'; })
+      .append('text')
+      .text(function (d) { return d.label; })
+      .attr('x', 9).attr('y', 4)
+      .attr('font-family', 'var(--font-ui)')
+      .attr('font-size', '11px')
+      .attr('fill', 'var(--color-ink)');
+
+    sim.on('tick', function () {
+      link.attr('x1', function (d) { return d.source.x; })
+          .attr('y1', function (d) { return d.source.y; })
+          .attr('x2', function (d) { return d.target.x; })
+          .attr('y2', function (d) { return d.target.y; });
+      node.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+    });
+
+    // Filter controls
+    var showTags    = document.getElementById('km-show-tags');
+    var showAuthors = document.getElementById('km-show-authors');
+    var search      = document.getElementById('km-search');
+    function applyFilters() {
+      var q = (search.value || '').toLowerCase().trim();
+      var tagOn = showTags.checked, authorOn = showAuthors.checked;
+      var visibleArticles = 0;
+      node.style('display', function (d) {
+        if (d.type === 'tag')    return tagOn ? null : 'none';
+        if (d.type === 'author') return authorOn ? null : 'none';
+        if (q && (d.label || '').toLowerCase().indexOf(q) === -1) return 'none';
+        visibleArticles += 1;
+        return null;
+      });
+      link.style('display', function (d) {
+        var s = typeof d.source === 'object' ? d.source : { type: 'article' };
+        var t = typeof d.target === 'object' ? d.target : { type: 'tag' };
+        if (t.type === 'tag'    && !tagOn)    return 'none';
+        if (t.type === 'author' && !authorOn) return 'none';
+        if (q && (s.label || '').toLowerCase().indexOf(q) === -1) return 'none';
+        return null;
+      });
+      countEl.textContent = visibleArticles + ' articles · ' + data.nodes.filter(function(n){return n.type==='tag';}).length + ' topics · ' + data.nodes.filter(function(n){return n.type==='author';}).length + ' authors';
+    }
+    showTags.addEventListener('change', applyFilters);
+    showAuthors.addEventListener('change', applyFilters);
+    search.addEventListener('input', applyFilters);
+    applyFilters();
+
+    // Resize handling
+    window.addEventListener('resize', function () {
+      w = canvas.clientWidth; h = canvas.clientHeight;
+      sim.force('center', d3.forceCenter(w / 2, h / 2)).alpha(0.3).restart();
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>

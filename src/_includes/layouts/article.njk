@@ -212,6 +212,12 @@ layout: layouts/base.njk
         <div class="article-header__meta-row" data-pagefind-ignore>
           <span>{{ content | wordCount }} words</span>
           <span>{{ content | readingTime }}</span>
+          {% set _stats = articleStats[page.url] %}
+          {% if _stats %}
+            {% if _stats.views %}<span class="article-stat" title="Pageviews from Umami">{{ _stats.views | numberFmt }} {{ "view" if _stats.views == 1 else "views" }}</span>{% endif %}
+            {% if _stats.shares %}<span class="article-stat" title="Tracked share-button clicks">{{ _stats.shares | numberFmt }} {{ "share" if _stats.shares == 1 else "shares" }}</span>{% endif %}
+            {% if _stats.likes %}<span class="article-stat" title="Reader likes">{{ _stats.likes | numberFmt }} {{ "like" if _stats.likes == 1 else "likes" }}</span>{% endif %}
+          {% endif %}
         </div>
         {% if tags %}
         <div class="article-header__meta-tags">{% for tag in tags %}{% if tag != "post" %}<a href="/topics/{{ tag | slugify }}/">{{ tag }}</a>{% endif %}{% endfor %}</div>
@@ -259,6 +265,63 @@ layout: layouts/base.njk
               <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
             </svg>
             <span class="btn-label">Save</span>
+          </button>
+
+          {# 2a. Like / heart #}
+          <button class="article-action-btn like-btn" id="like-btn" type="button"
+            aria-label="Like this article" aria-pressed="false"
+            data-url="{{ page.url }}"
+            data-umami-event="article-like">
+            <svg class="like-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            <span class="btn-label">Like</span>
+            <span class="like-count" data-like-count hidden></span>
+          </button>
+
+          {# 2b. Mark as read — manual toggle, separate from auto-scroll progress #}
+          <button class="article-action-btn mark-read-btn" id="mark-read-btn" type="button"
+            aria-label="Mark this article as read" aria-pressed="false"
+            data-url="{{ page.url }}"
+            data-title="{{ title | escape }}"
+            data-section="{{ section or '' }}"
+            data-umami-event="mark-read">
+            <svg class="mark-read-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span class="btn-label mark-read-btn__label">Mark as read</span>
+          </button>
+
+          {# 2c. Add to PDF basket — collects articles for combined print #}
+          <button class="article-action-btn pdf-basket-btn" id="pdf-basket-btn" type="button"
+            aria-label="Add to print basket" aria-pressed="false"
+            data-url="{{ page.url }}"
+            data-title="{{ title | escape }}"
+            data-section="{{ section or '' }}"
+            data-date="{{ page.date | htmlDateString }}"
+            data-author="{{ authors[author].name or authorName or author or '' }}"
+            data-umami-event="pdf-basket-add">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="12" y1="18" x2="12" y2="12"/>
+              <line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+            <span class="btn-label pdf-basket-btn__label">Add to PDF</span>
+          </button>
+
+          {# 2d. Listen — Kokoro TTS / Web Speech fallback #}
+          <button class="article-action-btn tts-btn" id="tts-btn" type="button"
+            aria-label="Listen to this article" aria-pressed="false"
+            data-url="{{ page.url }}"
+            data-umami-event="tts-play">
+            <svg class="tts-icon-play" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            <svg class="tts-icon-pause" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+              <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+            </svg>
+            <span class="btn-label tts-btn__label">Listen</span>
           </button>
 
           {# 2. Share (panel with social + copy + email) #}
