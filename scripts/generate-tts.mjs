@@ -162,6 +162,37 @@ function concatFloat32(arrays) {
   return out;
 }
 
+// Split clean article text into Kokoro-friendly sentence chunks.
+// We split on terminal punctuation followed by whitespace + capital,
+// then pack adjacent very-short fragments together so we don't fire
+// the model on one-word sentences (which sometimes upset Kokoro).
+function splitSentences(text) {
+  const raw = text.split(/(?<=[.!?])\s+(?=[A-Z"'‘“(])/g);
+  const out = [];
+  let buf = '';
+  for (const piece of raw) {
+    const t = piece.trim();
+    if (!t) continue;
+    if ((buf + ' ' + t).length < 240) {
+      // Merge with previous fragment if both are short — produces
+      // more natural prosody and fewer Kokoro inference calls.
+      buf = buf ? (buf + ' ' + t) : t;
+    } else {
+      if (buf) out.push(buf);
+      buf = t;
+    }
+    // Hard cap per chunk to keep within the model's safe input
+    // length. ~600 chars / ~120 words is comfortably under
+    // Kokoro's per-call token limit.
+    if (buf.length >= 600) {
+      out.push(buf);
+      buf = '';
+    }
+  }
+  if (buf) out.push(buf);
+  return out;
+}
+
 // Surface anything that would otherwise crash silently — without these
 // handlers, an unhandled promise rejection from inside Kokoro/ONNX can
 // terminate the process with no log at all.
@@ -272,45 +303,48 @@ async function main() {
 
       const tStart = Date.now();
 
-      // Kokoro's single-shot generate() truncates long input. Use the
-      // streaming API: it auto-splits the text on sentence boundaries
-      // and yields one audio chunk per sentence. We collect the raw
-      // PCM samples, concatenate, and build a single WAV before
-      // handing to ffmpeg.
+      // Manual sentence-by-sentence generation. Kokoro's tts.stream()
+      // is convenient but a single bad sentence causes a native
+      // ONNX-runtime crash that bypasses Node's error handlers and
+      // kills the whole script. Calling tts.generate() per sentence
+      // lets us log the offending text, catch JS-level errors, and
+      // skip a problematic sentence instead of taking down the whole
+      // article.
+      const sentences = splitSentences(item.text);
+      console.log(`         ${sentences.length} sentences`);
       const chunks = [];
       let sampleRate = 0;
       let chunkCount = 0;
-      process.stdout.write('         streaming');
-      try {
-        for await (const out of tts.stream(item.text, { voice: item.voice })) {
-          if (!out) continue;
-          // The shape varies by kokoro-js version. v1.2: { text, phonemes, audio }
-          // where audio has .audio (Float32Array), .sampling_rate.
-          // Fall back to scanning the object for a Float32Array if the
-          // expected key isn't there so we don't silently drop chunks.
-          let audioObj = out.audio;
-          if (!audioObj && out.samples) audioObj = out;
-          let pcm = null;
-          let rate = 0;
-          if (audioObj) {
-            pcm = audioObj.audio || audioObj.samples || audioObj.data;
-            rate = audioObj.sampling_rate || audioObj.sampleRate;
-          }
-          if (!pcm || !pcm.length) {
-            console.error('\n[chunk-shape]', Object.keys(out), audioObj ? Object.keys(audioObj) : '(no audio key)');
+      let skipped = 0;
+      for (let i = 0; i < sentences.length; i++) {
+        const sentence = sentences[i];
+        if (!sentence || sentence.length < 2) continue;
+        // Pre-log so we know exactly which sentence killed the
+        // process if Kokoro segfaults during inference.
+        process.stdout.write(`         [${i + 1}/${sentences.length}] (${sentence.length}c) `);
+        process.stdout.write(sentence.slice(0, 60).replace(/\s+/g, ' '));
+        process.stdout.write('\n');
+        try {
+          const audio = await tts.generate(sentence, { voice: item.voice });
+          const pcm = audio && (audio.audio || audio.samples || audio.data);
+          const rate = audio && (audio.sampling_rate || audio.sampleRate);
+          if (!pcm || !pcm.length || !rate) {
+            console.warn(`         skip — no audio returned for sentence ${i + 1}`);
+            skipped += 1;
             continue;
           }
           chunks.push(pcm);
           sampleRate = sampleRate || rate;
           chunkCount += 1;
-          process.stdout.write(' ' + chunkCount);
+        } catch (err) {
+          console.warn(`         skip — generate() threw on sentence ${i + 1}: ${err.message || err}`);
+          skipped += 1;
         }
-      } catch (streamErr) {
-        process.stdout.write('\n');
-        throw new Error('Stream error after ' + chunkCount + ' chunks: ' + (streamErr.message || streamErr));
       }
-      process.stdout.write('\n');
-      if (!chunks.length || !sampleRate) throw new Error('Kokoro stream produced no audio (got ' + chunkCount + ' chunks, sampleRate=' + sampleRate + ')');
+      if (!chunks.length || !sampleRate) {
+        throw new Error('No audio produced (skipped=' + skipped + ', sentences=' + sentences.length + ')');
+      }
+      if (skipped) console.log(`         (${skipped} sentence${skipped === 1 ? '' : 's'} skipped)`);
 
       const samples = concatFloat32(chunks);
       const durationSec = samples.length / sampleRate;
