@@ -1,0 +1,34 @@
+{#
+  listen-button.njk — small speaker button that triggers playback of
+  an article's pre-generated MP3 in the global audio bar.
+
+  Renders only when audioManifest has an entry for the requested URL.
+  Caller passes:
+    listenUrl   = "/news/foo/"            (article URL — required)
+    listenTitle = "Foo article title"     (display title — required)
+    listenSize  = "sm" | "md"             (optional, defaults to sm)
+
+  The button itself is markup-only; assets/js/audio-bar.js wires the
+  click via event delegation on `[data-tft-audio-trigger]`.
+#}
+{% if listenUrl %}
+{% set _aud = audioManifest[listenUrl] %}
+{% if _aud %}
+<button type="button"
+        class="listen-btn{% if listenSize %} listen-btn--{{ listenSize }}{% endif %}"
+        data-tft-audio-trigger
+        data-tft-audio-src="{{ _aud.mp3 }}"
+        data-tft-audio-url="{{ listenUrl }}"
+        data-tft-audio-title="{{ listenTitle | escape }}"
+        data-tft-audio-duration="{{ _aud.duration }}"
+        data-umami-event="card-listen"
+        aria-label="Listen to {{ listenTitle | escape }}, {% set _mins = (_aud.duration / 60) | round(0, 'ceil') %}{{ _mins }} {{ "minute" if _mins == 1 else "minutes" }}"
+        title="Listen ({% set _mins = (_aud.duration / 60) | round(0, 'ceil') %}{{ _mins }} min)">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+  </svg>
+  <span class="listen-btn__pulse" aria-hidden="true"></span>
+</button>
+{% endif %}
+{% endif %}

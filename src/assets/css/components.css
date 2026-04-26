@@ -4835,6 +4835,152 @@ select.w3f__input option {
   scroll-margin-top: 80px;
 }
 
+/* ── Listen button (article cards / lists) ─────────────────── */
+.listen-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-right: 4px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--color-rule);
+  color: var(--color-ink-muted);
+  cursor: pointer;
+  vertical-align: middle;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+}
+.listen-btn:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  background: var(--color-bg);
+}
+.listen-btn--md { width: 26px; height: 26px; }
+.listen-btn--sm svg { width: 11px; height: 11px; }
+/* Highlighted state when this trigger is the bar's current source */
+.listen-btn.is-current {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* ── Global audio bar (persistent TTS player) ──────────────── */
+.audio-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: calc(var(--z-overlay, 90) + 1);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 8px var(--gutter);
+  background: #1a1a1a;
+  color: #f5f1e8;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.25);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+}
+.audio-bar[hidden] { display: none; }
+
+/* On article pages the annotation toolbar already occupies the
+   bottom strip — lift the audio bar above it so they don't overlap. */
+body:has(.annotation-toolbar) .audio-bar {
+  bottom: 52px; /* matches .annotation-toolbar min-height */
+}
+body:has(.annotation-toolbar .music-bar:not([hidden])) .audio-bar {
+  bottom: 96px; /* extra clearance when music bar is also playing */
+}
+@media (max-width: 600px) {
+  body:has(.annotation-toolbar) .audio-bar { bottom: 40px; }
+  body:has(.annotation-toolbar .music-bar:not([hidden])) .audio-bar { bottom: 84px; }
+}
+
+.audio-bar__play {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #fff;
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+}
+.audio-bar__play:hover { filter: brightness(1.1); }
+
+.audio-bar__meta {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex: 1;
+  min-width: 0;
+}
+.audio-bar__title {
+  font-weight: 600;
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+.audio-bar__title:hover { text-decoration: underline; }
+.audio-bar__time {
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-xs);
+  color: rgba(245, 241, 232, 0.7);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.audio-bar__scrub {
+  flex: 0 1 240px;
+  min-width: 80px;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+  height: 4px;
+}
+
+.audio-bar__close {
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: 0;
+  color: rgba(245, 241, 232, 0.7);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  border-radius: 4px;
+}
+.audio-bar__close:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 600px) {
+  .audio-bar { padding: 6px var(--space-3); gap: 6px; }
+  .audio-bar__time { display: none; }
+  .audio-bar__scrub { flex: 1 1 auto; min-width: 0; }
+  .audio-bar__title { font-size: var(--text-xs); }
+}
+@media print { .audio-bar { display: none !important; } }
+
+/* When the audio bar is open, push the back-to-top + basket buttons
+   up so they don't sit under it. Same trick as the music-bar push. */
+body.has-audio-bar .reading-floats,
+body.has-audio-bar .pdf-basket-tray { bottom: calc(6rem + 60px); }
+
 /* ── TTS settings popover ───────────────────────────────────── */
 .tts-popover {
   position: fixed;

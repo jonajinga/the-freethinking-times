@@ -650,7 +650,8 @@ permalink: /knowledge-map/
           '</div>' +
           (topics.length ? '<div class="km-side__heading">Topics</div><div class="km-side__chips">' + topics.map(function (t) { return '<a class="km-side__chip" href="' + t.url + '">' + t.label + '</a>'; }).join('') + '</div>' : '') +
           (siblings.length ? '<div class="km-side__heading">Related articles</div><ul class="km-side__list">' + siblings.map(function (s) {
-            return '<li><a href="' + s.url + '">' + s.label + '</a>' + (s.section ? '<span class="km-side__list-meta">' + s.section + '</span>' : '') + '</li>';
+            var lbtn = (window.__tftAudioBar && window.__tftAudioBar.renderListenButton) ? window.__tftAudioBar.renderListenButton(s.url, s.label) : '';
+            return '<li>' + lbtn + '<a href="' + s.url + '">' + s.label + '</a>' + (s.section ? '<span class="km-side__list-meta">' + s.section + '</span>' : '') + '</li>';
           }).join('') + '</ul>' : '') +
           '<p style="margin-top: var(--space-3);"><a href="' + d.url + '" style="font-weight: 700;">Read &rarr;</a></p>';
       } else if (d.type === 'tag') {

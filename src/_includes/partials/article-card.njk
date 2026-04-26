@@ -49,8 +49,12 @@
   <p class="article-card__dek">{{ article.data.description }}</p>
   {% endif %}
 
-  {# Byline #}
+  {# Byline + listen button (when this article has a generated MP3) #}
   <p class="article-card__byline">
+    {% set listenUrl = article.url %}
+    {% set listenTitle = article.data.title %}
+    {% set listenSize = "sm" %}
+    {% include "partials/listen-button.njk" %}
     {% if article.data.author %}
     By <a href="/author/{{ article.data.author | slugify }}/"
       {% if authors[article.data.author] and authors[article.data.author].bio %}data-tippy-content="{{ authors[article.data.author].bio }}" data-tippy-theme="author-bio"{% endif %}>{{ authors[article.data.author].name or article.data.authorName or article.data.author }}</a>

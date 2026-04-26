@@ -139,8 +139,12 @@ permalink: /archives/
           <p class="archive-entry__desc">{{ itemDesc }}</p>
           {% endif %}
 
-          {# Meta row: author · reading time · word count #}
+          {# Meta row: listen button · author · reading time · word count #}
           <div class="article-list__meta">
+            {% set listenUrl = item.url %}
+            {% set listenTitle = itemTitle %}
+            {% set listenSize = "sm" %}
+            {% include "partials/listen-button.njk" %}
             <span>BY
               <a href="/author/{{ authorSlug }}/" class="archive-entry__author">{{ authorName | upper }}</a>
             </span>

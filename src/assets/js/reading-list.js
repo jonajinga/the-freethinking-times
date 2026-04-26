@@ -233,8 +233,13 @@
         ? '<span class="reading-list__mins">' + item.mins + ' min read</span>'
         : '';
 
+      var listenHtml = (window.__tftAudioBar && window.__tftAudioBar.renderListenButton)
+        ? window.__tftAudioBar.renderListenButton(item.url, item.title)
+        : '';
+
       li.innerHTML =
         '<div class="reading-list__meta">' + sectionHtml + minsHtml + '</div>'
+        + listenHtml
         + '<a class="reading-list__title" href="' + item.url + '">' + item.title + '</a>'
         + '<div class="reading-list__foot">'
         + '<time class="reading-list__date">' + (item.date || '') + '</time>'

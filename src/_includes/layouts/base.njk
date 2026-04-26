@@ -166,6 +166,9 @@
     {# ── Footer ── #}
     {% include "partials/footer.njk" %}
 
+    {# ── Global audio bar (TTS playback while reader browses) ── #}
+    {% include "partials/audio-bar.njk" %}
+
     <script>
       // Inline disclosures — toggle hidden + scroll the panel into
       // view in the same page. Mutual exclusion across all panels on
@@ -227,6 +230,7 @@
   <script src="/assets/js/global-settings.js?v={{ buildTime }}" defer></script>
   <script src="/assets/js/spa-nav.js?v={{ buildTime }}" defer></script>
   <script src="/assets/js/music-player.js?v={{ buildTime }}" defer></script>
+  <script src="/assets/js/audio-bar.js?v={{ buildTime }}" defer></script>
   {% block scripts %}{% endblock %}
 
   {# ── Glossary tooltips (Tippy.js) ── #}
