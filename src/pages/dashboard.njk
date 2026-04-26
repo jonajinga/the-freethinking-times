@@ -58,17 +58,58 @@ eleventyExcludeFromCollections: true
   <section class="dash-pulse" aria-label="Production pulse, last 12 weeks">
     <header class="dash-pulse__head">
       <h2 class="dash-card__title">Production pulse</h2>
-      <p class="dash-pulse__sub">Articles published per week, last 12 weeks.</p>
+      <p class="dash-pulse__sub">Articles published per week, last 12 weeks. Click a bar to see that week&rsquo;s articles.</p>
     </header>
     <div class="dash-pulse__chart">
       {% for w in pulse %}
-      <div class="dash-pulse__col" title="{{ w.label }}: {{ w.count }} article{% if w.count != 1 %}s{% endif %}">
+      <button type="button"
+              class="dash-pulse__col{% if w.count == 0 %} dash-pulse__col--empty{% endif %}"
+              {% if w.count %}aria-controls="pulse-week-{{ loop.index0 }}" aria-expanded="false"{% else %}disabled aria-disabled="true"{% endif %}
+              data-week="{{ loop.index0 }}"
+              title="{{ w.rangeLabel }} &middot; {{ w.count }} article{% if w.count != 1 %}s{% endif %}">
         <div class="dash-pulse__bar" style="height: {{ w.pct }}%;"></div>
         <div class="dash-pulse__count">{{ w.count }}</div>
         <div class="dash-pulse__week">{{ w.label }}</div>
-      </div>
+      </button>
       {% endfor %}
     </div>
+    {# Hidden article-list panels — one per week with content, opened by JS. #}
+    {% for w in pulse %}
+    {% if w.count %}
+    <div class="dash-pulse__panel" id="pulse-week-{{ loop.index0 }}" role="region" aria-label="Articles published {{ w.rangeLabel }}" hidden>
+      <p class="dash-pulse__panel-head">{{ w.rangeLabel }} &middot; {{ w.count }} article{% if w.count != 1 %}s{% endif %}</p>
+      <ul class="dash-pulse__panel-list">
+        {% for a in w.items %}
+        <li>
+          <a href="{{ a.url }}">{{ a.title }}</a>
+          <span class="dash-pulse__panel-meta">{{ a.section }} &middot; {{ a.date }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <script>
+    (function () {
+      var bars = document.querySelectorAll('.dash-pulse__col[aria-controls]');
+      bars.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = btn.getAttribute('aria-controls');
+          var panel = document.getElementById(id);
+          if (!panel) return;
+          var willOpen = panel.hasAttribute('hidden');
+          // Close every panel first; one open at a time.
+          document.querySelectorAll('.dash-pulse__panel').forEach(function (p) { p.setAttribute('hidden', ''); });
+          document.querySelectorAll('.dash-pulse__col[aria-expanded]').forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
+          if (willOpen) {
+            panel.removeAttribute('hidden');
+            btn.setAttribute('aria-expanded', 'true');
+            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        });
+      });
+    })();
+    </script>
   </section>
 
   {# ── Stale-content alerts ── #}
@@ -224,13 +265,25 @@ eleventyExcludeFromCollections: true
     </section>
 
     {# ── Infrastructure ── #}
+    {% set authorList = authors | keys %}
+    {% set authorFeedCount = 0 %}
+    {% for slug in authorList %}{% if slug != "staff" %}{% set authorFeedCount = authorFeedCount + 1 %}{% endif %}{% endfor %}
+    {% set sectionFeedCount = collections.sectionList | length %}
+    {% set topicFeedCount = collections.tagList | length %}
+    {% set externalFeedCount = feeds | length %}
+    {% set totalFeedCount = 1 + sectionFeedCount + authorFeedCount + topicFeedCount %}
     <section class="dash-card">
       <h2 class="dash-card__title">Infrastructure</h2>
       <table class="dash-table">
         <thead><tr><th>Item</th><th class="dash-table__num">Count</th></tr></thead>
         <tbody>
-          <tr><td>RSS feeds</td><td class="dash-table__num">{{ feeds | length }}</td></tr>
-          <tr><td>Changelog entries</td><td class="dash-table__num">{{ changelog | length }}</td></tr>
+          <tr><td><a href="/feeds/">RSS feeds (total)</a></td><td class="dash-table__num">{{ totalFeedCount }}</td></tr>
+          <tr><td><a href="/feed.xml">— Whole site</a></td><td class="dash-table__num">1</td></tr>
+          <tr><td><a href="/feeds/#sections">— Per section</a></td><td class="dash-table__num">{{ sectionFeedCount }}</td></tr>
+          <tr><td><a href="/feeds/#authors">— Per author</a></td><td class="dash-table__num">{{ authorFeedCount }}</td></tr>
+          <tr><td><a href="/feeds/#topics">— Per topic</a></td><td class="dash-table__num">{{ topicFeedCount }}</td></tr>
+          <tr><td><a href="/feeds/#external">External feeds we follow</a></td><td class="dash-table__num">{{ externalFeedCount }}</td></tr>
+          <tr><td><a href="/changelog/">Changelog entries</a></td><td class="dash-table__num">{{ changelog | length }}</td></tr>
         </tbody>
       </table>
     </section>
@@ -454,14 +507,57 @@ eleventyExcludeFromCollections: true
   justify-content: flex-end;
   height: 100%;
   position: relative;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
 }
+.dash-pulse__col[disabled],
+.dash-pulse__col--empty { cursor: default; }
 .dash-pulse__bar {
   width: 100%;
   background: var(--color-ink);
   min-height: 2px;
-  transition: opacity 120ms;
+  transition: background-color 120ms;
 }
-.dash-pulse__col:hover .dash-pulse__bar { background: var(--color-accent); }
+.dash-pulse__col:not([disabled]):hover .dash-pulse__bar,
+.dash-pulse__col[aria-expanded="true"] .dash-pulse__bar { background: var(--color-accent); }
+.dash-pulse__col[aria-expanded="true"] .dash-pulse__count { color: var(--color-accent); font-weight: 700; }
+
+/* Article-list panels under the chart */
+.dash-pulse__panel {
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-rule);
+  border-left: 3px solid var(--color-accent);
+}
+.dash-pulse__panel-head {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-2);
+}
+.dash-pulse__panel-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.dash-pulse__panel-list li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--color-rule);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+}
+.dash-pulse__panel-list li:last-child { border-bottom: 0; }
+.dash-pulse__panel-list a { color: var(--color-ink); text-decoration: none; }
+.dash-pulse__panel-list a:hover { color: var(--color-accent); }
+.dash-pulse__panel-meta { font-size: var(--text-xs); color: var(--color-ink-faint); margin-left: var(--space-2); }
 .dash-pulse__count {
   position: absolute;
   top: -16px;
@@ -615,6 +711,13 @@ eleventyExcludeFromCollections: true
 /* Per-author scoreboard refinements */
 .dash-scoreboard__title { display: inline-block; color: var(--color-ink-muted); text-decoration: none; font-size: 0.85em; }
 .dash-scoreboard__title:hover { color: var(--color-accent); }
+/* Prevent author names wrapping to two lines in the scoreboard. */
+.dash-scoreboard tbody td:first-child {
+  white-space: nowrap;
+  font-weight: 600;
+}
+.dash-scoreboard tbody td:first-child a { text-decoration: none; color: var(--color-ink); }
+.dash-scoreboard tbody td:first-child a:hover { color: var(--color-accent); }
 
 /* Card grid + tables */
 .dash__grid {

@@ -140,7 +140,7 @@ permalink: /contributors/
         {% if r.drafts %}<span class="author-card__stat author-card__stat--soft"><strong>{{ r.drafts }}</strong> in flight</span>{% endif %}
         {% if r.words %}<span class="author-card__stat"><strong>{{ (r.words / 1000) | round(1) }}k</strong> words</span>{% endif %}
         {% if r.avgWords %}<span class="author-card__stat">~{{ r.avgWords }} avg</span>{% endif %}
-        {% if r.lastDateIso %}<span class="author-card__stat">last <strong>{{ r.lastDate | readableDate }}</strong></span>{% endif %}
+        {% if r.lastDateIso %}<span class="author-card__stat">last <strong>{{ r.lastDateIso | readableDate }}</strong></span>{% endif %}
       </div>
       {% endif %}
 

@@ -41,20 +41,26 @@
       n += 1;
       if (!p.id) p.id = 'p' + n;
       if (p.querySelector(':scope > .para-anchor')) return;
-      var a = document.createElement('a');
-      a.className = 'para-anchor';
-      a.href = '#' + p.id;
-      a.setAttribute('aria-label', 'Permalink to paragraph ' + n);
-      a.title = 'Copy permalink to this paragraph';
-      a.textContent = '¶';
-      a.dataset.umamiEvent = 'para-permalink';
-      p.appendChild(a);
+      // Use a <button> rather than <a href="#pN"> so the browser
+      // never tries to scroll-to-fragment on click. We still build
+      // the URL from data-target when copying to clipboard. Buttons
+      // don't generate hashchange events; preventDefault is moot.
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'para-anchor';
+      btn.setAttribute('aria-label', 'Copy permalink to paragraph ' + n);
+      btn.title = 'Copy permalink to this paragraph';
+      btn.textContent = '¶';
+      btn.dataset.target = '#' + p.id;
+      btn.dataset.umamiEvent = 'para-permalink';
+      p.appendChild(btn);
     });
     root.dataset.paraAnchored = 'true';
   }
 
   function copyAndFlash(a) {
-    var url = location.origin + location.pathname + a.getAttribute('href');
+    var hash = a.getAttribute('href') || a.dataset.target || '';
+    var url = location.origin + location.pathname + hash;
     var done = function () {
       a.classList.add('para-anchor--copied');
       setTimeout(function () { a.classList.remove('para-anchor--copied'); }, 1400);
@@ -87,10 +93,17 @@
     document.addEventListener('click', function (e) {
       var a = e.target.closest && e.target.closest('.para-anchor');
       if (!a) return;
-      e.preventDefault();
+      // Buttons don't navigate, but stop the click from bubbling to
+      // any global scroll-jacking handler just in case.
+      e.stopPropagation();
       copyAndFlash(a);
-      // Update the address bar without leaving a history entry.
-      try { history.replaceState(null, '', a.getAttribute('href')); } catch (_) {}
+      // Reflect the permalink in the address bar so the reader can
+      // copy from the URL bar too — replaceState doesn't trigger
+      // hashchange or scroll.
+      var hash = a.dataset.target || a.getAttribute('href') || '';
+      if (hash) {
+        try { history.replaceState(null, '', hash); } catch (_) {}
+      }
     });
 
     // Highlight + scroll to a paragraph when arriving via a #pN URL.

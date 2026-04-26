@@ -792,6 +792,37 @@ module.exports = function (eleventyConfig) {
   // a dict's slugs without a `for k, v in obj` indirection.
   eleventyConfig.addFilter("keys", (obj) => obj && typeof obj === "object" ? Object.keys(obj) : []);
 
+  // Word count read from the raw markdown file. Eleventy filters that
+  // run during the templateMap pass can't always access
+  // item.templateContent (TemplateContentPrematureUseError), and any
+  // word-count derived from that returns 0 on a cold build. Reading
+  // the file directly with a tiny fs cache dodges the issue and
+  // produces stable counts for the dashboard / scoreboard /
+  // contributors filters. Strips front-matter, common markdown
+  // punctuation, and HTML tags before splitting on whitespace.
+  const _wordCountCache = new Map();
+  function rawWords(item) {
+    if (!item || !item.inputPath) return 0;
+    if (_wordCountCache.has(item.inputPath)) return _wordCountCache.get(item.inputPath);
+    let count = 0;
+    try {
+      const fs = require("fs");
+      const raw = fs.readFileSync(item.inputPath, "utf8");
+      // Strip the leading YAML / TOML / JSON front-matter block.
+      const body = raw.replace(/^---[\s\S]*?\n---\s*\n?/, "");
+      // Strip HTML tags and the most common markdown punctuation, then
+      // split on whitespace and count non-empty tokens.
+      const text = body
+        .replace(/<[^>]+>/g, " ")
+        .replace(/[`*#>_~|\[\]()!]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      count = text ? text.split(" ").filter(Boolean).length : 0;
+    } catch (_) { /* file unreadable — leave 0 */ }
+    _wordCountCache.set(item.inputPath, count);
+    return count;
+  }
+
   eleventyConfig.addFilter("enhancedStatus", (item) => computeEnhancedStatus(item));
 
   eleventyConfig.addFilter("byEnhancedStatus", (allContent, status) => {
@@ -835,14 +866,9 @@ module.exports = function (eleventyConfig) {
       }
       const due = data.dueDate ? new Date(data.dueDate) : null;
       const isOverdue = due && !isNaN(due.getTime()) && due < today && (status === "pitched" || status === "drafting" || status === "review");
-      // Eleventy throws TemplateContentPrematureUseError when another
-      // template tries to read .templateContent before it's been
-      // rendered. Tolerate that — word count on the board is decorative.
-      let wordCount = null;
-      try {
-        const tc = item.templateContent;
-        if (tc) wordCount = String(tc).replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
-      } catch (_) { /* not available yet — skip */ }
+      // Word count from the raw markdown file (templateContent isn't
+      // accessible while other templates are still rendering).
+      const wordCount = rawWords(item) || null;
       const card = {
         url: item.url,
         title: data.title || "(untitled)",
@@ -1026,11 +1052,26 @@ module.exports = function (eleventyConfig) {
       const t = item.date ? new Date(item.date).getTime() : null;
       if (t == null) return;
       buckets.forEach(b => {
-        if (t >= b.start.getTime() && t < b.end.getTime()) b.count++;
+        if (t >= b.start.getTime() && t < b.end.getTime()) {
+          b.count++;
+          if (!b.items) b.items = [];
+          b.items.push({
+            title: item.data.title || "(untitled)",
+            url: item.url,
+            section: item.data.section || "",
+            date: item.date.toISOString().slice(0, 10)
+          });
+        }
       });
     });
     const max = Math.max(1, ...buckets.map(b => b.count));
-    return buckets.map(b => ({ label: b.label, count: b.count, pct: Math.round((b.count / max) * 100) }));
+    return buckets.map(b => ({
+      label: b.label,
+      count: b.count,
+      pct: Math.round((b.count / max) * 100),
+      rangeLabel: b.start.toISOString().slice(0, 10) + " → " + new Date(b.end.getTime() - 86400000).toISOString().slice(0, 10),
+      items: (b.items || []).sort((a, c) => c.date.localeCompare(a.date))
+    }));
   });
 
   // Per-author scoreboard for the dashboard.
@@ -1046,12 +1087,7 @@ module.exports = function (eleventyConfig) {
       const status = computeEnhancedStatus(item);
       if (status === "published") {
         stats[slug].articles++;
-        let wc = 0;
-        try {
-          const tc = item.templateContent;
-          if (tc) wc = String(tc).replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
-        } catch (_) { /* templateContent not ready — count as 0 */ }
-        stats[slug].words += wc;
+        stats[slug].words += rawWords(item);
         const t = item.date ? new Date(item.date).getTime() : null;
         if (t != null && (stats[slug].lastDate == null || t > stats[slug].lastDate)) stats[slug].lastDate = t;
         stats[slug].lastTitles.push({ title: data.title || "(untitled)", url: item.url, date: t });
@@ -1134,11 +1170,7 @@ module.exports = function (eleventyConfig) {
       const status = computeEnhancedStatus(item);
       if (status === "published") {
         roster[slug].articles++;
-        let wc = 0;
-        try {
-          const tc = item.templateContent;
-          if (tc) wc = String(tc).replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
-        } catch (_) { /* templateContent not ready — skip */ }
+        const wc = rawWords(item);
         roster[slug].words += wc;
         roster[slug].readingMin += Math.max(1, Math.round(wc / 225));
         const t = item.date ? new Date(item.date).getTime() : null;
