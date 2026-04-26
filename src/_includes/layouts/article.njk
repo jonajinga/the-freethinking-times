@@ -223,6 +223,11 @@ layout: layouts/base.njk
         <div class="article-header__meta-tags">{% for tag in tags %}{% if tag != "post" %}<a href="/topics/{{ tag | slugify }}/">{{ tag }}</a>{% endif %}{% endfor %}</div>
         {% endif %}
 
+        {# Build-time Kokoro MP3 player, only rendered when an MP3
+           sidecar exists in src/assets/audio for this article URL.
+           See partials/article-audio.njk + scripts/generate-tts.mjs. #}
+        {% include "partials/article-audio.njk" %}
+
         {# Responses to this piece — sits right below the tags so readers
            know up-front which other articles respond to this one. Only
            renders when at least one response exists. #}

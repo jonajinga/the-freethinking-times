@@ -7,3 +7,6 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+# Intermediate WAVs from build-time TTS — only the .mp3 + .json sidecar
+# in src/assets/audio/ are committed.
+*.wav

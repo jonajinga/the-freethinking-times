@@ -54,6 +54,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/assets/favicon.svg": "assets/favicon.svg" });
   eleventyConfig.addPassthroughCopy({ "src/assets/favicon-dark.svg": "assets/favicon-dark.svg" });
   eleventyConfig.addPassthroughCopy({ "src/assets/img": "assets/img" });
+  eleventyConfig.addPassthroughCopy({ "src/assets/audio": "assets/audio" });
   eleventyConfig.addPassthroughCopy({ "src/humans.txt": "humans.txt" });
   eleventyConfig.addPassthroughCopy({ "src/admin": "admin" });
 
@@ -170,6 +171,9 @@ module.exports = function (eleventyConfig) {
               // like-btn.js, read-state.js, pdf-basket.js, tts.js.
               "is-liked", "is-read", "is-in-basket", "is-playing",
               "sitewide-disclosures",
+              "article-audio", "article-audio__label",
+              "article-audio__title", "article-audio__meta",
+              "article-audio__player",
               "tts-popover", "tts-popover__head", "tts-popover__close",
               "tts-popover__lede", "tts-popover__choices", "tts-popover__choice",
               "tts-popover__row", "tts-popover__btn",

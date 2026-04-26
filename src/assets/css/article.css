@@ -717,6 +717,43 @@
   border-color: var(--color-ink);
 }
 
+/* ── Build-time MP3 player ──────────────────────────────────── */
+/* Renders only when partials/article-audio.njk finds an entry in
+ * audioManifest for this article URL. Sits between the meta-tags
+ * row and the article body / responses block. */
+.article-audio {
+  margin: var(--space-5) 0 var(--space-6);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-alt);
+  border-left: 3px solid var(--color-accent);
+}
+.article-audio__label {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.article-audio__title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-ink);
+}
+.article-audio__meta {
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.article-audio__player {
+  width: 100%;
+  display: block;
+}
+@media print { .article-audio { display: none !important; } }
+
 
 .article-header__updated {
   font-family: var(--font-ui);

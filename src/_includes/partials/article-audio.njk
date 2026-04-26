@@ -1,0 +1,30 @@
+{#
+  article-audio.njk — visible <audio> player when a pre-generated
+  Kokoro MP3 exists for this article.
+
+  Lookup uses page.url against the manifest written from sidecar
+  JSONs in src/assets/audio/. Articles without a generated MP3
+  fall through silently — the toolbar Listen button still works
+  via the existing client-side TTS in tts.js.
+
+  preload="none" so the file doesn't download until the reader
+  actually presses play (no FCP / LCP cost on article load).
+#}
+{% set _aud = audioManifest[page.url] %}
+{% if _aud %}
+<figure class="article-audio" data-pagefind-ignore>
+  <figcaption class="article-audio__label">
+    <span class="article-audio__title">Listen to this article</span>
+    <span class="article-audio__meta">
+      {% if _aud.duration %}{{ (_aud.duration / 60) | round(0, 'floor') }} min{% endif %}
+      {% if _aud.voice %} &middot; voice: {{ _aud.voice }}{% endif %}
+    </span>
+  </figcaption>
+  <audio class="article-audio__player" controls preload="none" data-tft-audio
+         src="{{ _aud.mp3 }}"
+         data-umami-event="article-audio-play">
+    Your browser does not support audio playback.
+    <a href="{{ _aud.mp3 }}">Download the MP3</a>.
+  </audio>
+</figure>
+{% endif %}

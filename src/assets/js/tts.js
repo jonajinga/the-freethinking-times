@@ -614,6 +614,36 @@
     state.webSpeechVoice = null;
     state.pipeline = {};
 
+    // ── Build-time MP3 path ────────────────────────────────────
+    // If a pre-generated <audio data-tft-audio> element exists on
+    // the page (written by partials/article-audio.njk when the
+    // audioManifest has an entry for this URL), the toolbar
+    // Listen button just play/pauses that native element.
+    // No Kokoro download, no Web Speech, no sentence pipeline.
+    var staticAudio = document.querySelector('audio[data-tft-audio]');
+    if (staticAudio) {
+      btn.addEventListener('click', function () {
+        if (staticAudio.paused) {
+          var p = staticAudio.play();
+          if (p && typeof p.catch === 'function') {
+            p.catch(function (err) { console.warn('[tts] static audio play failed:', err); });
+          }
+        } else {
+          staticAudio.pause();
+        }
+      });
+      staticAudio.addEventListener('play',  function () { setBtnState(true);  });
+      staticAudio.addEventListener('pause', function () { setBtnState(false); });
+      staticAudio.addEventListener('ended', function () { setBtnState(false); });
+      // Stash a tiny public API so the rest of the codebase can
+      // pause/stop on SPA-nav without poking internals.
+      window.__tftStaticAudio = staticAudio;
+      return;
+    }
+    // No static audio for this article — fall through to the
+    // existing client-side TTS bootstrap (Web Speech / opt-in
+    // Kokoro), unchanged.
+
     if ('speechSynthesis' in window) {
       window.speechSynthesis.onvoiceschanged = function () {
         if (!state.webSpeechVoice) state.webSpeechVoice = pickWebSpeechVoice();
@@ -646,5 +676,13 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
-  document.addEventListener('spa:contentswap', init);
+  document.addEventListener('spa:contentswap', function () {
+    // Pause any in-flight static <audio> playback before re-init,
+    // so it doesn't keep narrating the previous article.
+    if (window.__tftStaticAudio && typeof window.__tftStaticAudio.pause === 'function') {
+      try { window.__tftStaticAudio.pause(); } catch (e) {}
+      window.__tftStaticAudio = null;
+    }
+    init();
+  });
 })();
