@@ -1473,20 +1473,5 @@
     "views": 1,
     "shares": 0,
     "likes": 0
-  },
-  "/share-twitter/": {
-    "views": 0,
-    "shares": 2,
-    "likes": 0
-  },
-  "/share-bluesky/": {
-    "views": 0,
-    "shares": 3,
-    "likes": 0
-  },
-  "/article-like/": {
-    "views": 0,
-    "shares": 0,
-    "likes": 12
   }
 }

@@ -1211,6 +1211,11 @@
 .back-to-top:hover {
   border-color: var(--color-ink);
 }
+.back-to-top svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 3;
+}
 
 .reading-floats.is-visible .back-to-top {
   opacity: 1;

@@ -60,6 +60,42 @@ function normalizeUrl(u) {
   return s;
 }
 
+// Page through Umami's events endpoint to collect every event
+// matching `eventName` in the lookback window. Each record carries
+// the urlPath where the event fired, so we can bucket by article.
+//
+// Why we don't use /metrics?type=event: that endpoint groups the
+// response by event NAME (returning [{ x: 'article-like', y: 12 }])
+// not by URL, so all likes get attributed to a fake `/article-like/`
+// path. The /events endpoint returns one row per event with the
+// real urlPath, which is what we want.
+async function fetchEventRecords(eventName) {
+  const all = [];
+  const pageSize = 200;
+  let page = 1;
+  let total = Infinity;
+  while (all.length < total && page < 200) { // hard cap on pagination
+    const resp = await umami(`/websites/${SITE_ID}/events`, {
+      startAt, endAt, query: eventName, pageSize, page
+    });
+    if (!resp) break;
+    // Umami's /events returns either { data: [...], count } or a bare array.
+    const data = Array.isArray(resp) ? resp : (resp.data || []);
+    if (resp && typeof resp.count === 'number') total = resp.count;
+    if (!data.length) break;
+    // Filter strictly to records whose name matches — `query` is a
+    // search, not an exact match, so 'share-twitter' could pull in
+    // unrelated entries on a noisy site.
+    for (const ev of data) {
+      const name = ev.eventName || ev.name || ev.event_name;
+      if (name === eventName) all.push(ev);
+    }
+    if (data.length < pageSize) break;
+    page += 1;
+  }
+  return all;
+}
+
 async function main() {
   // Pageviews per URL
   const pages = await umami(`/websites/${SITE_ID}/metrics`, {
@@ -73,32 +109,34 @@ async function main() {
     stats[url].views += Number(row.y || 0);
   }
 
-  // Event counts (share-*, article-like) — pulled per event name
+  // Event records, bucketed by the URL where each fired
   const events = ['share-twitter', 'share-linkedin', 'share-bluesky',
                   'share-mastodon', 'share-reddit', 'share-facebook',
                   'share-email', 'share-copy', 'article-like'];
   for (const name of events) {
-    let rows = [];
+    let records = [];
     try {
-      rows = await umami(`/websites/${SITE_ID}/metrics`, {
-        type: 'event', event: name, startAt, endAt, limit: 5000
-      });
+      records = await fetchEventRecords(name);
     } catch (e) {
       console.warn(`event ${name}: ${e.message}`);
       continue;
     }
-    for (const row of rows || []) {
-      const url = normalizeUrl(row.x);
-      if (!url) continue;
+    for (const ev of records) {
+      const path = ev.urlPath || ev.url_path || ev.url;
+      const url = normalizeUrl(path);
+      if (!url || url === '/') continue;
       stats[url] = stats[url] || { views: 0, shares: 0, likes: 0 };
-      if (name === 'article-like') stats[url].likes  += Number(row.y || 0);
-      else                          stats[url].shares += Number(row.y || 0);
+      if (name === 'article-like') stats[url].likes  += 1;
+      else                          stats[url].shares += 1;
     }
+    if (records.length) console.log(`  ${name}: ${records.length} records`);
   }
 
   const out = join(__dirname, '..', 'src', '_data', 'articleStats.json');
   await writeFile(out, JSON.stringify(stats, null, 2));
+  const totals = Object.values(stats).reduce((a, s) => ({ v: a.v + s.views, s: a.s + s.shares, l: a.l + s.likes }), { v: 0, s: 0, l: 0 });
   console.log(`Wrote ${Object.keys(stats).length} article stats → ${out}`);
+  console.log(`Totals: ${totals.v} views, ${totals.s} shares, ${totals.l} likes`);
 }
 
 main().catch(err => { console.error(err); process.exit(1); });
