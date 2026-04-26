@@ -774,11 +774,14 @@
 .article-audio__player {
   width: 100%;
   display: block;
-  height: 36px;
-}
-/* Subtle styling for the native audio control where browsers expose it */
-.article-audio__player::-webkit-media-controls-panel {
-  background: var(--color-bg);
+  height: 38px;
+  /* Force the browser to render the native control with its dark
+     UA variant. White icons on a dark panel are legible on both
+     the light cream and dark backgrounds we use for the wrapper —
+     the alternative (light variant on cream) washed out the
+     play / volume / scrubber to near-invisible. */
+  color-scheme: dark;
+  border-radius: 4px;
 }
 @media print { .article-audio { display: none !important; } }
 
