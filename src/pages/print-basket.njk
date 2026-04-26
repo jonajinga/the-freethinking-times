@@ -28,9 +28,9 @@ permalink: /print-basket/
     </div>
 
     <div id="print-basket-controls" style="display: flex; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-6); font-family: var(--font-ui); font-size: var(--text-sm); align-items: center;" hidden>
-      <span><strong data-pb-count>0</strong> articles &middot; estimated <strong data-pb-pages>0</strong> pages</span>
-      <button type="button" id="pb-print" style="margin-left: auto; background: var(--color-ink); color: var(--color-bg); border: 0; padding: var(--space-2) var(--space-4); cursor: pointer; font-family: inherit; font-size: inherit; font-weight: 700;"
-        onclick="window.print();" data-umami-event="pdf-basket-print">Print &rarr; Save as PDF</button>
+      <span><strong data-pb-count>0</strong> articles &middot; estimated <strong data-pb-pages>0</strong> pages &middot; <span data-pb-status>preparing…</span></span>
+      <button type="button" id="pb-print" disabled style="margin-left: auto; background: var(--color-ink); color: var(--color-bg); border: 0; padding: var(--space-2) var(--space-4); cursor: pointer; font-family: inherit; font-size: inherit; font-weight: 700; opacity: 0.5;"
+        onclick="window.__tftPrintBasket && window.__tftPrintBasket();" data-umami-event="pdf-basket-print">Print &rarr; Save as PDF</button>
       <button type="button" id="pb-clear" style="background: none; border: 1px solid var(--color-rule); padding: var(--space-2) var(--space-3); cursor: pointer; font-family: inherit; font-size: inherit; color: var(--color-ink-muted);"
         onclick="if(confirm('Empty your print basket?')){localStorage.removeItem('tft-pdf-basket');location.reload();}">Empty basket</button>
     </div>
@@ -160,26 +160,36 @@ permalink: /print-basket/
       location.reload();
     });
 
+    var statusEl = controls.querySelector('[data-pb-status]');
+    var printBtn = document.getElementById('pb-print');
+
     // Pre-fetch each article body so the print run renders all content at
     // once. We use the page itself, parse out .article-body, and stack the
-    // pieces in the hidden render container.
+    // pieces in the hidden render container. The Print button stays
+    // disabled until every fetch resolves so the print dialog never opens
+    // against an empty render container.
+    var done = 0;
+    function progress() {
+      done += 1;
+      if (statusEl) statusEl.textContent = 'preparing… ' + done + '/' + basket.length;
+    }
     Promise.all(basket.map(function (item) {
       return fetch(item.url, { credentials: 'same-origin' })
         .then(function (r) { return r.ok ? r.text() : ''; })
         .then(function (html) {
-          if (!html) return null;
+          progress();
+          if (!html) return { item: item, html: '<p style="color:#888">Could not load this article — try opening it directly to confirm it still exists.</p>' };
           var doc = new DOMParser().parseFromString(html, 'text/html');
           var body = doc.querySelector('.article-body, .library-body, [data-pagefind-body]');
-          if (!body) return null;
-          // Strip interactive chrome we don't want in print
-          body.querySelectorAll('.article-action-btn, .share-panel, .share-wrap, [data-tts-skip], .article-comments, .responses-section').forEach(function (n) { n.remove(); });
+          if (!body) return { item: item, html: '<p style="color:#888">Article body not found in fetched HTML.</p>' };
+          body.querySelectorAll('.article-action-btn, .annotation-toolbar, .share-panel, .share-wrap, [data-tts-skip], .article-comments, .responses-section, .reading-progress, .article-header__actions').forEach(function (n) { n.remove(); });
           return { item: item, html: body.innerHTML };
         })
-        .catch(function () { return null; });
+        .catch(function () { progress(); return { item: item, html: '<p style="color:#888">Fetch error.</p>' }; });
     })).then(function (parts) {
       var totalChars = 0;
-      var pieces = parts.filter(Boolean).map(function (p) {
-        totalChars += p.html.replace(/<[^>]+>/g, '').length;
+      var pieces = parts.map(function (p) {
+        totalChars += (p.html || '').replace(/<[^>]+>/g, '').length;
         var meta = [p.item.author, p.item.section, fmtDate(p.item.date)].filter(Boolean).join(' &middot; ');
         return '<article class="pb-render__article">' +
           '<h1>' + (p.item.title || p.item.url) + '</h1>' +
@@ -188,11 +198,24 @@ permalink: /print-basket/
         '</article>';
       });
       render.innerHTML = pieces.join('');
-      // Rough estimate: ~3000 chars / printed page at our type sizes
-      var est = Math.max(1, Math.ceil(totalChars / 3000));
+      render.hidden = false; // remove the inline `hidden` so print CSS rules can show it
+      // Estimate: ~2400 printable chars per page at our default sizes
+      var est = Math.max(1, Math.ceil(totalChars / 2400));
       var pagesEl = controls.querySelector('[data-pb-pages]');
       if (pagesEl) pagesEl.textContent = est;
+      if (statusEl) statusEl.textContent = 'ready';
+      if (printBtn) {
+        printBtn.disabled = false;
+        printBtn.style.opacity = '1';
+      }
     });
+
+    // Expose a print function so the button waits for content
+    window.__tftPrintBasket = function () {
+      if (!render.innerHTML.trim()) return;
+      render.hidden = false;
+      window.print();
+    };
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

@@ -44,6 +44,7 @@ layout: layouts/base.njk
 
   <p class="author-articles-heading">
     Articles by {{ title }}{% if authorArticles.length %} <span class="author-articles-heading__count">({{ authorArticles.length }})</span>{% endif %}
+    {% if authorArticles.length %}<a href="/knowledge-map/?author={{ authorSlug or (title | slugify) }}" style="font-weight: 400; font-size: var(--text-sm); color: var(--color-link); text-decoration: underline; margin-left: var(--space-3);">View on knowledge map &rarr;</a>{% endif %}
   </p>
 
   {% if authorArticles.length == 0 %}

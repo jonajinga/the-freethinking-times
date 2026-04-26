@@ -34,6 +34,9 @@ layout: layouts/base.njk
       {% set rssLabel = site.sections[sectionSlug].label or title %}
       {% include "partials/archive-views-buttons.njk" %}
     </div>
+    <p style="font-family: var(--font-ui); font-size: var(--text-sm); margin-top: var(--space-3);">
+      <a href="/knowledge-map/?section={{ sectionSlug }}" style="color: var(--color-link); text-decoration: underline;">View this section on the knowledge map &rarr;</a>
+    </p>
     {% endif %}
   </header>
 

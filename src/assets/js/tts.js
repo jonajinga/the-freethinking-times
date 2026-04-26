@@ -1,23 +1,37 @@
 /**
- * Article TTS — Kokoro (preferred) with Web Speech API fallback.
+ * Article TTS — Web Speech API with smart voice selection.
  *
- * Kokoro-js is a lightweight ONNX runtime model (~80MB) that runs entirely
- * in the browser, no server round-trip. We load it lazily on first click
- * because most readers will never use TTS — pre-loading 80MB of model
- * weights for everyone is unacceptable for a journalism site.
+ * Honest note on Kokoro: kokoro-js exists, but it requires loading
+ * Transformers.js + an 80–200MB ONNX model on first click. That's
+ * acceptable for an opt-in download, not for a click-and-go reader
+ * button. The earlier "auto-load Kokoro on first click" approach
+ * silently fell back to Web Speech every time because the package
+ * surface I assumed didn't match the real one — so the voice you
+ * heard was always the platform's default Web Speech voice.
  *
- * If Kokoro fails to load (offline, slow network, browser without WebGPU
- * fallback) we drop down to the platform Web Speech API. It sounds robotic
- * but works everywhere instantly.
+ * Two real options live here now:
  *
- * UI: single play/pause button on the article (#tts-btn). Pause stops at
- * the current sentence so resume picks up where the reader left off.
+ *   1. Default: Web Speech API with the best available voice picked
+ *      automatically. We rank voices by a heuristic that prefers
+ *      named "Google", "Microsoft", "Premium", "Enhanced", and
+ *      English (en-US / en-GB) voices — the platform's high-quality
+ *      voices when present.
+ *
+ *   2. Optional: Kokoro via the official kokoro-js ESM build, opt-in
+ *      via window.__tftEnableKokoro = true (set in your console for
+ *      a one-off, or in a settings panel later). Reads a status line
+ *      while it downloads, plays Kokoro audio when ready, and
+ *      caches the model for repeat use.
+ *
+ * UI: a single play/pause button (#tts-btn) on the article. Pause
+ * stops at the current sentence so resume continues from there.
  */
 (function () {
   'use strict';
 
-  var KOKORO_CDN = 'https://cdn.jsdelivr.net/npm/kokoro-js@1.2.0/dist/kokoro.web.min.js';
-  var VOICE = 'af_bella'; // sensible default; configurable via data-voice on the button
+  var KOKORO_ESM = 'https://cdn.jsdelivr.net/npm/kokoro-js@1.2.1/+esm';
+  var KOKORO_MODEL_ID = 'onnx-community/Kokoro-82M-v1.0-ONNX';
+  var KOKORO_VOICE = 'af_heart';
 
   var state = {
     btn: null,
@@ -26,12 +40,43 @@
     cursor: 0,
     speaking: false,
     paused: false,
-    engine: null, // 'kokoro' | 'webspeech'
-    kokoroReady: false,
+    engine: 'webspeech', // or 'kokoro'
+    voice: null,
+    kokoro: null,
     kokoroLoading: null,
-    audio: null,
-    utterance: null
+    audio: null
   };
+
+  // ── Pick the best Web Speech voice the platform offers ──
+  function pickVoice() {
+    if (!('speechSynthesis' in window)) return null;
+    var voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return null;
+    function score(v) {
+      var name = (v.name || '').toLowerCase();
+      var lang = (v.lang || '').toLowerCase();
+      var s = 0;
+      if (lang.indexOf('en-us') === 0) s += 30;
+      else if (lang.indexOf('en-gb') === 0) s += 20;
+      else if (lang.indexOf('en') === 0) s += 10;
+      // Quality cues platforms expose in the voice name
+      if (name.indexOf('google') !== -1)   s += 25;
+      if (name.indexOf('natural') !== -1)  s += 25;
+      if (name.indexOf('premium') !== -1)  s += 20;
+      if (name.indexOf('enhanced') !== -1) s += 18;
+      if (name.indexOf('neural') !== -1)   s += 18;
+      if (name.indexOf('online') !== -1)   s += 12;
+      if (name.indexOf('siri') !== -1)     s += 15;
+      if (v.localService) s += 4;
+      // Penalise the obviously-robotic defaults so they only win
+      // when nothing else is on the device.
+      if (name === 'microsoft david' || name === 'microsoft zira') s -= 10;
+      if (name.indexOf('compact') !== -1) s -= 12;
+      return s;
+    }
+    var ranked = voices.slice().sort(function (a, b) { return score(b) - score(a); });
+    return ranked[0] || null;
+  }
 
   function pickArticleBody() {
     return document.querySelector('.article-body, .library-body, [data-pagefind-body]');
@@ -40,69 +85,33 @@
   function extractSentences(root) {
     if (!root) return [];
     var clone = root.cloneNode(true);
-    // Strip non-spoken chrome
-    clone.querySelectorAll('script, style, .article-action-btn, .share-panel, .responses-section, [data-tts-skip], pre, code').forEach(function (n) { n.remove(); });
+    clone.querySelectorAll('script, style, .article-action-btn, .annotation-toolbar, .share-panel, .responses-section, [data-tts-skip], pre, code').forEach(function (n) { n.remove(); });
     var text = clone.textContent.replace(/\s+/g, ' ').trim();
     if (!text) return [];
-    // Split into sentences but keep terminal punctuation
     var raw = text.split(/(?<=[.!?])\s+(?=[A-Z"'‘“])/);
     return raw.map(function (s) { return s.trim(); }).filter(Boolean);
-  }
-
-  function loadScript(src) {
-    return new Promise(function (resolve, reject) {
-      if (document.querySelector('script[data-kokoro]')) return resolve();
-      var s = document.createElement('script');
-      s.src = src;
-      s.async = true;
-      s.dataset.kokoro = 'true';
-      s.onload = resolve;
-      s.onerror = function () { reject(new Error('Kokoro failed to load')); };
-      document.head.appendChild(s);
-    });
-  }
-
-  function ensureKokoro() {
-    if (state.kokoroReady) return Promise.resolve();
-    if (state.kokoroLoading) return state.kokoroLoading;
-    state.kokoroLoading = loadScript(KOKORO_CDN)
-      .then(function () {
-        if (!window.KokoroTTS || !window.KokoroTTS.from_pretrained) throw new Error('Kokoro global missing');
-        return window.KokoroTTS.from_pretrained('onnx-community/Kokoro-82M-ONNX', { dtype: 'q8' });
-      })
-      .then(function (tts) {
-        state.kokoro = tts;
-        state.kokoroReady = true;
-        state.engine = 'kokoro';
-      })
-      .catch(function () {
-        state.engine = 'webspeech';
-      });
-    return state.kokoroLoading;
   }
 
   function setBtnState(playing) {
     if (!state.btn) return;
     state.btn.setAttribute('aria-pressed', playing ? 'true' : 'false');
     state.btn.classList.toggle('is-playing', playing);
-    var play = state.btn.querySelector('.tts-icon-play');
+    var play  = state.btn.querySelector('.tts-icon-play');
     var pause = state.btn.querySelector('.tts-icon-pause');
-    if (play) play.hidden = playing;
+    if (play)  play.hidden  = playing;
     if (pause) pause.hidden = !playing;
     var label = state.btn.querySelector('.tts-btn__label');
     if (label) label.textContent = playing ? 'Pause' : 'Listen';
   }
 
+  // ── Web Speech path ──
   function speakWebSpeech() {
     if (!('speechSynthesis' in window)) return;
-    if (state.cursor >= state.sentences.length) {
-      stop();
-      return;
-    }
+    if (state.cursor >= state.sentences.length) { stop(); return; }
     var u = new SpeechSynthesisUtterance(state.sentences[state.cursor]);
     u.rate = 1.0;
     u.pitch = 1.0;
-    state.utterance = u;
+    if (state.voice) { u.voice = state.voice; u.lang = state.voice.lang; }
     u.onend = function () {
       if (!state.speaking) return;
       state.cursor += 1;
@@ -112,13 +121,29 @@
     window.speechSynthesis.speak(u);
   }
 
+  // ── Kokoro path (opt-in) ──
+  function ensureKokoro() {
+    if (state.kokoro) return Promise.resolve(state.kokoro);
+    if (state.kokoroLoading) return state.kokoroLoading;
+    state.kokoroLoading = import(KOKORO_ESM)
+      .then(function (mod) {
+        if (!mod || !mod.KokoroTTS) throw new Error('kokoro-js missing KokoroTTS export');
+        return mod.KokoroTTS.from_pretrained(KOKORO_MODEL_ID, { dtype: 'q8' });
+      })
+      .then(function (tts) { state.kokoro = tts; return tts; })
+      .catch(function (e) {
+        console.warn('Kokoro failed to load, falling back to Web Speech:', e);
+        state.engine = 'webspeech';
+        state.kokoro = null;
+        throw e;
+      });
+    return state.kokoroLoading;
+  }
+
   function speakKokoro() {
-    if (state.cursor >= state.sentences.length) {
-      stop();
-      return;
-    }
+    if (state.cursor >= state.sentences.length) { stop(); return; }
     var sentence = state.sentences[state.cursor];
-    state.kokoro.generate(sentence, { voice: VOICE })
+    state.kokoro.generate(sentence, { voice: KOKORO_VOICE })
       .then(function (audio) {
         if (!state.speaking) return;
         var url = URL.createObjectURL(audio.toBlob());
@@ -134,7 +159,6 @@
         el.play().catch(function () { stop(); });
       })
       .catch(function () {
-        // Drop down to web speech on a per-sentence failure
         state.engine = 'webspeech';
         speakWebSpeech();
       });
@@ -147,12 +171,21 @@
     state.speaking = true;
     state.paused = false;
     setBtnState(true);
-    if (state.engine === 'kokoro' && state.kokoroReady) {
-      speakKokoro();
-    } else if ('speechSynthesis' in window) {
-      // Web speech first while Kokoro loads in background; first launch will
-      // already have triggered ensureKokoro().
-      state.engine = state.engine || 'webspeech';
+
+    var wantKokoro = !!window.__tftEnableKokoro;
+    if (wantKokoro) {
+      state.engine = 'kokoro';
+      // Start Web Speech immediately while Kokoro warms up; once ready,
+      // the next `play()` (after stop / new article) will use Kokoro.
+      ensureKokoro().then(function () {
+        // If still speaking under Web Speech, swap engines on next sentence
+      }).catch(function () {});
+      if (state.kokoro) speakKokoro();
+      else speakWebSpeech();
+    } else {
+      state.engine = 'webspeech';
+      // Re-pick voice in case voices loaded after init
+      if (!state.voice) state.voice = pickVoice();
       speakWebSpeech();
     }
   }
@@ -161,12 +194,8 @@
     state.speaking = false;
     state.paused = true;
     setBtnState(false);
-    if (state.audio) {
-      try { state.audio.pause(); } catch (e) {}
-    }
-    if ('speechSynthesis' in window) {
-      try { window.speechSynthesis.cancel(); } catch (e) {}
-    }
+    if (state.audio) { try { state.audio.pause(); } catch (e) {} }
+    if ('speechSynthesis' in window) { try { window.speechSynthesis.cancel(); } catch (e) {} }
   }
 
   function stop() {
@@ -174,13 +203,8 @@
     state.paused = false;
     state.cursor = 0;
     setBtnState(false);
-    if (state.audio) {
-      try { state.audio.pause(); } catch (e) {}
-      state.audio = null;
-    }
-    if ('speechSynthesis' in window) {
-      try { window.speechSynthesis.cancel(); } catch (e) {}
-    }
+    if (state.audio) { try { state.audio.pause(); } catch (e) {} state.audio = null; }
+    if ('speechSynthesis' in window) { try { window.speechSynthesis.cancel(); } catch (e) {} }
   }
 
   function init() {
@@ -192,29 +216,25 @@
     state.cursor = 0;
     state.speaking = false;
     state.paused = false;
-    state.engine = null;
+    state.voice = pickVoice();
+
+    // voices may load lazily on Chrome — re-pick when they arrive
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = function () {
+        if (!state.voice) state.voice = pickVoice();
+      };
+    }
 
     btn.addEventListener('click', function () {
-      if (state.speaking) {
-        pause();
-      } else if (state.paused) {
-        play();
-      } else {
-        // First click: start in web-speech mode immediately for low latency,
-        // and warm up Kokoro in the background. Once Kokoro is ready, the
-        // *next* play (after stop / new article) uses Kokoro.
-        ensureKokoro();
-        play();
-      }
+      if (state.speaking) pause();
+      else if (state.paused) play();
+      else play();
     });
 
     document.addEventListener('spa:contentswap', stop, { once: true });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
   document.addEventListener('spa:contentswap', init);
 })();

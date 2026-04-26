@@ -63,11 +63,10 @@
         {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
         {% if pubTipUrl %}
         <div class="site-footer__tip">
-          <a class="tip-badge" href="{{ pubTipUrl }}" target="_blank" rel="noopener noreferrer"
-             aria-label="Support {{ site.title }}"
-             data-tippy-content="Support {{ site.title }}. Reader contributions cover hosting, public-records fees, and reporting costs. We don&rsquo;t pay contributors a fee &mdash; tips sent through an author&rsquo;s individual link go directly to the writer."
-             data-tippy-theme="badge"
-             data-tippy-placement="top">Support {{ site.title }}</a>
+          <button type="button" class="tip-badge" aria-expanded="false" aria-controls="funding-panel"
+                  aria-label="How {{ site.title }} is funded"
+                  data-umami-event="funding-learn"
+                  onclick="toggleArticleDisclosure(this)">Support {{ site.title }}</button>
         </div>
         {% endif %}
         {% endif %}

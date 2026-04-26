@@ -1959,9 +1959,10 @@ a.dateline:hover { color: var(--color-accent); }
 @media (max-width: 600px) {
   .masthead__live-label { display: none; }
   .masthead__live {
-    padding: 6px;
-    margin-left: var(--space-1);
+    padding: 5px 7px;
+    margin-left: 0;
   }
+  .masthead__lead { gap: 4px; }
 }
 
 /* ── Site announcement banner ──────────────────────────────── */
@@ -4763,10 +4764,13 @@ select.w3f__input option {
    article.css. Keep no rule here so PurgeCSS can drop it. */
 
 /* ── PDF basket floating tray ───────────────────────────────── */
+/* Sits above the bottom annotation toolbar (52px + safe-area) on
+ * article pages, and above the back-to-top button on others. The
+ * tray only appears when the basket has at least one item. */
 .pdf-basket-tray {
   position: fixed;
   right: var(--space-4);
-  bottom: var(--space-4);
+  bottom: calc(72px + env(safe-area-inset-bottom, 0px));
   z-index: 50;
   background: var(--color-bg);
   border: 1px solid var(--color-ink);
@@ -4774,6 +4778,11 @@ select.w3f__input option {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
   font-family: var(--font-ui);
   font-size: var(--text-sm);
+}
+/* When the article-layout reader toolbar isn't on the page (homepage,
+ * archives, etc.) drop the tray closer to the viewport edge. */
+body:not(:has(.annotation-toolbar)) .pdf-basket-tray {
+  bottom: var(--space-4);
 }
 .pdf-basket-tray__link {
   display: flex;

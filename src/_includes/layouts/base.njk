@@ -148,6 +148,36 @@
     {# ── Footer ── #}
     {% include "partials/footer.njk" %}
 
+    {# ── Sitewide "How We're Funded" disclosure panel ──
+       Available on every page so any tip-badge anywhere on the site
+       can open this same panel via toggleArticleDisclosure(). On
+       article pages, article.njk includes a richer per-author
+       version that takes precedence (its #funding-panel wins because
+       it's later in the DOM and toggleArticleDisclosure looks up by
+       id, but only one panel renders per page in practice). #}
+    {% if not author %}
+    {% include "partials/funding.njk" %}
+    {% endif %}
+    <script>
+      window.toggleArticleDisclosure = window.toggleArticleDisclosure || function (btn) {
+        var id = btn.getAttribute('aria-controls');
+        if (!id) return;
+        var panel = document.getElementById(id);
+        if (!panel) return;
+        var willOpen = panel.hasAttribute('hidden');
+        document.querySelectorAll('[data-article-disclosure]').forEach(function (p) {
+          if (!p.hasAttribute('hidden')) p.setAttribute('hidden', '');
+          var t = document.querySelector('[aria-controls="' + p.id + '"]');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        });
+        if (willOpen) {
+          panel.removeAttribute('hidden');
+          btn.setAttribute('aria-expanded', 'true');
+          panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      };
+    </script>
+
   </div>{# /.site-wrapper #}
 
   {# ── Reading floats (back-to-top + % through) — site-wide ── #}

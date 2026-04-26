@@ -60,9 +60,9 @@
       var basket = load();
       var present = indexOf(basket, url) !== -1;
       btn.setAttribute('aria-pressed', present ? 'true' : 'false');
+      btn.setAttribute('title', present ? 'Remove from print basket' : 'Add to print basket');
+      btn.setAttribute('aria-label', present ? 'Remove from print basket' : 'Add to print basket');
       btn.classList.toggle('is-in-basket', present);
-      var label = btn.querySelector('.pdf-basket-btn__label');
-      if (label) label.textContent = present ? 'In PDF basket' : 'Add to PDF';
     }
 
     btn.addEventListener('click', function () {

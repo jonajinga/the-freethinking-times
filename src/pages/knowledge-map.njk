@@ -30,10 +30,14 @@ permalink: /knowledge-map/
         <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">Knowledge map</li>
       </ol>
     </nav>
-    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.6rem, 4vw, 2.8rem); margin-bottom: var(--space-2);">Knowledge map</h1>
-    <p style="font-family: var(--font-body); font-size: var(--text-base); color: var(--color-ink-muted); line-height: var(--leading-snug); max-width: 64ch;">
+    <h1 id="km-title" style="font-family: var(--font-masthead); font-size: clamp(1.6rem, 4vw, 2.8rem); margin-bottom: var(--space-2);">Knowledge map</h1>
+    <p id="km-subtitle" style="font-family: var(--font-body); font-size: var(--text-base); color: var(--color-ink-muted); line-height: var(--leading-snug); max-width: 64ch;">
       Every published piece, plotted by topic and byline. Articles cluster around the topics they share. Drag any node, scroll to zoom, click an article to read it.
     </p>
+    <div id="km-filter-banner" hidden style="margin-top: var(--space-3); padding: var(--space-2) var(--space-3); border-left: 3px solid var(--color-accent); background: var(--color-bg-alt); font-family: var(--font-ui); font-size: var(--text-sm); display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap;">
+      <span><strong>Filtered:</strong> <span id="km-filter-label"></span></span>
+      <a href="/knowledge-map/" style="margin-left: auto; color: var(--color-ink-muted); text-decoration: underline;">Clear filter</a>
+    </div>
   </header>
 
   <div class="km-controls">
@@ -63,6 +67,7 @@ permalink: /knowledge-map/
 
   <div class="km-stage">
     <div id="km-canvas" class="km-canvas">
+      <div id="km-loading" class="km-loading">Loading map…</div>
       <svg id="km-svg" width="100%" height="100%" style="display: block;"></svg>
       <div id="km-tooltip" class="km-tooltip" hidden></div>
     </div>
@@ -189,6 +194,17 @@ permalink: /knowledge-map/
   border: 1px solid var(--color-rule);
   background: var(--color-bg-alt);
   overflow: hidden;
+}
+.km-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  z-index: 2;
 }
 .km-canvas svg text {
   font-family: var(--font-ui);
@@ -317,8 +333,18 @@ permalink: /knowledge-map/
 <script defer>
 (function () {
   'use strict';
+  var d3WaitTries = 0;
   function init() {
-    if (typeof d3 === 'undefined') { setTimeout(init, 50); return; }
+    var loadingEl = document.getElementById('km-loading');
+    if (typeof d3 === 'undefined') {
+      d3WaitTries += 1;
+      if (d3WaitTries > 100) {
+        if (loadingEl) loadingEl.textContent = 'Could not load D3.js (offline?). Articles list is still available below.';
+        return;
+      }
+      setTimeout(init, 60);
+      return;
+    }
     var raw = document.getElementById('km-data');
     var canvas = document.getElementById('km-canvas');
     var svgEl = document.getElementById('km-svg');
@@ -328,11 +354,81 @@ permalink: /knowledge-map/
     var sideEl = document.getElementById('km-side');
     if (!raw || !canvas) return;
     var data;
-    try { data = JSON.parse(raw.textContent); } catch (e) { return; }
-    if (!data.nodes || !data.nodes.length) {
-      canvas.innerHTML = '<p style="padding: var(--space-6); text-align: center; color: var(--color-ink-muted); font-family: var(--font-ui);">No content to map yet — publish an article first.</p>';
+    try { data = JSON.parse(raw.textContent); } catch (e) {
+      if (loadingEl) loadingEl.textContent = 'Map data failed to parse.';
       return;
     }
+    if (!data.nodes || !data.nodes.length) {
+      if (loadingEl) loadingEl.textContent = 'No content to map yet — publish an article first.';
+      return;
+    }
+
+    // ── URL-based filter: ?author=foo, ?section=foo, ?topic=foo ──
+    function slugify(s) {
+      return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    }
+    var params = new URLSearchParams(location.search);
+    var filterAuthor  = params.get('author');
+    var filterSection = params.get('section');
+    var filterTopic   = params.get('topic');
+    if (filterAuthor || filterSection || filterTopic) {
+      var keepArticleIds = new Set();
+      data.nodes.forEach(function (n) {
+        if (n.type !== 'article') return;
+        var match = true;
+        if (filterAuthor)  match = match && slugify(n.author)  === slugify(filterAuthor);
+        if (filterSection) match = match && slugify(n.section) === slugify(filterSection);
+        if (match) keepArticleIds.add(n.id);
+      });
+      if (filterTopic) {
+        // Articles linked to that tag node
+        var tagId = 'tag:' + slugify(filterTopic);
+        var topicArticles = new Set();
+        data.links.forEach(function (l) {
+          var s = (typeof l.source === 'object') ? l.source.id : l.source;
+          var t = (typeof l.target === 'object') ? l.target.id : l.target;
+          if (t === tagId) topicArticles.add(s);
+          if (s === tagId) topicArticles.add(t);
+        });
+        // intersect: only articles that pass other filters AND are in the topic
+        if (filterAuthor || filterSection) {
+          keepArticleIds = new Set([...keepArticleIds].filter(function (x) { return topicArticles.has(x); }));
+        } else {
+          keepArticleIds = topicArticles;
+        }
+      }
+      // Keep article nodes + any tag/author nodes connected to surviving articles
+      var keepIds = new Set(keepArticleIds);
+      data.links.forEach(function (l) {
+        var s = (typeof l.source === 'object') ? l.source.id : l.source;
+        var t = (typeof l.target === 'object') ? l.target.id : l.target;
+        if (keepArticleIds.has(s)) keepIds.add(t);
+        if (keepArticleIds.has(t)) keepIds.add(s);
+      });
+      data.nodes = data.nodes.filter(function (n) { return keepIds.has(n.id); });
+      data.links = data.links.filter(function (l) {
+        var s = (typeof l.source === 'object') ? l.source.id : l.source;
+        var t = (typeof l.target === 'object') ? l.target.id : l.target;
+        return keepIds.has(s) && keepIds.has(t);
+      });
+      // Banner + page title update
+      var banner = document.getElementById('km-filter-banner');
+      var label  = document.getElementById('km-filter-label');
+      var title  = document.getElementById('km-title');
+      var sub    = document.getElementById('km-subtitle');
+      var parts = [];
+      if (filterAuthor)  parts.push('author = ' + filterAuthor);
+      if (filterSection) parts.push('section = ' + filterSection);
+      if (filterTopic)   parts.push('topic = ' + filterTopic);
+      if (banner) banner.hidden = false;
+      if (label)  label.textContent = parts.join(' · ');
+      if (title && parts.length === 1 && filterTopic)   title.textContent = 'Knowledge map: #' + filterTopic;
+      if (title && parts.length === 1 && filterAuthor)  title.textContent = 'Knowledge map: ' + filterAuthor;
+      if (title && parts.length === 1 && filterSection) title.textContent = 'Knowledge map: ' + filterSection;
+      if (sub) sub.textContent = keepArticleIds.size + ' articles in this slice, plus the topics and authors that connect them.';
+    }
+
+    if (loadingEl) loadingEl.remove();
 
     // ── Stable section colour palette (deterministic by section name) ──
     var sectionColors = {};

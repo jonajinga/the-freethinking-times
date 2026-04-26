@@ -25,10 +25,10 @@
   "announcement": {
     "active": true,
     "severity": "info",
-    "id": "preview-2026-04-25",
-    "text": "Preview: this is what an editorial announcement looks like.",
-    "linkText": "Read why we publish editorial state",
-    "linkUrl": "/dashboard/guide/",
+    "id": "preview-2026-04-26-knowledge-map",
+    "text": "Sample announcement — the knowledge map is now live, plotting every article by topic and author.",
+    "linkText": "Open the map",
+    "linkUrl": "/knowledge-map/",
     "dismissible": true
   },
   "live": {

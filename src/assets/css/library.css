@@ -1497,6 +1497,18 @@
   flex-shrink: 0;
 }
 
+/* Tighter on phones — the toolbar holds 10+ buttons after the engagement
+   migration, so the 44×44 default forces a row wrap on narrow screens. */
+@media (max-width: 600px) {
+  .annotation-toolbar__btn {
+    width: 36px;
+    height: 36px;
+  }
+  .annotation-toolbar__btn svg { width: 18px; height: 18px; }
+  .annotation-toolbar__main { gap: 2px; column-gap: 2px; }
+  .annotation-toolbar { padding: 4px var(--space-2); column-gap: var(--space-1); }
+}
+
 
 .annotation-toolbar__btn:hover,
 .annotation-toolbar__btn:focus-visible {
