@@ -210,13 +210,13 @@ layout: layouts/base.njk
         </div>
 
         <div class="article-header__meta-row" data-pagefind-ignore>
-          <span>{{ content | wordCount }} words</span>
-          <span>{{ content | readingTime }}</span>
+          <span class="article-meta-item article-meta-item--length">{{ content | wordCount }}</span>
+          <span class="article-meta-item article-meta-item--time">{{ content | readingTime }}</span>
           {% set _stats = articleStats[page.url] %}
           {% if _stats %}
-            {% if _stats.views %}<span class="article-stat" title="Pageviews from Umami">{{ _stats.views | numberFmt }} {{ "view" if _stats.views == 1 else "views" }}</span>{% endif %}
-            {% if _stats.shares %}<span class="article-stat" title="Tracked share-button clicks">{{ _stats.shares | numberFmt }} {{ "share" if _stats.shares == 1 else "shares" }}</span>{% endif %}
-            {% if _stats.likes %}<span class="article-stat" title="Reader likes">{{ _stats.likes | numberFmt }} {{ "like" if _stats.likes == 1 else "likes" }}</span>{% endif %}
+            {% if _stats.views %}<span class="article-meta-item article-meta-item--stat" title="Pageviews from Umami">{{ _stats.views | numberFmt }} {{ "view" if _stats.views == 1 else "views" }}</span>{% endif %}
+            {% if _stats.shares %}<span class="article-meta-item article-meta-item--stat" title="Tracked share-button clicks">{{ _stats.shares | numberFmt }} {{ "share" if _stats.shares == 1 else "shares" }}</span>{% endif %}
+            {% if _stats.likes %}<span class="article-meta-item article-meta-item--stat" title="Reader likes">{{ _stats.likes | numberFmt }} {{ "like" if _stats.likes == 1 else "likes" }}</span>{% endif %}
           {% endif %}
         </div>
         {% if tags %}

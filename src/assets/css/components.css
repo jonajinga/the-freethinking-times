@@ -61,6 +61,15 @@
   min-height: 3rem;
 }
 
+/* Left cell: hamburger + watch-live grouped so they share column 1 */
+.masthead__lead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-self: start;
+  min-width: 0;
+}
+
 .masthead__title {
   font-family: var(--font-masthead);
   font-size: 1.25rem;
@@ -4750,15 +4759,8 @@ select.w3f__input option {
 .tts-btn.is-playing { color: var(--color-accent); }
 .tts-btn.is-playing svg { stroke: var(--color-accent); }
 
-.article-stat {
-  font-family: var(--font-ui);
-  color: var(--color-ink-muted);
-}
-.article-stat::before {
-  content: "·";
-  margin: 0 var(--space-1);
-  opacity: 0.4;
-}
+/* article-stat: legacy class, replaced by .article-meta-item--stat in
+   article.css. Keep no rule here so PurgeCSS can drop it. */
 
 /* ── PDF basket floating tray ───────────────────────────────── */
 .pdf-basket-tray {

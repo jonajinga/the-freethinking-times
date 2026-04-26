@@ -145,6 +145,7 @@ module.exports = function (eleventyConfig) {
               // render when site.live.active or site.announcement.active
               // is flipped on, so PurgeCSS may scan a build where they
               // are absent and strip them.
+              "masthead__lead",
               "masthead__live",
               "masthead__live-dot",
               "masthead__live-label",
@@ -168,7 +169,11 @@ module.exports = function (eleventyConfig) {
               // Article engagement buttons — toggled at runtime by
               // like-btn.js, read-state.js, pdf-basket.js, tts.js.
               "is-liked", "is-read", "is-in-basket", "is-playing",
-              "like-count", "article-stat",
+              "like-count",
+              "article-meta-item",
+              "article-meta-item--length",
+              "article-meta-item--time",
+              "article-meta-item--stat",
               "mark-read-btn__label", "pdf-basket-btn__label", "tts-btn__label",
               // Floating PDF-basket tray — appended to <body> when basket
               // first becomes non-empty; never present in template source.

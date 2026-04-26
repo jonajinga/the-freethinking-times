@@ -634,18 +634,33 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2) 0;
   margin-top: var(--space-3);
   padding-top: var(--space-3);
   border-top: 1px solid var(--color-rule);
   font-family: var(--font-ui);
   font-size: var(--text-xs);
   color: var(--color-ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
-.article-header__meta-row span {
+.article-meta-item {
+  display: inline-flex;
+  align-items: center;
   white-space: nowrap;
+  padding: 0 var(--space-3);
 }
+
+.article-meta-item:first-child { padding-left: 0; }
+.article-meta-item:last-child  { padding-right: 0; }
+
+.article-meta-item + .article-meta-item {
+  border-left: 1px solid var(--color-rule);
+}
+
+.article-meta-item--length { font-weight: 700; color: var(--color-ink-muted); }
+.article-meta-item--stat   { color: var(--color-ink-muted); }
 
 .article-header__meta-tags {
   display: flex;
@@ -690,6 +705,15 @@
 
 .article-action-btn .btn-label,
 .article-action-btn span:not([aria-hidden]) {
+  display: none;
+}
+
+/* Engagement buttons (like / mark-read / pdf-basket / tts) get migrated
+   into the bottom annotation toolbar by reader-panel-migrate.js, where
+   they should be icons only — same convention as the rest of the
+   toolbar. */
+.annotation-toolbar__btn .btn-label,
+.annotation-toolbar #like-btn .like-count {
   display: none;
 }
 
