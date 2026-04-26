@@ -1097,6 +1097,95 @@ module.exports = function (eleventyConfig) {
     return slots;
   });
 
+  // Per-author profile + stats for the /contributors/ grid.
+  // Returns a map keyed by author slug with: name, role, location, bio,
+  // photo, social, lifetime article + word + reading-time totals, last
+  // published date, isActive flag (published in last 90d), top 5 tags
+  // ("beat"), most recent article {title, url, date, section}, drafts
+  // in flight, and the underlying authorData for any extra fields.
+  eleventyConfig.addFilter("contributorsRoster", (authorsObj, allContent) => {
+    const roster = {};
+    Object.keys(authorsObj || {}).forEach(slug => {
+      if (slug === "staff") return;
+      const a = authorsObj[slug] || {};
+      roster[slug] = {
+        slug,
+        name: a.name || slug,
+        role: a.role || "",
+        location: a.location || "",
+        bio: a.bio || "",
+        photo: a.photo || "",
+        social: a.social || {},
+        tipping: a.tipping || {},
+        articles: 0,
+        drafts: 0,
+        words: 0,
+        readingMin: 0,
+        lastDate: null,
+        recentArticle: null,
+        tagCounts: {},
+        sectionCounts: {}
+      };
+    });
+    (allContent || []).forEach(item => {
+      const data = item.data || {};
+      const slug = data.author;
+      if (!slug || !roster[slug]) return;
+      const status = computeEnhancedStatus(item);
+      if (status === "published") {
+        roster[slug].articles++;
+        let wc = 0;
+        try {
+          const tc = item.templateContent;
+          if (tc) wc = String(tc).replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
+        } catch (_) { /* templateContent not ready — skip */ }
+        roster[slug].words += wc;
+        roster[slug].readingMin += Math.max(1, Math.round(wc / 225));
+        const t = item.date ? new Date(item.date).getTime() : null;
+        if (t != null) {
+          if (roster[slug].lastDate == null || t > roster[slug].lastDate) {
+            roster[slug].lastDate = t;
+            roster[slug].recentArticle = {
+              title: data.title || "(untitled)",
+              url: item.url,
+              date: t,
+              section: data.section || ""
+            };
+          }
+        }
+        (data.tags || []).forEach(tag => {
+          if (tag === "post" || tag === "all") return;
+          roster[slug].tagCounts[tag] = (roster[slug].tagCounts[tag] || 0) + 1;
+        });
+        if (data.section) {
+          roster[slug].sectionCounts[data.section] = (roster[slug].sectionCounts[data.section] || 0) + 1;
+        }
+      } else if (status === "pitched" || status === "drafting" || status === "review") {
+        roster[slug].drafts++;
+      }
+    });
+    const NOW = Date.now();
+    return Object.values(roster).map(r => {
+      const beat = Object.entries(r.tagCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([tag]) => tag);
+      const topSection = Object.entries(r.sectionCounts)
+        .sort((a, b) => b[1] - a[1])[0];
+      const isActive = r.lastDate != null && (NOW - r.lastDate) <= 90 * 86400000;
+      const avgWords = r.articles ? Math.round(r.words / r.articles) : 0;
+      const lastDateIso = r.lastDate ? new Date(r.lastDate).toISOString().slice(0, 10) : null;
+      return {
+        ...r,
+        beat,
+        topSection: topSection ? topSection[0] : null,
+        isActive,
+        avgWords,
+        lastDateIso
+      };
+    });
+  });
+
   // Recent edits to article content — pulled from git log at build time.
   eleventyConfig.addFilter("recentEdits", (limit) => {
     const N = limit || 30;

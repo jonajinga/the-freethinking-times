@@ -872,13 +872,21 @@
 /*
  * Each top-level <p> in .article-body / .library-body gets an
  * id="pN" assigned by paragraph-anchors.js, plus an appended
- * <a class="para-anchor">¶</a>. The anchor sits in the right-hand
- * margin on wide screens, slips inline at the end of the paragraph
- * on narrow screens, and reveals on hover / focus-within.
+ * <a class="para-anchor">¶</a>. The anchor stays inline at the end
+ * of the paragraph and reveals on hover / focus-within. The "Copied"
+ * tooltip floats absolutely so clicking the anchor never causes the
+ * paragraph to reflow / push content downward.
+ *
+ * scroll-margin-top sits on the <p>, not on the anchor — that's the
+ * element the browser scrolls to when arriving at #pN.
  */
 .article-body > p,
 .library-body > p {
   position: relative;
+}
+.article-body > p[id],
+.library-body > p[id] {
+  scroll-margin-top: 5rem;
 }
 .para-anchor {
   font-family: var(--font-ui);
@@ -890,8 +898,8 @@
   margin-left: 0.4em;
   padding: 0 0.25em;
   border-radius: 2px;
+  position: relative;
   transition: opacity 120ms ease, color 120ms ease, background-color 120ms ease;
-  scroll-margin-top: 7rem;
 }
 .article-body > p:hover .para-anchor,
 .article-body > p:focus-within .para-anchor,
@@ -911,14 +919,25 @@
   color: var(--color-accent);
 }
 .para-anchor--copied::after {
+  /* Float the "Copied" cue above the anchor so it never pushes
+     content around or shifts the paragraph height when the user
+     clicks. The anchor itself stays in normal flow. */
   content: "Copied";
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
   font-family: var(--font-ui);
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  margin-left: 0.4em;
-  color: var(--color-accent);
+  background: var(--color-ink);
+  color: var(--color-bg);
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
 }
 /* Anchor stays inline at the end of the paragraph on every viewport
    width — no sidenote-style margin position. Only visible on hover or
