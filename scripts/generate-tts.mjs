@@ -173,6 +173,9 @@ process.on('uncaughtException', (err) => {
   console.error('\n[uncaughtException]', err && err.stack || err);
   process.exit(1);
 });
+process.on('exit', (code) => {
+  console.error('[process exit] code=' + code);
+});
 
 // ── Main ────────────────────────────────────────────────────────
 async function main() {
@@ -228,17 +231,38 @@ async function main() {
   }
   console.log(`Generating ${work.length} article${work.length === 1 ? '' : 's'}…`);
 
-  // Load model once
-  console.log(`Loading Kokoro model (${MODEL_ID}, dtype=${DTYPE})…`);
+  // Load model once. `device: 'cpu'` is the documented Node option;
+  // letting it default has produced silent native crashes on Windows
+  // during inference (the JS-level handlers above don't fire because
+  // the crash is in the ONNX runtime native side).
+  console.log(`Loading Kokoro model (${MODEL_ID}, dtype=${DTYPE}, device=cpu)…`);
   const t0 = Date.now();
   let tts;
   try {
-    tts = await KokoroTTS.from_pretrained(MODEL_ID, { dtype: DTYPE });
+    tts = await KokoroTTS.from_pretrained(MODEL_ID, { dtype: DTYPE, device: 'cpu' });
   } catch (err) {
-    console.error('Could not load Kokoro model:', err.message || err);
+    console.error('Could not load Kokoro model:', err.stack || err.message || err);
     process.exit(1);
   }
   console.log(`Model ready in ${((Date.now() - t0) / 1000).toFixed(1)} s.`);
+
+  // Smoke test: a single tiny generate() call before the article loop.
+  // If this crashes, the issue is the model + runtime + your machine,
+  // not the streaming or text-handling code. Confirms basic inference
+  // works and surfaces native-side errors with clear context.
+  console.log('Smoke test: generating a 1-sentence sample…');
+  try {
+    const probe = await tts.generate('This is a smoke test.', { voice: DEFAULT_VOICE });
+    const probeLen = probe && probe.audio ? probe.audio.length : 0;
+    console.log(`Smoke test ok (${probeLen} samples).`);
+  } catch (err) {
+    console.error('Smoke test failed — Kokoro inference is broken on this machine:');
+    console.error('  ', err.stack || err.message || err);
+    console.error('\nTry: 1) `npm install` to refresh node_modules');
+    console.error('     2) edit scripts/generate-tts.mjs and change DTYPE to "q4" (smaller model)');
+    console.error('     3) check Windows: install latest Visual C++ Redistributable');
+    process.exit(1);
+  }
 
   let generated = 0, failed = 0;
   for (const item of work) {
