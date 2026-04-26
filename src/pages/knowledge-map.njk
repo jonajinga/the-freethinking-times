@@ -329,20 +329,51 @@ permalink: /knowledge-map/
 }
 </style>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js" defer></script>
 <script defer>
 (function () {
   'use strict';
-  var d3WaitTries = 0;
+
+  // Load D3 with explicit onload + a backup CDN, so the SPA-nav code
+  // path (which appends script tags but doesn't await them) doesn't
+  // race with my init code. Without this we'd give up at 6 s on a
+  // slow CDN response and show the offline fallback even when the
+  // user is online.
+  function loadD3() {
+    return new Promise(function (resolve, reject) {
+      if (typeof d3 !== 'undefined') return resolve();
+      var primary = 'https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js';
+      var backup  = 'https://unpkg.com/d3@7.9.0/dist/d3.min.js';
+      function load(src, onerror) {
+        var s = document.createElement('script');
+        s.src = src;
+        s.async = true;
+        s.onload = function () { resolve(); };
+        s.onerror = onerror;
+        document.head.appendChild(s);
+      }
+      load(primary, function () {
+        load(backup, function () { reject(new Error('Both D3 CDNs failed.')); });
+      });
+    });
+  }
+
+  function startInit() {
+    var loadingEl = document.getElementById('km-loading');
+    if (loadingEl) loadingEl.textContent = 'Loading D3.js…';
+    loadD3()
+      .then(function () { init(); })
+      .catch(function () {
+        if (loadingEl) loadingEl.innerHTML =
+          'D3.js failed to load from both CDNs. Check your network or a content blocker. ' +
+          '<a href="' + location.pathname + '" style="text-decoration: underline;">Retry</a>';
+      });
+  }
+
   function init() {
     var loadingEl = document.getElementById('km-loading');
     if (typeof d3 === 'undefined') {
-      d3WaitTries += 1;
-      if (d3WaitTries > 100) {
-        if (loadingEl) loadingEl.textContent = 'Could not load D3.js (offline?). Articles list is still available below.';
-        return;
-      }
-      setTimeout(init, 60);
+      // Defensive: if somehow we got here without d3, kick off the loader.
+      startInit();
       return;
     }
     var raw = document.getElementById('km-data');
@@ -693,7 +724,7 @@ permalink: /knowledge-map/
       sim.force('center', d3.forceCenter(w / 2, h / 2)).alpha(0.3).restart();
     });
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startInit);
+  else startInit();
 })();
 </script>

@@ -191,9 +191,38 @@ permalink: /print-basket/
           progress();
           if (!html) return { item: item, html: '<p style="color:#888">Could not load this article.</p>' };
           var doc = new DOMParser().parseFromString(html, 'text/html');
-          var body = doc.querySelector('.article-body, .library-body, [data-pagefind-body]');
+          // Prefer .article-body (which excludes the article header — we
+          // print our own synthetic <h1> + byline above it). Fall back to
+          // [data-pagefind-body] only if .article-body is missing, and
+          // strip the header from the fallback so the title doesn't
+          // appear twice in the printed PDF.
+          var body = doc.querySelector('.article-body, .library-body');
+          if (!body) {
+            body = doc.querySelector('[data-pagefind-body]');
+            if (body) body.querySelectorAll('.article-header, .library-header').forEach(function (n) { n.remove(); });
+          }
           if (!body) return { item: item, html: '<p style="color:#888">Article body not found.</p>' };
-          body.querySelectorAll('.article-action-btn, .annotation-toolbar, .share-panel, .share-wrap, [data-tts-skip], .article-comments, .responses-section, .reading-progress, .article-header__actions, script, style').forEach(function (n) { n.remove(); });
+          // Strip every interactive / chrome surface that should never print.
+          body.querySelectorAll([
+            '.article-action-btn',
+            '.annotation-toolbar',
+            '.share-panel', '.share-wrap',
+            '.article-comments',
+            '.responses-section',
+            '.reading-progress',
+            '.article-header__actions',
+            // Support / funding / republish badges and panels
+            '.tip-buttons', '.tip-badge',
+            '.article-header__support-row',
+            '.author-hero__support-badges',
+            '#author-support-panel',
+            '#funding-panel',
+            '#republish-panel',
+            '[data-article-disclosure]',
+            // Misc
+            '[data-tts-skip]',
+            'script', 'style'
+          ].join(',')).forEach(function (n) { n.remove(); });
           return { item: item, html: body.innerHTML };
         })
         .catch(function () { progress(); return { item: item, html: '<p style="color:#888">Fetch error.</p>' }; });
@@ -235,6 +264,35 @@ permalink: /print-basket/
     window.__tftPrintBasket = function () {
       var html = window.__tftPrintBasketHTML || '';
       if (!html.trim()) return;
+
+      // Build the table-of-contents cover page from the current basket
+      // (titles + meta), then prepend it to the article stack.
+      var current = load();
+      var tocItems = current.map(function (item, i) {
+        var meta = [item.author, item.section, fmtDate(item.date)].filter(Boolean).join(' &middot; ');
+        return '<li><span class="pb-toc__num">' + (i + 1) + '</span>' +
+               '<span class="pb-toc__entry"><span class="pb-toc__title">' + escapeAttr(item.title || item.url) + '</span>' +
+               (meta ? '<span class="pb-toc__meta">' + meta + '</span>' : '') +
+               '</span></li>';
+      }).join('');
+      var coverDate = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+      var cover =
+        '<section class="pb-cover">' +
+          '<div class="pb-cover__head">' +
+            '<p class="pb-cover__eyebrow">A reader compilation from</p>' +
+            '<h1 class="pb-cover__publication">{{ site.title }}</h1>' +
+            '<p class="pb-cover__line">{{ site.url }}</p>' +
+          '</div>' +
+          '<div class="pb-cover__body">' +
+            '<h2 class="pb-cover__heading">Contents</h2>' +
+            '<ol class="pb-toc">' + tocItems + '</ol>' +
+          '</div>' +
+          '<div class="pb-cover__foot">' +
+            '<p class="pb-cover__count">' + current.length + ' article' + (current.length === 1 ? '' : 's') + ' &middot; compiled ' + coverDate + '</p>' +
+            '<p class="pb-cover__note">Articles released under <a href="{{ site.url }}/license/">CC BY-NC-ND 4.0</a>. Republish with attribution and a link back to the canonical URL.</p>' +
+          '</div>' +
+        '</section>';
+
       // Build the iframe document
       var iframe = document.createElement('iframe');
       iframe.style.cssText = 'position:fixed;width:0;height:0;border:0;left:-9999px;top:0;';
@@ -263,8 +321,26 @@ permalink: /print-basket/
         ' .pb-print__byline { font-family: Helvetica, Arial, sans-serif; font-size: 10pt; color: #555; margin-bottom: 1em; padding-bottom: 0.6em; border-bottom: 1px solid #ccc; }',
         ' article { page-break-after: always; }',
         ' article:last-child { page-break-after: auto; }',
+        // ── Cover page
+        ' .pb-cover { display: flex; flex-direction: column; min-height: calc(100vh - 1.2in); padding: 0; page-break-after: always; }',
+        ' .pb-cover__head { padding-top: 1.2in; text-align: center; border-bottom: 2px solid #111; padding-bottom: 0.6in; }',
+        ' .pb-cover__eyebrow { font-family: Helvetica, Arial, sans-serif; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.18em; color: #555; margin: 0 0 0.6em; }',
+        ' .pb-cover__publication { font-family: Georgia, serif; font-size: 36pt; line-height: 1.05; margin: 0 0 0.4em; letter-spacing: -0.01em; }',
+        ' .pb-cover__line { font-family: Helvetica, Arial, sans-serif; font-size: 10pt; color: #777; margin: 0; }',
+        ' .pb-cover__body { padding-top: 0.5in; flex: 1; }',
+        ' .pb-cover__heading { font-family: Helvetica, Arial, sans-serif; font-size: 11pt; text-transform: uppercase; letter-spacing: 0.16em; color: #555; font-weight: 700; margin: 0 0 0.3in; }',
+        ' .pb-toc { list-style: none; padding: 0; margin: 0; counter-reset: pbtoc; }',
+        ' .pb-toc li { display: grid; grid-template-columns: 0.4in 1fr; align-items: baseline; gap: 0.15in; padding: 8pt 0; border-bottom: 1px dotted #bbb; }',
+        ' .pb-toc__num { font-family: Helvetica, Arial, sans-serif; font-size: 14pt; font-weight: 700; color: #555; }',
+        ' .pb-toc__entry { display: flex; flex-direction: column; gap: 2pt; }',
+        ' .pb-toc__title { font-family: Georgia, serif; font-size: 13pt; line-height: 1.25; color: #111; }',
+        ' .pb-toc__meta { font-family: Helvetica, Arial, sans-serif; font-size: 9pt; color: #777; text-transform: uppercase; letter-spacing: 0.06em; }',
+        ' .pb-cover__foot { padding-top: 0.4in; margin-top: 0.4in; border-top: 1px solid #bbb; text-align: center; }',
+        ' .pb-cover__count { font-family: Helvetica, Arial, sans-serif; font-size: 10pt; color: #555; margin: 0 0 0.4em; }',
+        ' .pb-cover__note { font-family: Helvetica, Arial, sans-serif; font-size: 8.5pt; color: #888; margin: 0; max-width: 4.6in; margin-left: auto; margin-right: auto; }',
         '</style>',
         '</head><body>',
+        cover,
         // Re-tag the preview classes to match the iframe stylesheet
         html.replace(/pb-preview__article/g, 'pb-print__article').replace(/pb-preview__byline/g, 'pb-print__byline'),
         '</body></html>'

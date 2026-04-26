@@ -2039,13 +2039,19 @@ a.dateline:hover { color: var(--color-accent); }
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0.7;
+  opacity: 0.9;
   flex-shrink: 0;
-  transition: opacity 0.1s, background 0.1s;
+  transition: opacity 0.1s, background 0.1s, color 0.1s;
 }
 .site-announce__close:hover {
   opacity: 1;
-  background: rgba(127, 127, 127, 0.18);
+  background: currentColor;
+  color: var(--color-ink);
+}
+.site-announce--breaking .site-announce__close:hover,
+.site-announce--warning  .site-announce__close:hover {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--color-accent);
 }
 
 .site-announce--warning {
@@ -4848,9 +4854,11 @@ select.w3f__input option {
   line-height: 1;
 }
 @media (max-width: 600px) {
+  /* Match back-to-top's mobile right offset and stack height so the
+     two buttons read as a tight vertical pair. */
   .pdf-basket-tray {
-    right: var(--space-3);
-    bottom: calc(5rem + 44px + var(--space-2));
+    right: var(--space-6);
+    bottom: calc(6rem + 44px + var(--space-2));
     width: 40px;
     height: 40px;
   }

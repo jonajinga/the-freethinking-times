@@ -473,6 +473,20 @@
 
 @media print {
   .article-footnotes { display: none !important; }
+  /* Support / funding / republish badges and their disclosure panels
+     are publication-state UI, not editorial content — never print them.
+     Applies to single-article browser print, single-article PDF
+     downloads, and any other print path that uses the live page. */
+  .tip-buttons,
+  .tip-badge,
+  .article-header__support-row,
+  .author-hero__support-badges,
+  #author-support-panel,
+  #funding-panel,
+  #republish-panel,
+  [data-article-disclosure],
+  .pdf-basket-tray,
+  .masthead__live { display: none !important; }
 }
 
 /* Comments placeholder (shown when comments provider isn't configured) */

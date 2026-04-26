@@ -1497,6 +1497,15 @@
   flex-shrink: 0;
 }
 
+/* Normalise SVG icon size so engagement buttons (like, mark-read,
+   pdf-basket, tts) render at the same 18px the rest of the toolbar
+   uses. Without this the like heart shipped at 13×13 and looked
+   missing next to the larger bookmark / share / comments icons. */
+.annotation-toolbar__btn svg {
+  width: 18px;
+  height: 18px;
+}
+
 /* Tighter on phones — the toolbar holds 10+ buttons after the engagement
    migration, so the 44×44 default forces a row wrap on narrow screens. */
 @media (max-width: 600px) {
