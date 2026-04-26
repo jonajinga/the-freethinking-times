@@ -60,40 +60,38 @@ function normalizeUrl(u) {
   return s;
 }
 
-// Page through Umami's events endpoint to collect every event
-// matching `eventName` in the lookback window. Each record carries
-// the urlPath where the event fired, so we can bucket by article.
+// Get the per-URL count for an event by reading the values of
+// the `url` property we attach in the client (see like-btn.js's
+// `umami.track('article-like', { url })` call).
 //
-// Why we don't use /metrics?type=event: that endpoint groups the
-// response by event NAME (returning [{ x: 'article-like', y: 12 }])
-// not by URL, so all likes get attributed to a fake `/article-like/`
-// path. The /events endpoint returns one row per event with the
-// real urlPath, which is what we want.
-async function fetchEventRecords(eventName) {
-  const all = [];
-  const pageSize = 200;
-  let page = 1;
-  let total = Infinity;
-  while (all.length < total && page < 200) { // hard cap on pagination
-    const resp = await umami(`/websites/${SITE_ID}/events`, {
-      startAt, endAt, query: eventName, pageSize, page
+// Endpoint: /api/websites/{id}/event-data/values
+// Params:   startAt, endAt, eventName, propertyName=url
+// Returns:  [{ value: "/news/foo/", total: N }, ...]
+//
+// This is the only Umami query shape that yields per-URL counts of
+// custom events. The previous /metrics?type=event approach grouped
+// by event NAME (so all 12 likes ended up bucketed under a fake
+// /article-like/ path); /events lists records but Cloud doesn't
+// expose it for filtered queries the way I assumed.
+async function fetchEventValuesByUrl(eventName) {
+  const tryEndpoints = [
+    '/websites/' + SITE_ID + '/event-data/values',
+    '/websites/' + SITE_ID + '/event-data/properties' // last-ditch diagnostic
+  ];
+  let resp = null;
+  let lastErr = null;
+  try {
+    resp = await umami(tryEndpoints[0], {
+      startAt, endAt, eventName, propertyName: 'url'
     });
-    if (!resp) break;
-    // Umami's /events returns either { data: [...], count } or a bare array.
-    const data = Array.isArray(resp) ? resp : (resp.data || []);
-    if (resp && typeof resp.count === 'number') total = resp.count;
-    if (!data.length) break;
-    // Filter strictly to records whose name matches — `query` is a
-    // search, not an exact match, so 'share-twitter' could pull in
-    // unrelated entries on a noisy site.
-    for (const ev of data) {
-      const name = ev.eventName || ev.name || ev.event_name;
-      if (name === eventName) all.push(ev);
-    }
-    if (data.length < pageSize) break;
-    page += 1;
+  } catch (e) {
+    lastErr = e;
   }
-  return all;
+  if (!resp || (!Array.isArray(resp) && !resp.data)) {
+    if (lastErr) throw lastErr;
+    return [];
+  }
+  return Array.isArray(resp) ? resp : (resp.data || []);
 }
 
 async function main() {
@@ -109,27 +107,44 @@ async function main() {
     stats[url].views += Number(row.y || 0);
   }
 
-  // Event records, bucketed by the URL where each fired
+  // Per-URL event counts via event-data values
   const events = ['share-twitter', 'share-linkedin', 'share-bluesky',
                   'share-mastodon', 'share-reddit', 'share-facebook',
                   'share-email', 'share-copy', 'article-like'];
   for (const name of events) {
-    let records = [];
+    let rows = [];
     try {
-      records = await fetchEventRecords(name);
+      rows = await fetchEventValuesByUrl(name);
     } catch (e) {
       console.warn(`event ${name}: ${e.message}`);
       continue;
     }
-    for (const ev of records) {
-      const path = ev.urlPath || ev.url_path || ev.url;
-      const url = normalizeUrl(path);
-      if (!url || url === '/') continue;
+    let added = 0;
+    for (const row of rows) {
+      // Defensive across Umami response shapes — different versions
+      // have used `value`/`x`/`url` for the property value and
+      // `total`/`y`/`count` for the count.
+      const raw = row.value != null ? row.value
+                : row.x     != null ? row.x
+                : row.url   != null ? row.url
+                : '';
+      const cnt = Number(row.total != null ? row.total
+                       : row.y     != null ? row.y
+                       : row.count != null ? row.count
+                       : 0) || 0;
+      const url = normalizeUrl(raw);
+      // Skip entries whose value isn't a real article path — Umami
+      // can return raw event names if the property wasn't actually
+      // attached to the event, and we don't want those to leak into
+      // the stats again.
+      if (!url || url === '/' || /^\/(article-|share-)/.test(url)) continue;
       stats[url] = stats[url] || { views: 0, shares: 0, likes: 0 };
-      if (name === 'article-like') stats[url].likes  += 1;
-      else                          stats[url].shares += 1;
+      if (name === 'article-like') stats[url].likes  += cnt;
+      else                          stats[url].shares += cnt;
+      added += cnt;
     }
-    if (records.length) console.log(`  ${name}: ${records.length} records`);
+    if (added) console.log(`  ${name}: ${added} (across ${rows.length} URL${rows.length === 1 ? '' : 's'})`);
+    else if (rows.length === 0) console.log(`  ${name}: (no rows)`);
   }
 
   const out = join(__dirname, '..', 'src', '_data', 'articleStats.json');
