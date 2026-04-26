@@ -102,15 +102,6 @@ function cleanForTTS(markdown) {
   return text.replace(/\s+\n/g, '\n').replace(/[ \t]{2,}/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
 }
 
-function probeDurationSec(filePath) {
-  return new Promise((resolve) => {
-    ffmpeg.ffprobe(filePath, (err, data) => {
-      if (err || !data || !data.format) return resolve(0);
-      resolve(Number(data.format.duration) || 0);
-    });
-  });
-}
-
 function transcodeWavToMp3(wavPath, mp3Path) {
   return new Promise((resolve, reject) => {
     ffmpeg(wavPath)
@@ -124,18 +115,51 @@ function transcodeWavToMp3(wavPath, mp3Path) {
   });
 }
 
-function audioToWav(audio) {
-  // kokoro-js exposes either toWav (Uint8Array) or toBlob (Blob).
-  // In Node we prefer toWav and write the bytes directly.
-  if (typeof audio.toWav === 'function') {
-    const u8 = audio.toWav();
-    return Buffer.from(u8);
+// Build a 16-bit PCM mono WAV file from a Float32Array of audio
+// samples + a sample rate. Returns a Node Buffer ready to write to
+// disk. Necessary because we concatenate streamed chunks and need
+// a single input for ffmpeg.
+function float32ToWavBuffer(samples, sampleRate) {
+  const numSamples = samples.length;
+  const bytesPerSample = 2;
+  const byteRate = sampleRate * bytesPerSample;
+  const dataSize = numSamples * bytesPerSample;
+  const buf = Buffer.alloc(44 + dataSize);
+  // RIFF header
+  buf.write('RIFF', 0, 'ascii');
+  buf.writeUInt32LE(36 + dataSize, 4);
+  buf.write('WAVE', 8, 'ascii');
+  // fmt chunk
+  buf.write('fmt ', 12, 'ascii');
+  buf.writeUInt32LE(16, 16);            // chunk size
+  buf.writeUInt16LE(1, 20);             // PCM format
+  buf.writeUInt16LE(1, 22);             // mono
+  buf.writeUInt32LE(sampleRate, 24);
+  buf.writeUInt32LE(byteRate, 28);
+  buf.writeUInt16LE(bytesPerSample, 32); // block align
+  buf.writeUInt16LE(16, 34);            // bits per sample
+  // data chunk
+  buf.write('data', 36, 'ascii');
+  buf.writeUInt32LE(dataSize, 40);
+  // Float32 [-1, 1] → Int16
+  let offset = 44;
+  for (let i = 0; i < numSamples; i++) {
+    let s = samples[i];
+    if (s > 1)  s = 1;
+    if (s < -1) s = -1;
+    buf.writeInt16LE(Math.round(s * 32767), offset);
+    offset += 2;
   }
-  if (typeof audio.save === 'function') {
-    // Newer versions: save(path) writes a .wav. We pipe to a temp.
-    return null; // handled differently in the caller
-  }
-  throw new Error('Kokoro audio object missing toWav/save methods');
+  return buf;
+}
+
+function concatFloat32(arrays) {
+  let total = 0;
+  for (const a of arrays) total += a.length;
+  const out = new Float32Array(total);
+  let offset = 0;
+  for (const a of arrays) { out.set(a, offset); offset += a.length; }
+  return out;
 }
 
 // ── Main ────────────────────────────────────────────────────────
@@ -211,23 +235,36 @@ async function main() {
       console.log(`  gen    ${item.section}/${item.slug}  (${item.text.length} chars, voice=${item.voice})`);
 
       const tStart = Date.now();
-      const audio = await tts.generate(item.text, { voice: item.voice });
 
-      // Write WAV to temp, transcode to MP3, then clean up
-      const tmpWav = path.join(os.tmpdir(), `tft-${item.slug}-${Date.now()}.wav`);
-      const wavBuf = audioToWav(audio);
-      if (wavBuf) {
-        fs.writeFileSync(tmpWav, wavBuf);
-      } else if (typeof audio.save === 'function') {
-        await audio.save(tmpWav);
-      } else {
-        throw new Error('Could not write WAV from kokoro audio');
+      // Kokoro's single-shot generate() truncates long input. Use the
+      // streaming API: it auto-splits the text on sentence boundaries
+      // and yields one audio chunk per sentence. We collect the raw
+      // PCM samples, concatenate, and build a single WAV before
+      // handing to ffmpeg.
+      const chunks = [];
+      let sampleRate = 0;
+      let chunkCount = 0;
+      for await (const out of tts.stream(item.text, { voice: item.voice })) {
+        // out: { text: '...', audio: { audio: Float32Array, sampling_rate: number, ... } }
+        if (!out || !out.audio || !out.audio.audio) continue;
+        chunks.push(out.audio.audio);
+        sampleRate = sampleRate || out.audio.sampling_rate;
+        chunkCount += 1;
       }
+      if (!chunks.length || !sampleRate) throw new Error('Kokoro stream produced no audio');
 
-      await transcodeWavToMp3(tmpWav, item.mp3Path);
-      const durationSec = await probeDurationSec(item.mp3Path);
+      const samples = concatFloat32(chunks);
+      const durationSec = samples.length / sampleRate;
+      const wavBuf = float32ToWavBuffer(samples, sampleRate);
+
+      const tmpWav = path.join(os.tmpdir(), `tft-${item.slug}-${Date.now()}.wav`);
+      fs.writeFileSync(tmpWav, wavBuf);
+      try {
+        await transcodeWavToMp3(tmpWav, item.mp3Path);
+      } finally {
+        try { fs.unlinkSync(tmpWav); } catch (e) {}
+      }
       const stat = fs.statSync(item.mp3Path);
-      try { fs.unlinkSync(tmpWav); } catch (e) {}
 
       const sidecar = {
         hash: item.hash,
@@ -235,6 +272,8 @@ async function main() {
         durationSec: Math.round(durationSec * 10) / 10,
         byteSize: stat.size,
         sourceMarkdownLength: item.text.length,
+        sampleRate,
+        chunkCount,
         generatedAt: new Date().toISOString(),
         modelId: MODEL_ID,
         dtype: DTYPE
@@ -244,7 +283,7 @@ async function main() {
       const took = ((Date.now() - tStart) / 1000).toFixed(1);
       const mb = (stat.size / 1024 / 1024).toFixed(2);
       const min = (durationSec / 60).toFixed(1);
-      console.log(`         done  ${mb} MB, ${min} min audio, took ${took} s`);
+      console.log(`         done  ${mb} MB, ${min} min audio, ${chunkCount} chunks, took ${took} s`);
       generated += 1;
     } catch (err) {
       failed += 1;
