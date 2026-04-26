@@ -1,0 +1,67 @@
+{#
+  site-announcement.njk — renders up to two top-of-page strips, in
+  order:
+
+    1. Watch-live banner — when site.live.active is truthy, shows a
+       slim red strip with a pulsing dot, the publication's live
+       title, and a CTA opening the stream URL on the configured
+       platform (YouTube / Vimeo / Twitch / etc.).
+
+    2. Announcement banner — when site.announcement.active is truthy,
+       shows a slim coloured strip (severity controls colour: info /
+       warning / breaking) with text + optional CTA. Dismissible per
+       announcement-id via localStorage so a reader who dismisses the
+       Tuesday banner doesn't see it again until you change the id.
+
+  Both banners are emitted at the very top of <body>, above the
+  masthead, so they read as out-of-band publication-state signals
+  rather than article chrome. Self-contained markup + inline JS;
+  nothing else on the page depends on these.
+#}
+
+{% if site.live and site.live.active and site.live.url %}
+<aside class="site-live" role="status" aria-live="polite">
+  <a class="site-live__link" href="{{ site.live.url }}" target="_blank" rel="noopener" data-umami-event="watch-live">
+    <span class="site-live__dot" aria-hidden="true"></span>
+    <span class="site-live__label">Live{% if site.live.platform %} on {{ site.live.platform | capitalize }}{% endif %}</span>
+    {% if site.live.title %}<span class="site-live__title">&middot; {{ site.live.title }}</span>{% endif %}
+    {% if site.live.subtitle %}<span class="site-live__sub">{{ site.live.subtitle }}</span>{% endif %}
+    <span class="site-live__cta" aria-hidden="true">Watch &rarr;</span>
+  </a>
+</aside>
+{% endif %}
+
+{% if site.announcement and site.announcement.active and site.announcement.text %}
+{% set _ann = site.announcement %}
+{% set _annId = _ann.id or (_ann.text | slugify | truncate(40, true, "")) %}
+<aside class="site-announce site-announce--{{ _ann.severity or 'info' }}" id="site-announce" data-announce-id="{{ _annId }}"{% if not _ann.dismissible %} data-pinned="true"{% endif %} role="status">
+  <span class="site-announce__icon" aria-hidden="true">
+    {% if _ann.severity == "breaking" %}&#9632;{% elif _ann.severity == "warning" %}&#9888;{% else %}&#8226;{% endif %}
+  </span>
+  <span class="site-announce__text">{{ _ann.text }}</span>
+  {% if _ann.linkUrl and _ann.linkText %}
+  <a class="site-announce__cta" href="{{ _ann.linkUrl }}" data-umami-event="announce-cta">{{ _ann.linkText }} &rarr;</a>
+  {% endif %}
+  {% if _ann.dismissible %}
+  <button type="button" class="site-announce__close" aria-label="Dismiss announcement">&times;</button>
+  {% endif %}
+</aside>
+<script>
+(function () {
+  var el = document.getElementById('site-announce');
+  if (!el || el.dataset.pinned === 'true') return;
+  var id = el.dataset.announceId;
+  var key = (window.__PREFIX || 'tft') + '-announce-dismissed';
+  function load() { try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) { return []; } }
+  function save(list) { try { localStorage.setItem(key, JSON.stringify(list)); } catch (e) {} }
+  if (load().indexOf(id) !== -1) { el.hidden = true; return; }
+  var btn = el.querySelector('.site-announce__close');
+  if (btn) btn.addEventListener('click', function () {
+    el.hidden = true;
+    var list = load();
+    if (list.indexOf(id) === -1) list.push(id);
+    save(list);
+  });
+})();
+</script>
+{% endif %}

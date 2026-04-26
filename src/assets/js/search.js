@@ -112,9 +112,24 @@
         return;
       }
 
+      // Render up to 4 tag chips alongside the section meta. Tags
+      // come from pagefind's per-page meta capture (data-pagefind-meta
+      // ="tags") wired in article.njk. Mobile CSS pills these into
+      // wrap-friendly chips so the meta line never breaks awkwardly.
+      const tagChipsFor = (item) => {
+        const raw = item.meta?.tags || '';
+        if (!raw) return '';
+        const tags = String(raw).split(',').map(t => t.trim()).filter(Boolean).slice(0, 4);
+        if (!tags.length) return '';
+        return `<span class="search-result__tags">${tags.map(t => `<span class="search-result__tag">${t}</span>`).join('')}</span>`;
+      };
+
       let html = data.map(item => `
         <a class="search-result" href="${item.url}">
-          <span class="search-result__meta">${item.meta?.section || ''}</span>
+          <span class="search-result__meta">
+            <span>${item.meta?.section || ''}</span>
+            ${tagChipsFor(item)}
+          </span>
           <span class="search-result__title">${item.meta?.title || 'Untitled'}</span>
           <span class="search-result__excerpt">${item.excerpt}</span>
         </a>
@@ -143,7 +158,10 @@
           const newShown = shown + nextBatch.length;
           const moreHtml = nextBatch.map(item => `
             <a class="search-result" href="${item.url}">
-              <span class="search-result__meta">${item.meta?.section || ''}</span>
+              <span class="search-result__meta">
+                <span>${item.meta?.section || ''}</span>
+                ${tagChipsFor(item)}
+              </span>
               <span class="search-result__title">${item.meta?.title || 'Untitled'}</span>
               <span class="search-result__excerpt">${item.excerpt}</span>
             </a>

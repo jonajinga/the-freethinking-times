@@ -121,7 +121,10 @@
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div class="site-wrapper">
 
-    {# ── Breaking Banner (conditional) ── #}
+    {# ── Watch-live + announcement banners (conditional, from site config) ── #}
+    {% include "partials/site-announcement.njk" %}
+
+    {# ── Breaking Banner (conditional, per-page front-matter) ── #}
     {% if breaking %}
     <div class="breaking-banner" role="alert">
       <span>Breaking: </span><a href="{{ breaking.url }}">{{ breaking.text }}</a>
@@ -156,6 +159,7 @@
   <script src="/assets/js/drawer.js?v={{ buildTime }}" defer></script>
   <script src="/assets/js/progress.js?v={{ buildTime }}" defer></script>
   <script src="/assets/js/paragraph-anchors.js?v={{ buildTime }}" defer></script>
+  <script src="/assets/js/pdf-viewer.js?v={{ buildTime }}" defer></script>
   <script src="/assets/js/smart-header.js?v={{ buildTime }}" defer></script>
   <script src="/assets/js/search.js?v={{ buildTime }}" defer></script>
   <script src="/assets/js/subscribe.js?v={{ buildTime }}" defer></script>

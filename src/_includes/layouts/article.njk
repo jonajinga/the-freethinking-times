@@ -59,6 +59,10 @@ layout: layouts/base.njk
   <span data-pagefind-filter="author">{{ authors[author].name or authorName or author }}</span>
   {% endif %}
   <span data-pagefind-filter="year">{{ page.date | htmlDateString | truncate(4, false, '') }}</span>
+  {% if tags %}
+  <span data-pagefind-meta="tags">{% for tag in tags %}{% if tag != "post" %}{{ tag }}{% if not loop.last %}, {% endif %}{% endif %}{% endfor %}</span>
+  {% for tag in tags %}{% if tag != "post" %}<span data-pagefind-filter="topic">{{ tag }}</span>{% endif %}{% endfor %}
+  {% endif %}
 </div>
 
 <div class="container article-layout">
@@ -158,10 +162,19 @@ layout: layouts/base.njk
                     data-umami-event="funding-learn"
                     onclick="toggleArticleDisclosure(this)">How We're Funded</button>
             {% if syndicate %}
+            <span class="article-header__support-divider" aria-hidden="true"></span>
             <button type="button" class="tip-badge tip-badge--cta" aria-expanded="false" aria-controls="republish-panel"
                     aria-label="Open republication terms and grab-code"
                     data-umami-event="license-learn"
                     onclick="toggleArticleDisclosure(this)">Republish This Story</button>
+            {% endif %}
+            {% set _gnFollow = (site.googleNews and (site.googleNews.followUrl or site.googleNews.publicationId)) %}
+            {% if _gnFollow %}
+            {% set _gnUrl = site.googleNews.followUrl or ("https://news.google.com/publications/" + site.googleNews.publicationId) %}
+            <span class="article-header__support-divider" aria-hidden="true"></span>
+            <a class="tip-badge" href="{{ _gnUrl }}" target="_blank" rel="noopener noreferrer"
+               aria-label="Follow {{ site.title }} on Google News"
+               data-umami-event="google-news-follow">Add as Preferred on Google</a>
             {% endif %}
           </div>
           {% endif %}

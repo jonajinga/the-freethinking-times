@@ -78,6 +78,9 @@ module.exports = {
     patreon: env.PATREON_URL || s.tipping.patreon || ""
   },
   social: s.social,
+  googleNews: s.googleNews || {},
+  announcement: s.announcement || {},
+  live: s.live || {},
   subscribe: s.subscribe,
   contactSubjects: s.contactSubjects,
   // nav items live in src/_data/nav.json — accessible as `nav` in templates

@@ -140,6 +140,35 @@ module.exports = function (eleventyConfig) {
               "para-anchor",
               "para-anchor--copied",
               "para-anchor-target",
+              // Site-wide announcement + watch-live banners — only
+              // render when site.live.active or site.announcement.active
+              // is flipped on, so PurgeCSS may scan a build where they
+              // are absent and strip them.
+              "site-live",
+              "site-live__link",
+              "site-live__dot",
+              "site-live__label",
+              "site-live__title",
+              "site-live__sub",
+              "site-live__cta",
+              "site-announce",
+              "site-announce--info",
+              "site-announce--warning",
+              "site-announce--breaking",
+              "site-announce__icon",
+              "site-announce__text",
+              "site-announce__cta",
+              "site-announce__close",
+              // PDF viewer modal — built lazily by pdf-viewer.js on
+              // first PDF link click; never present in the source scan.
+              "pdf-modal",
+              "pdf-modal__backdrop",
+              "pdf-modal__panel",
+              "pdf-modal__head",
+              "pdf-modal__title",
+              "pdf-modal__action",
+              "pdf-modal__close",
+              "pdf-modal__frame",
             ],
             // ── Keep any rule whose selector contains these patterns ─────────
             deep: [

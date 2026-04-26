@@ -385,6 +385,28 @@
   transition: background var(--transition-fast), color var(--transition-fast);
 }
 
+/* Browse-topics link in the archive toolbar — sits next to the Topic
+   filter as a quick out to /topics/ when the dropdown isn't enough. */
+.archive-topics-link {
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-ink-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 1px dotted transparent;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+.archive-topics-link:hover {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}
+
 .archive-clear:hover {
   background: var(--color-bg-alt);
   color: var(--color-ink);

@@ -53,6 +53,16 @@ permalink: /archives/
         <option value="12">December</option>
       </select>
 
+      <label class="visually-hidden" for="archive-topic">Filter by topic</label>
+      <select id="archive-topic" class="archive-select" aria-label="Filter by topic">
+        <option value="">All Topics</option>
+        {% for tag in collections.tagList %}
+        <option value="{{ tag | lower }}">{{ tag }}</option>
+        {% endfor %}
+      </select>
+
+      <a class="archive-topics-link" href="/topics/">Browse topics &rarr;</a>
+
       <button id="archive-clear" class="archive-clear" type="button" hidden>Clear filters</button>
 
     </div>
@@ -95,6 +105,8 @@ permalink: /archives/
         {% set itemDesc = item.data.description if item.data.description else "" %}
         {% set dateParts = itemDate.split("-") %}
 
+        {% set itemTags = "" %}
+        {% if item.data.tags %}{% for t in item.data.tags %}{% if t != "post" %}{% set itemTags = itemTags + (t | lower) + "|" %}{% endif %}{% endfor %}{% endif %}
         <li
           class="article-list__item archive-entry"
           data-title="{{ itemTitle | lower }}"
@@ -104,6 +116,7 @@ permalink: /archives/
           data-author-name="{{ authorName }}"
           data-year="{{ dateParts[0] }}"
           data-month="{{ dateParts[1] | int }}"
+          data-tags="|{{ itemTags }}"
         >
 
           {# Section badge #}
@@ -160,6 +173,7 @@ permalink: /archives/
   var authorEl  = document.getElementById('archive-author');
   var yearEl    = document.getElementById('archive-year');
   var monthEl   = document.getElementById('archive-month');
+  var topicEl   = document.getElementById('archive-topic');
   var clearBtn  = document.getElementById('archive-clear');
   var countEl   = document.getElementById('archive-count');
   var emptyEl   = document.getElementById('archive-empty');
@@ -269,6 +283,7 @@ permalink: /archives/
     if (authorEl.value)  p.set('author',  authorEl.value);
     if (yearEl.value)    p.set('year',    yearEl.value);
     if (monthEl.value)   p.set('month',   monthEl.value);
+    if (topicEl && topicEl.value) p.set('topic', topicEl.value);
     var qs = p.toString();
     viewLinks.forEach(function (a) {
       var base = a.getAttribute('href').split('?')[0];
@@ -277,8 +292,9 @@ permalink: /archives/
   }
 
   // ── URL state persistence ─────────────────────────────────────
-  // Filters mirror to ?q=&section=&author=&year=&month= so the view is
-  // shareable and survives browser back/forward. Hydrated on load below.
+  // Filters mirror to ?q=&section=&author=&year=&month=&topic= so the
+  // view is shareable and survives browser back/forward. Hydrated on
+  // load below.
   function writeUrlState() {
     var p = new URLSearchParams();
     var q = searchEl.value.trim();
@@ -287,6 +303,7 @@ permalink: /archives/
     if (authorEl.value)  p.set('author', authorEl.value);
     if (yearEl.value)    p.set('year', yearEl.value);
     if (monthEl.value)   p.set('month', monthEl.value);
+    if (topicEl && topicEl.value) p.set('topic', topicEl.value);
     var qs = p.toString();
     var next = location.pathname + (qs ? '?' + qs : '') + location.hash;
     history.replaceState(null, '', next);
@@ -298,6 +315,7 @@ permalink: /archives/
     if (p.has('author'))  authorEl.value  = p.get('author');
     if (p.has('year'))    yearEl.value    = p.get('year');
     if (p.has('month'))   monthEl.value   = p.get('month');
+    if (p.has('topic') && topicEl) topicEl.value = p.get('topic');
   }
 
   // ── Core filter function ──────────────────────────────────────
@@ -307,8 +325,9 @@ permalink: /archives/
     var author  = authorEl.value;
     var year    = yearEl.value;
     var month   = monthEl.value;
+    var topic   = topicEl ? topicEl.value : '';
 
-    var anyActive = q || section || author || year || month;
+    var anyActive = q || section || author || year || month || topic;
     clearBtn.hidden = !anyActive;
     updateSelectStates();
 
@@ -321,6 +340,13 @@ permalink: /archives/
       if (author  && entry.dataset.author  !== author)  show = false;
       if (year    && entry.dataset.year    !== year)     show = false;
       if (month   && entry.dataset.month   !== month)    show = false;
+      if (topic) {
+        // Tags are stored as |topic|topic|topic| so substring match
+        // around the | sentinel ensures partial-name collisions
+        // (e.g. "ar" ≠ "art") never produce false positives.
+        var t = entry.dataset.tags || '';
+        if (t.indexOf('|' + topic + '|') === -1) show = false;
+      }
       entry.hidden = !show;
       if (show) visible++;
     });
@@ -343,8 +369,8 @@ permalink: /archives/
     searchTimer = setTimeout(applyFilters, 200);
   });
 
-  [sectionEl, authorEl, yearEl, monthEl].forEach(function (el) {
-    el.addEventListener('change', applyFilters);
+  [sectionEl, authorEl, yearEl, monthEl, topicEl].forEach(function (el) {
+    if (el) el.addEventListener('change', applyFilters);
   });
 
   clearBtn.addEventListener('click', archiveClearAll);
@@ -366,6 +392,7 @@ permalink: /archives/
     authorEl.value = '';
     yearEl.value = '';
     monthEl.value = '';
+    if (topicEl) topicEl.value = '';
     applyFilters();
   };
 
@@ -375,7 +402,7 @@ permalink: /archives/
   // Hydrate filters from the URL and run once. skipUrl avoids rewriting
   // the URL to an identical value on the first paint.
   readUrlState();
-  if (searchEl.value || sectionEl.value || authorEl.value || yearEl.value || monthEl.value) {
+  if (searchEl.value || sectionEl.value || authorEl.value || yearEl.value || monthEl.value || (topicEl && topicEl.value)) {
     applyFilters(true);
   }
   // Back/forward should re-sync the filters to match the restored URL.

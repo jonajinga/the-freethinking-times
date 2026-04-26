@@ -18,6 +18,26 @@
     "rss": "/feeds/",
     "bluesky": "https://bsky.app/profile/jonajinga.bsky.social"
   },
+  "googleNews": {
+    "followUrl": "",
+    "publicationId": ""
+  },
+  "announcement": {
+    "active": false,
+    "severity": "info",
+    "id": "",
+    "text": "",
+    "linkText": "",
+    "linkUrl": "",
+    "dismissible": true
+  },
+  "live": {
+    "active": false,
+    "platform": "",
+    "url": "",
+    "title": "",
+    "subtitle": ""
+  },
   "subscribe": {
     "eyebrow": "Newsletter",
     "heading": "One email, one article.",
