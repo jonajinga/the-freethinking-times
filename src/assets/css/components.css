@@ -2012,18 +2012,26 @@ a.dateline:hover { color: var(--color-accent); }
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid currentColor;
+  background: transparent;
   flex-shrink: 0;
-  transition: background 0.12s, border-color 0.12s;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
 }
 .site-announce__cta:hover {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(255, 255, 255, 0.85);
+  background: currentColor;
+  color: var(--color-ink);
 }
+.site-announce--breaking .site-announce__cta:hover,
+.site-announce--warning  .site-announce__cta:hover {
+  /* On colored severity bands the bg colour is already strong; flip to a
+     filled white state on hover instead of the currentColor swap. */
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--color-accent);
+}
+
 .site-announce__close {
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid currentColor;
   color: inherit;
   width: 28px;
   height: 28px;
@@ -2031,14 +2039,13 @@ a.dateline:hover { color: var(--color-accent); }
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0.85;
+  opacity: 0.7;
   flex-shrink: 0;
-  transition: opacity 0.1s, background 0.1s, border-color 0.1s;
+  transition: opacity 0.1s, background 0.1s;
 }
 .site-announce__close:hover {
   opacity: 1;
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(127, 127, 127, 0.18);
 }
 
 .site-announce--warning {
@@ -2060,10 +2067,41 @@ a.dateline:hover { color: var(--color-accent); }
 
 @media (max-width: 600px) {
   .site-announce__inner {
-    padding: 8px var(--gutter);
-    gap: var(--space-2);
+    padding: 8px var(--space-3);
+    gap: 6px 8px;
+    align-items: flex-start;
+    flex-wrap: wrap;
   }
-  .site-announce__cta { font-size: 0.7rem; padding: 3px 8px; }
+  .site-announce__badge {
+    padding: 1px 6px;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    align-self: center;
+  }
+  .site-announce__text {
+    flex: 1 1 100%;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    order: 3;
+    margin-top: 2px;
+  }
+  .site-announce__cta {
+    font-size: 0.62rem;
+    padding: 2px 6px;
+    letter-spacing: 0.06em;
+    align-self: center;
+    margin-left: auto;
+    order: 2;
+  }
+  .site-announce__cta svg { width: 10px; height: 10px; }
+  .site-announce__close {
+    width: 24px;
+    height: 24px;
+    align-self: center;
+    order: 4;
+    margin-left: auto;
+  }
+  .site-announce__close svg { width: 12px; height: 12px; }
 }
 
 /* ── PDF viewer modal ──────────────────────────────────────── */
@@ -4763,37 +4801,61 @@ select.w3f__input option {
 /* article-stat: legacy class, replaced by .article-meta-item--stat in
    article.css. Keep no rule here so PurgeCSS can drop it. */
 
-/* ── PDF basket floating tray ───────────────────────────────── */
-/* Sits above the bottom annotation toolbar (52px + safe-area) on
- * article pages, and above the back-to-top button on others. The
- * tray only appears when the basket has at least one item. */
+/* ── PDF basket floating button ─────────────────────────────── */
+/* Stacks immediately above the back-to-top button (which sits at
+ * bottom: 6rem; right: var(--space-6)) so the two read as a paired
+ * vertical column at the right edge. Same 44×44 dimensions and
+ * border treatment for visual continuity. Hidden when basket is
+ * empty. */
 .pdf-basket-tray {
   position: fixed;
-  right: var(--space-4);
-  bottom: calc(72px + env(safe-area-inset-bottom, 0px));
-  z-index: 50;
-  background: var(--color-bg);
-  border: 1px solid var(--color-ink);
-  border-top: 3px solid var(--color-accent);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-}
-/* When the article-layout reader toolbar isn't on the page (homepage,
- * archives, etc.) drop the tray closer to the viewport edge. */
-body:not(:has(.annotation-toolbar)) .pdf-basket-tray {
-  bottom: var(--space-4);
-}
-.pdf-basket-tray__link {
-  display: flex;
+  right: var(--space-6);
+  bottom: calc(6rem + 44px + var(--space-2));
+  z-index: var(--z-nav);
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-4);
+  justify-content: center;
+  background: var(--color-bg);
+  border: 1px solid var(--color-rule-heavy);
   color: var(--color-ink);
   text-decoration: none;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
 }
-.pdf-basket-tray__link:hover { color: var(--color-accent); }
-.pdf-basket-tray__link strong { color: var(--color-accent); }
+.pdf-basket-tray:hover {
+  border-color: var(--color-ink);
+  color: var(--color-accent);
+}
+.pdf-basket-tray svg { width: 18px; height: 18px; }
+.pdf-basket-tray__count {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  background: var(--color-accent);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  font-weight: 700;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+@media (max-width: 600px) {
+  .pdf-basket-tray {
+    right: var(--space-3);
+    bottom: calc(5rem + 44px + var(--space-2));
+    width: 40px;
+    height: 40px;
+  }
+  .pdf-basket-tray svg { width: 16px; height: 16px; }
+}
 @media print {
   .pdf-basket-tray { display: none !important; }
 }

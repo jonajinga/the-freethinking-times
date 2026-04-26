@@ -46,7 +46,16 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add src/_data/articleStats.json
             git commit -m "chore(stats): sync Umami article stats"
-            git push
+            # Rebase against any commits that landed while we were running,
+            # then push. Retry once on transient race conditions.
+            for attempt in 1 2 3; do
+              if git pull --rebase origin main && git push; then
+                echo "Pushed on attempt $attempt"
+                break
+              fi
+              echo "Push attempt $attempt failed; sleeping and retrying"
+              sleep 3
+            done
           else
             echo "No changes to articleStats.json."
           fi

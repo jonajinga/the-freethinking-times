@@ -178,16 +178,15 @@ module.exports = function (eleventyConfig) {
               // Floating PDF-basket tray — appended to <body> when basket
               // first becomes non-empty; never present in template source.
               "pdf-basket-tray",
-              "pdf-basket-tray__link",
-              "pdf-basket-tray__label",
+              "pdf-basket-tray__count",
               // Reading-history list — rendered client-side from
               // localStorage on /reading-history/.
               "reading-history-list",
               "rh-meta", "rh-pill", "rh-pill--manual", "rh-actions",
               // Print-basket renderer — built client-side from fetched
               // article HTML on /print-basket/.
-              "pb-list", "pb-meta", "pb-render",
-              "pb-render__article", "pb-render__byline",
+              "pb-list", "pb-meta",
+              "pb-preview", "pb-preview__article", "pb-preview__byline",
               // Most-read chart rows — rendered from Umami-stats JSON.
               "mr-row", "mr-row__label", "mr-row__title", "mr-row__sub",
               "mr-row__bar", "mr-row__bar-fill", "mr-row__count",

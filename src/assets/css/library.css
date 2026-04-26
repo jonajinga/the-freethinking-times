@@ -1501,12 +1501,19 @@
    migration, so the 44×44 default forces a row wrap on narrow screens. */
 @media (max-width: 600px) {
   .annotation-toolbar__btn {
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
   }
-  .annotation-toolbar__btn svg { width: 18px; height: 18px; }
-  .annotation-toolbar__main { gap: 2px; column-gap: 2px; }
-  .annotation-toolbar { padding: 4px var(--space-2); column-gap: var(--space-1); }
+  .annotation-toolbar__btn svg { width: 15px; height: 15px; }
+  .annotation-toolbar__main { gap: 1px; column-gap: 1px; }
+  .annotation-toolbar { padding: 3px var(--space-1); column-gap: 2px; min-height: 40px; }
+}
+@media (max-width: 380px) {
+  .annotation-toolbar__btn {
+    width: 28px;
+    height: 28px;
+  }
+  .annotation-toolbar__btn svg { width: 14px; height: 14px; }
 }
 
 

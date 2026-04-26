@@ -18,13 +18,13 @@ permalink: /print-basket/
       </nav>
       <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Print basket</h1>
       <p style="font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-ink-muted); line-height: var(--leading-loose); max-width: 60ch;">
-        The articles you've added with <strong>Add to PDF</strong>. Hit print — your browser will combine them into a single PDF you can save or share.
+        The articles you've added with <strong>Add to PDF</strong>. Hit print — your browser opens its print dialog with all selected articles stacked. Choose <em>Save as PDF</em> there.
       </p>
     </header>
 
     <div id="print-basket-empty" style="font-family: var(--font-body); padding: var(--space-8); border: 1px dashed var(--color-rule); text-align: center; color: var(--color-ink-muted);" hidden>
       <p style="margin-bottom: var(--space-3);">Your print basket is empty.</p>
-      <p>Open any article and click <strong>Add to PDF</strong> in the action row, then come back here to print them all in one go.</p>
+      <p>Open any article and click the basket icon in the reader toolbar, then come back here to print them all in one go.</p>
     </div>
 
     <div id="print-basket-controls" style="display: flex; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-6); font-family: var(--font-ui); font-size: var(--text-sm); align-items: center;" hidden>
@@ -37,11 +37,17 @@ permalink: /print-basket/
 
     <ul id="print-basket-list" class="pb-list" style="list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--color-rule);"></ul>
 
+    <h2 id="pb-preview-heading" style="margin-top: var(--space-10); padding-top: var(--space-4); border-top: 1px solid var(--color-rule); font-family: var(--font-display); font-size: var(--text-2xl);" hidden>Preview</h2>
+    <p id="pb-preview-note" style="font-family: var(--font-ui); font-size: var(--text-sm); color: var(--color-ink-muted); margin-bottom: var(--space-6);" hidden>This is exactly what will print. Scroll through to spot-check before hitting Print.</p>
+
+    {# Visible preview surface — all fetched article bodies stack here so
+       the reader can verify content before printing. The Print button
+       opens this content in a hidden iframe and prints just that
+       iframe, sidestepping fragile @media-print isolation. #}
+    <div id="pb-preview" class="pb-preview" hidden></div>
+
   </div>
 </div>
-
-{# The actual rendering surface — fetches each article body and stacks them. #}
-<div id="print-basket-render" class="pb-render" hidden></div>
 
 <style>
 .pb-list li {
@@ -79,31 +85,37 @@ permalink: /print-basket/
 }
 .pb-list button:hover { color: var(--color-accent); }
 
-.pb-render { display: none; }
-.pb-render__article {
-  page-break-after: always;
-  padding: var(--space-8) 0;
+.pb-preview {
+  border: 1px solid var(--color-rule);
+  background: var(--color-bg);
+  padding: var(--space-4);
+  max-height: 60vh;
+  overflow-y: auto;
 }
-.pb-render__article:last-child { page-break-after: auto; }
-.pb-render__article h1 {
+.pb-preview__article {
+  padding: var(--space-6) 0;
+  border-bottom: 1px dashed var(--color-rule);
+}
+.pb-preview__article:last-child { border-bottom: none; }
+.pb-preview__article h1 {
   font-family: var(--font-masthead);
-  font-size: 2.2rem;
+  font-size: 1.6rem;
   margin-bottom: var(--space-2);
   line-height: 1.15;
 }
-.pb-render__article .pb-render__byline {
+.pb-preview__byline {
   font-family: var(--font-ui);
   font-size: var(--text-sm);
   color: var(--color-ink-muted);
-  margin-bottom: var(--space-4);
-  border-bottom: 1px solid var(--color-rule);
+  margin-bottom: var(--space-3);
   padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-rule);
 }
-
-@media print {
-  body > *:not(.pb-render):not(.print-header) { display: none !important; }
-  .pb-render { display: block !important; }
-  .pb-render__article { padding: 0; margin-bottom: 2rem; }
+.pb-preview__article p,
+.pb-preview__article ul,
+.pb-preview__article ol,
+.pb-preview__article blockquote {
+  margin-bottom: 0.8em;
 }
 </style>
 
@@ -119,12 +131,15 @@ permalink: /print-basket/
     if (isNaN(d)) return '';
     return d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
   }
+  function escapeAttr(s) { return String(s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
   function init() {
     var listEl = document.getElementById('print-basket-list');
     var empty = document.getElementById('print-basket-empty');
     var controls = document.getElementById('print-basket-controls');
-    var render = document.getElementById('print-basket-render');
+    var preview = document.getElementById('pb-preview');
+    var previewHeading = document.getElementById('pb-preview-heading');
+    var previewNote = document.getElementById('pb-preview-note');
     if (!listEl) return;
 
     var basket = load();
@@ -138,7 +153,7 @@ permalink: /print-basket/
     listEl.innerHTML = basket.map(function (item, i) {
       var meta = [item.section, fmtDate(item.date), item.author].filter(Boolean).join(' &middot; ');
       return '<li data-pb-index="' + i + '">' +
-        '<div><a href="' + item.url + '">' + (item.title || item.url) + '</a>' + (meta ? '<div class="pb-meta" style="margin-top: 4px;">' + meta + '</div>' : '') + '</div>' +
+        '<div><a href="' + escapeAttr(item.url) + '">' + escapeAttr(item.title || item.url) + '</a>' + (meta ? '<div class="pb-meta" style="margin-top: 4px;">' + meta + '</div>' : '') + '</div>' +
         '<button type="button" data-pb-up>&uarr;</button>' +
         '<button type="button" data-pb-remove>Remove</button>' +
         '</li>';
@@ -163,11 +178,7 @@ permalink: /print-basket/
     var statusEl = controls.querySelector('[data-pb-status]');
     var printBtn = document.getElementById('pb-print');
 
-    // Pre-fetch each article body so the print run renders all content at
-    // once. We use the page itself, parse out .article-body, and stack the
-    // pieces in the hidden render container. The Print button stays
-    // disabled until every fetch resolves so the print dialog never opens
-    // against an empty render container.
+    // ── Fetch each article body in parallel ──
     var done = 0;
     function progress() {
       done += 1;
@@ -178,11 +189,11 @@ permalink: /print-basket/
         .then(function (r) { return r.ok ? r.text() : ''; })
         .then(function (html) {
           progress();
-          if (!html) return { item: item, html: '<p style="color:#888">Could not load this article — try opening it directly to confirm it still exists.</p>' };
+          if (!html) return { item: item, html: '<p style="color:#888">Could not load this article.</p>' };
           var doc = new DOMParser().parseFromString(html, 'text/html');
           var body = doc.querySelector('.article-body, .library-body, [data-pagefind-body]');
-          if (!body) return { item: item, html: '<p style="color:#888">Article body not found in fetched HTML.</p>' };
-          body.querySelectorAll('.article-action-btn, .annotation-toolbar, .share-panel, .share-wrap, [data-tts-skip], .article-comments, .responses-section, .reading-progress, .article-header__actions').forEach(function (n) { n.remove(); });
+          if (!body) return { item: item, html: '<p style="color:#888">Article body not found.</p>' };
+          body.querySelectorAll('.article-action-btn, .annotation-toolbar, .share-panel, .share-wrap, [data-tts-skip], .article-comments, .responses-section, .reading-progress, .article-header__actions, script, style').forEach(function (n) { n.remove(); });
           return { item: item, html: body.innerHTML };
         })
         .catch(function () { progress(); return { item: item, html: '<p style="color:#888">Fetch error.</p>' }; });
@@ -191,15 +202,18 @@ permalink: /print-basket/
       var pieces = parts.map(function (p) {
         totalChars += (p.html || '').replace(/<[^>]+>/g, '').length;
         var meta = [p.item.author, p.item.section, fmtDate(p.item.date)].filter(Boolean).join(' &middot; ');
-        return '<article class="pb-render__article">' +
-          '<h1>' + (p.item.title || p.item.url) + '</h1>' +
-          (meta ? '<div class="pb-render__byline">' + meta + '</div>' : '') +
+        return '<article class="pb-preview__article">' +
+          '<h1>' + escapeAttr(p.item.title || p.item.url) + '</h1>' +
+          (meta ? '<div class="pb-preview__byline">' + meta + '</div>' : '') +
           p.html +
         '</article>';
       });
-      render.innerHTML = pieces.join('');
-      render.hidden = false; // remove the inline `hidden` so print CSS rules can show it
-      // Estimate: ~2400 printable chars per page at our default sizes
+      preview.innerHTML = pieces.join('');
+      preview.hidden = false;
+      previewHeading.hidden = false;
+      previewNote.hidden = false;
+
+      // Estimate
       var est = Math.max(1, Math.ceil(totalChars / 2400));
       var pagesEl = controls.querySelector('[data-pb-pages]');
       if (pagesEl) pagesEl.textContent = est;
@@ -208,13 +222,79 @@ permalink: /print-basket/
         printBtn.disabled = false;
         printBtn.style.opacity = '1';
       }
+
+      // Stash content for the iframe printer
+      window.__tftPrintBasketHTML = pieces.join('');
     });
 
-    // Expose a print function so the button waits for content
+    // ── Print via a hidden iframe — sidesteps the fragile CSS print
+    //    isolation that produced blank pages. The iframe gets its own
+    //    minimal stylesheet (just typography), copies the prepared
+    //    article markup in, calls iframe.contentWindow.print(), then
+    //    is removed once the print dialog closes. ──
     window.__tftPrintBasket = function () {
-      if (!render.innerHTML.trim()) return;
-      render.hidden = false;
-      window.print();
+      var html = window.__tftPrintBasketHTML || '';
+      if (!html.trim()) return;
+      // Build the iframe document
+      var iframe = document.createElement('iframe');
+      iframe.style.cssText = 'position:fixed;width:0;height:0;border:0;left:-9999px;top:0;';
+      iframe.setAttribute('aria-hidden', 'true');
+      iframe.title = 'Print preview';
+      document.body.appendChild(iframe);
+
+      var doc = iframe.contentDocument || iframe.contentWindow.document;
+      doc.open();
+      doc.write([
+        '<!doctype html><html><head><meta charset="utf-8"><title>{{ site.title }} — Print basket</title>',
+        '<style>',
+        ' @page { margin: 0.6in; }',
+        ' html, body { background: #fff; color: #111; }',
+        ' body { font-family: Georgia, "Times New Roman", serif; font-size: 11pt; line-height: 1.5; margin: 0; padding: 0; }',
+        ' h1 { font-family: Georgia, serif; font-size: 22pt; line-height: 1.15; margin: 0 0 0.4em; }',
+        ' h2 { font-family: Georgia, serif; font-size: 16pt; line-height: 1.2; margin: 1.2em 0 0.4em; }',
+        ' h3 { font-size: 13pt; margin: 1em 0 0.3em; }',
+        ' p, ul, ol, blockquote { margin: 0 0 0.7em; }',
+        ' ul, ol { padding-left: 1.4em; }',
+        ' blockquote { border-left: 3px solid #888; padding-left: 0.8em; color: #444; }',
+        ' a { color: #111; text-decoration: underline; }',
+        ' img { max-width: 100%; height: auto; }',
+        ' figure { margin: 0.6em 0; }',
+        ' figcaption { font-size: 9pt; color: #555; }',
+        ' .pb-print__byline { font-family: Helvetica, Arial, sans-serif; font-size: 10pt; color: #555; margin-bottom: 1em; padding-bottom: 0.6em; border-bottom: 1px solid #ccc; }',
+        ' article { page-break-after: always; }',
+        ' article:last-child { page-break-after: auto; }',
+        '</style>',
+        '</head><body>',
+        // Re-tag the preview classes to match the iframe stylesheet
+        html.replace(/pb-preview__article/g, 'pb-print__article').replace(/pb-preview__byline/g, 'pb-print__byline'),
+        '</body></html>'
+      ].join(''));
+      doc.close();
+
+      function go() {
+        try {
+          iframe.contentWindow.focus();
+          iframe.contentWindow.print();
+        } catch (e) {
+          alert('Print failed: ' + e.message);
+        }
+        // Give the dialog a moment to open before tearing down the iframe;
+        // print() blocks in most browsers, so we land here after dismiss.
+        setTimeout(function () {
+          if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+        }, 1000);
+      }
+      // Wait for images to load (best-effort) then print
+      var imgs = doc.images || [];
+      if (!imgs.length) { setTimeout(go, 50); return; }
+      var pending = imgs.length;
+      function done() { pending -= 1; if (pending <= 0) setTimeout(go, 50); }
+      for (var i = 0; i < imgs.length; i++) {
+        if (imgs[i].complete) done();
+        else { imgs[i].addEventListener('load', done); imgs[i].addEventListener('error', done); }
+      }
+      // Failsafe: print after 3s regardless
+      setTimeout(function () { if (pending > 0) go(); }, 3000);
     };
   }
 
