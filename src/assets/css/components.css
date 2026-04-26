@@ -4836,34 +4836,92 @@ select.w3f__input option {
 }
 
 /* ── Listen button (article cards / lists) ─────────────────── */
+/* A pill button containing a play arrow + "Listen · N min". Big
+ * enough to be a real touch target (32px tall), styled distinct from
+ * the byline text it sits beside. Renders inline so it flows
+ * naturally with the rest of the meta line. */
 .listen-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  margin-right: 4px;
-  padding: 0;
-  background: transparent;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px 0 10px;
+  margin-right: var(--space-2);
+  background: var(--color-bg);
   border: 1px solid var(--color-rule);
-  color: var(--color-ink-muted);
+  color: var(--color-ink);
   cursor: pointer;
   vertical-align: middle;
+  border-radius: 999px;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  transition: color var(--transition-fast), border-color var(--transition-fast),
+              background var(--transition-fast);
+}
+.listen-btn:hover,
+.listen-btn:focus-visible {
+  color: var(--color-bg);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+.listen-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+.listen-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
+  background: var(--color-accent);
+  color: #fff;
   flex-shrink: 0;
-  transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
 }
-.listen-btn:hover {
+.listen-btn:hover .listen-btn__icon,
+.listen-btn:focus-visible .listen-btn__icon {
+  background: #fff;
   color: var(--color-accent);
-  border-color: var(--color-accent);
-  background: var(--color-bg);
 }
-.listen-btn--md { width: 26px; height: 26px; }
-.listen-btn--sm svg { width: 11px; height: 11px; }
-/* Highlighted state when this trigger is the bar's current source */
+.listen-btn__icon svg {
+  width: 9px;
+  height: 9px;
+  margin-left: 1px; /* optical centering of the play triangle */
+}
+.listen-btn__label,
+.listen-btn__time { letter-spacing: inherit; }
+.listen-btn__sep { color: var(--color-ink-faint); margin: 0 1px; }
+.listen-btn:hover .listen-btn__sep,
+.listen-btn:focus-visible .listen-btn__sep { color: rgba(255, 255, 255, 0.6); }
+
+/* Active state when this trigger drives the global bar's current source */
 .listen-btn.is-current {
-  color: var(--color-accent);
+  color: var(--color-bg);
+  background: var(--color-accent);
   border-color: var(--color-accent);
+}
+.listen-btn.is-current .listen-btn__icon {
+  background: #fff;
+  color: var(--color-accent);
+}
+
+/* Sized variant — keeping the parameter for future tuning. The
+ * default size already meets WCAG 2.5.5 (44×44 touch slop via the
+ * pill's height + horizontal padding + the parent's line-height). */
+.listen-btn--sm { height: 28px; padding: 0 10px 0 8px; font-size: 0.68rem; }
+.listen-btn--sm .listen-btn__icon { width: 16px; height: 16px; }
+.listen-btn--sm .listen-btn__icon svg { width: 8px; height: 8px; }
+
+/* On compact card metas, hide the "LISTEN" word and keep just the
+ * play icon + duration so the pill stays inline without dominating. */
+@media (max-width: 480px) {
+  .listen-btn__label,
+  .listen-btn__sep { display: none; }
 }
 
 /* ── Global audio bar (persistent TTS player) ──────────────── */

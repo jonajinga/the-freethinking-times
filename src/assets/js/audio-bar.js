@@ -174,6 +174,24 @@
       btnClose.addEventListener('click', function () { hide(); lastSrc = ''; });
     }
 
+    // Mutual exclusion: when ANY <audio> element starts playing,
+    // pause every other one on the page. Stops the inline article
+    // player and the global bar (and any future audio surface) from
+    // ever speaking over each other when a reader hits play in two
+    // places. Capture phase so we catch the event before the
+    // individual element handlers run.
+    if (isFirstRun) {
+      document.addEventListener('play', function (e) {
+        var t = e.target;
+        if (!t || t.tagName !== 'AUDIO') return;
+        document.querySelectorAll('audio').forEach(function (other) {
+          if (other !== t && !other.paused) {
+            try { other.pause(); } catch (err) {}
+          }
+        });
+      }, true);
+    }
+
     // Delegate listen-button clicks on every page. Survives SPA-nav
     // because we register against `document` once, guarded by
     // isFirstRun.
