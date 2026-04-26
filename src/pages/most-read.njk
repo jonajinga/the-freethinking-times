@@ -72,6 +72,10 @@ permalink: /most-read/
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
+.mr-row__listen {
+  margin-top: 4px;
+  display: inline-flex;
+}
 .mr-row__bar {
   position: relative;
   grid-column: 1 / -1;
@@ -111,13 +115,16 @@ permalink: /most-read/
     data.sort(function (a, b) { return b.views - a.views; });
     data = data.slice(0, 30);
     var max = data[0].views || 1;
+    var listen = (window.__tftAudioBar && window.__tftAudioBar.renderListenButton) || function () { return ''; };
     chart.innerHTML = data.map(function (d, i) {
       var pct = (d.views / max) * 100;
       var sub = [d.section, d.date].filter(Boolean).join(' &middot; ');
+      var lbtn = listen(d.url, d.title);
       return '<div class="mr-row">' +
         '<div class="mr-row__label">' +
           '<a class="mr-row__title" href="' + d.url + '" title="' + d.title.replace(/"/g, '&quot;') + '">' + (i + 1) + '. ' + d.title + '</a>' +
           (sub ? '<span class="mr-row__sub">' + sub + '</span>' : '') +
+          (lbtn ? '<div class="mr-row__listen">' + lbtn + '</div>' : '') +
         '</div>' +
         '<span class="mr-row__count">' + d.views.toLocaleString() + ' views</span>' +
         '<div class="mr-row__bar"><div class="mr-row__bar-fill" style="width: ' + pct.toFixed(1) + '%"></div></div>' +

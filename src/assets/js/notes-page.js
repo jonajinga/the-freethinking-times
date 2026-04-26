@@ -362,6 +362,20 @@
       var titleWrap = document.createElement('div');
       titleWrap.appendChild(titleLink);
       titleWrap.appendChild(badge);
+
+      // Listen button — only renders when a generated MP3 exists
+      // for this article. Slot it next to the title so readers can
+      // hear the piece their notes belong to without leaving /notes/.
+      if (page.type !== 'library' && window.__tftAudioBar && window.__tftAudioBar.renderListenButton) {
+        var listenHtml = window.__tftAudioBar.renderListenButton(meta.url, meta.title);
+        if (listenHtml) {
+          var listenWrap = document.createElement('span');
+          listenWrap.style.cssText = 'margin-left:var(--space-2);display:inline-flex;vertical-align:middle;';
+          listenWrap.innerHTML = listenHtml;
+          titleWrap.appendChild(listenWrap);
+        }
+      }
+
       header.appendChild(titleWrap);
       header.appendChild(pageBtns);
       section.appendChild(header);

@@ -307,6 +307,23 @@ permalink: /knowledge-map/
   line-height: 1.3;
 }
 .km-side__list a:hover { color: var(--color-accent); }
+.km-side__actions {
+  margin-top: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.km-side__read {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-ink);
+  text-decoration: none;
+  border-bottom: 2px solid var(--color-accent);
+  padding-bottom: 1px;
+}
+.km-side__read:hover { color: var(--color-accent); }
 .km-side__list-meta {
   display: block;
   color: var(--color-ink-muted);
@@ -622,6 +639,7 @@ permalink: /knowledge-map/
       ph.hidden = true;
       content.hidden = false;
 
+      var listen = (window.__tftAudioBar && window.__tftAudioBar.renderListenButton) || function () { return ''; };
       if (d.type === 'article') {
         var related = (adj[d.id] || [])
           .map(function (id) { return data.nodes.find(function (n) { return n.id === id; }); })
@@ -650,10 +668,11 @@ permalink: /knowledge-map/
           '</div>' +
           (topics.length ? '<div class="km-side__heading">Topics</div><div class="km-side__chips">' + topics.map(function (t) { return '<a class="km-side__chip" href="' + t.url + '">' + t.label + '</a>'; }).join('') + '</div>' : '') +
           (siblings.length ? '<div class="km-side__heading">Related articles</div><ul class="km-side__list">' + siblings.map(function (s) {
-            var lbtn = (window.__tftAudioBar && window.__tftAudioBar.renderListenButton) ? window.__tftAudioBar.renderListenButton(s.url, s.label) : '';
-            return '<li>' + lbtn + '<a href="' + s.url + '">' + s.label + '</a>' + (s.section ? '<span class="km-side__list-meta">' + s.section + '</span>' : '') + '</li>';
+            var slbtn = listen(s.url, s.label);
+            return '<li>' + slbtn + '<a href="' + s.url + '">' + s.label + '</a>' + (s.section ? '<span class="km-side__list-meta">' + s.section + '</span>' : '') + '</li>';
           }).join('') + '</ul>' : '') +
-          '<p style="margin-top: var(--space-3);"><a href="' + d.url + '" style="font-weight: 700;">Read &rarr;</a></p>';
+          '<div class="km-side__actions">' + listen(d.url, d.label) +
+          ' <a href="' + d.url + '" class="km-side__read">Read &rarr;</a></div>';
       } else if (d.type === 'tag') {
         var pieces = (adj[d.id] || [])
           .map(function (id) { return data.nodes.find(function (n) { return n.id === id; }); })
@@ -663,7 +682,7 @@ permalink: /knowledge-map/
           '<div class="km-side__meta">Topic &middot; ' + pieces.length + ' articles</div>' +
           '<div class="km-side__heading">Articles in this topic</div>' +
           '<ul class="km-side__list">' + pieces.slice(0, 12).map(function (p) {
-            return '<li><a href="' + p.url + '">' + p.label + '</a>' + (p.section ? '<span class="km-side__list-meta">' + p.section + '</span>' : '') + '</li>';
+            return '<li>' + listen(p.url, p.label) + '<a href="' + p.url + '">' + p.label + '</a>' + (p.section ? '<span class="km-side__list-meta">' + p.section + '</span>' : '') + '</li>';
           }).join('') + '</ul>' +
           (pieces.length > 12 ? '<p style="margin-top: var(--space-2); font-size: var(--text-xs); color: var(--color-ink-muted);">+ ' + (pieces.length - 12) + ' more on the topic page</p>' : '');
       } else if (d.type === 'author') {
@@ -675,7 +694,7 @@ permalink: /knowledge-map/
           '<div class="km-side__meta">Author &middot; ' + pieces.length + ' pieces</div>' +
           '<div class="km-side__heading">By this author</div>' +
           '<ul class="km-side__list">' + pieces.slice(0, 12).map(function (p) {
-            return '<li><a href="' + p.url + '">' + p.label + '</a>' + (p.section ? '<span class="km-side__list-meta">' + p.section + '</span>' : '') + '</li>';
+            return '<li>' + listen(p.url, p.label) + '<a href="' + p.url + '">' + p.label + '</a>' + (p.section ? '<span class="km-side__list-meta">' + p.section + '</span>' : '') + '</li>';
           }).join('') + '</ul>';
       }
     }
