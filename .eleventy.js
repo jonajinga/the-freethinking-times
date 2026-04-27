@@ -216,6 +216,29 @@ module.exports = function (eleventyConfig) {
               // article HTML on /print-basket/.
               "pb-list", "pb-meta",
               "pb-preview", "pb-preview__article", "pb-preview__byline",
+              // Calendar engine — both /editorial-calendar/ and
+              // /reading-calendar/ render their entire UI client-side
+              // via assets/js/calendar-shared.js, so every cal-* class
+              // would otherwise be purged from the build output.
+              "cal-mount", "cal-loading", "cal-noscript",
+              "cal-toolbar", "cal-toolbar__nav", "cal-toolbar__btn",
+              "cal-toolbar__btn--today", "cal-toolbar__views", "cal-toolbar__view",
+              "cal-view", "cal-view__header", "cal-view__title", "cal-view__sub",
+              "cal-view__empty", "cal-view__cards", "cal-view__cards--list",
+              "cal-view__week", "cal-view__day", "cal-view__day--has",
+              "cal-view__day-head", "cal-view__day-name", "cal-view__day-num",
+              "cal-view__day-count",
+              "cal-view__month-grid", "cal-view__weekdays", "cal-view__grid",
+              "cal-view__cell", "cal-view__cell--blank", "cal-view__cell--has",
+              "cal-view__cell-num", "cal-view__cell-count",
+              "cal-view__month-list", "cal-view__month-list-title",
+              "cal-view__year-grid", "cal-view__year-month",
+              "cal-view__year-month-head", "cal-view__year-month-count",
+              "cal-view__mini-grid", "cal-view__mini",
+              "cal-view__mini--blank",
+              "cal-view__mini--heat-1", "cal-view__mini--heat-2",
+              "cal-view__mini--heat-3", "cal-view__mini--heat-4",
+              "article-card--cal",
               // Most-read chart rows — rendered from Umami-stats JSON.
               "mr-row", "mr-row__label", "mr-row__title", "mr-row__sub",
               "mr-row__bar", "mr-row__bar-fill", "mr-row__count",
@@ -257,6 +280,7 @@ module.exports = function (eleventyConfig) {
               // Dynamic Nunjucks modifier classes (template variable expands at runtime)
               /section-badge--/,          // --news, --opinion, --history…
               /article-card__headline--/, // --lg, --md, --sm, --xs
+              /^cal-view/,                // calendar-shared.js builds every cal-view* node client-side
               /toc-list__item--/,         // --h1 through --h6
               /tip-badge--/,              // --pub, --info
               // JS-built DOM node class patterns
