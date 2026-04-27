@@ -127,8 +127,9 @@
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div class="site-wrapper">
 
-    {# ── Watch-live + announcement banners (conditional, from site config) ── #}
-    {% include "partials/site-announcement.njk" %}
+    {# Announcement banner moved into partials/header.njk so it
+       sits between the section nav and the quote bar, reading as
+       publication-state chrome rather than a top-of-page strip. #}
 
     {# ── Breaking Banner (conditional, per-page front-matter) ── #}
     {% if breaking %}

@@ -52,16 +52,17 @@
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
 }
 
-/* Edge-anchored grid: hamburger + watch-live anchored at the left
- * edge of the container (same x as the leftmost section nav link),
- * reader-tool icons anchored at the right edge (same x as the
- * rightmost link). Title sits centered between. Matches the
- * section-nav row directly below for a consistent column rhythm. */
+/* Centred cluster — matches the section-nav row underneath, which
+ * uses justify-content: center on its link list. Lead, title, and
+ * actions flow shoulder-to-shoulder in the middle of the row at
+ * their natural widths, so the hamburger/watch-live cluster
+ * vertically aligns with the leftmost section link, and the reader
+ * tools align with the rightmost link. */
 .masthead__nameplate {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
   align-items: center;
-  gap: var(--space-2);
+  justify-content: center;
+  gap: var(--space-6);
   padding: var(--space-3) 0;
   min-height: 3rem;
 }
@@ -70,7 +71,6 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  justify-self: start;
   min-width: 0;
 }
 
@@ -92,7 +92,6 @@
 .masthead__actions {
   display: flex;
   align-items: center;
-  justify-self: end;
   gap: var(--space-1);
 }
 
@@ -2265,7 +2264,13 @@ a.dateline:hover { color: var(--color-accent); }
   line-height: 1.5;
   transition: opacity 0.4s ease;
 }
-.quote-bar__inner { /* inherits .container max-width + gutter */ }
+/* Inner block matches the visual width of the centred section-nav
+ * cluster above it — quote text vertically aligns with the
+ * leftmost / rightmost section link. */
+.quote-bar__inner {
+  max-width: var(--max-width-prose, 65ch);
+  margin: 0 auto;
+}
 
 .quote-bar__link {
   color: var(--color-ink-muted);
