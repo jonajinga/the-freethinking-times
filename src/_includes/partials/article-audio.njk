@@ -12,6 +12,7 @@
 #}
 {% set _aud = audioManifest[page.url] %}
 {% if _aud %}
+{% set _mins = (_aud.duration / 60) | round(0, 'ceil') %}
 <figure class="article-audio" data-pagefind-ignore>
   <div class="article-audio__head">
     <span class="article-audio__icon" aria-hidden="true">
@@ -23,14 +24,16 @@
     </span>
     <figcaption class="article-audio__label">
       <span class="article-audio__title">Listen to this article</span>
-      {% if _aud.duration %}<span class="article-audio__meta">{% set _mins = (_aud.duration / 60) | round(0, 'ceil') %}{{ _mins }} {{ "minute" if _mins == 1 else "minutes" }}</span>{% endif %}
+      <span class="article-audio__meta">{{ _mins }} {{ "minute" if _mins == 1 else "minutes" }}</span>
     </figcaption>
   </div>
-  <audio class="article-audio__player" controls preload="none" data-tft-audio
-         src="{{ _aud.mp3 }}"
-         data-umami-event="article-audio-play">
-    Your browser does not support audio playback.
-    <a href="{{ _aud.mp3 }}">Download the MP3</a>.
-  </audio>
+  {# Single trigger for the global persistent audio bar — same
+     mechanism as every article card on the site. Native <audio>
+     controls have been retired here in favour of one consistent
+     player surface across the whole publication. #}
+  {% set listenUrl = page.url %}
+  {% set listenTitle = title %}
+  {% set listenSize = "" %}
+  {% include "partials/listen-button.njk" %}
 </figure>
 {% endif %}

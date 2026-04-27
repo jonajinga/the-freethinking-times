@@ -206,15 +206,20 @@
       }, true);
     }
 
-    // Delegate listen-button clicks on every page. Survives SPA-nav
-    // because we register against `document` once, guarded by
-    // isFirstRun.
+    // Delegate listen-button clicks on every page. Capture phase so
+    // we run BEFORE other document-level click handlers (e.g.
+    // spa-nav.js intercepting <a> clicks). This matters for cases
+    // where the listen button is wrapped inside an <a> — like the
+    // archives showcase or timeline rows — where the SPA navigation
+    // handler would otherwise consume the click first and the bar
+    // would never open.
     if (isFirstRun) {
       document.addEventListener('click', function (e) {
         var t = e.target.closest && e.target.closest('[data-tft-audio-trigger]');
         if (!t) return;
         e.preventDefault();
         e.stopPropagation();
+        e.stopImmediatePropagation();
         var src   = t.getAttribute('data-tft-audio-src');
         var title = t.getAttribute('data-tft-audio-title') || '';
         var url   = t.getAttribute('data-tft-audio-url') || '';
@@ -227,7 +232,7 @@
           return;
         }
         play(src, title, url, dur);
-      });
+      }, true);
     }
 
     bindInlineSync();
