@@ -239,6 +239,11 @@ module.exports = function (eleventyConfig) {
               "cal-view__mini--heat-1", "cal-view__mini--heat-2",
               "cal-view__mini--heat-3", "cal-view__mini--heat-4",
               "article-card--cal",
+              // Concept index — flash modifier toggled by JS on hash
+              // jump; the rest of the .concept-index__* hierarchy is
+              // present in the page source and survives the content
+              // scan naturally.
+              "concept-index__entry--flash",
               // Most-read chart rows — rendered from Umami-stats JSON.
               "mr-row", "mr-row__label", "mr-row__title", "mr-row__sub",
               "mr-row__bar", "mr-row__bar-fill", "mr-row__count",
@@ -662,6 +667,25 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("responsesTo", (allContent, targetUrl) => {
     if (!targetUrl) return [];
     return allContent.filter(item => responseUrlOf(item.data.responseTo) === targetUrl);
+  });
+
+  // Concept index — group entries by first letter (A-Z, with # for
+  // anything non-alpha). Returns [{ letter, entries }] alphabetised.
+  eleventyConfig.addFilter("groupConceptIndex", (entries) => {
+    const groups = {};
+    for (const e of entries || []) {
+      const first = String(e.term || '').trim().charAt(0).toUpperCase();
+      const key = /^[A-Z]$/.test(first) ? first : '#';
+      (groups[key] = groups[key] || []).push(e);
+    }
+    return Object.keys(groups)
+      .sort()
+      .map(letter => ({
+        letter,
+        entries: groups[letter].slice().sort((a, b) =>
+          String(a.term).localeCompare(String(b.term), 'en', { sensitivity: 'base' })
+        ),
+      }));
   });
 
   // All articles that respond to anything (internal or external),

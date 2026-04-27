@@ -55,6 +55,7 @@
       { "label": "Reading Calendar",  "url": "/reading-calendar/",   "title": "Your reading by date — a personal heat-mapped calendar drawn from this device's local history." },
       { "label": "Editorial Calendar","url": "/editorial-calendar/", "title": "Every article we've published, laid out by publication date." },
       { "label": "Responses",         "url": "/responses/",          "title": "Articles that respond to other pieces — internal threads and replies to outside writing." },
+      { "label": "Back-of-Book Index","url": "/back-of-book/",       "title": "A scholarly back-of-book index of concepts, figures, and themes mapped to the articles where they're substantively discussed." },
       { "label": "Print Basket",    "url": "/print-basket/",     "title": "Articles you've added with the Add-to-PDF button, ready to print as one combined PDF." },
       { "label": "Most Read",       "url": "/most-read/",        "title": "Articles other readers are spending the most time with, ranked by pageviews." },
       { "label": "Knowledge Map",   "url": "/knowledge-map/",    "title": "Visual map of every article, clustered by topic and author. Drag, zoom, click to read." },

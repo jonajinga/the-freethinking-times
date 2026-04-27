@@ -80,6 +80,7 @@
       { "label": "Reading Calendar",   "url": "/reading-calendar/",   "title": "Your reading by date — a personal heat-mapped calendar drawn from this device's local history." },
       { "label": "Editorial Calendar", "url": "/editorial-calendar/", "title": "Every article we've published, laid out on a month-by-month grid by publication date." },
       { "label": "Responses",          "url": "/responses/",          "title": "Articles that respond to other pieces — internal threads under our originals plus replies to outside writing." },
+      { "label": "Back-of-Book Index", "url": "/back-of-book/",       "title": "A scholarly back-of-book index of concepts, figures, and themes — three-tier hierarchy with cross-references to the articles where each idea is discussed." },
       { "label": "Print Basket",       "url": "/print-basket/",       "title": "Articles you've added with the Add-to-PDF button, ready to print as one combined PDF in your browser." },
       { "label": "Most Read",         "url": "/most-read/",        "title": "Ranked bar chart of articles by Umami pageviews, what readers are spending the most time with." },
       { "label": "Knowledge Map",     "url": "/knowledge-map/",    "title": "Force-directed visual map of every article, clustered by shared topics and authors. Drag, zoom, click any node to read." },
