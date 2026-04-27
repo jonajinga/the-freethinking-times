@@ -34,18 +34,3 @@ permalink: /editorial-calendar/
 </main>
 
 <script src="/assets/js/calendar-shared.js?v={{ buildTime }}" defer></script>
-<script>
-(function () {
-  function init() {
-    var root = document.getElementById('ed-cal-mount');
-    if (!root || !window.TFTCalendar) return;
-    window.TFTCalendar.mount({ root: root, mode: 'editorial' });
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-  document.addEventListener('spa:contentswap', init);
-})();
-</script>

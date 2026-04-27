@@ -371,4 +371,64 @@
   }
 
   window.TFTCalendar = { mount: mount };
+
+  // ── Auto-bootstrap ────────────────────────────────────────────
+  // Pages just include this script and add a mount element with the
+  // expected id; this block detects which kind of calendar page we're
+  // on and mounts itself. Re-runs on SPA contentswap so the engine
+  // doesn't depend on per-page inline scripts (which don't execute
+  // when innerHTML is swapped in).
+  function readLocalArr(key) {
+    try { return JSON.parse(localStorage.getItem(key)) || {}; } catch (e) { return {}; }
+  }
+  function buildReadingHistory() {
+    var PREFIX     = (window.__PREFIX || 'tft');
+    var KEY_MANUAL = PREFIX + '-read-manual';
+    var KEY_PCT    = PREFIX + '-read-pct';
+    var manual = readLocalArr(KEY_MANUAL);
+    var pct    = readLocalArr(KEY_PCT);
+    var todayISO = new Date().toISOString().slice(0, 10);
+    var hist = Object.create(null);
+    Object.keys(manual).forEach(function (url) {
+      var rec = manual[url];
+      if (!rec) return;
+      hist[url] = (rec.markedAt || todayISO + 'T00:00:00').slice(0, 10);
+    });
+    Object.keys(pct).forEach(function (url) {
+      if (hist[url]) return;
+      if (pct[url] >= 95) hist[url] = todayISO;
+    });
+    return hist;
+  }
+  function paintReadingSummary(hist) {
+    var summary = document.getElementById('reading-cal-summary');
+    if (!summary) return;
+    var urls = Object.keys(hist);
+    if (!urls.length) { summary.innerHTML = ''; return; }
+    var dateSet = new Set(urls.map(function (u) { return hist[u]; }));
+    var monthSet = new Set([...dateSet].map(function (d) { return d.slice(0, 7); }));
+    summary.innerHTML =
+      '<div class="reading-cal__stat"><span class="reading-cal__stat-num">' + urls.length + '</span> articles read</div>'
+    + '<div class="reading-cal__stat"><span class="reading-cal__stat-num">' + dateSet.size + '</span> reading days</div>'
+    + '<div class="reading-cal__stat"><span class="reading-cal__stat-num">' + monthSet.size + '</span> months active</div>';
+  }
+  function bootstrap() {
+    var ed = document.getElementById('ed-cal-mount');
+    if (ed) {
+      mount({ root: ed, mode: 'editorial' });
+      return;
+    }
+    var rd = document.getElementById('reading-cal-mount');
+    if (rd) {
+      var hist = buildReadingHistory();
+      paintReadingSummary(hist);
+      mount({ root: rd, mode: 'reading', history: hist });
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootstrap);
+  } else {
+    bootstrap();
+  }
+  document.addEventListener('spa:contentswap', bootstrap);
 })();
