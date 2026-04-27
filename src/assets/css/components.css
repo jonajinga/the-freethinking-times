@@ -160,6 +160,11 @@
 [data-theme="dark"] .icon-moon { display: none; }
 
 /* ── Global display settings panel — slide-in drawer matching nav-drawer ─ */
+/* Slide animation: when [hidden] is set on the panel (the JS toggle),
+ * we keep the element in flow but translate it off-screen + drop
+ * visibility. Removing [hidden] reverses the transform for a clean
+ * slide-in. The visibility transition is delayed by the slide duration
+ * on close so the panel stays focusable until the animation finishes. */
 .gs-panel {
   position: fixed;
   top: 0;
@@ -176,8 +181,17 @@
   color: var(--color-ink);
   scrollbar-width: thin;
   overscroll-behavior: contain;
+  transform: translateX(0);
+  visibility: visible;
+  transition: transform var(--transition-normal), visibility 0s linear 0s;
 }
-.gs-panel[hidden] { display: none; }
+.gs-panel[hidden] {
+  display: block;
+  transform: translateX(100%);
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform var(--transition-normal), visibility 0s linear var(--transition-normal);
+}
 
 @media (max-width: 640px) {
   .gs-panel {
@@ -2847,7 +2861,13 @@ a.dateline:hover { color: var(--color-accent); }
   display: block;
 }
 
-.nav-drawer {
+/* `.nav-drawer` carries the `js-only` class, so `.js-enabled .js-only`
+ * in base.css (`display: revert;`) outranks a plain `.nav-drawer`
+ * rule and was forcing the drawer to `display: block` — which is why
+ * the inner scroll never had a constrained 1fr row to overflow into.
+ * Matching specificity here (`.nav-drawer.js-only`) plus components.css
+ * loading after base.css restores `display: grid`. */
+.nav-drawer.js-only {
   position: fixed;
   left: 0;
   top: 0;
