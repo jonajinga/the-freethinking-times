@@ -40,11 +40,12 @@
   function refreshBtn() {
     if (!btnPlay || !audio) return;
     var playing = !audio.paused && !audio.ended;
+    // CSS toggles the icon based on aria-pressed; we don't fiddle
+    // with the `hidden` attribute on the SVGs anymore (that path
+    // was getting beaten by attribute/CSS specificity weirdness).
     btnPlay.setAttribute('aria-pressed', playing ? 'true' : 'false');
     btnPlay.setAttribute('aria-label', playing ? 'Pause' : 'Play');
     btnPlay.setAttribute('title', playing ? 'Pause' : 'Play');
-    if (iconPlay)  iconPlay.hidden  = playing;
-    if (iconPause) iconPause.hidden = !playing;
   }
 
   function show() { if (bar && bar.hidden) bar.hidden = false; document.body.classList.add('has-audio-bar'); }

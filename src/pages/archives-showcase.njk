@@ -96,8 +96,30 @@ eleventyExcludeFromCollections: true
   transition: opacity 0.5s ease 0.7s, background var(--transition-fast);
 }
 .as-showcase__read:hover { background: var(--color-accent); color: var(--color-bg); text-decoration: none; }
-.as-showcase__actions { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
-.as-showcase__listen { display: inline-flex; }
+.as-showcase__actions { display: inline-flex; align-items: stretch; margin-top: var(--space-5); }
+/* Match Read button height + margin so the two sit as a paired
+ * unit, not a big-button-and-tiny-pill mismatch. */
+.as-showcase__read { margin-top: 0; }
+.as-showcase__listen { display: inline-flex; align-items: stretch; margin-left: var(--space-3); }
+.as-showcase__listen .listen-btn {
+  height: auto;
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+  border-radius: 0;
+}
+.as-showcase__listen .listen-btn:hover,
+.as-showcase__listen .listen-btn:focus-visible {
+  background: var(--color-accent);
+  color: var(--color-bg);
+  border-color: var(--color-accent);
+}
+.as-showcase__listen .listen-btn__icon { background: var(--color-ink); color: var(--color-bg); }
+.as-showcase__listen .listen-btn:hover .listen-btn__icon,
+.as-showcase__listen .listen-btn:focus-visible .listen-btn__icon { background: var(--color-bg); color: var(--color-accent); }
 .as-showcase.is-visible .as-showcase__kicker,
 .as-showcase.is-visible .as-showcase__desc,
 .as-showcase.is-visible .as-showcase__meta,

@@ -4931,6 +4931,19 @@ select.w3f__input option {
   margin: var(--space-1) 0 var(--space-2);
 }
 .archive-entry__listen { margin-top: var(--space-2); }
+/* Archive-entry titles inherit a global a:hover that flips them
+ * to link-blue + underline — too aggressive against this card-like
+ * layout. Match the rest of the cards: ink colour by default,
+ * accent on hover, no underline. */
+.archive-entry__title a {
+  color: var(--color-ink);
+  text-decoration: none;
+}
+.archive-entry__title a:hover,
+.archive-entry__title a:focus-visible {
+  color: var(--color-accent);
+  text-decoration: none;
+}
 
 /* ── Global audio bar (persistent TTS player) ──────────────── */
 /* Two-row, centred layout: title line on top, controls underneath.
@@ -5001,8 +5014,12 @@ body:has(.annotation-toolbar .music-bar:not([hidden])) .audio-bar { bottom: 96px
   padding: 0;
 }
 .audio-bar__play:hover { filter: brightness(1.1); }
-.audio-bar__icon-play[hidden],
-.audio-bar__icon-pause[hidden] { display: none; }
+/* CSS-driven icon swap. The JS just toggles aria-pressed; the
+ * play / pause icons follow. More robust than mixing the
+ * `hidden` attribute with stylesheet rules. */
+.audio-bar__icon-pause { display: none; }
+.audio-bar__play[aria-pressed="true"] .audio-bar__icon-play  { display: none; }
+.audio-bar__play[aria-pressed="true"] .audio-bar__icon-pause { display: inline-block; }
 
 .audio-bar__time {
   font-variant-numeric: tabular-nums;
@@ -5233,120 +5250,140 @@ body.has-audio-bar .pdf-basket-tray { bottom: calc(6rem + 60px); }
 .pdf-basket-tray[hidden] { display: none !important; }
 
 /* ── Print cover page (notes export, editions PDF, etc.) ──── */
-/* Hidden on screen; shown as the first printed page. The element
- * is a plain block; @media print rules below format it. */
+/* Hidden on screen; shown as the first printed page. Magazine-
+ * cover aesthetic: everything centered, fixed inner width so the
+ * eye doesn't track edge-to-edge across long lines. */
 .print-cover { display: none; }
 @media print {
   .print-cover {
     display: block !important;
     page-break-after: always;
-    padding: 0;
     color: #111;
     background: #fff;
     font-family: Georgia, "Times New Roman", serif;
+    text-align: center;
+  }
+  .print-cover > * {
+    max-width: 5.6in;
+    margin-left: auto;
+    margin-right: auto;
   }
   .print-cover__head {
-    text-align: center;
-    padding-top: 1in;
-    padding-bottom: 0.5in;
-    border-bottom: 2px solid #111;
+    padding-top: 1.2in;
+    padding-bottom: 0.55in;
+    border-bottom: 1.5pt solid #111;
   }
   .print-cover__eyebrow {
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 9.5pt;
+    font-size: 9pt;
     text-transform: uppercase;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.22em;
     color: #555;
-    margin: 0 0 0.6em;
+    margin: 0 0 0.5em;
+    font-weight: 600;
   }
   .print-cover__publication {
-    font-size: 36pt;
-    line-height: 1.05;
-    margin: 0 0 0.3em;
-    letter-spacing: -0.01em;
+    font-size: 38pt;
+    line-height: 1.02;
+    margin: 0 0 0.25em;
+    letter-spacing: -0.015em;
     font-weight: 700;
+    font-family: Georgia, serif;
   }
   .print-cover__line {
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 10pt;
-    color: #777;
+    font-size: 9.5pt;
+    color: #888;
     margin: 0;
+    letter-spacing: 0.04em;
   }
-  .print-cover__body {
-    padding-top: 0.5in;
-  }
+  .print-cover__body { padding-top: 0.5in; }
   .print-cover__heading {
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 11pt;
+    font-size: 10pt;
     text-transform: uppercase;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.22em;
     color: #555;
     font-weight: 700;
-    margin: 0 0 0.2in;
+    margin: 0 0 0.18in;
   }
   .print-cover__lede {
-    font-size: 12pt;
+    font-size: 11pt;
     line-height: 1.45;
-    margin: 0 0 0.3in;
-    color: #333;
+    margin: 0 0 0.35in;
+    color: #444;
+    font-style: italic;
   }
-  .print-cover__contents { margin-top: 0.2in; }
+  .print-cover__contents { margin-top: 0.22in; }
   .print-cover__list {
     list-style: none;
     padding: 0;
     margin: 0;
     counter-reset: pcl;
+    text-align: left;
   }
   .print-cover__list li {
     counter-increment: pcl;
-    padding: 7pt 0 7pt 0.4in;
+    padding: 9pt 0 9pt 0.45in;
     border-bottom: 1px dotted #bbb;
     position: relative;
   }
+  .print-cover__list li:last-child { border-bottom: none; }
   .print-cover__list li::before {
-    content: counter(pcl) ".";
+    content: counter(pcl, decimal-leading-zero);
     position: absolute;
     left: 0;
+    top: 9pt;
     font-family: Helvetica, Arial, sans-serif;
+    font-size: 9pt;
     font-weight: 700;
-    color: #555;
+    color: #999;
+    letter-spacing: 0.06em;
   }
   .print-cover__title {
     display: block;
     font-size: 12pt;
-    line-height: 1.25;
+    line-height: 1.3;
     color: #111;
     font-weight: 600;
   }
   .print-cover__counts {
     display: block;
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 9pt;
-    color: #777;
+    font-size: 8.5pt;
+    color: #888;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-top: 2pt;
+    letter-spacing: 0.08em;
+    margin-top: 3pt;
   }
   .print-cover__foot {
-    margin-top: 0.6in;
+    margin-top: 0.55in;
     padding-top: 0.3in;
-    border-top: 1px solid #bbb;
-    text-align: center;
+    border-top: 1pt solid #bbb;
   }
   .print-cover__date {
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 10pt;
+    font-size: 9pt;
     color: #555;
-    margin: 0 0 0.4em;
+    margin: 0 0 0.35em;
+    letter-spacing: 0.04em;
   }
   .print-cover__note {
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 8.5pt;
+    font-size: 8pt;
     color: #888;
     margin: 0 auto;
     max-width: 4.6in;
+    line-height: 1.5;
   }
-  .print-cover a { color: #111; text-decoration: underline; }
+  /* Print-friendly link colour — no link-blue / underline drift */
+  .print-cover a,
+  .print-cover a:visited {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: #aaa;
+    text-underline-offset: 1.5pt;
+  }
 }
 .pdf-basket-tray:hover {
   border-color: var(--color-ink);
