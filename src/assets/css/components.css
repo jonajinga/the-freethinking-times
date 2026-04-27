@@ -2858,8 +2858,8 @@ a.dateline:hover { color: var(--color-accent); }
   border-right: 1px solid var(--color-rule);
   box-shadow: 2px 0 28px rgba(0, 0, 0, 0.18);
   z-index: var(--z-modal);
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   overflow: hidden;
   overscroll-behavior: contain;
   transform: translateX(-100%);
@@ -2882,10 +2882,9 @@ a.dateline:hover { color: var(--color-accent); }
 }
 
 .nav-drawer__header {
-  flex: 0 0 auto;
   display: grid;
   grid-template-columns: 1fr auto;
-  align-items: start;
+  align-items: center;
   gap: var(--space-3);
   padding: var(--space-4) var(--space-5);
   border-bottom: 3px double var(--color-rule);
@@ -2995,7 +2994,6 @@ a.dateline:hover { color: var(--color-accent); }
    which is what lets overflow-y:auto actually clip. No more relying on
    flex/grid intrinsic-sizing quirks. */
 .nav-drawer__scroll {
-  flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -3097,9 +3095,8 @@ a.dateline:hover { color: var(--color-accent); }
 }
 .nav-drawer__quick-btn svg { color: var(--color-accent); }
 
-/* Drawer footer — flex child, pinned by flex-column layout. */
+/* Drawer footer — pinned by grid-template-rows on .nav-drawer. */
 .nav-drawer__footer {
-  flex: 0 0 auto;
   padding: var(--space-4) var(--space-6);
   border-top: 1px solid var(--color-rule);
   background: var(--color-bg-alt);
@@ -5458,14 +5455,14 @@ body.has-audio-bar .pdf-basket-tray { bottom: calc(6rem + 60px); }
    article.css. Keep no rule here so PurgeCSS can drop it. */
 
 /* ── PDF basket floating button ─────────────────────────────── */
-/* Default: bottom-right corner of the viewport. When the article
- * reader toolbar OR the reading-floats (back-to-top + % pill) are
- * present, the button moves up to stack with them. Hidden when the
- * basket is empty. */
+/* Lives on the right edge at the same y position as back-to-top so the
+ * two buttons read as a vertical pair. When back-to-top becomes visible
+ * (reading-floats.is-visible), the basket lifts one slot higher to
+ * stack above it. Hidden entirely when the basket is empty. */
 .pdf-basket-tray {
   position: fixed;
   right: var(--space-6);
-  bottom: var(--space-4);
+  bottom: 6rem;
   z-index: var(--z-nav);
   width: 44px;
   height: 44px;
@@ -5477,7 +5474,7 @@ body.has-audio-bar .pdf-basket-tray { bottom: calc(6rem + 60px); }
   color: var(--color-ink);
   text-decoration: none;
   cursor: pointer;
-  transition: border-color var(--transition-fast), color var(--transition-fast);
+  transition: border-color var(--transition-fast), color var(--transition-fast), opacity var(--transition-fast);
 }
 .pdf-basket-tray[hidden] { display: none !important; }
 
@@ -5633,6 +5630,21 @@ body:has(.annotation-toolbar) .pdf-basket-tray {
  * % pill flipped to is-visible after scroll), stack above them. */
 body:has(.reading-floats.is-visible) .pdf-basket-tray {
   bottom: calc(6rem + 44px + var(--space-2));
+}
+
+/* Floating buttons must never appear above the nav drawer or the
+ * reader-display panel — both are full-height side drawers that should
+ * own the screen while open. (.reading-floats uses display:contents so
+ * we target its children directly.) */
+body:has(.nav-drawer.is-open) .pdf-basket-tray,
+body:has(.nav-drawer.is-open) .back-to-top,
+body:has(.nav-drawer.is-open) .reading-pct,
+body:has(.gs-panel:not([hidden])) .pdf-basket-tray,
+body:has(.gs-panel:not([hidden])) .back-to-top,
+body:has(.gs-panel:not([hidden])) .reading-pct {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 .pdf-basket-tray__count {
   position: absolute;
