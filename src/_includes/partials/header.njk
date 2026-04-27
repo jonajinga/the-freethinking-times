@@ -446,37 +446,50 @@
   </div>{# /.container #}
 </header>
 
-{# ── Daily Quote Bar (homepage only) ── #}
+{# ── Daily Quote Bar (homepage only) ──
+   Full-bleed strip; inner content constrained to container width
+   so the quote text aligns with the section-nav row above it. #}
 {% if page.url == "/" %}
 <div class="quote-bar" id="quote-bar" data-pagefind-ignore>
-  <a class="quote-bar__link" href="/quotes/showcase/" title="View quotes showcase">
-    <span class="quote-bar__text" id="quote-bar-text"></span>
-    <span class="quote-bar__author" id="quote-bar-author"></span>
-  </a>
+  <div class="container quote-bar__inner">
+    <a class="quote-bar__link" href="/quotes/showcase/" title="View quotes showcase">
+      <span class="quote-bar__text" id="quote-bar-text"></span>
+      <span class="quote-bar__author" id="quote-bar-author"></span>
+    </a>
+  </div>
 </div>
 <script>
 (function(){
   var quotes={{ quotes | dump | safe }};
   if(!quotes||!quotes.length)return;
-  // Shuffle quotes randomly on every page load
-  for(var i=quotes.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=quotes[i];quotes[i]=quotes[j];quotes[j]=tmp;}
-  var idx=0;
   var t=document.getElementById('quote-bar-text');
   var a=document.getElementById('quote-bar-author');
   var bar=document.getElementById('quote-bar');
   if(!t||!a)return;
-  function show(i){
-    idx=((i%quotes.length)+quotes.length)%quotes.length;
+  // Deterministic index from wall-clock time. Every 15 s window
+  // globally shows the same quote, so a page reload / SPA-nav
+  // never re-shuffles which one is on screen. The index advances
+  // exactly when the 15 s clock boundary ticks past.
+  var INTERVAL=15000;
+  function currentIdx(){return Math.floor(Date.now()/INTERVAL)%quotes.length;}
+  function render(idx,fade){
     var q=quotes[idx];
-    bar.style.opacity='0';
-    setTimeout(function(){
-      t.textContent='\u201c'+q.quote+'\u201d';
-      a.textContent='\u2014 '+q.author;
+    var openQuote='\u201c', closeQuote='\u201d', dash='\u2014 ';
+    function paint(){
+      t.textContent=openQuote+q.quote+closeQuote;
+      a.textContent=dash+q.author;
       bar.style.opacity='1';
-    },400);
+    }
+    if(fade){bar.style.opacity='0';setTimeout(paint,400);} else paint();
   }
-  show(0);
-  setInterval(function(){show(idx+1);},10000);
+  render(currentIdx(),false);
+  // Sync the first transition to the next clock boundary, then
+  // advance every INTERVAL after that. Keeps every viewer in sync.
+  var msUntilNext=INTERVAL-(Date.now()%INTERVAL);
+  setTimeout(function(){
+    render(currentIdx(),true);
+    setInterval(function(){render(currentIdx(),true);},INTERVAL);
+  },msUntilNext);
 })();
 </script>
 {% endif %}
