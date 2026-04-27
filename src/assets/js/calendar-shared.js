@@ -90,14 +90,29 @@
     if (a.description) {
       html += '<p class="article-card__dek">' + escapeHtml(a.description) + '</p>';
     }
-    if (a.hasAudio) {
+    if (a.hasAudio && a.audioMp3) {
+      // Mirror the listen-button.njk partial exactly so audio-bar.js
+      // wires the click via the same [data-tft-audio-trigger] hook
+      // and the button inherits the same styling as cards on the
+      // home page / section indexes.
+      var mins = Math.max(1, Math.ceil((+a.audioDuration || 0) / 60));
+      var minLabel = mins + ' ' + (mins === 1 ? 'minute' : 'minutes');
       html += '<div class="article-card__listen">'
             + '<button type="button" class="listen-btn listen-btn--sm" '
-            + 'data-tft-audio-trigger="' + a.url + '" '
+            + 'data-tft-audio-trigger '
+            + 'data-tft-audio-src="' + escapeHtml(a.audioMp3) + '" '
+            + 'data-tft-audio-url="' + escapeHtml(a.url) + '" '
             + 'data-tft-audio-title="' + escapeHtml(a.title) + '" '
-            + 'aria-label="Listen to this article">'
-            + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>'
+            + 'data-tft-audio-duration="' + (+a.audioDuration || 0) + '" '
+            + 'data-umami-event="card-listen" '
+            + 'aria-label="Listen to ' + escapeHtml(a.title) + ', ' + minLabel + '" '
+            + 'title="Listen, ' + minLabel + '">'
+            + '<span class="listen-btn__icon" aria-hidden="true">'
+              + '<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>'
+            + '</span>'
             + '<span class="listen-btn__label">Listen</span>'
+            + '<span class="listen-btn__sep" aria-hidden="true">&middot;</span>'
+            + '<span class="listen-btn__time">' + mins + ' min</span>'
             + '</button></div>';
     }
     html += '<p class="article-card__byline">';
@@ -113,6 +128,50 @@
     html += '</p>';
     html += '</article>';
     return html;
+  }
+
+  // ── List-row renderer (used by density === 'list') ────────────
+  // Single-row, scan-optimised markup. Five columns: date · section ·
+  // title · author · word-count. Clicking the row navigates to the
+  // article. Independent from the cards renderer so the row layout
+  // isn't constrained by the .article-card structure.
+  function renderListRow(a, opts) {
+    opts = opts || {};
+    var sectionKey = slugify(a.section);
+    var dateObj = parseISODay(a.date);
+    var dateAttr = a.date;
+    var dateShort = dateObj ? (MONTH_NAMES[dateObj.getMonth()].slice(0,3) + ' ' + dateObj.getDate()) : '';
+    var html = '<a class="cal-list__row" href="' + a.url + '">';
+    html += '<time class="cal-list__date" datetime="' + dateAttr + '">' + escapeHtml(dateShort) + '</time>';
+    if (a.section) {
+      html += '<span class="cal-list__section section-badge section-badge--' + sectionKey + '">' + escapeHtml(a.section) + '</span>';
+    } else {
+      html += '<span class="cal-list__section"></span>';
+    }
+    html += '<span class="cal-list__title">' + escapeHtml(a.title) + '</span>';
+    var byline = '';
+    if (a.authorName || a.author) byline = escapeHtml(a.authorName || a.author);
+    html += '<span class="cal-list__author">' + byline + '</span>';
+    html += '<span class="cal-list__words">'
+          + (a.wordCount ? readingTimeText(a.wordCount) : '')
+          + '</span>';
+    html += '</a>';
+    return html;
+  }
+
+  // Dispatch — emit either a card or a list row depending on density.
+  function renderEntry(article, density) {
+    return density === 'list' ? renderListRow(article) : renderCard(article);
+  }
+
+  // Container classlist for the entry collection (cards grid vs. list).
+  function entriesContainerOpen(density, extraClass) {
+    if (density === 'list') {
+      return '<div class="cal-list' + (extraClass ? ' ' + extraClass : '') + '"><div class="cal-list__head" aria-hidden="true">'
+        + '<span>Date</span><span>Section</span><span>Title</span><span>Author</span><span>Length</span>'
+        + '</div>';
+    }
+    return '<div class="cal-view__cards' + (extraClass ? ' ' + extraClass : '') + '">';
   }
 
   // ── Index articles by date ─────────────────────────────────────
@@ -149,8 +208,8 @@
       html += '<p class="cal-view__empty">Nothing on this day.</p>';
     } else {
       if (entries.length) {
-        html += '<div class="cal-view__cards">';
-        entries.forEach(function (e) { html += renderCard(e.article); });
+        html += entriesContainerOpen(state.density);
+        entries.forEach(function (e) { html += renderEntry(e.article, state.density); });
         html += '</div>';
       }
       if (dueToday.length) {
@@ -239,8 +298,8 @@
             + '<span class="cal-view__day-count">' + entries.length + '</span>'
             + '</header>';
       if (entries.length) {
-        html += '<div class="cal-view__cards">';
-        entries.forEach(function (e) { html += renderCard(e.article); });
+        html += entriesContainerOpen(state.density);
+        entries.forEach(function (e) { html += renderEntry(e.article, state.density); });
         html += '</div>';
       }
       html += '</section>';
@@ -309,8 +368,11 @@
     monthEntries.sort(function (a, b) { return b.day.localeCompare(a.day); });
     if (monthEntries.length) {
       html += '<div class="cal-view__month-list"><h3 class="cal-view__month-list-title">All articles &middot; ' + monthLabel + '</h3>';
-      html += '<div class="cal-view__cards cal-view__cards--list">';
-      monthEntries.forEach(function (e) { html += renderCard(e.article); });
+      // Force list-style for the month tail regardless of density —
+      // it's already a long flat scroll, and the row layout reads
+      // better than tiled cards in that context.
+      html += entriesContainerOpen('list');
+      monthEntries.forEach(function (e) { html += renderListRow(e.article); });
       html += '</div></div>';
     }
     return html;

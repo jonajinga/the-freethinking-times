@@ -288,6 +288,10 @@ module.exports = function (eleventyConfig) {
               "cal-view__overlay-card", "cal-view__overlay-pill",
               "cal-view__week--swim", "cal-view__week-section-head",
               "cal-view__week-day-head", "cal-view__week-cell",
+              // Dedicated list-density row markup (renderListRow)
+              "cal-list", "cal-list__head", "cal-list__row",
+              "cal-list__date", "cal-list__section", "cal-list__title",
+              "cal-list__author", "cal-list__words",
               // Most-read chart rows — rendered from Umami-stats JSON.
               "mr-row", "mr-row__label", "mr-row__title", "mr-row__sub",
               "mr-row__bar", "mr-row__bar-fill", "mr-row__count",
