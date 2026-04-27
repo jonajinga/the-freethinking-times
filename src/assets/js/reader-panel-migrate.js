@@ -37,11 +37,10 @@
   move('like-btn',       'ann-like-slot');
   move('mark-read-btn',  'ann-mark-read-slot');
   move('pdf-basket-btn', 'ann-pdf-basket-slot');
-  move('tts-btn',        'ann-tts-slot');
 
   // After migration, give each engagement button the toolbar look while
   // keeping its existing id-based bindings intact.
-  ['like-btn', 'mark-read-btn', 'pdf-basket-btn', 'tts-btn'].forEach(function (id) {
+  ['like-btn', 'mark-read-btn', 'pdf-basket-btn'].forEach(function (id) {
     var b = document.getElementById(id);
     if (!b) return;
     b.classList.add('annotation-toolbar__btn');

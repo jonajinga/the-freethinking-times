@@ -147,23 +147,15 @@ layout: layouts/base.njk
             {% endif %}
           </div>
 
-          {# Support row, clearly separated from the byline meta above.
-             Always renders if there's audio for this article, even
-             when the author has no tipping links — the listen pill
-             gets a home. #}
-          {% set _hasAud = audioManifest[page.url] %}
+          {# Support row — author tipping + funding/republish/google
+             news. Listen pill lives in the meta-row below now (left
+             of word count) so it doesn't render here a second time. #}
           {% if author and authors[author] %}
           {% set tipAuthor = authors[author] %}
           {% set authorTipUrl = tipAuthor.tipping.kofi or tipAuthor.tipping.bmac or tipAuthor.tipping.patreon %}
           {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
-          {% endif %}
-          {% if _hasAud or authorTipUrl or pubTipUrl %}
+          {% if authorTipUrl or pubTipUrl %}
           <div class="article-header__support-row">
-            {% if _hasAud %}
-              {% include "partials/article-audio.njk" %}
-              {% if authorTipUrl or pubTipUrl %}<span class="article-header__support-divider" aria-hidden="true"></span>{% endif %}
-            {% endif %}
-            {% if author and authors[author] and (authorTipUrl or pubTipUrl) %}
             {% set tipHidePublication = true %}
             {% include "partials/tip-buttons.njk" %}
             <span class="article-header__support-divider" aria-hidden="true"></span>
@@ -171,7 +163,6 @@ layout: layouts/base.njk
                     aria-label="Open the funding disclosure"
                     data-umami-event="funding-learn"
                     onclick="toggleArticleDisclosure(this)">How We're Funded</button>
-            {% endif %}
             {% if syndicate %}
             <span class="article-header__support-divider" aria-hidden="true"></span>
             <button type="button" class="tip-badge tip-badge--cta" aria-expanded="false" aria-controls="republish-panel"
@@ -188,6 +179,7 @@ layout: layouts/base.njk
                data-umami-event="google-news-follow">Add as Preferred on Google</a>
             {% endif %}
           </div>
+          {% endif %}
           {% endif %}
 
           {# Author-support, funding-disclosure, and open-license panels —
@@ -337,24 +329,10 @@ layout: layouts/base.njk
             </svg>
           </button>
 
-          {# 2d. Listen — only renders when a build-time MP3 exists
-                 for this article. Routes through the global audio bar
-                 (no client-side Kokoro / Web Speech). #}
-          {% set _ttsAud = audioManifest[page.url] %}
-          {% if _ttsAud %}
-          <button class="article-action-btn" id="tts-btn" type="button"
-            data-tft-audio-trigger
-            data-tft-audio-src="{{ _ttsAud.mp3 }}"
-            data-tft-audio-url="{{ page.url }}"
-            data-tft-audio-title="{{ title | escape }}"
-            data-tft-audio-duration="{{ _ttsAud.duration }}"
-            aria-label="Listen to this article">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polygon points="5 3 19 12 5 21 5 3"/>
-            </svg>
-            <span class="btn-label">Listen</span>
-          </button>
-          {% endif %}
+          {# Listen affordance lives in the article-header meta-row
+             (left of word count). Toolbar Listen button has been
+             retired so there is exactly one Listen surface per
+             article page — no duplicate buttons. #}
 
           {# 2. Share (panel with social + copy + email) #}
           <div class="share-wrap">
@@ -1116,7 +1094,6 @@ window.__tftShowComments = window.__tftShowComments || function (btn, alwaysOpen
     <div id="ann-like-slot" class="annotation-toolbar__slot"></div>
     <div id="ann-mark-read-slot" class="annotation-toolbar__slot"></div>
     <div id="ann-pdf-basket-slot" class="annotation-toolbar__slot"></div>
-    <div id="ann-tts-slot" class="annotation-toolbar__slot"></div>
     <button id="ann-share-btn" class="annotation-toolbar__btn" type="button" aria-label="Share, download, print" aria-controls="ann-share-popover" aria-expanded="false" title="Share, download, print">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
     </button>

@@ -737,12 +737,18 @@
 }
 .article-topics__label {
   font-family: var(--font-ui);
-  font-size: 0.7rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--color-ink-faint);
   flex-shrink: 0;
+  /* Match chip vertical metrics so the label line-box centres
+   * with the bordered chips on the right. Chips have 2 px vertical
+   * padding + 1 px border, line-height 1.5; mirror that here. */
+  padding: 2px 0;
+  border: 1px solid transparent;
+  line-height: 1.5;
 }
 .article-topics__list {
   display: flex;
