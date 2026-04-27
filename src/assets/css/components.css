@@ -35,9 +35,10 @@
 }
 
 /* ── Full-width header & footer ─────────────────────────────── */
-/* Content containers are bounded at --max-width; masthead and footer
-   override that to span the full viewport. */
-.masthead .container,
+/* The masthead and footer backgrounds span full viewport via the outer
+   element's full-bleed background; the inner .container keeps the same
+   max-width + gutter padding as the body content so the bars align with
+   the article cards below. */
 .site-footer .container {
   max-width: none;
 }
@@ -70,8 +71,6 @@
   gap: var(--space-3);
   padding: var(--space-3) 0;
   min-height: 3rem;
-  max-width: var(--max-width-bars);
-  margin: 0 auto;
 }
 
 .masthead__lead {
@@ -84,7 +83,7 @@
 
 .masthead__title {
   font-family: var(--font-masthead);
-  font-size: 1.25rem;
+  font-size: 1.6rem;
   font-weight: 700;
   line-height: 1;
   text-align: center;
@@ -1344,8 +1343,8 @@ body, .masthead, .site-footer, .nav-dropdown, .gs-panel {
   align-items: center;
   list-style: none;
   padding: 0;
-  margin: 0 auto;
-  max-width: var(--max-width-bars);
+  margin: 0;
+  min-height: 3rem;
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
