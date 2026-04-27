@@ -22,15 +22,18 @@
   {
     "heading": "Reader Tools",
     "links": [
-      { "title": "Search",              "url": "/search/",            "desc": "Full search page" },
-      { "title": "Start Here",          "url": "/start-here/",        "desc": "New to the site?" },
-      { "title": "Reading History",     "url": "/reading-history/",   "desc": "Articles you've read" },
-      { "title": "Reading List",        "url": "/reading-list/",      "desc": "Saved for later" },
-      { "title": "Print Basket",        "url": "/print-basket/",      "desc": "Combine articles into one PDF" },
-      { "title": "Notes & Highlights",  "url": "/notes/",             "desc": "Your saved annotations" },
-      { "title": "Most Read",           "url": "/most-read/",         "desc": "What readers are spending time with" },
-      { "title": "RSS Reader",          "url": "/reader/",            "desc": "Built-in feed reader" },
-      { "title": "Feeds",               "url": "/feeds/",             "desc": "Every RSS feed in one place" }
+      { "title": "Search",               "url": "/search/",             "desc": "Full search page" },
+      { "title": "Start Here",           "url": "/start-here/",         "desc": "New to the site?" },
+      { "title": "Reading History",      "url": "/reading-history/",    "desc": "Articles you've read" },
+      { "title": "Reading List",         "url": "/reading-list/",       "desc": "Saved for later" },
+      { "title": "Reading Calendar",     "url": "/reading-calendar/",   "desc": "Your reading by date, on this device" },
+      { "title": "Editorial Calendar",   "url": "/editorial-calendar/", "desc": "Every article by publish date" },
+      { "title": "Responses",            "url": "/responses/",          "desc": "Threads of replies and rebuttals" },
+      { "title": "Print Basket",         "url": "/print-basket/",       "desc": "Combine articles into one PDF" },
+      { "title": "Notes & Highlights",   "url": "/notes/",              "desc": "Your saved annotations" },
+      { "title": "Most Read",            "url": "/most-read/",          "desc": "What readers are spending time with" },
+      { "title": "RSS Reader",           "url": "/reader/",             "desc": "Built-in feed reader" },
+      { "title": "Feeds",                "url": "/feeds/",              "desc": "Every RSS feed in one place" }
     ]
   },
   {
