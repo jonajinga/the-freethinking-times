@@ -147,13 +147,23 @@ layout: layouts/base.njk
             {% endif %}
           </div>
 
-          {# Support row, clearly separated from the byline meta above #}
+          {# Support row, clearly separated from the byline meta above.
+             Always renders if there's audio for this article, even
+             when the author has no tipping links — the listen pill
+             gets a home. #}
+          {% set _hasAud = audioManifest[page.url] %}
           {% if author and authors[author] %}
           {% set tipAuthor = authors[author] %}
           {% set authorTipUrl = tipAuthor.tipping.kofi or tipAuthor.tipping.bmac or tipAuthor.tipping.patreon %}
           {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
-          {% if authorTipUrl or pubTipUrl %}
+          {% endif %}
+          {% if _hasAud or authorTipUrl or pubTipUrl %}
           <div class="article-header__support-row">
+            {% if _hasAud %}
+              {% include "partials/article-audio.njk" %}
+              {% if authorTipUrl or pubTipUrl %}<span class="article-header__support-divider" aria-hidden="true"></span>{% endif %}
+            {% endif %}
+            {% if author and authors[author] and (authorTipUrl or pubTipUrl) %}
             {% set tipHidePublication = true %}
             {% include "partials/tip-buttons.njk" %}
             <span class="article-header__support-divider" aria-hidden="true"></span>
@@ -161,6 +171,7 @@ layout: layouts/base.njk
                     aria-label="Open the funding disclosure"
                     data-umami-event="funding-learn"
                     onclick="toggleArticleDisclosure(this)">How We're Funded</button>
+            {% endif %}
             {% if syndicate %}
             <span class="article-header__support-divider" aria-hidden="true"></span>
             <button type="button" class="tip-badge tip-badge--cta" aria-expanded="false" aria-controls="republish-panel"
@@ -177,7 +188,6 @@ layout: layouts/base.njk
                data-umami-event="google-news-follow">Add as Preferred on Google</a>
             {% endif %}
           </div>
-          {% endif %}
           {% endif %}
 
           {# Author-support, funding-disclosure, and open-license panels —
@@ -235,10 +245,10 @@ layout: layouts/base.njk
         {% endif %}
         {% endif %}
 
-        {# Build-time Kokoro MP3 player, only rendered when an MP3
-           sidecar exists in src/assets/audio for this article URL.
-           See partials/article-audio.njk + scripts/generate-tts.mjs. #}
-        {% include "partials/article-audio.njk" %}
+        {# Listen pill is now rendered inline in the byline support
+           row above (next to "How We're Funded" / "Republish" /
+           "Add as Preferred"), so it's smaller and integrated rather
+           than a full-width card. See partials/article-audio.njk. #}
 
         {# Responses to this piece — sits right below the tags so readers
            know up-front which other articles respond to this one. Only
@@ -324,19 +334,24 @@ layout: layouts/base.njk
             </svg>
           </button>
 
-          {# 2d. Listen — Kokoro TTS / Web Speech fallback #}
-          <button class="article-action-btn tts-btn" id="tts-btn" type="button"
-            aria-label="Listen to this article" aria-pressed="false"
-            data-url="{{ page.url }}"
-            data-umami-event="tts-play">
-            <svg class="tts-icon-play" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          {# 2d. Listen — only renders when a build-time MP3 exists
+                 for this article. Routes through the global audio bar
+                 (no client-side Kokoro / Web Speech). #}
+          {% set _ttsAud = audioManifest[page.url] %}
+          {% if _ttsAud %}
+          <button class="article-action-btn" id="tts-btn" type="button"
+            data-tft-audio-trigger
+            data-tft-audio-src="{{ _ttsAud.mp3 }}"
+            data-tft-audio-url="{{ page.url }}"
+            data-tft-audio-title="{{ title | escape }}"
+            data-tft-audio-duration="{{ _ttsAud.duration }}"
+            aria-label="Listen to this article">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polygon points="5 3 19 12 5 21 5 3"/>
             </svg>
-            <svg class="tts-icon-pause" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
-              <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
-            </svg>
-            <span class="btn-label tts-btn__label">Listen</span>
+            <span class="btn-label">Listen</span>
           </button>
+          {% endif %}
 
           {# 2. Share (panel with social + copy + email) #}
           <div class="share-wrap">

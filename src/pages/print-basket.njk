@@ -76,7 +76,11 @@ permalink: /print-basket/
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
-.pb-list button {
+/* Scoped so it doesn't clobber the .listen-btn pill, which has its
+ * own bg/border/padding that this rule would otherwise wipe out
+ * (visible bug: the listen pill rendered as plain underlined text
+ * on default and stayed red-filled after hover on the basket). */
+.pb-list button:not(.listen-btn) {
   background: none;
   border: 0;
   color: var(--color-ink-muted);
@@ -86,7 +90,7 @@ permalink: /print-basket/
   text-decoration: underline;
   padding: 0;
 }
-.pb-list button:hover { color: var(--color-accent); }
+.pb-list button:not(.listen-btn):hover { color: var(--color-accent); }
 .pb-listen { margin-top: var(--space-2); }
 
 .pb-preview {

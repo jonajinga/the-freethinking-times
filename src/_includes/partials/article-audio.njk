@@ -1,38 +1,31 @@
 {#
-  article-audio.njk — visible <audio> player when a pre-generated
-  Kokoro MP3 exists for this article.
+  article-audio.njk — small listen pill, only when a pre-generated
+  MP3 exists for this article. Renders inline (no full-width card)
+  so it slots cleanly into the byline support row alongside the
+  "How We're Funded" / "Republish" / "Add as Preferred" badges.
 
-  Lookup uses page.url against the manifest written from sidecar
-  JSONs in src/assets/audio/. Articles without a generated MP3
-  fall through silently — the toolbar Listen button still works
-  via the existing client-side TTS in tts.js.
-
-  preload="none" so the file doesn't download until the reader
-  actually presses play (no FCP / LCP cost on article load).
+  Click routes through the global audio bar via the standard
+  [data-tft-audio-trigger] mechanism — same as every other listen
+  pill on the site. No client-side Kokoro / Web Speech.
 #}
 {% set _aud = audioManifest[page.url] %}
 {% if _aud %}
 {% set _mins = (_aud.duration / 60) | round(0, 'ceil') %}
-{# Single big listen pill — no redundant card-with-pill-inside.
-   Reads as one prominent affordance instead of two stacked
-   labels saying the same thing. #}
-<div class="article-audio" data-pagefind-ignore>
-  <button type="button"
-          class="listen-btn listen-btn--xl"
-          data-tft-audio-trigger
-          data-tft-audio-src="{{ _aud.mp3 }}"
-          data-tft-audio-url="{{ page.url }}"
-          data-tft-audio-title="{{ title | escape }}"
-          data-tft-audio-duration="{{ _aud.duration }}"
-          data-umami-event="article-listen"
-          aria-label="Listen to this article, {{ _mins }} {{ "minute" if _mins == 1 else "minutes" }}"
-          title="Listen, {{ _mins }} {{ "minute" if _mins == 1 else "minutes" }}">
-    <span class="listen-btn__icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-    </span>
-    <span class="listen-btn__label">Listen to this article</span>
-    <span class="listen-btn__sep" aria-hidden="true">·</span>
-    <span class="listen-btn__time">{{ _mins }} min</span>
-  </button>
-</div>
+<button type="button"
+        class="listen-btn listen-btn--sm"
+        data-tft-audio-trigger
+        data-tft-audio-src="{{ _aud.mp3 }}"
+        data-tft-audio-url="{{ page.url }}"
+        data-tft-audio-title="{{ title | escape }}"
+        data-tft-audio-duration="{{ _aud.duration }}"
+        data-umami-event="article-listen"
+        aria-label="Listen to this article, {{ _mins }} {{ "minute" if _mins == 1 else "minutes" }}"
+        title="Listen, {{ _mins }} {{ "minute" if _mins == 1 else "minutes" }}">
+  <span class="listen-btn__icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+  </span>
+  <span class="listen-btn__label">Listen</span>
+  <span class="listen-btn__sep" aria-hidden="true">·</span>
+  <span class="listen-btn__time">{{ _mins }} min</span>
+</button>
 {% endif %}

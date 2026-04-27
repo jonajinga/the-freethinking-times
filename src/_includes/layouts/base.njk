@@ -276,8 +276,10 @@
   {# ── PDF basket: collect articles, print as one PDF ── #}
   <script src="/assets/js/pdf-basket.js?v={{ buildTime }}" defer></script>
 
-  {# ── Article TTS (Kokoro lazy-loaded on first click + Web Speech fallback) ── #}
-  <script src="/assets/js/tts.js?v={{ buildTime }}" defer></script>
+  {# Article TTS now uses build-time MP3 files served via the global
+     audio bar — no client-side Kokoro / Web Speech engine. tts.js
+     is intentionally not loaded here; the toolbar Listen button is
+     a [data-tft-audio-trigger] that routes through audio-bar.js. #}
 
   {# ── hCaptcha + dictation for Web3Forms pages ── #}
   {% if site.forms and site.forms.accessKey %}
