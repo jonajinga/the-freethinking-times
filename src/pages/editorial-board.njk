@@ -4,34 +4,30 @@ title: "Editorial Board"
 description: Kanban-style view of articles by status, draft, in review, scheduled, published.
 permalink: /editorial/board/
 eleventyExcludeFromCollections: true
+isEditorial: true
 ---
 
 {% set board = collections.allContent | editorialBoard %}
 {% set stats = board | editorialBoardStats %}
+{% set wip = board | wipLimits %}
 {% set edits = 30 | recentEdits %}
 {% set authorSlugs = [] %}
 {% for slug in authors | keys | sort %}{% if slug != "staff" %}{% set authorSlugs = (authorSlugs.push(slug), authorSlugs) %}{% endif %}{% endfor %}
 
 <div class="container eb-page">
 
+  {% include "partials/editorial-pivot.njk" %}
+
   <header class="eb-page__header">
-    <nav class="breadcrumbs" aria-label="Breadcrumb">
-      <ol class="breadcrumbs__list">
-        <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/">Home</a></li>
-        <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/dashboard/">Dashboard</a></li>
-        <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">Editorial Board</li>
-      </ol>
-    </nav>
     <h1 class="eb-page__title">Editorial Board</h1>
     <p class="eb-page__lede">
       Pitched &rarr; Drafting &rarr; In review &rarr; Scheduled &rarr;
-      Published. Cards stuck more than seven days are flagged.
-      Cross-link: <a href="/editorial-calendar/">Editorial calendar</a>
-      shows everything published, day by day.
+      Published. Cards stuck more than seven days are flagged via a
+      colour-graded left edge. Click any card to open its detail flyout.
     </p>
 
     <div class="eb-toolbar" role="toolbar" aria-label="Board filters">
-      <input type="search" id="eb-search" class="eb-toolbar__input" placeholder="Filter cards by title, author, or tag…" aria-label="Filter cards">
+      <input type="search" id="eb-search" class="eb-toolbar__input" placeholder="Filter cards by title, author, or tag…" aria-label="Filter cards" aria-keyshortcuts="/">
       <select id="eb-section" class="eb-toolbar__select" aria-label="Filter by section">
         <option value="">All sections</option>
         {% for key, section in site.sections %}
@@ -49,6 +45,10 @@ eleventyExcludeFromCollections: true
       <label class="eb-toolbar__check"><input type="checkbox" id="eb-stuck"> Stuck only</label>
       <label class="eb-toolbar__check"><input type="checkbox" id="eb-overdue"> Overdue only</label>
       <button type="button" id="eb-swimlanes" class="eb-toolbar__btn" aria-pressed="false">Swim-lanes</button>
+      <span class="eb-toolbar__group">
+        <button type="button" id="eb-copy-md" class="eb-toolbar__btn" title="Copy filtered cards as a Markdown table">Copy MD</button>
+        <button type="button" id="eb-copy-csv" class="eb-toolbar__btn" title="Download filtered cards as CSV">CSV</button>
+      </span>
     </div>
   </header>
 
@@ -67,15 +67,16 @@ eleventyExcludeFromCollections: true
   <div class="eb-board" id="eb-board">
 
     {% for col in [
-      { key: "pitched",   label: "Pitched",     accent: "var(--color-ink-faint)",    empty: "No pitches in queue." },
-      { key: "drafting",  label: "Drafting",    accent: "var(--color-news)",         empty: "No drafts in flight." },
-      { key: "review",    label: "In Review",   accent: "var(--color-history)",      empty: "Nothing in review." },
-      { key: "scheduled", label: "Scheduled",   accent: "var(--color-arts-culture)", empty: "No pieces scheduled." },
-      { key: "published", label: "Published",   accent: "var(--color-science)",      empty: "Nothing published yet." },
-      { key: "spiked",    label: "Spiked / Held", accent: "var(--color-rule-heavy)", empty: "Nothing spiked." }
+      { key: "pitched",   label: "Pitched",       accent: "var(--color-ink-faint)",    empty: "No pitches in queue." },
+      { key: "drafting",  label: "Drafting",      accent: "var(--color-news)",         empty: "No drafts in flight." },
+      { key: "review",    label: "In Review",     accent: "var(--color-history)",      empty: "Nothing in review." },
+      { key: "scheduled", label: "Scheduled",     accent: "var(--color-arts-culture)", empty: "No pieces scheduled." },
+      { key: "published", label: "Published",     accent: "var(--color-science)",      empty: "Nothing published yet." },
+      { key: "spiked",    label: "Spiked / Held", accent: "var(--color-rule-heavy)",   empty: "Nothing spiked." }
     ] %}
     {% set cards = board[col.key] %}
     {% set columnStats = stats[col.key] %}
+    {% set columnWip = wip[col.key] %}
     <div class="eb-col" data-col="{{ col.key }}">
       <div class="eb-col__header" style="border-top: 3px solid {{ col.accent }};">
         <div>
@@ -86,22 +87,45 @@ eleventyExcludeFromCollections: true
             {% if columnStats.oldest > columnStats.median %} &middot; oldest {{ columnStats.oldest }}d{% endif %}
           </p>
           {% endif %}
+          {% if columnWip and columnWip.limit %}
+          <p class="eb-col__wip{% if columnWip.breach %} eb-col__wip--breach{% endif %}">
+            {{ columnWip.count }} / {{ columnWip.limit }} typical
+            {% if columnWip.breach %}&middot; over WIP{% endif %}
+          </p>
+          {% endif %}
         </div>
         <span class="eb-col__count" data-col-count="{{ col.key }}">{{ cards.length }}</span>
       </div>
       <div class="eb-col__body">
         {% for c in cards | limit(60) %}
-        <article class="eb-card{% if c.stuckLevel %} eb-card--stuck-{{ c.stuckLevel }}{% endif %}{% if c.isOverdue %} eb-card--overdue{% endif %}"
-                 data-search="{{ ((c.title or '') + ' ' + (c.author or '') + ' ' + (c.tags | join(' '))) | lower }}"
-                 data-section="{{ c.section }}"
-                 data-author="{{ c.authorSlug }}"
-                 data-stuck="{{ c.stuckLevel }}"
-                 data-overdue="{{ 'true' if c.isOverdue else 'false' }}">
+        {% set ageClass = "" %}
+        {% if c.daysInStatus != null and col.key not in ["published", "spiked"] %}
+          {% if c.daysInStatus >= 15 %}{% set ageClass = "eb-card--age-4" %}
+          {% elif c.daysInStatus >= 8 %}{% set ageClass = "eb-card--age-3" %}
+          {% elif c.daysInStatus >= 5 %}{% set ageClass = "eb-card--age-2" %}
+          {% elif c.daysInStatus >= 3 %}{% set ageClass = "eb-card--age-1" %}{% endif %}
+        {% endif %}
+        <button type="button" class="eb-card{% if ageClass %} {{ ageClass }}{% endif %}{% if c.isOverdue %} eb-card--overdue{% endif %}"
+                data-search="{{ ((c.title or '') + ' ' + (c.author or '') + ' ' + (c.tags | join(' '))) | lower }}"
+                data-section="{{ c.section }}"
+                data-author-slug="{{ c.authorSlug }}"
+                data-author-name="{{ c.author }}"
+                data-stuck="{{ c.stuckLevel }}"
+                data-overdue="{{ 'true' if c.isOverdue else 'false' }}"
+                data-col="{{ col.key }}"
+                data-url="{{ c.url }}"
+                data-title="{{ c.title }}"
+                data-days-in-status="{{ c.daysInStatus or '' }}"
+                data-due-date="{{ c.dueDate or '' }}"
+                data-word-count="{{ c.wordCount or '' }}"
+                data-editor="{{ c.editor or '' }}"
+                data-reviewer="{{ c.reviewer or '' }}"
+                data-tags="{{ c.tags | join(',') }}"
+                data-spiked-reason="{{ c.spikedReason or '' }}">
           <header class="eb-card__head">
             <span class="eb-card__section">{{ c.section }}</span>
-            {% if c.stuckLevel %}<span class="eb-card__stuck-dot eb-card__stuck-dot--{{ c.stuckLevel }}" title="In this column for {{ c.daysInStatus }} days" aria-label="Stuck for {{ c.daysInStatus }} days"></span>{% endif %}
           </header>
-          <a class="eb-card__title-link" href="{{ c.url }}">{{ c.title }}</a>
+          <span class="eb-card__title-link">{{ c.title }}</span>
           <div class="eb-card__meta">
             <span class="eb-card__author">{{ c.author or "Unattributed" }}</span>
             {% if c.daysInStatus != null and col.key not in ["published", "spiked"] %}
@@ -123,7 +147,7 @@ eleventyExcludeFromCollections: true
           {% if col.key == "spiked" and c.spikedReason %}
           <p class="eb-card__spiked-reason">{{ c.spikedReason }}</p>
           {% endif %}
-        </article>
+        </button>
         {% endfor %}
         {% if not cards.length %}<p class="eb-empty">{{ col.empty }}</p>{% endif %}
         {% if cards.length > 60 %}<p class="eb-empty">Showing 60 of {{ cards.length }}.</p>{% endif %}
@@ -152,323 +176,32 @@ eleventyExcludeFromCollections: true
 
 </div>
 
-<style>
-.eb-page { padding-top: var(--space-10); padding-bottom: var(--space-20); }
-.eb-page__header { padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-6); }
-.eb-page__title { font-family: var(--font-masthead); font-size: var(--text-3xl); margin: var(--space-3) 0 var(--space-2); }
-.eb-page__lede { color: var(--color-ink-muted); font-size: var(--text-md); margin: 0 0 var(--space-4); }
+{# ── Card flyout (slide-in side drawer) ── #}
+<aside id="eb-flyout" class="eb-flyout" role="dialog" aria-labelledby="eb-flyout-title" aria-hidden="true">
+  <header class="eb-flyout__header">
+    <div>
+      <p class="eb-flyout__kicker" id="eb-flyout-section">Section</p>
+      <h2 class="eb-flyout__title" id="eb-flyout-title">Card</h2>
+    </div>
+    <button type="button" id="eb-flyout-close" class="eb-flyout__close" aria-label="Close card detail">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </header>
+  <div class="eb-flyout__body">
+    <div class="eb-flyout__field"><span class="eb-flyout__label">Status</span><span class="eb-flyout__value" id="eb-flyout-status">—</span></div>
+    <div class="eb-flyout__field"><span class="eb-flyout__label">Author</span><span class="eb-flyout__value" id="eb-flyout-author">—</span></div>
+    <div class="eb-flyout__field"><span class="eb-flyout__label">Days in status</span><span class="eb-flyout__value" id="eb-flyout-days">—</span></div>
+    <div class="eb-flyout__field"><span class="eb-flyout__label">Due date</span><span class="eb-flyout__value" id="eb-flyout-due">—</span></div>
+    <div class="eb-flyout__field"><span class="eb-flyout__label">Word count</span><span class="eb-flyout__value" id="eb-flyout-words">—</span></div>
+    <div class="eb-flyout__field"><span class="eb-flyout__label">Editor</span><span class="eb-flyout__value" id="eb-flyout-editor">—</span></div>
+    <div class="eb-flyout__field"><span class="eb-flyout__label">Reviewer</span><span class="eb-flyout__value" id="eb-flyout-reviewer">—</span></div>
+    <div class="eb-flyout__field"><span class="eb-flyout__label">Tags</span><span class="eb-flyout__value" id="eb-flyout-tags">—</span></div>
+    <div class="eb-flyout__field"><span class="eb-flyout__label">Spiked reason</span><span class="eb-flyout__value" id="eb-flyout-spiked">—</span></div>
+  </div>
+  <div class="eb-flyout__actions">
+    <a id="eb-flyout-open" class="eb-flyout__action" href="#">Open article &nearr;</a>
+    <a id="eb-flyout-source" class="eb-flyout__action" href="#" target="_blank" rel="noopener">View source &nearr;</a>
+  </div>
+</aside>
 
-.eb-toolbar {
-  display: flex;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-  align-items: center;
-}
-.eb-toolbar__input,
-.eb-toolbar__select {
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--color-rule);
-  background: var(--color-bg);
-  color: var(--color-ink);
-}
-.eb-toolbar__input { flex: 1 1 220px; min-width: 200px; }
-.eb-toolbar__check {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  color: var(--color-ink-muted);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.eb-toolbar__btn {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  background: transparent;
-  border: 1px solid var(--color-ink);
-  color: var(--color-ink);
-  padding: var(--space-2) var(--space-3);
-  cursor: pointer;
-}
-.eb-toolbar__btn[aria-pressed="true"] {
-  background: var(--color-ink);
-  color: var(--color-bg);
-}
-
-/* Per-day publishing rhythm */
-.eb-rhythm {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-  margin-bottom: var(--space-6);
-}
-.eb-rhythm__slot {
-  background: var(--color-bg-alt);
-  border: 1px solid var(--color-rule);
-  padding: var(--space-2);
-  text-align: center;
-  font-family: var(--font-ui);
-}
-.eb-rhythm__slot--filled {
-  background: var(--color-bg);
-  border-color: var(--color-accent);
-}
-.eb-rhythm__weekday { font-size: 0.65rem; color: var(--color-ink-faint); text-transform: uppercase; letter-spacing: 0.08em; }
-.eb-rhythm__day { font-size: var(--text-md); font-weight: 700; color: var(--color-ink); }
-.eb-rhythm__count {
-  font-size: var(--text-xs);
-  color: var(--color-ink-muted);
-}
-.eb-rhythm__slot--filled .eb-rhythm__count { color: var(--color-accent); font-weight: 600; }
-
-/* Board */
-.eb-board {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(220px, 1fr));
-  gap: var(--space-3);
-  align-items: start;
-}
-@media (max-width: 1280px) { .eb-board { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 760px)  { .eb-board { grid-template-columns: 1fr; } }
-
-.eb-col {
-  background: var(--color-bg-alt);
-  border: 1px solid var(--color-rule);
-  display: flex;
-  flex-direction: column;
-  min-height: 320px;
-}
-.eb-col__header {
-  padding: var(--space-3) var(--space-4);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--space-3);
-  border-bottom: 1px solid var(--color-rule);
-}
-.eb-col__title {
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin: 0;
-}
-.eb-col__sla {
-  font-family: var(--font-ui);
-  font-size: 0.65rem;
-  color: var(--color-ink-faint);
-  margin: 4px 0 0;
-  letter-spacing: 0.04em;
-}
-.eb-col__count {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  color: var(--color-ink-muted);
-  background: var(--color-bg);
-  border: 1px solid var(--color-rule);
-  padding: 1px var(--space-2);
-  flex-shrink: 0;
-}
-.eb-col__body {
-  padding: var(--space-3);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  flex: 1;
-}
-[data-col="spiked"] { opacity: 0.65; }
-
-/* Card */
-.eb-card {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: var(--space-3);
-  background: var(--color-bg);
-  border: 1px solid var(--color-rule);
-  text-decoration: none;
-  color: var(--color-ink);
-}
-.eb-card--stuck-amber { border-left: 3px solid #d97706; }
-.eb-card--stuck-red { border-left: 3px solid var(--color-accent); }
-.eb-card--overdue { background: color-mix(in srgb, var(--color-accent) 6%, var(--color-bg)); }
-.eb-card__head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.eb-card__section {
-  font-family: var(--font-ui);
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-ink-faint);
-}
-.eb-card__stuck-dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-.eb-card__stuck-dot--amber { background: #d97706; }
-.eb-card__stuck-dot--red { background: var(--color-accent); }
-.eb-card__title-link {
-  font-family: var(--font-headline);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--color-ink);
-  text-decoration: none;
-}
-.eb-card__title-link:hover { color: var(--color-accent); }
-.eb-card__meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px var(--space-3);
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  color: var(--color-ink-faint);
-}
-.eb-card__author { color: var(--color-ink-muted); }
-.eb-card__due--overdue { color: var(--color-accent); font-weight: 700; }
-.eb-card__assigns {
-  font-family: var(--font-ui);
-  font-size: 0.7rem;
-  color: var(--color-ink-faint);
-  display: flex;
-  gap: var(--space-3);
-  margin-top: 2px;
-}
-.eb-card__spiked-reason {
-  font-family: var(--font-body);
-  font-size: 0.78rem;
-  color: var(--color-ink-muted);
-  font-style: italic;
-  margin: 4px 0 0;
-}
-.eb-empty {
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-  color: var(--color-ink-faint);
-  font-style: italic;
-  margin: 0;
-  padding: var(--space-2);
-  text-align: center;
-}
-
-/* Swim-lane mode: cards group by author within each column */
-.eb-board--swimlanes .eb-col__body {
-  /* enabled via CSS counter pattern in JS — placeholder; the JS just
-     sorts visible cards by author so they cluster */
-}
-
-/* Recent edits */
-.eb-edits {
-  margin-top: var(--space-10);
-  border: 1px solid var(--color-rule);
-  background: var(--color-bg-alt);
-}
-.eb-edits__summary {
-  cursor: pointer;
-  padding: var(--space-3) var(--space-4);
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--color-ink);
-}
-.eb-edits__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--color-rule);
-}
-.eb-edits__item {
-  display: grid;
-  grid-template-columns: 80px 1fr 140px 140px;
-  gap: var(--space-3);
-  padding: var(--space-2) var(--space-4);
-  border-bottom: 1px solid var(--color-rule);
-  font-family: var(--font-ui);
-  font-size: 0.78rem;
-  align-items: baseline;
-}
-.eb-edits__item:last-child { border-bottom: 0; }
-.eb-edits__hash { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.7rem; color: var(--color-ink-faint); }
-.eb-edits__msg { color: var(--color-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.eb-edits__author { color: var(--color-ink-muted); }
-.eb-edits__time { color: var(--color-ink-faint); text-align: right; }
-@media (max-width: 760px) {
-  .eb-edits__item { grid-template-columns: 1fr; gap: 2px; padding: var(--space-3) var(--space-4); }
-  .eb-edits__time { text-align: left; }
-}
-</style>
-
-<script>
-(function () {
-  var search   = document.getElementById('eb-search');
-  var sec      = document.getElementById('eb-section');
-  var aut      = document.getElementById('eb-author');
-  var stuckOnly  = document.getElementById('eb-stuck');
-  var overdueOnly = document.getElementById('eb-overdue');
-  var swimBtn  = document.getElementById('eb-swimlanes');
-  var board    = document.getElementById('eb-board');
-  var cards    = Array.prototype.slice.call(document.querySelectorAll('.eb-card'));
-
-  function applyFilters() {
-    var q  = (search.value || '').toLowerCase().trim();
-    var s  = sec.value;
-    var a  = aut.value;
-    var stuck = stuckOnly.checked;
-    var overdue = overdueOnly.checked;
-
-    var counts = { pitched: 0, drafting: 0, review: 0, scheduled: 0, published: 0, spiked: 0 };
-
-    cards.forEach(function (c) {
-      var matchQ = !q || (c.dataset.search || '').indexOf(q) !== -1;
-      var matchS = !s || c.dataset.section === s;
-      var matchA = !a || c.dataset.author  === a;
-      var matchStuck   = !stuck   || (c.dataset.stuck === 'amber' || c.dataset.stuck === 'red');
-      var matchOverdue = !overdue || c.dataset.overdue === 'true';
-      var visible = matchQ && matchS && matchA && matchStuck && matchOverdue;
-      c.style.display = visible ? '' : 'none';
-      if (visible) {
-        var col = c.closest('.eb-col');
-        if (col) counts[col.dataset.col] = (counts[col.dataset.col] || 0) + 1;
-      }
-    });
-
-    Object.keys(counts).forEach(function (k) {
-      var el = document.querySelector('[data-col-count="' + k + '"]');
-      if (el) el.textContent = counts[k];
-    });
-  }
-
-  search.addEventListener('input', applyFilters);
-  sec.addEventListener('change', applyFilters);
-  aut.addEventListener('change', applyFilters);
-  stuckOnly.addEventListener('change', applyFilters);
-  overdueOnly.addEventListener('change', applyFilters);
-
-  swimBtn.addEventListener('click', function () {
-    var pressed = swimBtn.getAttribute('aria-pressed') === 'true';
-    swimBtn.setAttribute('aria-pressed', pressed ? 'false' : 'true');
-    board.classList.toggle('eb-board--swimlanes', !pressed);
-    // Re-sort each column's cards by author when swim-lanes is on.
-    document.querySelectorAll('.eb-col__body').forEach(function (body) {
-      var inCol = Array.prototype.slice.call(body.querySelectorAll('.eb-card'));
-      inCol.sort(function (a, b) {
-        if (pressed) return 0; // toggling off — restore original order
-        return (a.dataset.author || '').localeCompare(b.dataset.author || '');
-      });
-      inCol.forEach(function (c) { body.appendChild(c); });
-    });
-  });
-})();
-</script>
+<script src="/assets/js/editorial-board.js?v={{ buildTime }}" defer></script>

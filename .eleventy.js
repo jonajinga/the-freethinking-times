@@ -69,7 +69,8 @@ module.exports = function (eleventyConfig) {
         const cssDir = path.dirname(inputPath);
         const order = [
           "tokens.css", "base.css", "layout.css", "components.css",
-          "article.css", "projects.css", "library.css", "calendar.css"
+          "article.css", "projects.css", "library.css", "calendar.css",
+          "editorial.css"
         ];
         let combined = "";
         for (const file of order) {
@@ -244,6 +245,49 @@ module.exports = function (eleventyConfig) {
               // present in the page source and survives the content
               // scan naturally.
               "concept-index__entry--flash",
+              // Editorial chrome — JS-toggled modifiers and runtime-
+              // built nodes. Static .ed-pivot__tab / .dash-* / .eb-*
+              // classes are present in the templates and survive the
+              // content scan; only the dynamic ones need explicit
+              // safelist entries.
+              "ed-pivot__tab--active",
+              "ed-help-overlay", "ed-help-overlay--open",
+              "ed-help-overlay__panel", "ed-help-overlay__title",
+              "eb-card--age-1", "eb-card--age-2", "eb-card--age-3", "eb-card--age-4",
+              "eb-card--overdue",
+              "eb-board--swim",
+              "eb-swim-lane", "eb-swim-lane__head",
+              "eb-col__wip", "eb-col__wip--breach",
+              "eb-flyout", "eb-flyout__header", "eb-flyout__close",
+              "eb-flyout__body", "eb-flyout__field", "eb-flyout__label",
+              "eb-flyout__value", "eb-flyout__actions", "eb-flyout__action",
+              "eb-flyout__kicker", "eb-flyout__title",
+              "dash-stat--link",
+              "dash-cycle", "dash-cycle__col", "dash-cycle__col-title",
+              "dash-cycle__bars", "dash-cycle__bar",
+              "dash-cycle__bar--fresh", "dash-cycle__bar--warming",
+              "dash-cycle__bar--stuck", "dash-cycle__bar--severe",
+              "dash-cycle__bar-label", "dash-cycle__bar-track",
+              "dash-cycle__bar-fill", "dash-cycle__bar-num",
+              "dash-sla__grid", "dash-sla__bucket",
+              "dash-sla__bucket--soon", "dash-sla__bucket--late",
+              "dash-sla__bucket--severe",
+              "dash-sla__bucket-title", "dash-sla__bucket-count",
+              "dash-sla__list", "dash-sla__meta", "dash-sla__empty",
+              "dash-velocity__row", "dash-velocity__name",
+              "dash-velocity__spark", "dash-velocity__spark-bar",
+              "dash-velocity__spark-bar--has",
+              "dash-velocity__delta",
+              "dash-velocity__delta--up", "dash-velocity__delta--flat", "dash-velocity__delta--down",
+              "dash-ondeck", "dash-ondeck__title", "dash-ondeck__meta",
+              "dash-ondeck__due", "dash-ondeck__due--late", "dash-ondeck__due--soon",
+              "dash-card__sub",
+              "cal-view__cell--today", "cal-view__cell--weekend",
+              "cal-view__chips", "cal-view__chip", "cal-view__chip--active",
+              "cal-view--density-cards", "cal-view--density-compact", "cal-view--density-list",
+              "cal-view__overlay-card", "cal-view__overlay-pill",
+              "cal-view__week--swim", "cal-view__week-section-head",
+              "cal-view__week-day-head", "cal-view__week-cell",
               // Most-read chart rows — rendered from Umami-stats JSON.
               "mr-row", "mr-row__label", "mr-row__title", "mr-row__sub",
               "mr-row__bar", "mr-row__bar-fill", "mr-row__count",
@@ -286,6 +330,10 @@ module.exports = function (eleventyConfig) {
               /section-badge--/,          // --news, --opinion, --history…
               /article-card__headline--/, // --lg, --md, --sm, --xs
               /^cal-view/,                // calendar-shared.js builds every cal-view* node client-side
+              /^dash-cycle/,              // dashboard cycle-time histogram bars (Nunjucks loop emits modifiers from data)
+              /^dash-sla__bucket--/,      // dashboard SLA bucket modifiers (loop emits)
+              /^dash-velocity__delta--/,  // velocity row delta modifiers (loop emits)
+              /^eb-card--age-/,           // board card aging gradient modifiers
               /toc-list__item--/,         // --h1 through --h6
               /tip-badge--/,              // --pub, --info
               // JS-built DOM node class patterns
@@ -1119,6 +1167,129 @@ module.exports = function (eleventyConfig) {
     return out;
   });
 
+  // Per-column distribution of daysInStatus, bucketed [0-3, 4-7, 8-14, 15+].
+  // Feeds the dashboard's cycle-time histogram card.
+  eleventyConfig.addFilter("cycleTimeBuckets", (board) => {
+    const out = {};
+    Object.keys(board).forEach(col => {
+      const buckets = { fresh: 0, warming: 0, stuck: 0, severe: 0 };
+      board[col].forEach(card => {
+        const d = card.daysInStatus;
+        if (d == null) return;
+        if (d <= 3) buckets.fresh++;
+        else if (d <= 7) buckets.warming++;
+        else if (d <= 14) buckets.stuck++;
+        else buckets.severe++;
+      });
+      out[col] = buckets;
+    });
+    return out;
+  });
+
+  // Per-author publish velocity: articles published per ISO week for the
+  // last N weeks (default 8) plus a 30d-vs-prior-30d delta.
+  eleventyConfig.addFilter("velocity", (allContent, weeks) => {
+    const N = weeks || 8;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const msWeek = 7 * 86400000;
+    // ISO-week-of-year string yyyy-Www
+    function isoWeek(d) {
+      const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+      const day = date.getUTCDay() || 7;
+      date.setUTCDate(date.getUTCDate() + 4 - day);
+      const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+      const wk = Math.ceil(((date - yearStart) / 86400000 + 1) / 7);
+      return date.getUTCFullYear() + "-W" + String(wk).padStart(2, "0");
+    }
+    // Build the rolling N-week label list ending this week
+    const labels = [];
+    for (let i = N - 1; i >= 0; i--) {
+      const d = new Date(today.getTime() - i * msWeek);
+      labels.push(isoWeek(d));
+    }
+    const byAuthor = new Map();
+    allContent.forEach(item => {
+      const slug = item.data && item.data.author;
+      if (!slug || slug === "staff") return;
+      if (computeEnhancedStatus(item) !== "published") return;
+      if (!item.date) return;
+      const wk = isoWeek(new Date(item.date));
+      if (!labels.includes(wk)) {
+        // Outside the N-week window — only used for the prior-30d delta below
+      }
+      if (!byAuthor.has(slug)) {
+        byAuthor.set(slug, { slug, perWeek: {}, total: 0, last30: 0, prev30: 0 });
+      }
+      const a = byAuthor.get(slug);
+      a.perWeek[wk] = (a.perWeek[wk] || 0) + 1;
+      const ageMs = today - new Date(item.date).getTime();
+      if (ageMs >= 0 && ageMs <= 30 * 86400000) a.last30++;
+      else if (ageMs > 30 * 86400000 && ageMs <= 60 * 86400000) a.prev30++;
+    });
+    return Array.from(byAuthor.values()).map(a => {
+      const weeks = labels.map(wk => ({ week: wk, count: a.perWeek[wk] || 0 }));
+      const total = weeks.reduce((s, w) => s + w.count, 0);
+      const delta = a.last30 - a.prev30;
+      return { slug: a.slug, weeks, total, last30: a.last30, prev30: a.prev30, delta };
+    }).sort((a, b) => b.total - a.total);
+  });
+
+  // WIP limits per column. No build-snapshot history on a static site, so
+  // we use sensible hard limits and surface a `breach: true` flag when
+  // the live count exceeds 1.5x the limit.
+  eleventyConfig.addFilter("wipLimits", (board) => {
+    const limits = { pitched: 8, drafting: 5, review: 3, scheduled: 12 };
+    const out = {};
+    Object.keys(limits).forEach(col => {
+      const n = (board[col] || []).length;
+      const limit = limits[col];
+      out[col] = { count: n, limit, breach: n > Math.round(limit * 1.5) };
+    });
+    return out;
+  });
+
+  // Late-assignment buckets {soon: 1-3 days, late: 4-7, severe: 8+}.
+  // Operates on the `activeAssignments` filter output.
+  eleventyConfig.addFilter("slaBreaches", (assignments) => {
+    const out = { soon: [], late: [], severe: [] };
+    (assignments || []).forEach(a => {
+      if (!a.overdue) return;
+      const lateBy = -1 * a.daysUntilDue;
+      const entry = { ...a, lateBy };
+      if (lateBy >= 8) out.severe.push(entry);
+      else if (lateBy >= 4) out.late.push(entry);
+      else out.soon.push(entry);
+    });
+    Object.keys(out).forEach(k => {
+      out[k].sort((a, b) => b.lateBy - a.lateBy);
+    });
+    return out;
+  });
+
+  // Articles still pitched/drafting/review with a dueDate — for the
+  // calendar's deadline-overlay layer (ghost cards on dueDate cells).
+  eleventyConfig.addFilter("deadlineOverlays", (allContent) => {
+    return (allContent || [])
+      .filter(item => {
+        const status = computeEnhancedStatus(item);
+        return (status === "pitched" || status === "drafting" || status === "review")
+            && item.data && item.data.dueDate;
+      })
+      .map(item => {
+        const due = new Date(item.data.dueDate);
+        return {
+          url: item.url,
+          title: item.data.title || "(untitled)",
+          section: item.data.section || "",
+          author: item.data.authorName || item.data.author || "",
+          dueDate: !isNaN(due.getTime()) ? due.toISOString().slice(0, 10) : null,
+          status: computeEnhancedStatus(item)
+        };
+      })
+      .filter(o => o.dueDate);
+  });
+
   // Stale-content alert generator for the dashboard.
   // Returns three lists: oldDrafts, recentCorrections, fastSectionStale.
   eleventyConfig.addFilter("staleAlerts", (allContent) => {
@@ -1679,6 +1850,7 @@ module.exports = function (eleventyConfig) {
   // ─── Global Data
   eleventyConfig.addGlobalData("currentYear", () => new Date().getFullYear());
   eleventyConfig.addGlobalData("buildTime", () => Date.now());
+  eleventyConfig.addGlobalData("editorialSnapshot", () => new Date().toISOString());
 
   // ─── Pagefind search index (runs after build) ──────────────────────────────
   eleventyConfig.on("eleventy.after", () => {

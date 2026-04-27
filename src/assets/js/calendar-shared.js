@@ -138,17 +138,85 @@
     var d = state.cursor;
     var iso = isoOf(d);
     var entries = state.byDate[iso] || [];
+    var dueToday = (state.deadlines || []).filter(function (dl) { return dl.dueDate === iso; });
     var html = '<header class="cal-view__header">'
              + '<h2 class="cal-view__title">' + readableDate(d) + '</h2>'
-             + '<p class="cal-view__sub">' + entries.length + ' article' + (entries.length === 1 ? '' : 's') + '</p>'
+             + '<p class="cal-view__sub">' + entries.length + ' published'
+             + (dueToday.length ? ' &middot; ' + dueToday.length + ' due' : '')
+             + '</p>'
              + '</header>';
-    if (!entries.length) {
+    if (!entries.length && !dueToday.length) {
       html += '<p class="cal-view__empty">Nothing on this day.</p>';
     } else {
-      html += '<div class="cal-view__cards">';
-      entries.forEach(function (e) { html += renderCard(e.article); });
-      html += '</div>';
+      if (entries.length) {
+        html += '<div class="cal-view__cards">';
+        entries.forEach(function (e) { html += renderCard(e.article); });
+        html += '</div>';
+      }
+      if (dueToday.length) {
+        html += '<h3 class="cal-view__sub" style="margin-top:1.25rem">Deadlines</h3>'
+              + '<div class="cal-view__cards cal-view__cards--list">';
+        dueToday.forEach(function (dl) {
+          html += '<a class="cal-view__overlay-card" href="' + dl.url + '">'
+                + '<span class="cal-view__overlay-pill">' + (dl.status || 'due').toUpperCase() + '</span>'
+                + escapeHtml(dl.title)
+                + (dl.author ? ' &middot; ' + escapeHtml(dl.author) : '')
+                + '</a>';
+        });
+        html += '</div>';
+      }
     }
+    return html;
+  }
+
+  // Week view, swim-lane variant: rows are sections, columns are
+  // the seven days of the week. Cells hold matching cards.
+  function renderWeekSwimView(state) {
+    var start = startOfWeek(state.cursor);
+    var end = addDays(start, 6);
+    // Collect sections present in the filtered article pool that touch
+    // this week. Fall back to the full article list if no week match
+    // (otherwise an empty week would render an empty grid head).
+    var weekArticles = [];
+    for (var i = 0; i < 7; i++) {
+      var iso = isoOf(addDays(start, i));
+      (state.byDate[iso] || []).forEach(function (e) { weekArticles.push(e); });
+    }
+    var sectionSet = new Set();
+    weekArticles.forEach(function (e) { if (e.article.section) sectionSet.add(e.article.section); });
+    if (!sectionSet.size) {
+      (state.filtered || state.articles).forEach(function (a) { if (a.section) sectionSet.add(a.section); });
+    }
+    var sections = [...sectionSet].sort();
+
+    var html = '<header class="cal-view__header">'
+             + '<h2 class="cal-view__title">Week of ' + MONTH_NAMES[start.getMonth()] + ' ' + start.getDate() + ', ' + start.getFullYear() + '</h2>'
+             + '<p class="cal-view__sub">' + isoOf(start) + ' to ' + isoOf(end) + ' &middot; swim-lane by section</p>'
+             + '</header>';
+    html += '<div class="cal-view__week--swim">';
+    // Header row: empty corner + 7 day heads
+    html += '<div class="cal-view__week-section-head" aria-hidden="true"></div>';
+    for (var dh = 0; dh < 7; dh++) {
+      var dd = addDays(start, dh);
+      html += '<div class="cal-view__week-day-head">' + DAY_NAMES_SHORT[dd.getDay()] + ' ' + dd.getDate() + '</div>';
+    }
+    // For each section: row label + 7 cells
+    sections.forEach(function (sec) {
+      html += '<div class="cal-view__week-section-head">' + escapeHtml(sec) + '</div>';
+      for (var dx = 0; dx < 7; dx++) {
+        var dayDate = addDays(start, dx);
+        var dayIso = isoOf(dayDate);
+        var inCell = (state.byDate[dayIso] || []).filter(function (e) { return e.article.section === sec; });
+        html += '<div class="cal-view__week-cell">';
+        inCell.forEach(function (e) {
+          html += '<a class="cal-view__overlay-card" href="' + e.article.url + '" style="border-style:solid;border-color:var(--color-rule);">'
+                + escapeHtml(e.article.title)
+                + '</a>';
+        });
+        html += '</div>';
+      }
+    });
+    html += '</div>';
     return html;
   }
 
@@ -186,6 +254,14 @@
     var lastDay = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate();
     var leading = first.getDay();
     var monthLabel = MONTH_NAMES[first.getMonth()] + ' ' + first.getFullYear();
+    var todayISO = isoOf(new Date());
+
+    // Bucket deadline overlays by date for quick lookup
+    var deadlineByDay = {};
+    (state.deadlines || []).forEach(function (dl) {
+      if (!dl.dueDate) return;
+      (deadlineByDay[dl.dueDate] = deadlineByDay[dl.dueDate] || []).push(dl);
+    });
 
     var html = '<header class="cal-view__header">'
              + '<h2 class="cal-view__title">' + monthLabel + '</h2>'
@@ -205,9 +281,20 @@
       var iso = isoOf(date);
       var count = (state.counts[iso] || 0);
       var has = count > 0;
-      html += '<button type="button" class="cal-view__cell' + (has ? ' cal-view__cell--has' : '') + '" role="gridcell" data-jump-day="' + iso + '">'
+      var weekday = date.getDay();
+      var isWeekend = (weekday === 0 || weekday === 6);
+      var isToday = iso === todayISO;
+      var deadlineCount = (deadlineByDay[iso] || []).length;
+      var classList = ['cal-view__cell'];
+      if (has) classList.push('cal-view__cell--has');
+      if (isToday) classList.push('cal-view__cell--today');
+      if (isWeekend) classList.push('cal-view__cell--weekend');
+      html += '<button type="button" class="' + classList.join(' ') + '" role="gridcell" data-jump-day="' + iso + '"'
+            + (isToday ? ' aria-current="date"' : '')
+            + '>'
             + '<span class="cal-view__cell-num">' + d + '</span>'
             + (has ? '<span class="cal-view__cell-count">' + count + '</span>' : '')
+            + (deadlineCount ? '<span class="cal-view__overlay-pill" title="' + deadlineCount + ' deadline' + (deadlineCount > 1 ? 's' : '') + '">DUE ' + deadlineCount + '</span>' : '')
             + '</button>';
     }
     html += '</div></div>';
@@ -262,6 +349,55 @@
     return html;
   }
 
+  // ── URL-state contract ────────────────────────────────────────
+  function readUrlState() {
+    try {
+      var u = new URL(window.location.href);
+      return {
+        view:    u.searchParams.get('view') || null,
+        date:    u.searchParams.get('date') || null,
+        section: u.searchParams.get('section') || '',
+        author:  u.searchParams.get('author') || '',
+        density: u.searchParams.get('density') || 'cards',
+        swim:    u.searchParams.get('swim') === '1',
+      };
+    } catch (e) { return {}; }
+  }
+  function writeUrlState(state) {
+    try {
+      var u = new URL(window.location.href);
+      function setParam(k, v) {
+        if (v == null || v === '' || v === false || v === 'cards') u.searchParams.delete(k);
+        else u.searchParams.set(k, v === true ? '1' : v);
+      }
+      setParam('view', state.view !== 'month' ? state.view : '');
+      setParam('date', isoOf(state.cursor));
+      setParam('section', state.section);
+      setParam('author', state.author);
+      setParam('density', state.density);
+      setParam('swim', state.swim);
+      window.history.replaceState({}, '', u.toString());
+    } catch (e) {}
+  }
+
+  function loadDeadlines() {
+    var node = document.getElementById('cal-deadline-data');
+    if (!node) return [];
+    try { return JSON.parse(node.textContent.trim()) || []; } catch (e) { return []; }
+  }
+
+  function recomputeIndex(state, history) {
+    var pool = state.articles.filter(function (a) {
+      if (state.section && a.section !== state.section) return false;
+      if (state.author && a.author !== state.author) return false;
+      return true;
+    });
+    var idx = indexByDate(pool, history || null);
+    state.byDate = idx.byDate;
+    state.counts = idx.counts;
+    state.filtered = pool;
+  }
+
   // ── Engine ────────────────────────────────────────────────────
   function mount(opts) {
     var root = opts.root;
@@ -272,10 +408,13 @@
       try { raw = JSON.parse(dataNode.textContent.trim()); } catch (e) {}
     }
     var articles = raw.articles || [];
+    var urlState = readUrlState();
+    var initialView = urlState.view && /^(day|week|month|year)$/.test(urlState.view) ? urlState.view : 'month';
+    var initialCursor = urlState.date ? (parseISODay(urlState.date) || new Date()) : new Date();
+    var initialDensity = /^(cards|compact|list)$/.test(urlState.density) ? urlState.density : 'cards';
 
     if (opts.mode === 'reading') {
       var hist = opts.history || {};
-      // Filter to articles the user has read
       var readUrls = Object.keys(hist);
       if (!readUrls.length) {
         root.innerHTML = '<p class="cal-view__empty">'
@@ -285,29 +424,39 @@
       }
       articles = articles.filter(function (a) { return hist[a.url]; });
       var state = {
-        view: 'month',
-        cursor: new Date(),
+        view: initialView,
+        cursor: initialCursor,
         articles: articles,
+        section: urlState.section || '',
+        author:  urlState.author  || '',
+        density: initialDensity,
+        swim:    urlState.swim || false,
+        deadlines: [],
+        history: hist,
+        mode: 'reading',
       };
-      var idx = indexByDate(articles, hist);
-      state.byDate = idx.byDate;
-      state.counts = idx.counts;
+      recomputeIndex(state, hist);
       attachShell(root, state, opts);
     } else {
-      // editorial mode: every published article on its publish date
-      var idx2 = indexByDate(articles, null);
       var state2 = {
-        view: 'month',
-        cursor: new Date(),
+        view: initialView,
+        cursor: initialCursor,
         articles: articles,
-        byDate: idx2.byDate,
-        counts: idx2.counts,
+        section: urlState.section || '',
+        author:  urlState.author  || '',
+        density: initialDensity,
+        swim:    urlState.swim || false,
+        deadlines: loadDeadlines(),
+        history: null,
+        mode: 'editorial',
       };
+      recomputeIndex(state2);
       attachShell(root, state2, opts);
     }
   }
 
   function attachShell(root, state, opts) {
+    function recompute() { recomputeIndex(state, state.history); }
     function nav(direction) {
       if (state.view === 'day')   state.cursor = addDays(state.cursor, direction);
       else if (state.view === 'week')  state.cursor = addDays(state.cursor, direction * 7);
@@ -318,30 +467,59 @@
     function setView(v) { state.view = v; paint(); }
     function jumpToday() { state.cursor = new Date(); paint(); }
 
+    function chipListFromNode(id) {
+      var node = document.getElementById(id);
+      if (!node) return [];
+      try { return JSON.parse(node.textContent.trim()) || []; } catch (e) { return []; }
+    }
+
     function shellHTML(body) {
+      var sections = chipListFromNode('cal-section-list');
+      var authors  = chipListFromNode('cal-author-list');
+      var chipsHTML = '';
+      if ((sections && sections.length) || (authors && authors.length) || state.mode === 'editorial') {
+        chipsHTML = '<div class="cal-view__chips" role="group" aria-label="Filter calendar">'
+          + (sections.length ? sections.map(function (s) {
+              return '<button type="button" class="cal-view__chip' + (state.section === s ? ' cal-view__chip--active' : '') + '" data-cal-section="' + s + '">' + s + '</button>';
+            }).join('') : '')
+          + (authors.length ? authors.map(function (a) {
+              return '<button type="button" class="cal-view__chip' + (state.author === a ? ' cal-view__chip--active' : '') + '" data-cal-author="' + a + '">' + a + '</button>';
+            }).join('') : '')
+          + (state.view === 'week' ? '<button type="button" class="cal-view__chip' + (state.swim ? ' cal-view__chip--active' : '') + '" data-cal-swim="toggle">Swim by section</button>' : '')
+          + '</div>';
+      }
+      var densityHTML = '<div class="cal-toolbar__views" role="tablist" aria-label="Density">'
+        + ['cards','compact','list'].map(function (v) {
+            return '<button type="button" class="cal-toolbar__view' + (state.density === v ? ' is-active' : '') + '" data-cal-density="' + v + '">' + v.charAt(0).toUpperCase() + v.slice(1) + '</button>';
+          }).join('')
+        + '</div>';
       return ''
+        + chipsHTML
         + '<div class="cal-toolbar" role="toolbar" aria-label="Calendar navigation">'
           + '<div class="cal-toolbar__nav">'
-            + '<button type="button" class="cal-toolbar__btn" data-cal-nav="prev"  aria-label="Previous">&larr;</button>'
-            + '<button type="button" class="cal-toolbar__btn cal-toolbar__btn--today" data-cal-today>Today</button>'
-            + '<button type="button" class="cal-toolbar__btn" data-cal-nav="next"  aria-label="Next">&rarr;</button>'
+            + '<button type="button" class="cal-toolbar__btn" data-cal-nav="prev"  aria-label="Previous (left arrow)">&larr;</button>'
+            + '<button type="button" class="cal-toolbar__btn cal-toolbar__btn--today" data-cal-today aria-label="Jump to today (t)">Today</button>'
+            + '<button type="button" class="cal-toolbar__btn" data-cal-nav="next"  aria-label="Next (right arrow)">&rarr;</button>'
           + '</div>'
           + '<div class="cal-toolbar__views" role="tablist">'
-            + ['day','week','month','year'].map(function (v) {
-                return '<button type="button" role="tab" class="cal-toolbar__view' + (state.view === v ? ' is-active' : '') + '" data-cal-view="' + v + '" aria-selected="' + (state.view === v) + '">' + v.charAt(0).toUpperCase() + v.slice(1) + '</button>';
+            + ['day','week','month','year'].map(function (v, i) {
+                return '<button type="button" role="tab" class="cal-toolbar__view' + (state.view === v ? ' is-active' : '') + '" data-cal-view="' + v + '" aria-selected="' + (state.view === v) + '" title="' + v + ' (' + (i + 1) + ')">' + v.charAt(0).toUpperCase() + v.slice(1) + '</button>';
               }).join('')
           + '</div>'
+          + densityHTML
         + '</div>'
-        + '<div class="cal-view cal-view--' + state.view + '">' + body + '</div>';
+        + '<div class="cal-view cal-view--' + state.view + ' cal-view--density-' + state.density + '">' + body + '</div>';
     }
 
     function paint() {
+      recompute();
       var body = '';
       if (state.view === 'day')   body = renderDayView(state);
-      else if (state.view === 'week')  body = renderWeekView(state);
+      else if (state.view === 'week')  body = state.swim ? renderWeekSwimView(state) : renderWeekView(state);
       else if (state.view === 'month') body = renderMonthView(state);
       else if (state.view === 'year')  body = renderYearView(state);
       root.innerHTML = shellHTML(body);
+      writeUrlState(state);
     }
 
     paint();
@@ -353,6 +531,26 @@
       if (today) { jumpToday(); return; }
       var viewBtn = e.target.closest('[data-cal-view]');
       if (viewBtn) { setView(viewBtn.dataset.calView); return; }
+      var densityBtn = e.target.closest('[data-cal-density]');
+      if (densityBtn) { state.density = densityBtn.dataset.calDensity; paint(); return; }
+      var sectionChip = e.target.closest('[data-cal-section]');
+      if (sectionChip) {
+        state.section = state.section === sectionChip.dataset.calSection ? '' : sectionChip.dataset.calSection;
+        paint();
+        return;
+      }
+      var authorChip = e.target.closest('[data-cal-author]');
+      if (authorChip) {
+        state.author = state.author === authorChip.dataset.calAuthor ? '' : authorChip.dataset.calAuthor;
+        paint();
+        return;
+      }
+      var swimChip = e.target.closest('[data-cal-swim]');
+      if (swimChip) {
+        state.swim = !state.swim;
+        paint();
+        return;
+      }
       var jumpDay = e.target.closest('[data-jump-day]');
       if (jumpDay) {
         state.cursor = parseISODay(jumpDay.dataset.jumpDay);
@@ -366,6 +564,46 @@
         state.view = 'month';
         paint();
         return;
+      }
+    });
+
+    // Keyboard nav — only when the calendar root is focused or a non-
+    // input element is focused. Arrow keys move cursor; t = today;
+    // 1-4 switch view modes.
+    document.addEventListener('keydown', function (e) {
+      if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (!root.isConnected) return;
+      switch (e.key) {
+        case 'ArrowLeft':  nav(-1); e.preventDefault(); break;
+        case 'ArrowRight': nav(1);  e.preventDefault(); break;
+        case 'ArrowUp':
+          if (state.view === 'month' || state.view === 'week') {
+            state.cursor = addDays(state.cursor, -7);
+            paint();
+            e.preventDefault();
+          } else if (state.view === 'year') {
+            state.cursor = addMonths(state.cursor, -3);
+            paint();
+            e.preventDefault();
+          }
+          break;
+        case 'ArrowDown':
+          if (state.view === 'month' || state.view === 'week') {
+            state.cursor = addDays(state.cursor, 7);
+            paint();
+            e.preventDefault();
+          } else if (state.view === 'year') {
+            state.cursor = addMonths(state.cursor, 3);
+            paint();
+            e.preventDefault();
+          }
+          break;
+        case 't': case 'T': jumpToday(); break;
+        case '1': setView('day'); break;
+        case '2': setView('week'); break;
+        case '3': setView('month'); break;
+        case '4': setView('year'); break;
       }
     });
   }

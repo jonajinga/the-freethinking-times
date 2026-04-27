@@ -4,6 +4,7 @@ title: Editorial Dashboard
 description: Content status overview for The Freethinking Times editorial team.
 permalink: /dashboard/
 eleventyExcludeFromCollections: true
+isEditorial: true
 ---
 
 {% set editorialSections = ["news", "opinion", "analysis", "arts-culture", "science-technology", "history", "letters", "reviews"] %}
@@ -15,24 +16,24 @@ eleventyExcludeFromCollections: true
 {% set pulse = collections.allContent | productionPulse(12) %}
 {% set scoreboard = collections.allContent | authorScoreboard(authors | keys) %}
 {% set agenda = collections.allContent | schedulingAgenda(14) %}
+{% set cycle = board | cycleTimeBuckets %}
+{% set wip = board | wipLimits %}
+{% set sla = assignments | slaBreaches %}
+{% set velocity = collections.allContent | velocity(8) %}
 {% set staleTotal = stale.oldDrafts.length + stale.recentCorrections.length + stale.fastSectionStale.length + stale.brokenResponses.length %}
+{% set onDeck = assignments | limit(5) %}
+{% set velocityMax = 1 %}
+{% for v in velocity %}{% for w in v.weeks %}{% if w.count > velocityMax %}{% set velocityMax = w.count %}{% endif %}{% endfor %}{% endfor %}
 
 <div class="container dash">
 
-  <nav class="breadcrumbs" aria-label="Breadcrumb">
-    <ol class="breadcrumbs__list">
-      <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/">Home</a></li>
-      <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">Editorial Dashboard</li>
-    </ol>
-  </nav>
+  {% include "partials/editorial-pivot.njk" %}
 
   <header class="dash__header">
     <p class="dash__kicker">Editorial</p>
     <h1 class="dash__title">Dashboard</h1>
     <p class="dash__lede">Content status, assignments, and production pulse across the masthead.</p>
     <div class="dash__tools">
-      <a href="/editorial/board/" class="btn">Editorial Board</a>
-      <a href="/editorial-calendar/" class="btn">Editorial Calendar</a>
       <a href="/dashboard/guide/" class="btn">How to read this</a>
       <a href="/templates/" class="btn">Content Templates</a>
       <a href="/abbreviations/" class="btn">Abbreviations</a>
@@ -42,14 +43,14 @@ eleventyExcludeFromCollections: true
     </div>
   </header>
 
-  {# ── Top stats row ── #}
+  {# ── Top stats row (clickable drill-throughs to the board) ── #}
   <div class="dash__stats">
     <div class="dash-stat"><p class="dash-stat__label">Total</p><p class="dash-stat__value">{{ collections.allContent.length }}</p></div>
-    <div class="dash-stat"><p class="dash-stat__label">Pitched</p><p class="dash-stat__value">{{ board.pitched.length }}</p></div>
-    <div class="dash-stat dash-stat--alert"><p class="dash-stat__label">Drafting</p><p class="dash-stat__value">{{ board.drafting.length }}</p></div>
-    <div class="dash-stat dash-stat--warn"><p class="dash-stat__label">In review</p><p class="dash-stat__value">{{ board.review.length }}</p></div>
-    <div class="dash-stat"><p class="dash-stat__label">Scheduled</p><p class="dash-stat__value">{{ board.scheduled.length }}</p></div>
-    <div class="dash-stat"><p class="dash-stat__label">Published</p><p class="dash-stat__value">{{ board.published.length }}</p></div>
+    <a class="dash-stat dash-stat--link" href="/editorial/board/?col=pitched"><p class="dash-stat__label">Pitched</p><p class="dash-stat__value">{{ board.pitched.length }}</p></a>
+    <a class="dash-stat dash-stat--link dash-stat--alert" href="/editorial/board/?col=drafting"><p class="dash-stat__label">Drafting</p><p class="dash-stat__value">{{ board.drafting.length }}</p></a>
+    <a class="dash-stat dash-stat--link dash-stat--warn" href="/editorial/board/?col=review"><p class="dash-stat__label">In review</p><p class="dash-stat__value">{{ board.review.length }}</p></a>
+    <a class="dash-stat dash-stat--link" href="/editorial/board/?col=scheduled"><p class="dash-stat__label">Scheduled</p><p class="dash-stat__value">{{ board.scheduled.length }}</p></a>
+    <a class="dash-stat dash-stat--link" href="/editorial/board/?col=published"><p class="dash-stat__label">Published</p><p class="dash-stat__value">{{ board.published.length }}</p></a>
     {% if staleTotal %}
     <div class="dash-stat dash-stat--alert" style="border-left-color: var(--color-accent);"><p class="dash-stat__label">Needs attention</p><p class="dash-stat__value">{{ staleTotal }}</p></div>
     {% endif %}
@@ -74,7 +75,6 @@ eleventyExcludeFromCollections: true
       </button>
       {% endfor %}
     </div>
-    {# Hidden article-list panels — one per week with content, opened by JS. #}
     {% for w in pulse %}
     {% if w.count %}
     <div class="dash-pulse__panel" id="pulse-week-{{ loop.index0 }}" role="region" aria-label="Articles published {{ w.rangeLabel }}" hidden>
@@ -90,27 +90,6 @@ eleventyExcludeFromCollections: true
     </div>
     {% endif %}
     {% endfor %}
-    <script>
-    (function () {
-      var bars = document.querySelectorAll('.dash-pulse__col[aria-controls]');
-      bars.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var id = btn.getAttribute('aria-controls');
-          var panel = document.getElementById(id);
-          if (!panel) return;
-          var willOpen = panel.hasAttribute('hidden');
-          // Close every panel first; one open at a time.
-          document.querySelectorAll('.dash-pulse__panel').forEach(function (p) { p.setAttribute('hidden', ''); });
-          document.querySelectorAll('.dash-pulse__col[aria-expanded]').forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
-          if (willOpen) {
-            panel.removeAttribute('hidden');
-            btn.setAttribute('aria-expanded', 'true');
-            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
-        });
-      });
-    })();
-    </script>
   </section>
 
   {# ── Stale-content alerts ── #}
@@ -206,6 +185,100 @@ eleventyExcludeFromCollections: true
   {% endif %}
 
   <div class="dash__grid">
+
+    {# ── Cycle-time histogram (NEW) ── #}
+    <section class="dash-card dash-card--wide">
+      <h2 class="dash-card__title">Cycle time</h2>
+      <p class="dash-card__sub">Distribution of days-in-status across the active board lanes.</p>
+      <div class="dash-cycle">
+        {% for col in ["pitched", "drafting", "review", "scheduled"] %}
+        {% set bk = cycle[col] %}
+        {% set total = bk.fresh + bk.warming + bk.stuck + bk.severe %}
+        <div class="dash-cycle__col">
+          <h3 class="dash-cycle__col-title">{{ col }}</h3>
+          <div class="dash-cycle__bars">
+            {% for tier in [["fresh","0–3d",bk.fresh],["warming","4–7d",bk.warming],["stuck","8–14d",bk.stuck],["severe","15+d",bk.severe]] %}
+            <div class="dash-cycle__bar dash-cycle__bar--{{ tier[0] }}">
+              <span class="dash-cycle__bar-label">{{ tier[1] }}</span>
+              <span class="dash-cycle__bar-track"><span class="dash-cycle__bar-fill" style="width: {% if total %}{{ (tier[2] / total * 100) | round }}{% else %}0{% endif %}%;"></span></span>
+              <span class="dash-cycle__bar-num">{{ tier[2] }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    {# ── SLA-breach board (NEW) ── #}
+    <section class="dash-card dash-card--wide">
+      <h2 class="dash-card__title">SLA breach</h2>
+      <p class="dash-card__sub">Assignments past their <code>dueDate</code>, bucketed by lateness.</p>
+      <div class="dash-sla__grid">
+        {% for tier in [["soon","Soon (1–3d late)"],["late","Late (4–7d)"],["severe","Severe (8d+)"]] %}
+        <div class="dash-sla__bucket dash-sla__bucket--{{ tier[0] }}">
+          <h3 class="dash-sla__bucket-title">{{ tier[1] }} <span class="dash-sla__bucket-count">{{ sla[tier[0]].length }}</span></h3>
+          {% if sla[tier[0]].length %}
+          <ul class="dash-sla__list">
+            {% for a in sla[tier[0]] %}
+            <li><a href="{{ a.url }}">{{ a.title }}</a> <span class="dash-sla__meta">{{ a.assignedTo }} &middot; {{ a.lateBy }}d late</span></li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p class="dash-sla__empty">Nothing in this band.</p>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    {# ── Velocity sparklines (NEW) ── #}
+    <section class="dash-card dash-card--wide">
+      <h2 class="dash-card__title">Author velocity</h2>
+      <p class="dash-card__sub">Articles published per ISO week, last 8 weeks. Δ compares last 30 days against the 30 days before that.</p>
+      {% if velocity.length %}
+      {% for v in velocity %}
+      {% if v.total %}
+      <div class="dash-velocity__row">
+        <span class="dash-velocity__name">{% if authors[v.slug].name %}<a href="/author/{{ v.slug }}/">{{ authors[v.slug].name }}</a>{% else %}{{ v.slug }}{% endif %}</span>
+        <span class="dash-velocity__spark" aria-label="{{ v.total }} published over {{ v.weeks.length }} weeks">
+          {% for w in v.weeks %}
+          <span class="dash-velocity__spark-bar{% if w.count %} dash-velocity__spark-bar--has{% endif %}" style="height: {% if w.count %}{{ (w.count / velocityMax * 100) | round }}{% else %}4{% endif %}%;" title="{{ w.week }}: {{ w.count }}"></span>
+          {% endfor %}
+        </span>
+        <span class="dash-velocity__delta dash-velocity__delta--{% if v.delta > 0 %}up{% elif v.delta < 0 %}down{% else %}flat{% endif %}">
+          {% if v.delta > 0 %}+{{ v.delta }}{% elif v.delta < 0 %}{{ v.delta }}{% else %}±0{% endif %}
+        </span>
+      </div>
+      {% endif %}
+      {% endfor %}
+      {% else %}
+      <p class="dash-card__empty">No publication history yet.</p>
+      {% endif %}
+    </section>
+
+    {# ── On-deck queue (NEW) ── #}
+    <section class="dash-card dash-card--wide">
+      <h2 class="dash-card__title">On deck</h2>
+      <p class="dash-card__sub">Top five assignments closest to publishing — overdue first, then earliest due.</p>
+      {% if onDeck.length %}
+      <ul class="dash-ondeck">
+        {% for a in onDeck %}
+        <li>
+          <span class="dash-ondeck__title"><a href="{{ a.url }}">{{ a.title }}</a></span>
+          <span class="dash-ondeck__meta">{{ a.assignedTo }} &middot; <span class="dash-status dash-status--{{ a.status | lower | replace(' ', '-') }}">{{ a.status }}</span></span>
+          <span class="dash-ondeck__due {% if a.overdue %}dash-ondeck__due--late{% elif a.daysUntilDue != null and a.daysUntilDue <= 2 %}dash-ondeck__due--soon{% endif %}">
+            {% if a.overdue %}{{ a.dueDate }} &middot; {{ a.daysUntilDue * -1 }}d late
+            {% elif a.dueDate %}{{ a.dueDate }}{% if a.daysUntilDue <= 2 %} &middot; {{ a.daysUntilDue }}d{% endif %}
+            {% else %}no due date{% endif %}
+          </span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="dash-card__empty">No active assignments.</p>
+      {% endif %}
+    </section>
 
     {# ── Articles by Section ── #}
     <section class="dash-card">
@@ -325,7 +398,7 @@ eleventyExcludeFromCollections: true
     {# ── Per-author scoreboard ── #}
     <section class="dash-card dash-card--wide">
       <h2 class="dash-card__title">Per-author scoreboard</h2>
-      <p class="dash-pulse__sub" style="margin-bottom: var(--space-3);">Sorted by lifetime words. Drafts column shows pieces in the pipeline (pitched + drafting + review). Last 3 lists the most recent published titles.</p>
+      <p class="dash-card__sub">Sorted by lifetime words. Drafts column shows pieces in the pipeline (pitched + drafting + review). Last 3 lists the most recent published titles.</p>
       <table class="dash-table dash-scoreboard">
         <thead>
           <tr>
@@ -411,441 +484,24 @@ eleventyExcludeFromCollections: true
 
 </div>
 
-<style>
-.dash { padding-top: var(--space-10); padding-bottom: var(--space-20); }
-
-.dash__header {
-  margin-bottom: var(--space-8);
-  padding-bottom: var(--space-6);
-  border-bottom: 3px solid var(--color-ink);
-}
-.dash__kicker {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--color-accent);
-  margin: 0 0 var(--space-2);
-}
-.dash__title {
-  font-family: var(--font-masthead, var(--font-headline));
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  margin: 0 0 var(--space-3);
-  line-height: var(--leading-tight);
-}
-.dash__lede {
-  font-family: var(--font-body);
-  font-size: var(--text-md);
-  color: var(--color-ink-muted);
-  max-width: 62ch;
-  font-style: italic;
-  margin: 0 0 var(--space-5);
-}
-.dash__tools { display: flex; gap: var(--space-2); flex-wrap: wrap; }
-.dash__tools .btn { font-size: var(--text-xs); }
-
-/* Top strip of at-a-glance stats */
-.dash__stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: var(--space-3);
-  margin-bottom: var(--space-10);
-}
-.dash-stat {
-  padding: var(--space-4) var(--space-5);
-  background: var(--color-bg-alt);
-  border: 1px solid var(--color-rule);
-  border-left: 3px solid var(--color-ink);
-}
-.dash-stat--warn  { border-left-color: var(--color-history, #b78900); }
-.dash-stat--alert { border-left-color: var(--color-accent); }
-.dash-stat__label {
-  font-family: var(--font-ui);
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--color-ink-faint);
-  margin: 0 0 var(--space-2);
-}
-.dash-stat__value {
-  font-family: var(--font-masthead, var(--font-headline));
-  font-size: clamp(1.8rem, 4vw, 2.4rem);
-  line-height: 1;
-  color: var(--color-ink);
-  margin: 0;
-  font-variant-numeric: tabular-nums;
-}
-
-/* Production pulse sparkline */
-.dash-pulse {
-  margin: 0 0 var(--space-10);
-  padding: var(--space-5) var(--space-5) var(--space-4);
-  background: var(--color-bg);
-  border: 1px solid var(--color-rule);
-  border-top: 3px solid var(--color-ink);
-}
-.dash-pulse__head { margin-bottom: var(--space-4); }
-.dash-pulse__sub {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  color: var(--color-ink-faint);
-  margin: 0;
-}
-.dash-pulse__chart {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 4px;
-  align-items: end;
-  height: 110px;
-  margin-top: var(--space-3);
-}
-.dash-pulse__col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  height: 100%;
-  position: relative;
-  background: transparent;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-  font: inherit;
-  color: inherit;
-}
-.dash-pulse__col[disabled],
-.dash-pulse__col--empty { cursor: default; }
-.dash-pulse__bar {
-  width: 100%;
-  background: var(--color-ink);
-  min-height: 2px;
-  transition: background-color 120ms;
-}
-.dash-pulse__col:not([disabled]):hover .dash-pulse__bar,
-.dash-pulse__col[aria-expanded="true"] .dash-pulse__bar { background: var(--color-accent); }
-.dash-pulse__col[aria-expanded="true"] .dash-pulse__count { color: var(--color-accent); font-weight: 700; }
-
-/* Article-list panels under the chart */
-.dash-pulse__panel {
-  margin-top: var(--space-4);
-  padding: var(--space-3) var(--space-4);
-  background: var(--color-bg-alt);
-  border: 1px solid var(--color-rule);
-  border-left: 3px solid var(--color-accent);
-}
-.dash-pulse__panel-head {
-  font-family: var(--font-ui);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  margin: 0 0 var(--space-2);
-}
-.dash-pulse__panel-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.dash-pulse__panel-list li {
-  padding: 4px 0;
-  border-bottom: 1px solid var(--color-rule);
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-}
-.dash-pulse__panel-list li:last-child { border-bottom: 0; }
-.dash-pulse__panel-list a { color: var(--color-ink); text-decoration: none; }
-.dash-pulse__panel-list a:hover { color: var(--color-accent); }
-.dash-pulse__panel-meta { font-size: var(--text-xs); color: var(--color-ink-faint); margin-left: var(--space-2); }
-.dash-pulse__count {
-  position: absolute;
-  top: -16px;
-  font-family: var(--font-ui);
-  font-size: 0.65rem;
-  color: var(--color-ink-muted);
-  font-variant-numeric: tabular-nums;
-}
-.dash-pulse__week {
-  font-family: var(--font-ui);
-  font-size: 0.6rem;
-  color: var(--color-ink-faint);
-  margin-top: 4px;
-  font-variant-numeric: tabular-nums;
-}
-
-/* Stale-content alert section */
-.dash-stale {
-  margin: 0 0 var(--space-10);
-  padding: var(--space-5);
-  background: color-mix(in srgb, var(--color-accent) 6%, var(--color-bg));
-  border: 1px solid var(--color-accent);
-  border-left-width: 3px;
-}
-.dash-stale__head { margin-bottom: var(--space-4); }
-.dash-card__title--alert { color: var(--color-accent); border-bottom-color: var(--color-accent); }
-.dash-stale__sub {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  color: var(--color-ink-muted);
-  margin: 0;
-}
-.dash-stale__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--space-4);
-  margin-top: var(--space-3);
-}
-.dash-stale__group { background: var(--color-bg); padding: var(--space-3) var(--space-4); border: 1px solid var(--color-rule); }
-.dash-stale__group-title {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-ink);
-  margin: 0 0 var(--space-2);
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-}
-.dash-stale__group-count {
-  font-size: 0.7rem;
-  color: var(--color-accent);
-  background: color-mix(in srgb, var(--color-accent) 15%, transparent);
-  padding: 1px 6px;
-  border-radius: 2px;
-}
-.dash-stale__list { list-style: none; padding: 0; margin: 0; font-family: var(--font-ui); font-size: var(--text-sm); }
-.dash-stale__list li { padding: 4px 0; border-bottom: 1px solid var(--color-rule); }
-.dash-stale__list li:last-child { border-bottom: 0; }
-.dash-stale__list a { color: var(--color-ink); text-decoration: none; }
-.dash-stale__list a:hover { color: var(--color-accent); }
-.dash-stale__meta { font-size: var(--text-xs); color: var(--color-ink-faint); margin-left: var(--space-2); }
-
-/* Coverage gap grid */
-.dash-coverage {
-  margin: 0 0 var(--space-10);
-  padding: var(--space-5);
-  background: var(--color-bg);
-  border: 1px solid var(--color-rule);
-  border-top: 3px solid var(--color-ink);
-}
-.dash-coverage__grid {
-  list-style: none;
-  padding: 0;
-  margin: var(--space-3) 0 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: var(--space-2);
-}
-.dash-coverage__cell {
-  padding: var(--space-3);
-  background: var(--color-bg-alt);
-  border: 1px solid var(--color-rule);
-  border-left-width: 3px;
-}
-.dash-coverage__cell--ok    { border-left-color: var(--color-rule-heavy); }
-.dash-coverage__cell--amber { border-left-color: #d97706; }
-.dash-coverage__cell--red   { border-left-color: var(--color-accent); }
-.dash-coverage__label {
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  color: var(--color-ink);
-  text-decoration: none;
-}
-.dash-coverage__label:hover { color: var(--color-accent); }
-.dash-coverage__counts {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  margin: 4px 0 2px;
-  color: var(--color-ink-muted);
-  font-variant-numeric: tabular-nums;
-}
-.dash-coverage__last {
-  font-family: var(--font-ui);
-  font-size: 0.65rem;
-  color: var(--color-ink-faint);
-  margin: 0;
-}
-
-/* 14-day scheduling agenda */
-.dash-agenda {
-  margin: 0 0 var(--space-10);
-  padding: var(--space-5);
-  background: var(--color-bg);
-  border: 1px solid var(--color-rule);
-  border-top: 3px solid var(--color-ink);
-}
-.dash-agenda__strip {
-  display: grid;
-  grid-template-columns: repeat(14, 1fr);
-  gap: 4px;
-  margin-top: var(--space-3);
-}
-@media (max-width: 1100px) { .dash-agenda__strip { grid-template-columns: repeat(7, 1fr); } }
-.dash-agenda__slot {
-  padding: var(--space-2);
-  background: var(--color-bg-alt);
-  border: 1px solid var(--color-rule);
-  text-align: center;
-  font-family: var(--font-ui);
-  min-height: 70px;
-}
-.dash-agenda__slot--filled { background: color-mix(in srgb, var(--color-accent) 8%, var(--color-bg)); border-color: var(--color-accent); }
-.dash-agenda__weekday { font-size: 0.6rem; color: var(--color-ink-faint); text-transform: uppercase; letter-spacing: 0.08em; }
-.dash-agenda__day { font-size: var(--text-md); font-weight: 700; color: var(--color-ink); }
-.dash-agenda__count { font-size: var(--text-xs); color: var(--color-ink-muted); }
-.dash-agenda__slot--filled .dash-agenda__count { color: var(--color-accent); font-weight: 700; }
-.dash-agenda__list {
-  list-style: none;
-  padding: 0;
-  margin: 4px 0 0;
-  font-size: 0.65rem;
-  text-align: left;
-}
-.dash-agenda__list a { color: var(--color-ink); text-decoration: none; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.dash-agenda__list a:hover { color: var(--color-accent); }
-
-/* Per-author scoreboard refinements */
-.dash-scoreboard__title { display: inline-block; color: var(--color-ink-muted); text-decoration: none; font-size: 0.85em; }
-.dash-scoreboard__title:hover { color: var(--color-accent); }
-/* Prevent author names wrapping to two lines in the scoreboard. */
-.dash-scoreboard tbody td:first-child {
-  white-space: nowrap;
-  font-weight: 600;
-}
-.dash-scoreboard tbody td:first-child a { text-decoration: none; color: var(--color-ink); }
-.dash-scoreboard tbody td:first-child a:hover { color: var(--color-accent); }
-
-/* Card grid + tables */
-.dash__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--space-5);
-  margin-bottom: var(--space-10);
-}
-.dash-card {
-  background: var(--color-bg);
-  border: 1px solid var(--color-rule);
-  border-top: 3px solid var(--color-ink);
-  padding: var(--space-5) var(--space-5) var(--space-4);
-}
-.dash-card--wide { grid-column: 1 / -1; }
-.dash-card__title {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--color-ink);
-  padding-bottom: var(--space-2);
-  margin: 0 0 var(--space-4);
-  border-bottom: 1px solid var(--color-rule);
-}
-.dash-card__empty {
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-  font-style: italic;
-  color: var(--color-ink-muted);
-  margin: 0;
-  padding: var(--space-2) 0;
-}
-
-.dash-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-}
-.dash-table th,
-.dash-table td {
-  padding: var(--space-2) var(--space-3);
-  text-align: left;
-  border-bottom: 1px solid var(--color-rule);
-}
-.dash-table th {
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--color-ink-faint);
-}
-.dash-table tfoot td {
-  border-top: 2px solid var(--color-ink);
-  border-bottom: none;
-  font-weight: 700;
-}
-.dash-table tbody tr:last-child td { border-bottom: none; }
-.dash-table__num {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-.dash-table a { color: var(--color-ink); }
-.dash-table a:hover { color: var(--color-accent); }
-
-/* Status pills + due flags */
-.dash-status {
-  display: inline-block;
-  font-size: 0.66rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 2px var(--space-2);
-  border: 1px solid var(--color-rule);
-  color: var(--color-ink-muted);
-}
-.dash-status--published { border-color: var(--color-ink); color: var(--color-ink); }
-.dash-status--review    { border-color: var(--color-history, #b78900); color: var(--color-history, #b78900); }
-.dash-status--draft     { border-color: var(--color-accent); color: var(--color-accent); }
-.dash-due--late { color: var(--color-accent); }
-.dash-due--soon { color: var(--color-history, #b78900); font-size: 0.72rem; }
-.dash-due--none { color: var(--color-ink-faint); font-style: italic; }
-
-/* Recent articles list */
-.dash-recent {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.dash-recent li {
-  padding: var(--space-3) 0;
-  border-bottom: 1px solid var(--color-rule);
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-}
-.dash-recent li:last-child { border-bottom: none; }
-.dash-recent__title {
-  font-family: var(--font-headline);
-  font-weight: 600;
-  color: var(--color-ink);
-  font-size: var(--text-md);
-  text-decoration: none;
-}
-.dash-recent__title:hover { color: var(--color-accent); }
-.dash-recent__meta {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  color: var(--color-ink-faint);
-}
-.dash-recent__flag {
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-.dash-recent__flag--draft  { color: var(--color-accent); }
-.dash-recent__flag--review { color: var(--color-history, #b78900); }
-
-.dash__note {
-  border-top: 2px solid var(--color-ink);
-  padding-top: var(--space-5);
-  max-width: 62ch;
-  font-family: var(--font-body);
-  color: var(--color-ink-muted);
-}
-.dash__note a { color: var(--color-accent); }
-</style>
+{# Pulse-panel toggle — small inline IIFE to keep the rest of the JS-free #}
+<script>
+(function () {
+  var bars = document.querySelectorAll('.dash-pulse__col[aria-controls]');
+  bars.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var id = btn.getAttribute('aria-controls');
+      var panel = document.getElementById(id);
+      if (!panel) return;
+      var willOpen = panel.hasAttribute('hidden');
+      document.querySelectorAll('.dash-pulse__panel').forEach(function (p) { p.setAttribute('hidden', ''); });
+      document.querySelectorAll('.dash-pulse__col[aria-expanded]').forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
+      if (willOpen) {
+        panel.removeAttribute('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  });
+})();
+</script>

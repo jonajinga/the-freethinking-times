@@ -237,6 +237,9 @@
      moment the /notes/ page swaps in. Without this, /notes/
      only worked on hard refresh. #}
   <script src="/assets/js/notes-page.js?v={{ buildTime }}" defer></script>
+  {% if isEditorial %}
+  <script src="/assets/js/editorial-keyboard.js?v={{ buildTime }}" defer></script>
+  {% endif %}
   {% block scripts %}{% endblock %}
 
   {# ── Glossary tooltips (Tippy.js) ── #}
