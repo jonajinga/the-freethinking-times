@@ -721,22 +721,40 @@ layout: layouts/base.njk
         </div>
       </div>
 
-      {# "In response to" banner, shown when this article is a response to another #}
+      {# ── "In response to" banner ───────────────────────────────
+         responseTo accepts either a string URL (internal article path
+         OR external absolute URL) or an object for richer external
+         metadata: { url, title, author, publisher, date }. Internal
+         responses look up the target article in collections; external
+         responses render the metadata directly. #}
       {% if responseTo %}
+      {% set _rtUrl       = responseTo.url       if responseTo.url else responseTo %}
+      {% set _rtTitle     = responseTo.title     if responseTo.title else null %}
+      {% set _rtAuthor    = responseTo.author    if responseTo.author else null %}
+      {% set _rtPublisher = responseTo.publisher if responseTo.publisher else null %}
+      {% set _rtDate      = responseTo.date      if responseTo.date else null %}
+      {% set _rtIsExternal = (_rtUrl | string).startsWith('http') %}
       {% set responseTarget = null %}
-      {% for item in collections.allContent %}
-        {% if item.url == responseTo %}{% set responseTarget = item %}{% endif %}
-      {% endfor %}
-      <div class="response-banner">
-        <span class="response-banner__label">In response to</span>
-        {% if responseTarget %}
-        <a class="response-banner__link" href="{{ responseTo }}">
-          {{ responseTarget.data.title }}
+      {% if not _rtIsExternal %}
+        {% for item in collections.allContent %}
+          {% if item.url == _rtUrl %}{% set responseTarget = item %}{% endif %}
+        {% endfor %}
+      {% endif %}
+      <aside class="response-banner{% if _rtIsExternal %} response-banner--external{% endif %}">
+        <span class="response-banner__label">In response to{% if _rtIsExternal %} (external){% endif %}</span>
+        <a class="response-banner__link" href="{{ _rtUrl }}"{% if _rtIsExternal %} target="_blank" rel="noopener"{% endif %}>
+          {% if responseTarget %}{{ responseTarget.data.title }}
+          {% elif _rtTitle %}{{ _rtTitle }}
+          {% else %}{{ _rtUrl }}{% endif %}
         </a>
-        {% else %}
-        <a class="response-banner__link" href="{{ responseTo }}">{{ responseTo }}</a>
+        {% if _rtIsExternal and (_rtAuthor or _rtPublisher or _rtDate) %}
+        <span class="response-banner__meta">
+          {% if _rtAuthor %}<span>{{ _rtAuthor }}</span>{% endif %}
+          {% if _rtPublisher %}<span class="response-banner__publisher">{{ _rtPublisher }}</span>{% endif %}
+          {% if _rtDate %}<time datetime="{{ _rtDate | htmlDateString }}">{{ _rtDate | readableDate }}</time>{% endif %}
+        </span>
         {% endif %}
-      </div>
+      </aside>
       {% endif %}
 
       {# Series navigation (shown before lead image if article belongs to a series) #}

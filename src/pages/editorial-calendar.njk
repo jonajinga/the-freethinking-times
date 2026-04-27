@@ -1,0 +1,59 @@
+---
+layout: base
+title: Editorial calendar
+description: Every article we've published, laid out by date — what ran when, at a glance.
+permalink: /editorial-calendar/
+---
+{# Every published article. Rendered as JSON below; the client builds
+   the month-by-month calendar grid (cross-month weekday alignment is
+   ugly to do in Nunjucks). #}
+{% set allItems = collections.allContent %}
+
+<main class="container ed-cal" data-pagefind-ignore>
+
+  <header class="ed-cal__header">
+    <p class="ed-cal__kicker">Reader tools</p>
+    <h1 class="ed-cal__title">Editorial calendar</h1>
+    <p class="ed-cal__lede">
+      What we&rsquo;ve published, day by day. A live record of how the
+      paper has filled out over time &mdash; useful for editors planning
+      cadence and for readers tracking back to a date.
+    </p>
+  </header>
+
+  {# Build the month list in JS via the data the template emits below.
+     Server-rendering the calendar grids via Nunjucks loops gets gnarly
+     fast (cross-month spillover, weekday alignment), so we emit the
+     article list as JSON and let a tiny client renderer draw the grid.
+     This page is reader-tools, not a primary read surface, so JS-only
+     is acceptable. #}
+  <div id="ed-cal-mount" class="ed-cal__mount" aria-live="polite">
+    <p class="ed-cal__loading">Loading calendar&hellip;</p>
+  </div>
+
+  <script id="ed-cal-data" type="application/json">
+    [
+    {%- set _items = [] -%}
+    {%- for item in allItems -%}
+      {%- if loop.index0 > 0 -%},{%- endif -%}
+      {
+        "url": {{ item.url | dump | safe }},
+        "title": {{ item.data.title | dump | safe }},
+        "section": {{ (item.data.section or "") | dump | safe }},
+        "author": {{ (item.data.authorName or "") | dump | safe }},
+        "date": {{ (item.date | htmlDateString) | dump | safe }}
+      }
+    {%- endfor -%}
+    ]
+  </script>
+
+  <noscript>
+    <p class="ed-cal__noscript">
+      The calendar grid needs JavaScript. The full article list is
+      available without JavaScript at <a href="/archives/">/archives/</a>.
+    </p>
+  </noscript>
+
+</main>
+
+<script src="/assets/js/editorial-calendar.js?v={{ buildTime }}" defer></script>

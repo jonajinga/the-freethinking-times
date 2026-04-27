@@ -2485,6 +2485,31 @@
 
 .response-banner__link:hover { color: var(--color-accent); }
 
+/* External-response variant: dashed border + meta line below */
+.response-banner--external {
+  border-left-style: dashed;
+  border-left-color: var(--color-accent);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+}
+.response-banner--external .response-banner__label {
+  color: var(--color-accent);
+}
+.response-banner__meta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+  letter-spacing: 0.04em;
+}
+.response-banner__publisher {
+  font-style: italic;
+  color: var(--color-ink-faint);
+}
+
 .responses-section {
   margin-top: var(--space-8);
   padding-top: var(--space-6);

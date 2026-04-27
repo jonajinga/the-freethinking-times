@@ -629,10 +629,55 @@ module.exports = function (eleventyConfig) {
     return [...authorSet].sort();
   });
 
-  // Articles that declare themselves a response to the given URL
+  // Articles that declare themselves a response to the given URL.
+  // responseTo may be a string (URL) or { url, title, ... } object —
+  // normalise to the URL string before comparing.
+  const responseUrlOf = (rt) =>
+    rt == null ? null : (typeof rt === "object" ? rt.url : rt);
+
   eleventyConfig.addFilter("responsesTo", (allContent, targetUrl) => {
     if (!targetUrl) return [];
-    return allContent.filter(item => item.data.responseTo === targetUrl);
+    return allContent.filter(item => responseUrlOf(item.data.responseTo) === targetUrl);
+  });
+
+  // All articles that respond to anything (internal or external),
+  // grouped by target URL for the public /responses/ index. Each group
+  // contains: { targetUrl, isExternal, targetItem (if internal),
+  //             targetTitle, targetPublisher, responses[] }.
+  eleventyConfig.addCollection("responseThreads", (collectionApi) => {
+    const all = collectionApi
+      .getFilteredByGlob("src/content/**/*.md")
+      .filter(item => !item.data.draft && (!item.date || item.date <= new Date() || process.env.SHOW_FUTURE === "1"));
+    const byTarget = new Map();
+    for (const item of all) {
+      const rt = item.data.responseTo;
+      if (!rt) continue;
+      const url = responseUrlOf(rt);
+      if (!url) continue;
+      if (!byTarget.has(url)) {
+        const isExternal = String(url).startsWith("http");
+        const targetItem = isExternal ? null : all.find(x => x.url === url);
+        byTarget.set(url, {
+          targetUrl: url,
+          isExternal,
+          targetItem,
+          targetTitle: targetItem ? targetItem.data.title
+            : (typeof rt === "object" && rt.title) ? rt.title : url,
+          targetAuthor: (typeof rt === "object" && rt.author) ? rt.author : null,
+          targetPublisher: (typeof rt === "object" && rt.publisher) ? rt.publisher : null,
+          targetDate: (typeof rt === "object" && rt.date) ? rt.date : (targetItem ? targetItem.date : null),
+          responses: [],
+        });
+      }
+      byTarget.get(url).responses.push(item);
+    }
+    return [...byTarget.values()]
+      .map(g => ({
+        ...g,
+        responses: g.responses.sort((a, b) => b.date - a.date),
+        latest: g.responses.reduce((m, r) => (r.date > m ? r.date : m), new Date(0)),
+      }))
+      .sort((a, b) => b.latest - a.latest);
   });
 
   // Articles that link to the current page (backlinks / digital garden)
