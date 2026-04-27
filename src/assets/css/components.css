@@ -159,12 +159,12 @@
 [data-theme="dark"] .icon-sun { display: block; }
 [data-theme="dark"] .icon-moon { display: none; }
 
-/* ── Global display settings panel — slide-in drawer matching nav-drawer ─ */
-/* Slide animation: when [hidden] is set on the panel (the JS toggle),
- * we keep the element in flow but translate it off-screen + drop
- * visibility. Removing [hidden] reverses the transform for a clean
- * slide-in. The visibility transition is delayed by the slide duration
- * on close so the panel stays focusable until the animation finishes. */
+/* ── Global display settings panel — slide-in drawer ──────────── */
+/* Same open/close pattern as .nav-drawer: default state is closed
+ * (translated off-screen + visibility hidden), .is-open class toggles
+ * it open. Transition delays the visibility flip to hidden by the
+ * slide duration so the slide-out is visible before the element
+ * disappears. */
 .gs-panel {
   position: fixed;
   top: 0;
@@ -181,16 +181,16 @@
   color: var(--color-ink);
   scrollbar-width: thin;
   overscroll-behavior: contain;
-  transform: translateX(0);
-  visibility: visible;
-  transition: transform var(--transition-normal), visibility 0s linear 0s;
-}
-.gs-panel[hidden] {
-  display: block;
   transform: translateX(100%);
   visibility: hidden;
   pointer-events: none;
   transition: transform var(--transition-normal), visibility 0s linear var(--transition-normal);
+}
+.gs-panel.is-open {
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
+  transition: transform var(--transition-normal), visibility 0s linear 0s;
 }
 
 @media (max-width: 640px) {
@@ -5667,9 +5667,9 @@ body:has(.reading-floats.is-visible) .pdf-basket-tray {
 body:has(.nav-drawer.is-open) .pdf-basket-tray,
 body:has(.nav-drawer.is-open) .back-to-top,
 body:has(.nav-drawer.is-open) .reading-pct,
-body:has(.gs-panel:not([hidden])) .pdf-basket-tray,
-body:has(.gs-panel:not([hidden])) .back-to-top,
-body:has(.gs-panel:not([hidden])) .reading-pct {
+body:has(.gs-panel.is-open) .pdf-basket-tray,
+body:has(.gs-panel.is-open) .back-to-top,
+body:has(.gs-panel.is-open) .reading-pct {
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;

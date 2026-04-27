@@ -155,7 +155,7 @@
       if (searchModal) { searchModal.classList.remove('is-open'); searchModal.setAttribute('aria-hidden', 'true'); }
       if (searchOverlay) searchOverlay.classList.remove('is-open');
       var gsPanel = document.getElementById('global-settings-panel');
-      if (gsPanel) gsPanel.hidden = true;
+      if (gsPanel) gsPanel.classList.remove('is-open');
       document.body.style.overflow = '';
       var toggleBtn = document.getElementById('nav-drawer-toggle');
       if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');

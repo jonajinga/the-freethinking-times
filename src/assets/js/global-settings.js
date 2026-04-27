@@ -402,31 +402,30 @@
     // keyboard users don't lose their place.
     var panelOpenTime = 0;
     var panelOpener = null;
+    function isOpen() { return panel.classList.contains('is-open'); }
     function closePanel() {
-      if (panel.hidden) return;
-      panel.hidden = true;
+      if (!isOpen()) return;
+      panel.classList.remove('is-open');
       if (panelOpener && typeof panelOpener.focus === 'function') {
         panelOpener.focus();
         panelOpener = null;
       }
     }
     new MutationObserver(function () {
-      if (!panel.hidden) {
+      if (isOpen()) {
         panelOpenTime = Date.now();
-        // Remember who opened the panel so focus can return on close.
         if (document.activeElement && document.activeElement !== document.body) {
           panelOpener = document.activeElement;
         }
-        // Move focus into the panel for keyboard users.
         var firstFocusable = panel.querySelector('button, [href], select, input, [tabindex]:not([tabindex="-1"])');
         if (firstFocusable) {
           try { firstFocusable.focus(); } catch (e) {}
         }
       }
-    }).observe(panel, { attributes: true, attributeFilter: ['hidden'] });
+    }).observe(panel, { attributes: true, attributeFilter: ['class'] });
 
     document.addEventListener('click', function (e) {
-      if (panel.hidden) return;
+      if (!isOpen()) return;
       if (Date.now() - panelOpenTime < 200) return;
       var btn = document.getElementById('global-settings-btn');
       if (btn && btn.contains(e.target)) return;
@@ -434,14 +433,12 @@
       closePanel();
     });
 
-    // Escape closes + returns focus.
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && !panel.hidden) closePanel();
+      if (e.key === 'Escape' && isOpen()) closePanel();
     });
 
-    // Simple focus trap: Tab / Shift-Tab at the panel edges wraps.
     panel.addEventListener('keydown', function (e) {
-      if (e.key !== 'Tab' || panel.hidden) return;
+      if (e.key !== 'Tab' || !isOpen()) return;
       var focusables = panel.querySelectorAll('button:not([disabled]), [href], select:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])');
       if (!focusables.length) return;
       var first = focusables[0];
