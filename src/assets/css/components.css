@@ -2006,11 +2006,12 @@ a.dateline:hover { color: var(--color-accent); }
  * colour and the badge label.
  */
 .site-announce {
-  background: var(--color-ink);
-  color: var(--color-bg);
+  background: var(--color-bg);
+  color: var(--color-ink);
   font-family: var(--font-ui);
   font-size: var(--text-sm);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--color-rule);
+  border-bottom: 1px solid var(--color-rule);
 }
 .site-announce__inner {
   max-width: var(--max-width-bars);
@@ -2024,13 +2025,14 @@ a.dateline:hover { color: var(--color-accent); }
 .site-announce__badge {
   display: inline-block;
   padding: 2px 8px;
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--color-bg-alt);
+  color: var(--color-ink-muted);
   font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid var(--color-rule);
 }
 .site-announce__text {
   flex: 1 1 200px;
@@ -2038,11 +2040,10 @@ a.dateline:hover { color: var(--color-accent); }
   font-weight: 500;
   text-align: center;
 }
-/* The announce bar uses bg = var(--color-ink) and text = var(--color-bg).
- * Buttons inherit text colour and use a transparent border that matches.
- * On hover the button "fills" with the bar's text colour and the icon
- * flips to the bar's bg colour — high contrast in both light and dark
- * modes without any currentColor self-reference. */
+/* Default (info) announce sits on the page bg and uses ink text + a
+ * subtle rule-coloured border so the strip blends with the masthead.
+ * Breaking + warning variants below override these for high-contrast
+ * alerting. */
 .site-announce__cta {
   display: inline-flex;
   align-items: center;
@@ -2054,14 +2055,15 @@ a.dateline:hover { color: var(--color-accent); }
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  border: 1px solid var(--color-bg);
+  border: 1px solid var(--color-rule);
   background: transparent;
   flex-shrink: 0;
-  transition: background 0.12s, color 0.12s;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
 .site-announce__cta:hover {
-  background: var(--color-bg);
-  color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-bg);
+  border-color: var(--color-ink);
 }
 .site-announce--breaking .site-announce__cta,
 .site-announce--warning  .site-announce__cta {
@@ -2077,22 +2079,21 @@ a.dateline:hover { color: var(--color-accent); }
 
 .site-announce__close {
   background: transparent;
-  border: 1px solid var(--color-bg);
-  color: inherit;
+  border: 1px solid var(--color-rule);
+  color: var(--color-ink-muted);
   width: 28px;
   height: 28px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0.9;
   flex-shrink: 0;
-  transition: opacity 0.1s, background 0.1s, color 0.1s;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
 }
 .site-announce__close:hover {
-  opacity: 1;
-  background: var(--color-bg);
-  color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-bg);
+  border-color: var(--color-ink);
 }
 .site-announce--breaking .site-announce__close,
 .site-announce--warning  .site-announce__close {
@@ -2263,7 +2264,7 @@ a.dateline:hover { color: var(--color-accent); }
  * inner content is constrained to .container so the quote text
  * aligns with the section-nav row directly above it. */
 .quote-bar {
-  background: var(--color-bg-alt);
+  background: var(--color-bg);
   border-bottom: 1px solid var(--color-rule);
   padding: var(--space-2) 0;
   text-align: center;
@@ -2850,8 +2851,8 @@ a.dateline:hover { color: var(--color-accent); }
   position: fixed;
   left: 0;
   top: 0;
-  bottom: 0;
-  height: auto;
+  height: 100vh;
+  height: 100dvh;
   width: min(540px, 92vw);
   background: var(--color-bg);
   border-right: 1px solid var(--color-rule);
@@ -2884,11 +2885,10 @@ a.dateline:hover { color: var(--color-accent); }
   flex: 0 0 auto;
   display: grid;
   grid-template-columns: 1fr auto;
-  align-items: center;
+  align-items: start;
   gap: var(--space-3);
-  padding: var(--space-3) var(--space-5);
-  min-height: 64px;
-  border-bottom: 1px solid var(--color-rule);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 3px double var(--color-rule);
   background: var(--color-bg);
   z-index: 2;
 }
@@ -2899,28 +2899,36 @@ a.dateline:hover { color: var(--color-accent); }
   min-width: 0;
   gap: 2px;
 }
-.nav-drawer__edition {
+.nav-drawer__edition-kicker {
   font-family: var(--font-ui);
-  font-size: 0.65rem;
-  font-weight: 600;
+  font-size: 0.6rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--color-ink-faint);
+  letter-spacing: 0.18em;
+  color: var(--color-accent);
+  line-height: 1;
+}
+.nav-drawer__label {
+  font-family: var(--font-masthead);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  letter-spacing: -0.01em;
+  line-height: 1.05;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-.nav-drawer__label {
-  font-family: var(--font-masthead);
-  font-size: var(--text-md);
-  font-weight: 700;
-  color: var(--color-ink);
-  letter-spacing: -0.01em;
-  line-height: 1.1;
+.nav-drawer__edition {
+  font-family: var(--font-headline);
+  font-style: italic;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--color-ink-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.2;
 }
 
 .nav-drawer__lang {
@@ -2966,15 +2974,20 @@ a.dateline:hover { color: var(--color-accent); }
 /* Drawer brand link */
 .nav-drawer__brand {
   display: flex;
-  align-items: center;
-  gap: var(--space-2);
+  align-items: flex-start;
+  gap: var(--space-3);
   text-decoration: none;
   color: inherit;
   min-width: 0;
   overflow: hidden;
 }
 .nav-drawer__brand:hover { text-decoration: none; }
-.nav-drawer__brand img { flex-shrink: 0; }
+.nav-drawer__brand img {
+  flex-shrink: 0;
+  border: 1px solid var(--color-rule);
+  background: var(--color-bg-alt);
+  padding: 2px;
+}
 
 /* Scrollable middle region — absolutely positioned between the pinned
    header (top) and pinned footer (bottom). Explicit top/bottom offsets
@@ -3206,57 +3219,6 @@ a.dateline:hover { color: var(--color-accent); }
   }
 }
 
-/* ── Theme tri-toggle in drawer ───────────────────────────────── */
-.nav-drawer__theme {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: 0 var(--space-6) var(--space-3);
-}
-.nav-drawer__theme-label {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--color-ink-faint);
-  flex-shrink: 0;
-}
-.nav-drawer__theme-group {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-  flex: 1 1 auto;
-  background: var(--color-bg-alt);
-  border: 1px solid var(--color-rule);
-  padding: 2px;
-}
-.nav-drawer__theme-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-1);
-  background: transparent;
-  border: none;
-  color: var(--color-ink-muted);
-  font-family: var(--font-ui);
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 6px 4px;
-  cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast);
-}
-.nav-drawer__theme-btn:hover {
-  color: var(--color-ink);
-}
-.nav-drawer__theme-btn.is-active {
-  background: var(--color-bg);
-  color: var(--color-ink);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
 /* ── Quick-action badge (count pill on top-right of tile) ─────── */
 .nav-drawer__quick-btn { position: relative; }
 .nav-drawer__quick-badge {
@@ -3292,44 +3254,40 @@ a.dateline:hover { color: var(--color-accent); }
 .nav-drawer__section-tile {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--space-2);
   min-height: 44px;
   padding: var(--space-2) var(--space-3);
   background: var(--color-bg-alt);
   border: 1px solid var(--color-rule);
-  border-left: 2px solid transparent;
+  border-left: 3px solid var(--color-accent);
   color: var(--color-ink);
   font-family: var(--font-ui);
   font-size: var(--text-sm);
   font-weight: 600;
   text-decoration: none;
   letter-spacing: 0.01em;
-  transition: border-color var(--transition-fast), background var(--transition-fast);
+  transition: border-color var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
 }
 .nav-drawer__section-tile:hover,
 .nav-drawer__section-tile:focus-visible {
   background: var(--color-bg);
-  border-color: var(--color-ink);
+  border-top-color: var(--color-ink);
+  border-right-color: var(--color-ink);
+  border-bottom-color: var(--color-ink);
   text-decoration: none;
   outline: none;
 }
 .nav-drawer__section-tile[aria-current="page"] {
-  border-left-color: var(--color-accent);
   background: var(--color-bg);
+  border-top-color: var(--color-ink);
+  border-right-color: var(--color-ink);
+  border-bottom-color: var(--color-ink);
 }
 .nav-drawer__section-name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
-}
-.nav-drawer__section-count {
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--color-ink-faint);
-  letter-spacing: 0.04em;
-  flex-shrink: 0;
 }
 
 /* ── Latest stories list (compact rows) ───────────────────────── */

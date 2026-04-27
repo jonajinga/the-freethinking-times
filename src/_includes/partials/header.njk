@@ -576,10 +576,11 @@
 
   <div class="nav-drawer__header">
     <a href="/" class="nav-drawer__brand notranslate" aria-label="{{ site.title }}, Home">
-      <img src="/assets/favicon.svg" alt="" aria-hidden="true" width="22" height="22">
+      <img src="/assets/favicon.svg" alt="" aria-hidden="true" width="32" height="32">
       <span class="nav-drawer__brand-stack">
+        <span class="nav-drawer__edition-kicker">Today's edition</span>
         <span class="nav-drawer__label">{{ site.title }}</span>
-        <span class="nav-drawer__edition" id="nd-edition" aria-label="Today's edition">Today's edition</span>
+        <span class="nav-drawer__edition" id="nd-edition" aria-label="Today's date"></span>
       </span>
     </a>
     <button class="nav-drawer__close" id="nav-drawer-close" type="button" aria-label="Close navigation menu" onclick="var d=document.getElementById('nav-drawer');d.classList.remove('is-open');d.setAttribute('aria-hidden','true');document.getElementById('nav-drawer-toggle').setAttribute('aria-expanded','false');">
@@ -608,25 +609,6 @@
       </button>
     </form>
 
-    {# ── Theme tri-toggle (drives data-theme + storage directly) ── #}
-    <div class="nav-drawer__theme" role="group" aria-label="Theme">
-      <span class="nav-drawer__theme-label">Theme</span>
-      <div class="nav-drawer__theme-group" id="nd-theme-group">
-        <button type="button" class="nav-drawer__theme-btn" data-nd-theme="auto"  aria-label="Match system theme">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 12c0-3.5 0-6 0-9-3.5 0-6 2.5-6 6s2.5 6 6 6c0-1 0-2 0-3z" fill="currentColor" stroke="none"/></svg>
-          <span>Auto</span>
-        </button>
-        <button type="button" class="nav-drawer__theme-btn" data-nd-theme="light" aria-label="Switch to light theme">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/></svg>
-          <span>Light</span>
-        </button>
-        <button type="button" class="nav-drawer__theme-btn" data-nd-theme="dark"  aria-label="Switch to dark theme">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <span>Dark</span>
-        </button>
-      </div>
-    </div>
-
     {# ── Quick actions grid ── #}
     <div class="nav-drawer__quick" role="group" aria-label="Quick actions">
       <a href="/random/" class="nav-drawer__quick-btn">
@@ -650,17 +632,15 @@
       </button>
     </div>
 
-    {# ── Sections grid: tile per section + article count ── #}
+    {# ── Sections grid: tile per section ── #}
     <p class="nav-drawer__section-label">Sections</p>
     <ul class="nav-drawer__sections" role="list">
       {% for item in nav %}
       {% if item.collection %}
       {% set sec = site.sections[item.collection] %}
-      {% set count = collections[item.collection].length or 0 %}
       <li>
         <a class="nav-drawer__section-tile" href="{{ item.url }}"{% if sec and sec.description %} data-tippy-content="{{ sec.description }}"{% endif %}{% if page.url == item.url %} aria-current="page"{% endif %}>
           <span class="nav-drawer__section-name">{{ item.label }}</span>
-          {% if count %}<span class="nav-drawer__section-count">{{ count }}</span>{% endif %}
         </a>
       </li>
       {% endif %}
@@ -756,34 +736,5 @@
   setBadge('nd-readinglist-count', readArr(PREFIX + '-reading-list').length);
   setBadge('nd-notes-count',       readArr(PREFIX + '-annotations').length);
 
-  // Theme tri-toggle — drives data-theme + localStorage directly
-  var themeKey = PREFIX + '-theme';
-  var bgKey    = PREFIX + '-gs-bg';
-  var root     = document.documentElement;
-  var btns     = document.querySelectorAll('#nd-theme-group [data-nd-theme]');
-  function currentTheme() {
-    var stored = null;
-    try { stored = localStorage.getItem(themeKey); } catch (e) {}
-    if (stored === 'dark') return 'dark';
-    if (stored === 'light') return 'light';
-    return 'auto';
-  }
-  function applyTheme(v) {
-    if (v === 'auto') {
-      try { localStorage.removeItem(themeKey); localStorage.removeItem(bgKey); } catch (e) {}
-      var sys = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      root.setAttribute('data-theme', sys);
-      root.removeAttribute('data-gs-bg');
-    } else {
-      root.setAttribute('data-theme', v);
-      if (v === 'light') root.removeAttribute('data-gs-bg');
-      try { localStorage.setItem(themeKey, v); localStorage.removeItem(bgKey); } catch (e) {}
-    }
-    btns.forEach(function (b) { b.classList.toggle('is-active', b.dataset.ndTheme === v); });
-  }
-  btns.forEach(function (b) {
-    b.classList.toggle('is-active', b.dataset.ndTheme === currentTheme());
-    b.addEventListener('click', function () { applyTheme(b.dataset.ndTheme); });
-  });
 })();
 </script>
