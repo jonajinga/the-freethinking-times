@@ -13,27 +13,26 @@
 {% set _aud = audioManifest[page.url] %}
 {% if _aud %}
 {% set _mins = (_aud.duration / 60) | round(0, 'ceil') %}
-<figure class="article-audio" data-pagefind-ignore>
-  <div class="article-audio__head">
-    <span class="article-audio__icon" aria-hidden="true">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M11 5L6 9H2v6h4l5 4V5z"/>
-        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-      </svg>
+{# Single big listen pill — no redundant card-with-pill-inside.
+   Reads as one prominent affordance instead of two stacked
+   labels saying the same thing. #}
+<div class="article-audio" data-pagefind-ignore>
+  <button type="button"
+          class="listen-btn listen-btn--xl"
+          data-tft-audio-trigger
+          data-tft-audio-src="{{ _aud.mp3 }}"
+          data-tft-audio-url="{{ page.url }}"
+          data-tft-audio-title="{{ title | escape }}"
+          data-tft-audio-duration="{{ _aud.duration }}"
+          data-umami-event="article-listen"
+          aria-label="Listen to this article, {{ _mins }} {{ "minute" if _mins == 1 else "minutes" }}"
+          title="Listen, {{ _mins }} {{ "minute" if _mins == 1 else "minutes" }}">
+    <span class="listen-btn__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
     </span>
-    <figcaption class="article-audio__label">
-      <span class="article-audio__title">Listen to this article</span>
-      <span class="article-audio__meta">{{ _mins }} {{ "minute" if _mins == 1 else "minutes" }}</span>
-    </figcaption>
-  </div>
-  {# Single trigger for the global persistent audio bar — same
-     mechanism as every article card on the site. Native <audio>
-     controls have been retired here in favour of one consistent
-     player surface across the whole publication. #}
-  {% set listenUrl = page.url %}
-  {% set listenTitle = title %}
-  {% set listenSize = "" %}
-  {% include "partials/listen-button.njk" %}
-</figure>
+    <span class="listen-btn__label">Listen to this article</span>
+    <span class="listen-btn__sep" aria-hidden="true">·</span>
+    <span class="listen-btn__time">{{ _mins }} min</span>
+  </button>
+</div>
 {% endif %}

@@ -88,6 +88,7 @@ permalink: /reading-history/
   padding: 0;
 }
 .reading-history-list .rh-actions button:hover { color: var(--color-accent); }
+.reading-history-list .rh-listen { margin-top: var(--space-2); }
 </style>
 
 <script>
@@ -140,7 +141,11 @@ permalink: /reading-history/
       var date    = e.date ? '<span class="rh-meta">' + fmt(e.date) + '</span>' : '';
       var lbtn    = listen(e.url, e.title || e.url);
       return '<li>' +
-        '<div>' + lbtn + '<a href="' + e.url + '">' + (e.title || e.url) + '</a><div style="margin-top: 4px; display: flex; gap: var(--space-2); flex-wrap: wrap; align-items: center;">' + pill + section + date + '</div></div>' +
+        '<div>' +
+          '<a href="' + e.url + '">' + (e.title || e.url) + '</a>' +
+          '<div style="margin-top: 4px; display: flex; gap: var(--space-2); flex-wrap: wrap; align-items: center;">' + pill + section + date + '</div>' +
+          (lbtn ? '<div class="rh-listen">' + lbtn + '</div>' : '') +
+        '</div>' +
         '<div class="rh-actions"><button type="button" data-rh-remove="' + e.url + '">Remove</button></div>' +
         '</li>';
     }).join('');

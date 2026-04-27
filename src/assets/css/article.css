@@ -2244,6 +2244,7 @@
 }
 
 .reading-list__title:hover { color: var(--color-accent); }
+.reading-list__listen { margin-top: var(--space-2); }
 
 .reading-list__foot {
   display: flex;

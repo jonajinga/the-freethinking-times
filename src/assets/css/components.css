@@ -4917,6 +4917,17 @@ select.w3f__input option {
 .listen-btn--sm .listen-btn__icon { width: 16px; height: 16px; }
 .listen-btn--sm .listen-btn__icon svg { width: 8px; height: 8px; }
 
+/* XL variant — used as the primary article-audio affordance. */
+.listen-btn--xl {
+  height: 44px;
+  padding: 0 var(--space-5) 0 var(--space-4);
+  gap: var(--space-2);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+}
+.listen-btn--xl .listen-btn__icon { width: 26px; height: 26px; }
+.listen-btn--xl .listen-btn__icon svg { width: 12px; height: 12px; }
+
 /* On compact card metas, hide the "LISTEN" word and keep just the
  * play icon + duration so the pill stays inline without dominating. */
 @media (max-width: 480px) {
