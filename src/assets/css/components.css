@@ -3023,7 +3023,9 @@ a.dateline:hover { color: var(--color-accent); }
    flex/grid intrinsic-sizing quirks. */
 .nav-drawer__scroll {
   min-height: 0;
+  min-width: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   padding-bottom: var(--space-4);
@@ -7023,8 +7025,23 @@ body:has(.gs-panel.is-open) .reading-pct {
 }
 @media (max-width: 480px) {
   .cal-view__weekdays span { padding: var(--space-1); font-size: 0.55rem; }
-  .cal-view__cell { padding: var(--space-1); }
+  .cal-view__cell { min-height: 3rem; padding: 2px; }
   .cal-view__cell-num { font-size: 0.6rem; }
+  /* Article-count badges become illegible on a 51 px cell — hide
+   * them; the cell-has class still flags days with content. */
+  .cal-view__cell-count { display: none; }
+  /* Year-view 12-month grid: drop to a single column so each mini-
+   * grid is wide enough to read the heat tiles. */
+  .cal-view__year-grid { grid-template-columns: 1fr; }
+  /* Filter chips become a horizontal scroll strip rather than wrap
+   * onto multiple rows that crowd the toolbar. */
+  .cal-view__chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .cal-view__chip { scroll-snap-align: start; flex-shrink: 0; }
 }
 
 /* ── Back-of-book / concept index ────────────────────────────── */
@@ -7266,9 +7283,25 @@ body:has(.gs-panel.is-open) .reading-pct {
 .concept-index__entry[hidden] { display: none; }
 .concept-index__section[hidden] { display: none; }
 
-/* Phones: collapse the A-Z strip into a more compact line */
+/* Phones: A-Z strip becomes a horizontal scroll-snap row instead of
+ * cramming 26 letters into a wrapped grid. The strip stays sticky
+ * but each letter chip stays a 44 px touch target — swipe through
+ * the alphabet with snap landing on each letter. */
 @media (max-width: 640px) {
-  .concept-index__alpha { padding: var(--space-2); gap: 2px; }
-  .concept-index__alpha-letter { min-width: 22px; height: 24px; font-size: 0.7rem; padding: 0 4px; }
+  .concept-index__alpha {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: var(--space-2);
+    gap: 4px;
+  }
+  .concept-index__alpha-letter {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    min-width: 32px;
+    height: 32px;
+    font-size: 0.78rem;
+  }
   .concept-index__filter { flex-direction: column; align-items: stretch; }
 }

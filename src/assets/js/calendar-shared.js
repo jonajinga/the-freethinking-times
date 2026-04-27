@@ -474,6 +474,13 @@
     var initialView = urlState.view && /^(day|week|month|year)$/.test(urlState.view) ? urlState.view : 'month';
     var initialCursor = urlState.date ? (parseISODay(urlState.date) || new Date()) : new Date();
     var initialDensity = /^(cards|compact|list)$/.test(urlState.density) ? urlState.density : 'cards';
+    // <360px viewport: 7-col calendar grid is genuinely unusable and
+    // even the cards layout cramps. Default to list density unless
+    // the URL explicitly overrode it. The user can still toggle back
+    // via the toolbar.
+    if (!urlState.density && typeof window !== 'undefined' && window.innerWidth && window.innerWidth < 360) {
+      initialDensity = 'list';
+    }
 
     if (opts.mode === 'reading') {
       var hist = opts.history || {};

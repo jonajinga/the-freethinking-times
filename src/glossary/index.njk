@@ -160,6 +160,42 @@ permalink: /glossary/
     padding: 1px 0;
   }
 }
+
+/* Phones: stack the A-Z bar above the entries as a horizontal
+ * scroll-snap strip. The vertical column at 9 px font-size + ~24 px
+ * column width fails the 44 px touch-target floor and is illegible.
+ * Each letter chip lands at 36 × 36 px, swipe to navigate. */
+@media (max-width: 480px) {
+  .glossary-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  .glossary-az {
+    position: sticky;
+    top: 0;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-rule);
+    padding: var(--space-2) 0;
+    gap: 4px;
+    height: auto;
+    /* Visual order: A-Z above the entries */
+    order: -1;
+  }
+  .glossary-az__letter {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    width: 36px;
+    height: 36px;
+    font-size: 0.78rem;
+    border: 1px solid var(--color-rule);
+    background: var(--color-bg-alt);
+  }
+}
 </style>
 
 <script>

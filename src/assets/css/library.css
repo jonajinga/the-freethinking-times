@@ -1487,6 +1487,11 @@
   justify-content: center;
   width: 44px;
   height: 44px;
+  /* Opt out of the base.css universal 44 px floor — this toolbar
+   * intentionally packs 10+ buttons on phones; the per-breakpoint
+   * widths below override min-height/min-width. */
+  min-width: 0;
+  min-height: 0;
   background: none;
   border: none;
   color: #fff;
@@ -1507,22 +1512,37 @@
 }
 
 /* Tighter on phones — the toolbar holds 10+ buttons after the engagement
-   migration, so the 44×44 default forces a row wrap on narrow screens. */
+   migration, so the 44×44 default forces a row wrap on narrow screens.
+   Below 640 px we shrink the buttons but also give the strip a swipeable
+   scroll-snap fallback so users can reach off-screen actions on very
+   narrow viewports without losing any of them. */
 @media (max-width: 640px) {
   .annotation-toolbar__btn {
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
   }
-  .annotation-toolbar__btn svg { width: 15px; height: 15px; }
-  .annotation-toolbar__main { gap: 1px; column-gap: 1px; }
-  .annotation-toolbar { padding: 3px var(--space-1); column-gap: 2px; min-height: 40px; }
+  .annotation-toolbar__btn svg { width: 16px; height: 16px; }
+  .annotation-toolbar__main {
+    gap: 1px;
+    column-gap: 1px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .annotation-toolbar__main::-webkit-scrollbar { display: none; }
+  .annotation-toolbar__btn { scroll-snap-align: start; }
+  .annotation-toolbar { padding: 3px var(--space-1); column-gap: 2px; min-height: 44px; }
 }
 @media (max-width: 360px) {
+  /* Floor at 36 × 36 even on the smallest phones. Below this the
+   * buttons stop being reliably tappable; the scroll-snap above
+   * picks up the slack instead of cramming more buttons in. */
   .annotation-toolbar__btn {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
   }
-  .annotation-toolbar__btn svg { width: 14px; height: 14px; }
+  .annotation-toolbar__btn svg { width: 15px; height: 15px; }
 }
 
 

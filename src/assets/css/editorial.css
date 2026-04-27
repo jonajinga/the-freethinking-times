@@ -376,6 +376,19 @@
   margin-top: var(--space-3);
 }
 @media (max-width: 1180px) { .dash-agenda__strip { grid-template-columns: repeat(7, 1fr); } }
+/* Phones: 14 cells across 360 px = 25 px each (unreadable). Switch
+ * to a horizontal scroll strip with snap-to-day so the editor can
+ * swipe through the agenda one day at a time. Keeps each slot wide
+ * enough to read the count + items list. */
+@media (max-width: 640px) {
+  .dash-agenda__strip {
+    grid-template-columns: repeat(14, minmax(120px, 1fr));
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .dash-agenda__slot { scroll-snap-align: start; }
+}
 .dash-agenda__slot {
   padding: var(--space-2);
   background: var(--color-bg-alt);
@@ -740,6 +753,17 @@
   gap: 4px;
   margin-bottom: var(--space-6);
 }
+/* Phones: 7 cells across 360 px = 50 px each (counts unreadable).
+ * Switch to a horizontal scroll strip with snap-to-day. */
+@media (max-width: 480px) {
+  .eb-rhythm {
+    grid-template-columns: repeat(7, minmax(80px, 1fr));
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .eb-rhythm__slot { scroll-snap-align: start; }
+}
 .eb-rhythm__slot {
   background: var(--color-bg-alt);
   border: 1px solid var(--color-rule);
@@ -760,8 +784,14 @@
   gap: var(--space-3);
   align-items: start;
 }
-@media (max-width: 1280px) { .eb-board { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 768px)  { .eb-board { grid-template-columns: 1fr; } }
+/* Tablet-aware board ladder. Six lanes only fit comfortably above
+ * 1180px; tablet-landscape and -portrait need four and three lanes
+ * respectively, and phones land at one. The 6→4→3→2→1 sequence
+ * eliminates the dead zone between desktop and phone.  */
+@media (max-width: 1280px) { .eb-board { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 1024px) { .eb-board { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width:  768px) { .eb-board { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width:  480px) { .eb-board { grid-template-columns: 1fr; } }
 
 .eb-col {
   background: var(--color-bg-alt);
