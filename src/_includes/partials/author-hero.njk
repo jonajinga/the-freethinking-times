@@ -74,13 +74,36 @@
       <span class="author-hero__support-divider" aria-hidden="true"></span>
       {% endif %}
       <div class="author-hero__support-badges">
-        {% set tipAuthor = authorData %}
-        {% set tipHidePublication = true %}
-        {% include "partials/tip-buttons.njk" %}
-        <button type="button" class="tip-badge" aria-expanded="false" aria-controls="funding-panel"
-                aria-label="How we are funded"
-                data-umami-event="funding-learn"
-                onclick="toggleArticleDisclosure(this)">How We're Funded</button>
+        {# Direct payment links per platform — one badge per
+           configured destination on the author's profile (kofi /
+           bmac / patreon). Skips silently when the author has
+           none, so casual contributors don't get a half-empty
+           support row. #}
+        {% if authorData.tipping %}
+          {% if authorData.tipping.kofi %}
+          <a class="tip-badge" href="{{ authorData.tipping.kofi }}" target="_blank" rel="noopener noreferrer"
+             aria-label="Tip {{ authorData.name }} on Ko-fi"
+             data-umami-event="author-support-kofi">Ko-fi</a>
+          {% endif %}
+          {% if authorData.tipping.bmac %}
+          <a class="tip-badge" href="{{ authorData.tipping.bmac }}" target="_blank" rel="noopener noreferrer"
+             aria-label="Tip {{ authorData.name }} on Buy Me a Coffee"
+             data-umami-event="author-support-bmac">Buy Me a Coffee</a>
+          {% endif %}
+          {% if authorData.tipping.patreon %}
+          <a class="tip-badge" href="{{ authorData.tipping.patreon }}" target="_blank" rel="noopener noreferrer"
+             aria-label="Support {{ authorData.name }} on Patreon"
+             data-umami-event="author-support-patreon">Patreon</a>
+          {% endif %}
+          {% if authorData.tipping.stripe %}
+          <a class="tip-badge" href="{{ authorData.tipping.stripe }}" target="_blank" rel="noopener noreferrer"
+             aria-label="Tip {{ authorData.name }}"
+             data-umami-event="author-support-stripe">Tip directly</a>
+          {% endif %}
+        {% endif %}
+        <a class="tip-badge" href="/support/"
+           aria-label="How {{ site.title }} is funded"
+           data-umami-event="footer-support">How We're Funded</a>
       </div>
     </div>
   </div>

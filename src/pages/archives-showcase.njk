@@ -96,6 +96,8 @@ eleventyExcludeFromCollections: true
   transition: opacity 0.5s ease 0.7s, background var(--transition-fast);
 }
 .as-showcase__read:hover { background: var(--color-accent); color: var(--color-bg); text-decoration: none; }
+.as-showcase__actions { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+.as-showcase__listen { display: inline-flex; }
 .as-showcase.is-visible .as-showcase__kicker,
 .as-showcase.is-visible .as-showcase__desc,
 .as-showcase.is-visible .as-showcase__meta,
@@ -327,7 +329,10 @@ eleventyExcludeFromCollections: true
     <h1 class="as-showcase__title" id="as-title"></h1>
     <p class="as-showcase__desc" id="as-desc"></p>
     <p class="as-showcase__meta" id="as-meta"></p>
-    <a class="as-showcase__read" id="as-read" href="#" data-no-spa>Read article &rarr;</a>
+    <div class="as-showcase__actions">
+      <a class="as-showcase__read" id="as-read" href="#" data-no-spa>Read article &rarr;</a>
+      <span class="as-showcase__listen" id="as-listen"></span>
+    </div>
   </div>
 
   <div class="as-showcase__nav">
@@ -471,6 +476,7 @@ eleventyExcludeFromCollections: true
   var elDesc = document.getElementById('as-desc');
   var elMeta = document.getElementById('as-meta');
   var elRead = document.getElementById('as-read');
+  var elListen = document.getElementById('as-listen');
   var elCounter = document.getElementById('as-counter');
   var elProgress = document.getElementById('as-progress');
   var elPause = document.getElementById('as-pause');
@@ -493,6 +499,9 @@ eleventyExcludeFromCollections: true
       metaBits.push(dateStr);
       elMeta.innerHTML = metaBits.join(' &middot; ');
       elRead.href = a.url;
+      if (elListen) {
+        elListen.innerHTML = (window.__tftAudioBar && window.__tftAudioBar.renderListenButton) ? window.__tftAudioBar.renderListenButton(a.url, a.title) : '';
+      }
       elCounter.textContent = (idx + 1) + ' / ' + articles.length;
       showcase.classList.add('is-visible');
     }, 350);

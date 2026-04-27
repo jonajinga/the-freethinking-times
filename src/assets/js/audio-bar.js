@@ -262,7 +262,8 @@
     return m[url] || m[url + '/'] || m[url.replace(/\/$/, '')] || null;
   }
   // Builds the same markup as partials/listen-button.njk so JS
-  // surfaces stay in visual sync with server-rendered cards.
+  // surfaces stay in visual sync with server-rendered cards: pill
+  // shape, play triangle in an accent circle, "LISTEN · N MIN" label.
   function renderListenButton(url, title) {
     var aud = audioFor(url);
     if (!aud) return '';
@@ -276,10 +277,13 @@
       'data-tft-audio-title="' + safeTitle + '" ' +
       'data-tft-audio-duration="' + (aud.duration || 0) + '" ' +
       'aria-label="Listen to ' + safeTitle + ', ' + minLabel + '" ' +
-      'title="Listen (' + mins + ' min)">' +
-      '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-        '<path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>' +
-      '</svg>' +
+      'title="Listen, ' + minLabel + '">' +
+      '<span class="listen-btn__icon" aria-hidden="true">' +
+        '<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>' +
+      '</span>' +
+      '<span class="listen-btn__label">Listen</span>' +
+      '<span class="listen-btn__sep" aria-hidden="true">·</span>' +
+      '<span class="listen-btn__time">' + mins + ' min</span>' +
       '</button>';
   }
 

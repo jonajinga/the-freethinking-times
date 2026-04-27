@@ -64,7 +64,20 @@
   .share-popover,
   .cite-inline__copy { display: none !important; }
 
-  @page { margin: 0.5in; }
+  /* Default printed page: bottom-left publication name, bottom-right
+   * page number. The cover page (when used) suppresses both via
+   * @page :first below. Note: @page margin-boxes only accept
+   * literal strings + counters, no var() or attr(), so the
+   * publication name is hardcoded here. */
+  @page {
+    margin: 0.6in 0.5in 0.7in;
+    @bottom-left   { content: "The Freethinking Times"; font-family: Helvetica, Arial, sans-serif; font-size: 8pt; color: #666; }
+    @bottom-right  { content: "Page " counter(page); font-family: Helvetica, Arial, sans-serif; font-size: 8pt; color: #666; }
+  }
+  @page :first {
+    @bottom-left   { content: ""; }
+    @bottom-right  { content: ""; }
+  }
   body {
     orphans: 3;
     widows: 3;

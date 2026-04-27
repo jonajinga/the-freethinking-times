@@ -231,6 +231,11 @@
   <script src="/assets/js/spa-nav.js?v={{ buildTime }}" defer></script>
   <script src="/assets/js/music-player.js?v={{ buildTime }}" defer></script>
   <script src="/assets/js/audio-bar.js?v={{ buildTime }}" defer></script>
+  {# Notes page uses localStorage; load it sitewide so the IIFE
+     stays alive across SPA-nav and binds to #notes-page-root the
+     moment the /notes/ page swaps in. Without this, /notes/
+     only worked on hard refresh. #}
+  <script src="/assets/js/notes-page.js?v={{ buildTime }}" defer></script>
   {% block scripts %}{% endblock %}
 
   {# ── Glossary tooltips (Tippy.js) ── #}

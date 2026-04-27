@@ -59,17 +59,11 @@
           </a></li>
         </ul>
 
-        {% if site.tipping %}
-        {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
-        {% if pubTipUrl %}
         <div class="site-footer__tip">
-          <button type="button" class="tip-badge" aria-expanded="false" aria-controls="funding-panel"
-                  aria-label="How {{ site.title }} is funded"
-                  data-umami-event="funding-learn"
-                  onclick="toggleArticleDisclosure(this)">Support {{ site.title }}</button>
+          <a class="tip-badge" href="/support/"
+             aria-label="How {{ site.title }} is funded"
+             data-umami-event="footer-support">Support {{ site.title }}</a>
         </div>
-        {% endif %}
-        {% endif %}
       </div>
 
       <div class="site-footer__newsletter">

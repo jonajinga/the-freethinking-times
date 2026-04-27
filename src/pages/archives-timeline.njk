@@ -238,6 +238,7 @@ eleventyExcludeFromCollections: true
   padding-top: 2px;
 }
 .at-item__body { min-width: 0; grid-column: 2; }
+.at-item__listen { margin-top: var(--space-2); }
 .at-item__section {
   font-family: var(--font-ui);
   font-size: 0.66rem;
@@ -511,13 +512,19 @@ eleventyExcludeFromCollections: true
       item.className = 'at-item';
       item.href = a.url;
       var dateStr = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', timeZone: 'UTC' });
+      var lbtn = (window.__tftAudioBar && window.__tftAudioBar.renderListenButton) ? window.__tftAudioBar.renderListenButton(a.url, a.title) : '';
       item.innerHTML =
         '<span class="at-item__date">' + dateStr + '</span>' +
         '<div class="at-item__body">' +
           (a.section ? '<span class="at-item__section">' + a.section + (a.subsection ? ' \u203a ' + a.subsection : '') + '</span>' : '') +
           '<h2 class="at-item__title">' + a.title + '</h2>' +
           (a.authorName ? '<p class="at-item__meta">' + a.authorName + '</p>' : '') +
+          (lbtn ? '<div class="at-item__listen">' + lbtn + '</div>' : '') +
         '</div>';
+      // audio-bar.js's delegated click listener calls preventDefault
+      // on [data-tft-audio-trigger] clicks, so the wrapping <a>'s
+      // default navigation is cancelled when a reader actually
+      // clicks the listen pill \u2014 no extra wiring needed here.
       listEl.appendChild(item);
     });
   }
