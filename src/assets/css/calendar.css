@@ -573,12 +573,12 @@
   padding: var(--space-1) 0;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1180px) {
   .cal-layout { grid-template-columns: minmax(0, 1fr) 200px; }
   .cal-sidebar--left { display: none; }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .cal-layout { grid-template-columns: 1fr; }
   .cal-sidebar { position: static; }
   .cal-sidebar--right { display: none; }

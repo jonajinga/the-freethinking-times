@@ -279,3 +279,39 @@ td {
 /* ── No-JS fallback ─────────────────────────────────────────── */
 .js-only { display: none; }
 .js-enabled .js-only { display: revert; }
+
+/* ── Universal touch-target floor (WCAG 2.2 AA) ─────────────── */
+/* Every interactive element gets a 44 px minimum hit area unless
+ * it explicitly opts out via a data-touch="compact" attribute.
+ * Components that pack many small affordances (calendar mini-grid
+ * heat tiles, glossary A-Z letter chips when collapsed, sparkline
+ * bars) opt out at the component level rather than fight a
+ * per-selector exception list here. */
+button,
+[role="button"],
+.btn,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  min-height: 44px;
+}
+button[class*="__icon-btn"],
+button[class*="__close"],
+button[class*="-toggle"]:not(.btn) {
+  min-width: 44px;
+}
+/* Opt-out for dense affordances that intentionally render under 44 px
+ * (sparkline bars, calendar mini-grid heat tiles, A-Z letter chips
+ * inside a horizontal scroll-snap strip, etc.). Components either
+ * carry `data-touch="compact"` on the button, or their parent does
+ * and the descendant selectors below pick it up. */
+[data-touch="compact"],
+[data-touch="compact"] button,
+[data-touch="compact"] [role="button"],
+.dash-pulse__col,
+.dash-velocity__spark-bar,
+.cal-view__mini,
+.cal-toolbar__view {
+  min-height: 0;
+  min-width: 0;
+}

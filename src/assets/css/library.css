@@ -1508,7 +1508,7 @@
 
 /* Tighter on phones — the toolbar holds 10+ buttons after the engagement
    migration, so the 44×44 default forces a row wrap on narrow screens. */
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .annotation-toolbar__btn {
     width: 30px;
     height: 30px;
@@ -1517,7 +1517,7 @@
   .annotation-toolbar__main { gap: 1px; column-gap: 1px; }
   .annotation-toolbar { padding: 3px var(--space-1); column-gap: 2px; min-height: 40px; }
 }
-@media (max-width: 380px) {
+@media (max-width: 360px) {
   .annotation-toolbar__btn {
     width: 28px;
     height: 28px;
@@ -2420,7 +2420,7 @@
   display: none;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1180px) {
   /* :not([hidden]) prevents the CSS display:block from overriding the
      browser's [hidden] attribute, which would show an empty widget */
   .library-toc-float:not([hidden]) {

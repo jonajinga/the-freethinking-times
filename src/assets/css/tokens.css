@@ -102,6 +102,29 @@
   --z-modal:   300;
 }
 
+/* ============================================================
+   RESPONSIVE BREAKPOINT CONTRACT
+   ============================================================
+   CSS custom properties don't work inside @media queries, so
+   these values are documented here as the single source of
+   truth. Every @media (max-width: X) and @media (min-width: X)
+   in this codebase MUST snap to one of the seven canonical
+   bands below — no ad-hoc px values.
+
+     --bp-xs    360px   Smallest phone (iPhone SE 1)
+     --bp-sm    480px   Large phone portrait
+     --bp-md    640px   Phone landscape / very small tablet portrait
+     --bp-tab   768px   Tablet portrait (iPad mini / iPad)
+     --bp-lg   1024px   Tablet landscape / small laptop
+     --bp-xl   1180px   Standard desktop
+     --bp-2xl  1280px   Wide desktop (matches --max-width)
+
+   Orientation: mobile-first where reasonable. New rules should
+   prefer min-width (progressive enhancement). Existing max-width
+   queries are normalised but not flipped wholesale — see
+   plan-an-all-out-compiled-blossom.md for the audit context.
+   ============================================================ */
+
 /* ── Dark Mode Tokens ──────────────────────────────────────── */
 [data-theme="dark"] {
   --color-bg:           #141414;

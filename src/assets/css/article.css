@@ -25,7 +25,7 @@
   color: rgba(212, 160, 23, 1);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .bookmark-indicator {
     left: -1rem;
     width: 0.75rem;
@@ -381,7 +381,7 @@
   padding: 0;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 640px) {
   .related-articles__list { grid-template-columns: 1fr; }
 }
 
@@ -951,7 +951,7 @@
 }
 
 /* Hide tooltips on small screens to prevent overflow */
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .article-action-btn::after {
     display: none;
   }
@@ -1172,6 +1172,20 @@
     transform var(--transition-fast),
     border-color var(--transition-fast),
     visibility 0s linear 0s;
+}
+
+/* Phones: the % pill + back-to-top + (sometimes) pdf-basket-tray
+ * compete for the same bottom-right corner at 360 px. Hide the pct
+ * pill on the smallest screens — back-to-top alone is enough — and
+ * shrink the basket tray to leave clearance. */
+@media (max-width: 640px) {
+  .reading-pct { display: none; }
+  .back-to-top {
+    width: 44px;
+    height: 44px;
+    bottom: var(--space-5);
+    right: var(--space-4);
+  }
 }
 
 /* ── Series navigation ──────────────────────────────────────── */
@@ -1441,7 +1455,7 @@
 }
 
 /* Drop the "(<5 min)" / "(>15 min)" hints + tighten spacing on small viewports */
-@media (max-width: 560px) {
+@media (max-width: 480px) {
   .reading-filter__hint { display: none; }
   .subsection-filter,
   .reading-filter {
@@ -1612,7 +1626,7 @@
 
 .argument-map__list li + li { margin-top: var(--space-2); }
 
-@media (max-width: 540px) {
+@media (max-width: 480px) {
   .argument-map__row { grid-template-columns: 1fr; gap: var(--space-2); }
 }
 
@@ -1837,7 +1851,7 @@
   padding: var(--space-2) 0;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .share-panel {
     position: fixed;
     top: auto;
@@ -2088,7 +2102,7 @@
   display: none;
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 1280px) {
   /* Make the prose column the positioning context */
   .article-body {
     position: relative;
@@ -2845,7 +2859,7 @@
   .editorial-body section[id] { scroll-margin-top: 5rem; }
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1024px) {
   .editorial-layout { grid-template-columns: 1fr; }
   .editorial-nav {
     position: static !important;
@@ -3303,7 +3317,7 @@
   overflow: hidden;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .download-panel {
     position: fixed;
     top: auto;
@@ -3365,7 +3379,7 @@
   padding: var(--space-3) var(--space-4);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .reading-settings-panel {
     position: fixed;
     top: auto;

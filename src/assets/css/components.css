@@ -640,7 +640,7 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   justify-self: end;
   align-items: stretch;
 }
-@media (max-width: 720px) {
+@media (max-width: 640px) {
   .front-subscribe {
     grid-template-columns: 1fr;
     gap: var(--space-6);
@@ -693,7 +693,7 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   color: var(--color-ink-faint);
   margin: 0 0 var(--space-8);
 }
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   /* On narrow viewports collapse to single column and stack label
      over URL inside each row so long topic slugs never overflow. */
   .feeds-list--two-col { grid-template-columns: 1fr; }
@@ -1703,7 +1703,7 @@ body, .masthead, .site-footer, .nav-dropdown, .gs-panel {
   margin-top: 2px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .nav-mega { grid-template-columns: repeat(2, 1fr); }
   .nav-mega__col { padding: var(--space-4) var(--space-5); }
 }
@@ -2006,7 +2006,7 @@ a.dateline:hover { color: var(--color-accent); }
 @media (prefers-reduced-motion: reduce) {
   .masthead__live-dot { animation: none; }
 }
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .masthead__live-label { display: none; }
   .masthead__live {
     padding: 5px 7px;
@@ -2138,7 +2138,7 @@ a.dateline:hover { color: var(--color-accent); }
   border-color: rgba(255, 255, 255, 0.5);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .site-announce__inner {
     padding: 8px var(--space-3);
     gap: 6px 8px;
@@ -2266,7 +2266,7 @@ a.dateline:hover { color: var(--color-accent); }
   border: 0;
   background: var(--color-bg-alt);
 }
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .pdf-modal__panel { width: 100%; height: 100%; border: 0; }
   .pdf-modal__head { padding: var(--space-2) var(--space-3); flex-wrap: wrap; }
   .pdf-modal__title { width: 100%; font-size: var(--text-sm); }
@@ -2327,7 +2327,7 @@ a.dateline:hover { color: var(--color-accent); }
   align-items: start;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 640px) {
   .footer-subscribe-strip {
     grid-template-columns: 1fr;
     gap: var(--space-6);
@@ -2354,7 +2354,7 @@ a.dateline:hover { color: var(--color-accent); }
   border-bottom: 1px solid var(--color-rule);
 }
 
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .site-footer__masthead {
     grid-template-columns: 1fr;
     gap: var(--space-8);
@@ -2436,13 +2436,13 @@ a.dateline:hover { color: var(--color-accent); }
   gap: var(--space-6) var(--space-5);
   margin-bottom: var(--space-10);
 }
-@media (max-width: 960px) {
+@media (max-width: 1024px) {
   .site-footer__grid { grid-template-columns: repeat(3, 1fr); }
 }
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .site-footer__grid { grid-template-columns: repeat(2, 1fr); }
 }
-@media (max-width: 400px) {
+@media (max-width: 360px) {
   .site-footer__grid { grid-template-columns: 1fr; }
 }
 
@@ -3226,8 +3226,8 @@ a.dateline:hover { color: var(--color-accent); }
   .nav-drawer__link--primary { font-size: var(--text-base); }
 }
 
-/* Desktop: two-column layout for primary sections when drawer is wide */
-@media (min-width: 900px) {
+/* Tablet landscape and up: two-column layout for primary drawer sections */
+@media (min-width: 1024px) {
   .nav-drawer__list--cols {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -3550,7 +3550,7 @@ body:has(.annotation-toolbar .music-bar:not([hidden])) .audio-bar {
 body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar)) .audio-bar {
   bottom: 96px;
 }
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   body:has(.annotation-toolbar) .music-bar { bottom: 40px; }
   body:has(.annotation-toolbar) .audio-bar  { bottom: 40px; }
   body:has(.annotation-toolbar .music-bar:not([hidden])) .audio-bar { bottom: calc(40px + 96px); }
@@ -3562,7 +3562,7 @@ body:has(.annotation-toolbar) .reading-floats { bottom: 6.5rem; }
 body:has(.music-bar:not([hidden])) .reading-floats { bottom: 8.5rem; }
 body:has(.audio-bar:not([hidden])) .reading-floats { bottom: 8.5rem; }
 body:has(.music-bar:not([hidden])):has(.audio-bar:not([hidden])) .reading-floats { bottom: 11rem; }
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   body:has(.annotation-toolbar) .reading-floats { bottom: 7rem; }
   body:has(.music-bar:not([hidden])) .reading-floats { bottom: 9rem; }
   body:has(.audio-bar:not([hidden])) .reading-floats { bottom: 9rem; }
@@ -4233,7 +4233,7 @@ body:has(.music-bar:not([hidden])):has(.audio-bar:not([hidden])) .reading-floats
   white-space: nowrap;
   flex: 0 0 auto;
 }
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .search-result__tag { font-size: 0.6rem; padding: 1px 6px; }
 }
 
@@ -4401,7 +4401,7 @@ body:has(.music-bar:not([hidden])):has(.audio-bar:not([hidden])) .reading-floats
 }
 
 /* Stack subscribe form vertically on narrow screens */
-@media (max-width: 500px) {
+@media (max-width: 480px) {
   .subscribe-form {
     flex-direction: column;
   }
@@ -4877,7 +4877,7 @@ body:has(.music-bar:not([hidden])):has(.audio-bar:not([hidden])) .reading-floats
    focusing a field doesn't punch the viewport sideways. The visual
    weight at 16px is fine on a phone; it would look heavy on desktop,
    so this is a mobile-only override. */
-@media (max-width: 720px) {
+@media (max-width: 640px) {
   input[type="text"],
   input[type="email"],
   input[type="url"],
@@ -5315,7 +5315,7 @@ select.w3f__input option {
   background: rgba(255, 255, 255, 0.08);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .audio-bar { padding: 8px var(--space-3) 10px; }
   .audio-bar__title { font-size: var(--text-xs); }
 }
@@ -5692,7 +5692,7 @@ body:has(.gs-panel.is-open) .reading-pct {
   justify-content: center;
   line-height: 1;
 }
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   /* Phones: tighter dimensions; smart-position rules above still apply. */
   .pdf-basket-tray {
     right: var(--space-4);
@@ -5875,7 +5875,7 @@ body:has(.gs-panel.is-open) .reading-pct {
   margin: 0 var(--space-2);
   flex-shrink: 0;
 }
-@media (max-width: 520px) {
+@media (max-width: 480px) {
   .author-hero__socials-divider {
     width: 100%;
     height: 0;
@@ -5919,7 +5919,7 @@ body:has(.gs-panel.is-open) .reading-pct {
   color: var(--color-ink-faint);
   margin-top: var(--space-1);
 }
-@media (max-width: 500px) {
+@media (max-width: 480px) {
   .author-stat { flex: 1 1 50%; }
   .author-stat:nth-child(2n) { border-right: none; }
   .author-stat:nth-child(1),
@@ -5992,7 +5992,7 @@ body:has(.gs-panel.is-open) .reading-pct {
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-6);
 }
-@media (max-width: 700px) {
+@media (max-width: 640px) {
   .contributors-grid { grid-template-columns: 1fr; }
 }
 
@@ -6099,7 +6099,7 @@ body:has(.gs-panel.is-open) .reading-pct {
   margin: 0 var(--space-1);
   flex-shrink: 0;
 }
-@media (max-width: 520px) {
+@media (max-width: 480px) {
   .author-card__socials-divider {
     width: 100%;
     height: 0;
@@ -6150,7 +6150,7 @@ body:has(.gs-panel.is-open) .reading-pct {
    avatar, tighten the card body, and let the cards run flush on
    narrow screens so the page is scannable on a phone instead of
    demanding three thumb-strokes per contributor. */
-@media (max-width: 700px) {
+@media (max-width: 640px) {
   .contributors-grid { gap: var(--space-4); }
   .author-card {
     padding: var(--space-5) var(--space-4) var(--space-4);
@@ -6286,7 +6286,7 @@ body:has(.gs-panel.is-open) .reading-pct {
   .sg-section { scroll-margin-top: 5rem; }
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1024px) {
   .sg-layout { grid-template-columns: 1fr; }
   .sg-nav {
     position: static !important;
@@ -7016,7 +7016,7 @@ body:has(.gs-panel.is-open) .reading-pct {
 .cal-view__mini--heat-4 { background: var(--color-accent); }
 
 /* Phones */
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .cal-toolbar { gap: var(--space-2); }
   .cal-view__cell { min-height: 3.5rem; }
   .cal-view__cards { grid-template-columns: 1fr; }
@@ -7267,7 +7267,7 @@ body:has(.gs-panel.is-open) .reading-pct {
 .concept-index__section[hidden] { display: none; }
 
 /* Phones: collapse the A-Z strip into a more compact line */
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .concept-index__alpha { padding: var(--space-2); gap: 2px; }
   .concept-index__alpha-letter { min-width: 22px; height: 24px; font-size: 0.7rem; padding: 0 4px; }
   .concept-index__filter { flex-direction: column; align-items: stretch; }

@@ -375,7 +375,7 @@
   gap: 4px;
   margin-top: var(--space-3);
 }
-@media (max-width: 1100px) { .dash-agenda__strip { grid-template-columns: repeat(7, 1fr); } }
+@media (max-width: 1180px) { .dash-agenda__strip { grid-template-columns: repeat(7, 1fr); } }
 .dash-agenda__slot {
   padding: var(--space-2);
   background: var(--color-bg-alt);
@@ -446,7 +446,7 @@
 
 /* ── New: SLA breach board ─────────────────────────────────── */
 .dash-sla__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
-@media (max-width: 760px) { .dash-sla__grid { grid-template-columns: 1fr; } }
+@media (max-width: 768px) { .dash-sla__grid { grid-template-columns: 1fr; } }
 .dash-sla__bucket {
   padding: var(--space-3) var(--space-4);
   border: 1px solid var(--color-rule);
@@ -761,7 +761,7 @@
   align-items: start;
 }
 @media (max-width: 1280px) { .eb-board { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 760px)  { .eb-board { grid-template-columns: 1fr; } }
+@media (max-width: 768px)  { .eb-board { grid-template-columns: 1fr; } }
 
 .eb-col {
   background: var(--color-bg-alt);
@@ -1070,7 +1070,7 @@
 .eb-edits__msg { color: var(--color-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .eb-edits__author { color: var(--color-ink-muted); }
 .eb-edits__time { color: var(--color-ink-faint); text-align: right; }
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .eb-edits__item { grid-template-columns: 1fr; gap: 2px; padding: var(--space-3) var(--space-4); }
   .eb-edits__time { text-align: left; }
 }
@@ -1198,7 +1198,7 @@
 /* Phones: collapse to two-row stacked layout (date+section pinned top,
    title spanning, author + length below). Header row is hidden because
    labels would dominate the available width. */
-@media (max-width: 720px) {
+@media (max-width: 640px) {
   .cal-list__head { display: none; }
   .cal-list__row {
     grid-template-columns: auto 1fr;
