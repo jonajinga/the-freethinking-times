@@ -62,14 +62,16 @@
   </div>
   {% endif %}
 
-  {# Byline #}
+  {# Byline — each segment is its own span so the CSS can drop a
+     hairline rule between them in place of dot separators. #}
   <p class="article-card__byline">
     {% if article.data.author %}
-    By <a href="/author/{{ article.data.author | slugify }}/"
-      {% if authors[article.data.author] and authors[article.data.author].bio %}data-tippy-content="{{ authors[article.data.author].bio }}" data-tippy-theme="author-bio"{% endif %}>{{ authors[article.data.author].name or article.data.authorName or article.data.author }}</a>
+    <span class="article-card__byline-item">By <a href="/author/{{ article.data.author | slugify }}/"
+      {% if authors[article.data.author] and authors[article.data.author].bio %}data-tippy-content="{{ authors[article.data.author].bio }}" data-tippy-theme="author-bio"{% endif %}>{{ authors[article.data.author].name or article.data.authorName or article.data.author }}</a></span>
     {% endif %}
     {% if article.templateContent %}
-    <span class="article-card__reading-time">{{ article.templateContent | readingTime }} &middot; {{ article.templateContent | wordCount }}</span>
+    <span class="article-card__byline-item">{{ article.templateContent | readingTime }}</span>
+    <span class="article-card__byline-item">{{ article.templateContent | wordCount }}</span>
     {% endif %}
   </p>
 

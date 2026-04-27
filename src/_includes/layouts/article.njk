@@ -220,6 +220,9 @@ layout: layouts/base.njk
         </div>
 
         <div class="article-header__meta-row" data-pagefind-ignore>
+          {% if audioManifest[page.url] %}
+          <span class="article-meta-item article-meta-item--listen">{% include "partials/article-audio.njk" %}</span>
+          {% endif %}
           <span class="article-meta-item article-meta-item--length">{{ content | wordCount }}</span>
           <span class="article-meta-item article-meta-item--time">{{ content | readingTime }}</span>
           {% set _stats = articleStats[page.url] %}

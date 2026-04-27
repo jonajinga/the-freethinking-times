@@ -1794,6 +1794,32 @@ body, .masthead, .site-footer, .nav-dropdown, .gs-panel {
   margin-top: var(--space-1);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+/* Hairline rule between each byline segment in place of dots. */
+.article-card__byline-item {
+  padding: 0 var(--space-3);
+  white-space: nowrap;
+}
+.article-card__byline-item:first-child { padding-left: 0; }
+.article-card__byline-item:last-child  { padding-right: 0; }
+.article-card__byline-item + .article-card__byline-item {
+  border-left: 1px solid var(--color-rule);
+}
+
+/* Same vertical-rule pattern for archive list meta rows. */
+.article-list__meta--bars { display: flex; flex-wrap: wrap; align-items: baseline; }
+.article-list__meta--bars .article-list__meta-item {
+  padding: 0 var(--space-3);
+  white-space: nowrap;
+}
+.article-list__meta--bars .article-list__meta-item:first-child { padding-left: 0; }
+.article-list__meta--bars .article-list__meta-item:last-child  { padding-right: 0; }
+.article-list__meta--bars .article-list__meta-item + .article-list__meta-item {
+  border-left: 1px solid var(--color-rule);
 }
 
 .article-card__byline a {

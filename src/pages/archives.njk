@@ -151,15 +151,14 @@ permalink: /archives/
           </div>
           {% endif %}
 
-          {# Meta row: author · reading time · word count #}
-          <div class="article-list__meta">
-            <span>BY
+          {# Meta row: author | reading time | word count
+             (vertical-rule separators rendered by CSS, no dots). #}
+          <div class="article-list__meta article-list__meta--bars">
+            <span class="article-list__meta-item">BY
               <a href="/author/{{ authorSlug }}/" class="archive-entry__author">{{ authorName | upper }}</a>
             </span>
-            <span aria-hidden="true">·</span>
-            <span>{{ item.templateContent | readingTime }}</span>
-            <span aria-hidden="true">·</span>
-            <span>{{ item.templateContent | wordCount }}</span>
+            <span class="article-list__meta-item">{{ item.templateContent | readingTime }}</span>
+            <span class="article-list__meta-item">{{ item.templateContent | wordCount }}</span>
           </div>
 
         </li>

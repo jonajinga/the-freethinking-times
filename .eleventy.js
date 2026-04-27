@@ -181,6 +181,8 @@ module.exports = function (eleventyConfig) {
               "listen-btn__icon", "listen-btn__label",
               "listen-btn__sep", "listen-btn__time",
               "article-card__listen", "archive-entry__listen",
+              "article-card__byline-item",
+              "article-list__meta--bars", "article-list__meta-item",
               "is-current",
               "audio-bar", "audio-bar__play",
               "audio-bar__icon-play", "audio-bar__icon-pause",
