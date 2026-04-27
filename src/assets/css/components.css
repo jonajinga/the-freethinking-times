@@ -56,7 +56,7 @@
  * quote) share the same shared-bar width via the constraint
  * below — narrower than the container so they sit as a
  * coherent column, edges aligned at the same x position. */
-:root { --max-width-bars: 1000px; }
+:root { --max-width-bars: var(--max-width); }
 
 /* Three-zone grid: lead (hamburger + watch-live) anchored at the
  * left edge of the bar width, title in the middle, actions
