@@ -120,7 +120,10 @@ module.exports = function (eleventyConfig) {
               "glossary-tip", "w3f__dictate",
               "cite-inline__entry", "cite-inline__label",
               "cite-inline__text", "cite-inline__copy",
-              "music-bar", "article-action-btn", "search-filter-btn",
+              "music-bar", "music-bar__info", "music-bar__name",
+              "music-bar__title", "music-bar__controls",
+              "music-bar__btn", "music-bar__btn--play", "music-bar__vol",
+              "article-action-btn", "search-filter-btn",
               "rs-ruler-line", "heading-anchor",
               "toc-list", "toc-list__link",
               "fn-tooltip", "fn-tooltip__close", "fn-tooltip__body",
@@ -241,6 +244,7 @@ module.exports = function (eleventyConfig) {
               /\[hidden\]/,
               /\[disabled\]/,
               /:root/,               // CSS custom property declarations
+              /:has\(/,              // :has() compound selectors (bottom-strip stacking, smart-position rules)
             ],
             // ── Keep any rule where the selector string contains these ───────
             greedy: [

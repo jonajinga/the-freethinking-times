@@ -61,13 +61,11 @@
         '</button>' +
       '</div>';
 
-    // On reading pages the annotation toolbar has a slot for the music bar
-    // so playback controls appear inline with reader tools instead of as
-    // a separate bar stacked above the toolbar. Fall back to body on pages
-    // without a slot.
-    var musicSlot = document.getElementById('annotation-toolbar-music');
-    if (musicSlot) musicSlot.appendChild(bar);
-    else document.body.appendChild(bar);
+    // Music bar is its own fixed-position strip at the viewport
+    // bottom, sibling to the audio-bar and the annotation-toolbar.
+    // CSS stacks them: reader toolbar at the very bottom on article
+    // pages, music bar above it, TTS audio bar above the music bar.
+    document.body.appendChild(bar);
 
     nameEl = document.getElementById('mb-name');
     titleEl = document.getElementById('mb-title');
