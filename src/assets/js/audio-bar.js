@@ -46,6 +46,16 @@
     btnPlay.setAttribute('aria-pressed', playing ? 'true' : 'false');
     btnPlay.setAttribute('aria-label', playing ? 'Pause' : 'Play');
     btnPlay.setAttribute('title', playing ? 'Pause' : 'Play');
+    // Mirror the playing/paused state to every page-level trigger
+    // button (article listen, card listen, etc.) so each one's
+    // play/pause icon flips when its own audio is what's loaded.
+    var currentSrc = (audio.currentSrc || audio.src || '');
+    document.querySelectorAll('[data-tft-audio-trigger]').forEach(function (t) {
+      var src = t.getAttribute('data-tft-audio-src') || '';
+      var match = src && currentSrc && (currentSrc.indexOf(src) !== -1 || src.indexOf(currentSrc) !== -1);
+      t.classList.toggle('is-playing', !!(match && playing));
+      t.setAttribute('aria-pressed', match && playing ? 'true' : 'false');
+    });
   }
 
   function show() { if (bar && bar.hidden) bar.hidden = false; document.body.classList.add('has-audio-bar'); }

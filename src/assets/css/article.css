@@ -1003,18 +1003,30 @@
   scroll-margin-top: 5rem;
 }
 .para-anchor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
   font-family: var(--font-ui);
-  font-size: 1em;
+  font-size: 0.7em;
   line-height: 1;
   color: var(--color-ink-faint);
   text-decoration: none;
   opacity: 0;
   margin-left: 0.4em;
-  padding: 0 0.25em;
+  padding: 2px 4px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
   border-radius: 2px;
   position: relative;
+  /* Override base.css universal touch-target floor — pilcrow is an
+   * intentionally small inline affordance that surfaces on hover. */
+  min-width: 0;
+  min-height: 0;
   transition: opacity 120ms ease, color 120ms ease, background-color 120ms ease;
 }
+.para-anchor svg { display: block; }
 .article-body > p:hover .para-anchor,
 .article-body > p:focus-within .para-anchor,
 .library-body > p:hover .para-anchor,

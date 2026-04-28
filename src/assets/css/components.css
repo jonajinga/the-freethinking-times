@@ -14,14 +14,23 @@
   border-bottom: 1px solid var(--color-rule);
   font-family: var(--font-ui);
   font-size: var(--text-xs);
+  /* Fixed strip height so the inner ol can centre vertically against
+   * the rule borders, regardless of any line-height inheritance. */
+  min-height: 36px;
+  display: flex;
+  align-items: center;
 }
 .breadcrumbs-bar__list {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
+  width: 100%;
   list-style: none;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  /* Vertical padding handled by the parent's min-height + flex-center,
+   * not the list itself, so the crumb text sits true-centre between
+   * the top and bottom rules. */
+  padding-top: 0;
+  padding-bottom: 0;
   /* Keep margin-inline auto from .container so the crumbs align with
    * the article-card grid below; reset only the block margin that
    * the browser default ol ships with. */
@@ -1084,46 +1093,52 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   color: #fff;
 }
 
-/* ── Republish badge — single solid pill ──────────────────────
- * Restrained outline by default (bg-alt fill, ink border), a small
- * CC mark inset on the left, and a clear label. On hover or when
- * the panel below is open, the whole pill fills with ink and the
- * text + mark invert. Reads as an action button, not a banner. */
+/* ── Republish badge — compact inline pill ────────────────────
+ * Sits inline alongside the byline rather than on its own row.
+ * Tiny CC mark + label, ~22 px tall, picks up the byline meta
+ * size so it looks like just-another-meta-item rather than a
+ * shouting CTA. */
 .republish-badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   font-family: var(--font-ui);
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  background: var(--color-bg);
-  color: var(--color-ink);
-  border: 1px solid var(--color-ink);
-  padding: 6px 12px 6px 8px;
+  background: transparent;
+  color: var(--color-ink-muted);
+  border: 1px solid var(--color-rule);
+  padding: 3px 8px;
   cursor: pointer;
   line-height: 1;
-  transition: background var(--transition-fast), color var(--transition-fast);
+  /* Override the universal min-height: 44 floor — this is an inline
+   * disclosure trigger, not a primary action; it sits in the byline
+   * row and shouldn't stretch the row. */
+  min-height: 0;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
 }
 .republish-badge:hover,
 .republish-badge:focus-visible,
 .republish-badge[aria-expanded="true"] {
   background: var(--color-ink);
   color: var(--color-bg);
+  border-color: var(--color-ink);
   outline: none;
 }
 .republish-badge__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 18px;
-  font-size: 0.66rem;
+  width: 16px;
+  height: 12px;
+  font-size: 0.55rem;
   font-weight: 800;
   letter-spacing: 0.02em;
   border: 1px solid currentColor;
   border-radius: 2px;
+  flex-shrink: 0;
 }
 .republish-badge__label { letter-spacing: 0.08em; }
 
@@ -5307,6 +5322,40 @@ select.w3f__input option {
 }
 .listen-btn--xl .listen-btn__icon { width: 26px; height: 26px; }
 .listen-btn--xl .listen-btn__icon svg { width: 12px; height: 12px; }
+
+/* Icon-only variant — circular play/pause toggle. Used inside the
+ * reader toolbar slot (replaces the old "Listen · 4 min" pill). The
+ * play SVG shows by default; .is-playing flips the visible svg to
+ * the pause variant. */
+.listen-btn--icon {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+.listen-btn--icon:hover,
+.listen-btn--icon:focus-visible {
+  background: var(--color-ink);
+  outline: none;
+  transform: scale(1.05);
+}
+.listen-btn--icon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+.listen-btn--icon .listen-btn__pause { display: none; }
+.listen-btn--icon.is-playing .listen-btn__play { display: none; }
+.listen-btn--icon.is-playing .listen-btn__pause { display: block; }
 
 /* On compact card metas, hide the "LISTEN" word and keep just the
  * play icon + duration so the pill stays inline without dominating. */

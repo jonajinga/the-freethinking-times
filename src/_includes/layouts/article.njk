@@ -145,22 +145,19 @@ layout: layouts/base.njk
             {% if location %}
             <span class="dateline">{{ location }}</span>
             {% endif %}
-          </div>
-
-          {# Republish badge — shields.io-style solid-color pill linked
-             to the open-license panel below. Shows on any article
-             carrying a syndicate flag. #}
-          {% if syndicate %}
-          <div class="article-header__support-row">
+            {# Republish badge — inline with byline meta so it sits as
+               just-another-meta-item rather than a CTA banner on its
+               own line. Toggles the open-license panel below. #}
+            {% if syndicate %}
             <button type="button" class="republish-badge" aria-expanded="false" aria-controls="republish-panel"
                     aria-label="Open republication terms and grab-code"
                     data-umami-event="license-learn"
                     onclick="toggleArticleDisclosure(this)">
               <span class="republish-badge__icon" aria-hidden="true">CC</span>
-              <span class="republish-badge__label">Republish this story</span>
+              <span class="republish-badge__label">Republish</span>
             </button>
+            {% endif %}
           </div>
-          {% endif %}
 
           {# Republish license + grab-code panel — hidden by default,
              toggled by the badge above. #}
@@ -992,15 +989,6 @@ window.__tftShowComments = window.__tftShowComments || function (btn, alwaysOpen
       <p class="library-panel__section-head">Footnotes</p>
       <p class="library-panel__section-lede">All endnotes for this article, each linking back to its citation in the text.</p>
     </div>
-    <div id="article-panel-display" class="library-panel__section" aria-hidden="true">
-      <p class="library-panel__section-head">Display</p>
-      <p class="library-panel__section-lede">Typeface, size, spacing, theme, and article tools (ruler, paragraph numbers, auto-scroll) all live in one place now.</p>
-      <button type="button" class="reader-panel-open-display" onclick="var t=document.querySelector('.article-notes-toggle[aria-expanded=&quot;true&quot;],.library-panel-toggle[aria-expanded=&quot;true&quot;]');if(t)t.click();setTimeout(function(){var p=document.getElementById('global-settings-panel');if(p)p.classList.add('is-open');},160);">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
-        Open display settings
-      </button>
-      <div id="reader-panel-slot-display"></div>
-    </div>
     <div id="article-panel-export" class="library-panel__section" aria-hidden="true">
       <p class="library-panel__section-head">Export</p>
       <p class="library-panel__section-lede">Download your notes and highlights. Everything stays in your browser until you export.</p>
@@ -1066,6 +1054,9 @@ window.__tftShowComments = window.__tftShowComments || function (btn, alwaysOpen
    reader-panel-migrate.js; music player docks on the right (own row on
    mobile) when playback is active. ── #}
 <div id="annotation-toolbar" class="annotation-toolbar" role="toolbar" aria-label="Reader tools">
+  <button type="button" class="annotation-toolbar__scroll annotation-toolbar__scroll--left" aria-label="Scroll toolbar left" data-toolbar-scroll="-1" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 6 9 12 15 18"/></svg>
+  </button>
   <div class="annotation-toolbar__main">
     {# Listen pill — embedded directly here (not migrated) so the
        toolbar shows it on every article that has a generated MP3. #}
@@ -1111,6 +1102,10 @@ window.__tftShowComments = window.__tftShowComments || function (btn, alwaysOpen
        migrated feedback button + popup. #}
     <div id="ann-feedback-slot" class="annotation-toolbar__slot"></div>
   </div>
+
+  <button type="button" class="annotation-toolbar__scroll annotation-toolbar__scroll--right" aria-label="Scroll toolbar right" data-toolbar-scroll="1" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg>
+  </button>
 
   {# Music player slot, populated by music-player.js when playback starts.
      The ::before pseudo-element adds a vertical separator when non-empty. #}

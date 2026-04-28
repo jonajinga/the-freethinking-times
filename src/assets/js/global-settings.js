@@ -48,10 +48,13 @@
 
   // Quick profile presets
   var PROFILES = {
-    'default':    { fontSize: 0,  font: 'default',  spacing: 'normal',  wordspace: 'normal', theme: 'auto' },
-    'comfort':    { fontSize: 19, font: 'lora',     spacing: 'relaxed', wordspace: 'wide',   theme: 'sepia' },
-    'low-vision': { fontSize: 22, font: 'atkinson', spacing: 'relaxed', wordspace: 'wider',  theme: 'light' },
-    'night':      { fontSize: 18, font: 'literata', spacing: 'relaxed', wordspace: 'wide',   theme: 'dark' }
+    /* Text-size selector retired — profiles never override the
+     * site's typography scale anymore. Preserve fontSize: 0 so
+     * applyAll's `if (prefs.fontSize > 0)` guard stays inert. */
+    'default':    { fontSize: 0, font: 'default',  spacing: 'normal',  wordspace: 'normal', theme: 'auto' },
+    'comfort':    { fontSize: 0, font: 'lora',     spacing: 'relaxed', wordspace: 'wide',   theme: 'sepia' },
+    'low-vision': { fontSize: 0, font: 'atkinson', spacing: 'relaxed', wordspace: 'wider',  theme: 'light' },
+    'night':      { fontSize: 0, font: 'literata', spacing: 'relaxed', wordspace: 'wide',   theme: 'dark' }
   };
 
   // On-demand web font loading via Bunny Fonts

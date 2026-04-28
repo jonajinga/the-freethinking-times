@@ -87,6 +87,32 @@
     if (el) { el.hidden = false; el.classList.add('is-in-panel'); }
   });
 
+  // ── Scroll arrows for the toolbar's main row. Show only when the
+  // row actually overflows; hide each arrow when the row is scrolled
+  // to the corresponding edge.
+  (function bindToolbarScroll() {
+    var main = document.querySelector('.annotation-toolbar__main');
+    if (!main) return;
+    var leftBtn  = document.querySelector('[data-toolbar-scroll="-1"]');
+    var rightBtn = document.querySelector('[data-toolbar-scroll="1"]');
+    function updateArrows() {
+      var hasOverflow = main.scrollWidth > main.clientWidth + 1;
+      var atStart = main.scrollLeft <= 1;
+      var atEnd   = main.scrollLeft + main.clientWidth >= main.scrollWidth - 1;
+      if (leftBtn)  leftBtn.hidden  = !hasOverflow || atStart;
+      if (rightBtn) rightBtn.hidden = !hasOverflow || atEnd;
+    }
+    function bumpScroll(dir) {
+      var dist = Math.max(120, Math.round(main.clientWidth * 0.6));
+      main.scrollBy({ left: dist * dir, behavior: 'smooth' });
+    }
+    if (leftBtn)  leftBtn.addEventListener('click',  function () { bumpScroll(-1); });
+    if (rightBtn) rightBtn.addEventListener('click', function () { bumpScroll(1); });
+    main.addEventListener('scroll', updateArrows, { passive: true });
+    window.addEventListener('resize', updateArrows);
+    setTimeout(updateArrows, 0);
+  })();
+
   // ── Generic popover wiring used by Share and Print.
   // Toggles `aria-expanded`, dismisses on outside click / Escape / item-click.
   function bindPopover(triggerId, popoverId, opts) {

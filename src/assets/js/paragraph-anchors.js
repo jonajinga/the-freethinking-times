@@ -50,7 +50,9 @@
       btn.className = 'para-anchor';
       btn.setAttribute('aria-label', 'Copy permalink to paragraph ' + n);
       btn.title = 'Copy permalink to this paragraph';
-      btn.textContent = '¶';
+      // Inline link icon — smaller and cleaner than the heavyweight ¶
+      // pilcrow glyph, and reads as "permalink" semantically.
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" width="12" height="12"><path d="M10 14a4 4 0 0 0 5.66 0l3.34-3.34a4 4 0 1 0-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 0 0-5.66 0l-3.34 3.34a4 4 0 1 0 5.66 5.66l1-1"/></svg>';
       btn.dataset.target = '#' + p.id;
       btn.dataset.umamiEvent = 'para-permalink';
       p.appendChild(btn);

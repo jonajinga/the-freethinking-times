@@ -1429,24 +1429,62 @@
   justify-content: center;
   flex-wrap: wrap;
   row-gap: var(--space-2);
-  column-gap: var(--space-3);
+  column-gap: var(--space-2);
   background: #1a1a1a;
   border-top: 1px solid rgba(255,255,255,0.1);
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-2) var(--space-2);
   /* Respect mobile browser's bottom chrome (address bar, home indicator)
      so the bar isn't hidden behind it. */
   padding-bottom: max(var(--space-2), env(safe-area-inset-bottom, 0));
   box-shadow: 0 -4px 16px rgba(0,0,0,0.25);
   z-index: var(--z-overlay);
-  min-height: 52px;
+  min-height: 56px;
 }
+
+/* Page-arrow scroll buttons that flank the toolbar's main row. JS
+ * (reader-panel-migrate.js) toggles their hidden state based on
+ * whether the row currently overflows + which edge it sits at. */
+.annotation-toolbar__scroll {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--transition-fast);
+}
+.annotation-toolbar__scroll:hover,
+.annotation-toolbar__scroll:focus-visible {
+  background: rgba(255,255,255,0.18);
+  outline: none;
+}
+.annotation-toolbar__scroll svg { width: 16px; height: 16px; }
+.annotation-toolbar__scroll[hidden] { display: none; }
 
 .annotation-toolbar__main {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
   gap: var(--space-1);
+  /* Always one row; overflow scrolls horizontally. The flanking
+   * .annotation-toolbar__scroll buttons drive the scroll on click;
+   * touch users can swipe directly. Hidden scrollbar — the page
+   * arrows are the affordance. */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1 1 auto;
+  min-width: 0;
 }
+.annotation-toolbar__main::-webkit-scrollbar { display: none; }
 
 .annotation-toolbar__slot {
   display: contents;
@@ -1511,20 +1549,14 @@
   height: 18px;
 }
 
-/* Tighter on phones — the toolbar holds 10+ buttons after the engagement
-   migration, so the 44×44 default forces a row wrap on narrow screens.
-   Below 640 px we shrink the buttons but also give the strip a swipeable
-   scroll-snap fallback so users can reach off-screen actions on very
-   narrow viewports without losing any of them. */
+/* Toolbar holds 10+ buttons. We hold the WCAG AA 44×44 floor on every
+ * button at every viewport, and turn the inner row into a horizontal
+ * scroll strip with ← / → page-arrows above 640 px so editors can
+ * reach off-screen actions without ever sub-44 buttons. */
 @media (max-width: 640px) {
-  .annotation-toolbar__btn {
-    width: 36px;
-    height: 36px;
-  }
-  .annotation-toolbar__btn svg { width: 16px; height: 16px; }
   .annotation-toolbar__main {
-    gap: 1px;
-    column-gap: 1px;
+    gap: 2px;
+    column-gap: 2px;
     overflow-x: auto;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
@@ -1532,17 +1564,7 @@
   }
   .annotation-toolbar__main::-webkit-scrollbar { display: none; }
   .annotation-toolbar__btn { scroll-snap-align: start; }
-  .annotation-toolbar { padding: 3px var(--space-1); column-gap: 2px; min-height: 44px; }
-}
-@media (max-width: 360px) {
-  /* Floor at 36 × 36 even on the smallest phones. Below this the
-   * buttons stop being reliably tappable; the scroll-snap above
-   * picks up the slack instead of cramming more buttons in. */
-  .annotation-toolbar__btn {
-    width: 36px;
-    height: 36px;
-  }
-  .annotation-toolbar__btn svg { width: 15px; height: 15px; }
+  .annotation-toolbar { padding: 4px var(--space-1); column-gap: 2px; min-height: 52px; }
 }
 
 
