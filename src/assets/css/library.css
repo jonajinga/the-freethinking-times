@@ -1469,7 +1469,10 @@
 .annotation-toolbar__main {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  /* `safe center` keeps icons centred when there's room and falls
+   * back to flex-start once the row overflows so the leftmost
+   * buttons aren't pushed off-screen by the centring math. */
+  justify-content: safe center;
   flex-wrap: nowrap;
   gap: var(--space-1);
   /* Always one row; overflow scrolls horizontally. The flanking

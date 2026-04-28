@@ -1101,22 +1101,21 @@ body { word-spacing: var(--gs-word-spacing, 0); }
 .republish-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-family: var(--font-ui);
-  font-size: 0.62rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   background: transparent;
   color: var(--color-ink-muted);
   border: 1px solid var(--color-rule);
-  padding: 3px 8px;
+  padding: 0 var(--space-3);
   cursor: pointer;
   line-height: 1;
-  /* Override the universal min-height: 44 floor — this is an inline
-   * disclosure trigger, not a primary action; it sits in the byline
-   * row and shouldn't stretch the row. */
-  min-height: 0;
+  /* WCAG 2.2 AA touch target — 44 px tall, comfortable to tap on
+   * phones; horizontal pad keeps the shape proportional. */
+  min-height: 44px;
   transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
 }
 .republish-badge:hover,
@@ -1131,9 +1130,9 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 12px;
-  font-size: 0.55rem;
+  width: 22px;
+  height: 18px;
+  font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.02em;
   border: 1px solid currentColor;
@@ -5434,8 +5433,13 @@ select.w3f__input option {
 }
 
 .audio-bar__play {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
+  /* Opt out of base.css universal 44 px floor — this is a compact
+   * round play/pause toggle in a slim global bar; the 44 floor was
+   * stretching it into a vertical pill. */
+  min-width: 0;
+  min-height: 0;
   border-radius: 50%;
   background: var(--color-accent);
   color: #fff;
@@ -5446,6 +5450,11 @@ select.w3f__input option {
   cursor: pointer;
   flex-shrink: 0;
   padding: 0;
+}
+.audio-bar__play svg {
+  width: 14px;
+  height: 14px;
+  display: block;
 }
 .audio-bar__play:hover { filter: brightness(1.1); }
 /* CSS-driven icon swap. The JS just toggles aria-pressed; the
@@ -5476,6 +5485,10 @@ select.w3f__input option {
 .audio-bar__close {
   width: 28px;
   height: 28px;
+  /* Opt out of universal 44 px floor — close button is a compact
+   * affordance inside the slim global audio bar. */
+  min-width: 0;
+  min-height: 0;
   background: transparent;
   border: 0;
   color: rgba(245, 241, 232, 0.7);

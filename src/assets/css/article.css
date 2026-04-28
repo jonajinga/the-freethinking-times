@@ -528,6 +528,8 @@
   top: calc(100% + var(--space-2));
   right: 0;
   width: min(440px, 92vw);
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
   background: var(--color-bg);
   border: 1px solid var(--color-rule);
   border-top: 3px solid var(--color-accent);
@@ -535,6 +537,23 @@
   padding: 0;
   z-index: var(--z-overlay);
   font-family: var(--font-ui);
+}
+/* Phones: the absolute-positioned popup overflowed the viewport on
+ * narrow screens (the form's required fields, captcha, and submit
+ * button stacked beyond the screen height). Switch to a centred
+ * fixed sheet that fills available width and scrolls internally. */
+@media (max-width: 640px) {
+  .article-feedback-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -50%);
+    width: min(440px, calc(100vw - var(--space-4)));
+    max-height: calc(100vh - 4rem);
+    max-height: calc(100dvh - 4rem);
+    z-index: var(--z-modal);
+  }
 }
 
 .article-feedback-popup__header {
@@ -557,15 +576,23 @@
 }
 .article-feedback-popup__close {
   background: none;
-  border: none;
+  border: 1px solid var(--color-rule);
   color: var(--color-ink-faint);
   cursor: pointer;
-  padding: var(--space-1);
+  padding: 0;
   line-height: 1;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  /* Compact close button — opt out of the universal 44 floor;
+   * the surrounding header padding gives the parent enough mass. */
+  min-width: 0;
+  min-height: 0;
   border-radius: 4px;
 }
+.article-feedback-popup__close svg { display: block; }
 .article-feedback-popup__close:hover {
   color: var(--color-ink);
   background: var(--color-bg-alt);
@@ -2045,7 +2072,11 @@
 .bookmark-btn.is-saved {
   color: var(--color-accent);
 }
-.bookmark-btn.is-saved .bookmark-icon {
+/* Fill the bookmark icon entirely red when saved — same treatment as
+ * the like-btn heart. The inline SVG ships with fill="none" on its
+ * path so we have to target the path directly to override. */
+.bookmark-btn.is-saved .bookmark-icon,
+.bookmark-btn.is-saved .bookmark-icon path {
   fill: var(--color-accent);
   stroke: var(--color-accent);
 }
