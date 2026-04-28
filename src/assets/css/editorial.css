@@ -397,7 +397,7 @@
   font-family: var(--font-ui);
   min-height: 70px;
 }
-.dash-agenda__slot--filled { background: color-mix(in srgb, var(--color-accent) 8%, var(--color-bg)); border-color: var(--color-accent); }
+.dash-agenda__slot--filled { background: color-mix(in srgb, var(--color-accent) 14%, var(--color-bg)); border-color: var(--color-accent); }
 .dash-agenda__weekday { font-size: 0.6rem; color: var(--color-ink-faint); text-transform: uppercase; letter-spacing: 0.08em; }
 .dash-agenda__day { font-size: var(--text-md); font-weight: 700; color: var(--color-ink); }
 .dash-agenda__count { font-size: var(--text-xs); color: var(--color-ink-muted); }

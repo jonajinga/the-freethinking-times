@@ -48,6 +48,8 @@ layout: layouts/base.njk
   {% if authorArticles.length %}
   <p style="font-family: var(--font-ui); font-size: var(--text-sm); margin: 0 0 var(--space-4);">
     <a href="/knowledge-map/?author={{ authorSlug or (title | slugify) }}" style="color: var(--color-link); text-decoration: underline;">View on knowledge map &rarr;</a>
+    &nbsp;&middot;&nbsp;
+    <a href="/editorial-calendar/?author={{ authorSlug or (title | slugify) }}" style="color: var(--color-link); text-decoration: underline;">View on editorial calendar &rarr;</a>
   </p>
   {% endif %}
 

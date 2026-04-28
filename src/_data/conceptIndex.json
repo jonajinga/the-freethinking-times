@@ -479,5 +479,202 @@
         ]
       }
     ]
+  },
+  {
+    "term": "Academic freedom",
+    "see_also": ["Blasphemy laws", "Civil liberties"],
+    "entries": [
+      {
+        "sub_term": "blasphemy prosecution of a professor (Pakistan)",
+        "references": [
+          { "title": "Pakistan High Court Acquits Professor Held Four Years on Blasphemy Charge", "url": "/news/pakistan-blasphemy-acquittal/", "date": "2026-04-16", "section": "News" }
+        ]
+      },
+      {
+        "sub_term": "religious defaulting in compulsory schooling (Finland)",
+        "references": [
+          { "title": "Finnish Supreme Administrative Court Strikes Down Opt-Out-Only Religious Education Policy", "url": "/news/finland-secular-education-ruling/", "date": "2026-04-11", "section": "News" }
+        ]
+      }
+    ]
+  },
+  {
+    "term": "Constitutional law",
+    "see_also": ["Civil liberties", "Religion and the state"],
+    "entries": [
+      {
+        "sub_term": "Finland, Section 11 (freedom of religion and conscience)",
+        "references": [
+          { "title": "Finnish Supreme Administrative Court Strikes Down Opt-Out-Only Religious Education Policy", "url": "/news/finland-secular-education-ruling/", "date": "2026-04-11", "section": "News" }
+        ],
+        "sub_sub_entries": [
+          {
+            "term": "religious-test analysis applied to opt-out structure",
+            "references": [
+              { "title": "Finnish Supreme Administrative Court Strikes Down Opt-Out-Only Religious Education Policy", "url": "/news/finland-secular-education-ruling/", "date": "2026-04-11", "section": "News" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "term": "Counseling, school",
+    "see_also": ["Chaplains in public schools", "Mental health"],
+    "entries": [
+      {
+        "sub_term": "credential substitution by religious volunteers",
+        "references": [
+          { "title": "Texas District Approves Unlicensed Chaplains as In-School Counselors", "url": "/news/texas-chaplain-program-public-schools/", "date": "2026-04-09", "section": "News" }
+        ]
+      }
+    ]
+  },
+  {
+    "term": "Evidentiary standards",
+    "see_also": ["Procedural justice"],
+    "entries": [
+      {
+        "sub_term": "audio authentication, Qanun-e-Shahadat (Pakistan)",
+        "references": [
+          { "title": "Pakistan High Court Acquits Professor Held Four Years on Blasphemy Charge", "url": "/news/pakistan-blasphemy-acquittal/", "date": "2026-04-16", "section": "News" }
+        ]
+      }
+    ]
+  },
+  {
+    "term": "Judicial minimalism",
+    "see_also": ["Constitutional law"],
+    "entries": [
+      {
+        "sub_term": "evidentiary acquittals leaving statute untouched (Pakistan)",
+        "references": [
+          { "title": "Pakistan High Court Acquits Professor Held Four Years on Blasphemy Charge", "url": "/news/pakistan-blasphemy-acquittal/", "date": "2026-04-16", "section": "News" }
+        ]
+      }
+    ]
+  },
+  {
+    "term": "Legislation",
+    "see_also": ["Blasphemy laws", "Chaplains in public schools", "Religion and the state"],
+    "entries": [
+      {
+        "sub_term": "Texas Senate Bill 763 (school chaplains, 2023)",
+        "references": [
+          { "title": "Texas District Approves Unlicensed Chaplains as In-School Counselors", "url": "/news/texas-chaplain-program-public-schools/", "date": "2026-04-09", "section": "News" }
+        ]
+      },
+      {
+        "sub_term": "Pakistan Penal Code blasphemy provisions",
+        "references": [
+          { "title": "Pakistan High Court Acquits Professor Held Four Years on Blasphemy Charge", "url": "/news/pakistan-blasphemy-acquittal/", "date": "2026-04-16", "section": "News" }
+        ]
+      },
+      {
+        "sub_term": "Missouri library-funding compliance statute",
+        "references": [
+          { "title": "Missouri Lawmakers Tie Library Funding to Book-Removal Compliance", "url": "/news/missouri-library-funding-restriction/", "date": "2026-04-14", "section": "News" }
+        ]
+      }
+    ]
+  },
+  {
+    "term": "Mental health",
+    "see_also": ["Counseling, school", "Education"],
+    "entries": [
+      {
+        "sub_term": "school-based, chaplain substitution for licensed counselors",
+        "references": [
+          { "title": "Texas District Approves Unlicensed Chaplains as In-School Counselors", "url": "/news/texas-chaplain-program-public-schools/", "date": "2026-04-09", "section": "News" }
+        ]
+      }
+    ]
+  },
+  {
+    "term": "Mob violence",
+    "see_also": ["Civil liberties", "Vigilantism"],
+    "entries": [
+      {
+        "sub_term": "post-acquittal in blasphemy cases (Pakistan)",
+        "references": [
+          { "title": "Pakistan High Court Acquits Professor Held Four Years on Blasphemy Charge", "url": "/news/pakistan-blasphemy-acquittal/", "date": "2026-04-16", "section": "News" }
+        ]
+      }
+    ]
+  },
+  {
+    "term": "Nordic countries",
+    "see_also": ["Secular education"],
+    "entries": [
+      {
+        "sub_term": "comparative religious-education models",
+        "references": [
+          { "title": "Finnish Supreme Administrative Court Strikes Down Opt-Out-Only Religious Education Policy", "url": "/news/finland-secular-education-ruling/", "date": "2026-04-11", "section": "News" }
+        ],
+        "sub_sub_entries": [
+          {
+            "term": "Sweden — confessional instruction discontinued, 1969",
+            "references": [
+              { "title": "Finnish Supreme Administrative Court Strikes Down Opt-Out-Only Religious Education Policy", "url": "/news/finland-secular-education-ruling/", "date": "2026-04-11", "section": "News" }
+            ]
+          },
+          {
+            "term": "Norway — ECHR 2007 case shifted model",
+            "references": [
+              { "title": "Finnish Supreme Administrative Court Strikes Down Opt-Out-Only Religious Education Policy", "url": "/news/finland-secular-education-ruling/", "date": "2026-04-11", "section": "News" }
+            ]
+          },
+          {
+            "term": "Denmark — Evangelical Lutheran default retained",
+            "references": [
+              { "title": "Finnish Supreme Administrative Court Strikes Down Opt-Out-Only Religious Education Policy", "url": "/news/finland-secular-education-ruling/", "date": "2026-04-11", "section": "News" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "term": "Procedural justice",
+    "see_also": ["Evidentiary standards"],
+    "entries": [
+      {
+        "sub_term": "irregularities in blasphemy trial (Pakistan)",
+        "references": [
+          { "title": "Pakistan High Court Acquits Professor Held Four Years on Blasphemy Charge", "url": "/news/pakistan-blasphemy-acquittal/", "date": "2026-04-16", "section": "News" }
+        ]
+      }
+    ]
+  },
+  {
+    "term": "Religious minorities",
+    "see_also": ["Blasphemy laws", "Civil liberties"],
+    "entries": [
+      {
+        "sub_term": "disproportionate use of blasphemy statute against (Pakistan)",
+        "references": [
+          { "title": "Pakistan High Court Acquits Professor Held Four Years on Blasphemy Charge", "url": "/news/pakistan-blasphemy-acquittal/", "date": "2026-04-16", "section": "News" }
+        ]
+      }
+    ]
+  },
+  {
+    "term": "Religious neutrality",
+    "see": ["Viewpoint neutrality"],
+    "see_also": ["Church-state separation"],
+    "entries": [
+      {
+        "sub_term": "absent from school chaplaincy policy (Texas)",
+        "references": [
+          { "title": "Texas District Approves Unlicensed Chaplains as In-School Counselors", "url": "/news/texas-chaplain-program-public-schools/", "date": "2026-04-09", "section": "News" }
+        ]
+      },
+      {
+        "sub_term": "demanded by court ruling on opt-out education (Finland)",
+        "references": [
+          { "title": "Finnish Supreme Administrative Court Strikes Down Opt-Out-Only Religious Education Policy", "url": "/news/finland-secular-education-ruling/", "date": "2026-04-11", "section": "News" }
+        ]
+      }
+    ]
   }
 ]
