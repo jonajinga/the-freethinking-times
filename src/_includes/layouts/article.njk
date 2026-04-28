@@ -188,9 +188,6 @@ layout: layouts/base.njk
         </div>
 
         <div class="article-header__meta-row" data-pagefind-ignore>
-          {% if audioManifest[page.url] %}
-          <span class="article-meta-item article-meta-item--listen">{% include "partials/article-audio.njk" %}</span>
-          {% endif %}
           <span class="article-meta-item article-meta-item--length">{{ content | wordCount }}</span>
           <span class="article-meta-item article-meta-item--time">{{ content | readingTime }}</span>
           {% set _stats = articleStats[page.url] %}
@@ -1070,6 +1067,18 @@ window.__tftShowComments = window.__tftShowComments || function (btn, alwaysOpen
    mobile) when playback is active. ── #}
 <div id="annotation-toolbar" class="annotation-toolbar" role="toolbar" aria-label="Reader tools">
   <div class="annotation-toolbar__main">
+    {# Listen pill — embedded directly here (not migrated) so the
+       toolbar shows it on every article that has a generated MP3. #}
+    {% if audioManifest[page.url] %}
+    <div id="ann-listen-slot" class="annotation-toolbar__slot">
+      {% include "partials/article-audio.njk" %}
+    </div>
+    {% endif %}
+    {# % through pill + back-to-top, migrated in from base.njk by
+       reader-panel-migrate.js so they live inside the toolbar on
+       reading pages instead of floating bottom-right. #}
+    <div id="ann-pct-slot" class="annotation-toolbar__slot"></div>
+    <div id="ann-back-top-slot" class="annotation-toolbar__slot"></div>
     <button class="annotation-toolbar__btn article-notes-toggle" type="button" aria-label="Open Reader panel" aria-controls="article-notes-panel" aria-expanded="false" title="Reader">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
     </button>
