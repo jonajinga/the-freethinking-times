@@ -1,38 +1,48 @@
-{# Tip CTA buttons.
+{# Tip CTA — single smart link per author.
 
-   - Author button is a disclosure trigger (matches "How We're Funded"
-     and "Republish This Story"): click toggles #author-support-panel,
-     which is rendered separately by partials/author-support.njk and
-     surfaces the author's bio, social links, and tipping options.
-   - Publication button (renders only on non-author surfaces; article
-     pages set tipHidePublication = true) stays as a direct link with
-     a tippy tooltip.
+   Resolves the author's first available tipping platform (Ko-fi →
+   Buy Me a Coffee → Patreon, in priority order) and renders one button
+   labelled "Tip {{ name }} on {{ Platform }}". The platform name is
+   derived from the key, not the URL hostname, so a custom-domain
+   Ko-fi page still reads as "on Ko-fi".
 
    Set tipAuthor to an author record. Set tipHidePublication = true on
-   author-page / article-card surfaces where the publication button
-   would be redundant. Precedence per entity: kofi then bmac then
-   patreon. #}
+   surfaces where the publication-level button would be redundant
+   (article cards, author pages). #}
 {% set authorTipUrl = "" %}
+{% set authorTipPlatform = "" %}
 {% if tipAuthor and tipAuthor.tipping %}
-  {% set authorTipUrl = tipAuthor.tipping.kofi or tipAuthor.tipping.bmac or tipAuthor.tipping.patreon %}
+  {% if tipAuthor.tipping.kofi %}
+    {% set authorTipUrl = tipAuthor.tipping.kofi %}
+    {% set authorTipPlatform = "Ko-fi" %}
+  {% elif tipAuthor.tipping.bmac %}
+    {% set authorTipUrl = tipAuthor.tipping.bmac %}
+    {% set authorTipPlatform = "Buy Me a Coffee" %}
+  {% elif tipAuthor.tipping.patreon %}
+    {% set authorTipUrl = tipAuthor.tipping.patreon %}
+    {% set authorTipPlatform = "Patreon" %}
+  {% endif %}
 {% endif %}
+
 {% set pubTipUrl = "" %}
 {% if site.tipping %}
   {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
 {% endif %}
+
 {% if authorTipUrl or (pubTipUrl and not tipHidePublication) %}
 <div class="tip-buttons">
   {% if authorTipUrl and tipAuthor %}
-  <button type="button" class="tip-badge tip-badge--cta" aria-expanded="false" aria-controls="author-support-panel"
-          aria-label="Open support details for {{ tipAuthor.name }}"
-          data-umami-event="support-learn"
-          onclick="toggleArticleDisclosure(this)">Support {{ tipAuthor.name }}</button>
+  <a class="tip-badge" href="{{ authorTipUrl }}" target="_blank" rel="noopener noreferrer"
+     data-umami-event="support-author"
+     aria-label="Tip {{ tipAuthor.name }} on {{ authorTipPlatform }}">
+    Tip {{ tipAuthor.name }} on {{ authorTipPlatform }}
+  </a>
   {% endif %}
   {% if pubTipUrl and not tipHidePublication %}
-  <button type="button" class="tip-badge" aria-expanded="false" aria-controls="funding-panel"
-          aria-label="How {{ site.title }} is funded"
-          data-umami-event="funding-learn"
-          onclick="toggleArticleDisclosure(this)">Support {{ site.title }}</button>
+  <a class="tip-badge" href="/support/"
+     aria-label="Support {{ site.title }}">
+    Support {{ site.title }}
+  </a>
   {% endif %}
 </div>
 {% endif %}

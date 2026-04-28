@@ -34,11 +34,10 @@ layout: layouts/base.njk
       {% set rssLabel = site.sections[sectionSlug].label or title %}
       {% include "partials/archive-views-buttons.njk" %}
     </div>
-    <p style="font-family: var(--font-ui); font-size: var(--text-sm); margin-top: var(--space-3);">
-      <a href="/knowledge-map/?section={{ sectionSlug }}" style="color: var(--color-link); text-decoration: underline;">View this section on the knowledge map &rarr;</a>
-      &nbsp;&middot;&nbsp;
-      <a href="/editorial-calendar/?section={{ site.sections[sectionSlug].label or title }}" style="color: var(--color-link); text-decoration: underline;">View on editorial calendar &rarr;</a>
-    </p>
+    <div class="archive-views" style="margin-top: var(--space-3);">
+      <a href="/knowledge-map/?section={{ sectionSlug }}" class="btn archive-views__btn">Knowledge Map</a>
+      <a href="/editorial-calendar/?section={{ site.sections[sectionSlug].label or title }}" class="btn archive-views__btn">Editorial Calendar</a>
+    </div>
     {% endif %}
   </header>
 

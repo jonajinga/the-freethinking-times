@@ -2032,7 +2032,13 @@
 }
 
 /* ── Bookmark button state ──────────────────────────────────── */
-.bookmark-btn.is-saved .bookmark-icon { fill: currentColor; }
+.bookmark-btn.is-saved {
+  color: var(--color-accent);
+}
+.bookmark-btn.is-saved .bookmark-icon {
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
+}
 
 /* ── Inline footnotes ───────────────────────────────────────── */
 .fn-ref {

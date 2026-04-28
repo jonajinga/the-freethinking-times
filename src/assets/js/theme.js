@@ -38,8 +38,9 @@
       if (wf[gsFont]) { const l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.bunny.net/css?family='+wf[gsFont]+'&display=swap';document.head.appendChild(l); }
     }
 
-    const gsFontSize = localStorage.getItem((window.__PREFIX || 'tft') + '-gs-font-size');
-    if (gsFontSize && parseInt(gsFontSize) > 0) root.style.fontSize = gsFontSize + 'px';
+    // Text-size selector retired — clear any persisted value so previously
+    // saved sizes don't keep overriding the typography scale.
+    localStorage.removeItem((window.__PREFIX || 'tft') + '-gs-font-size');
 
     const gsSpacing = localStorage.getItem((window.__PREFIX || 'tft') + '-gs-spacing');
     if (gsSpacing && gsSpacing !== 'normal') {

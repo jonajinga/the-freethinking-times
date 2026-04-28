@@ -100,10 +100,16 @@
       if (code.indexOf('__PREFIX') !== -1) return;
       pushScript(s);
     });
+    // Sitewide breadcrumbs strip lives outside #main-content and is
+    // rendered server-side per page. Capture the new page's bar so the
+    // swap can refresh it; null when navigating to home (which omits
+    // the bar entirely).
+    var newCrumbs = doc.querySelector('.breadcrumbs-bar');
     return {
       main: newMain ? newMain.innerHTML : null,
       title: newTitle ? newTitle.textContent : document.title,
       description: newMeta ? newMeta.getAttribute('content') : '',
+      breadcrumbs: newCrumbs ? newCrumbs.outerHTML : '',
       scripts: scripts,
       externalScripts: externalScripts
     };
@@ -131,6 +137,22 @@
       // Swap content
       mainEl.innerHTML = data.main;
       document.title = data.title;
+
+      // Refresh sitewide breadcrumbs strip (lives outside #main-content
+      // and is rendered server-side per page; without this it would go
+      // stale across SPA nav). Replacing the existing element with the
+      // new outerHTML keeps the slot in place; if the new page is the
+      // home (no crumbs), remove the existing one.
+      var existingCrumbs = document.querySelector('.breadcrumbs-bar');
+      if (data.breadcrumbs) {
+        if (existingCrumbs) {
+          existingCrumbs.outerHTML = data.breadcrumbs;
+        } else if (mainEl.parentNode) {
+          mainEl.insertAdjacentHTML('beforebegin', data.breadcrumbs);
+        }
+      } else if (existingCrumbs) {
+        existingCrumbs.parentNode.removeChild(existingCrumbs);
+      }
 
       // Update meta description
       var metaDesc = document.querySelector('meta[name="description"]');
