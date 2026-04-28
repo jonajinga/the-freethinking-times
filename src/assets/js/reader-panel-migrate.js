@@ -67,7 +67,18 @@
   // (bar gets too crowded on mobile when this lives inline; the panel
   // is a more natural home for "Send feedback" anyway)
   move('article-feedback-btn',   'ann-feedback-slot');
-  move('article-feedback-popup', 'ann-feedback-slot');
+  // Keep the popup at body level rather than migrating it into the
+  // toolbar slot — the toolbar is `position: fixed; z-index: overlay`
+  // which creates a stacking context that traps the popup. On mobile
+  // the popup goes `position: fixed; z-index: modal` to take over the
+  // viewport; with body as its parent the higher z-index actually
+  // lifts it above everything else (including the toolbar itself).
+  (function () {
+    var popup = document.getElementById('article-feedback-popup');
+    if (popup && popup.parentNode !== document.body) {
+      document.body.appendChild(popup);
+    }
+  })();
 
   // ── Share popover slots
   move('share-panel',    'ann-share-slot');

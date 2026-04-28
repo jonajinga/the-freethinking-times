@@ -1456,7 +1456,7 @@
   padding-bottom: max(var(--space-2), env(safe-area-inset-bottom, 0));
   box-shadow: 0 -4px 16px rgba(0,0,0,0.25);
   z-index: var(--z-overlay);
-  min-height: 56px;
+  min-height: 60px;
 }
 .annotation-toolbar__scroll--left  { grid-column: 1; grid-row: 1; }
 .annotation-toolbar__main          { grid-column: 2; grid-row: 1; }
@@ -1493,7 +1493,9 @@
   align-items: center;
   /* `safe center` keeps icons centred when there's room and falls
    * back to flex-start once the row overflows so the leftmost
-   * buttons aren't pushed off-screen by the centring math. */
+   * buttons stay reachable via scroll. (Older browsers without
+   * `safe` support fall through to `center` and may briefly trap
+   * a few px of leftmost content; the page arrows recover those.) */
   justify-content: safe center;
   flex-wrap: nowrap;
   gap: var(--space-1);
@@ -1508,6 +1510,9 @@
   -ms-overflow-style: none;
   flex: 1 1 auto;
   min-width: 0;
+  /* Inline padding so the leftmost / rightmost buttons aren't flush
+   * against the scroll-arrow buttons when scrolled to the edges. */
+  padding: 0 var(--space-2);
 }
 .annotation-toolbar__main::-webkit-scrollbar { display: none; }
 
@@ -1533,14 +1538,26 @@
 .annotation-toolbar__music:empty { display: none; }
 .annotation-toolbar__music > .music-bar { max-width: 560px; flex: 1; }
 
-/* Selection-only buttons dim when no text is selected */
+/* Selection-only buttons (Highlight, Note) dim and disable when no
+ * text is selected; light up clearly when selection is active so the
+ * reader knows the buttons are now usable. */
 .annotation-toolbar__btn--needs-selection {
-  opacity: 0.3;
+  opacity: 0.35;
   pointer-events: none;
+  cursor: not-allowed;
+  transition: opacity var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
 }
 .annotation-toolbar__btn--needs-selection.is-active {
   opacity: 1;
   pointer-events: auto;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--color-accent);
+}
+.annotation-toolbar__btn--needs-selection.is-active:hover,
+.annotation-toolbar__btn--needs-selection.is-active:focus-visible {
+  background: var(--color-accent);
+  color: #fff;
 }
 
 .annotation-toolbar__btn {
@@ -1579,17 +1596,15 @@
  * scroll strip with ← / → page-arrows above 640 px so editors can
  * reach off-screen actions without ever sub-44 buttons. */
 @media (max-width: 640px) {
+  /* Phones: tighter horizontal density. Drop scroll-snap entirely;
+   * the smooth scroll-behavior on the parent + the flanking
+   * arrow buttons handle navigation, and snap was causing
+   * stutter / sticking under fast finger swipes. */
   .annotation-toolbar__main {
     gap: 2px;
     column-gap: 2px;
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
   }
-  .annotation-toolbar__main::-webkit-scrollbar { display: none; }
-  .annotation-toolbar__btn { scroll-snap-align: start; }
-  .annotation-toolbar { padding: 4px var(--space-1); column-gap: 2px; min-height: 52px; }
+  .annotation-toolbar { padding: 4px var(--space-1); column-gap: 2px; }
 }
 
 
