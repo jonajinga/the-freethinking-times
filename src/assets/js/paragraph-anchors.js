@@ -83,6 +83,17 @@
     }
   }
 
+  // Pilcrow paragraph-anchors are only meaningful on actual article and
+  // library *content* routes — utility pages (about, accessibility,
+  // submit forms, etc.) reuse the `.article-body` class for typography
+  // but aren't deep-linkable per paragraph and shouldn't render the
+  // pilcrow chrome. Gate via route prefix.
+  function isContentRoute() {
+    var p = location.pathname || '';
+    return /^\/(news|opinion|analysis|arts-culture|science-technology|history|letters|reviews|library|glossary|bookshelf)\//.test(p);
+  }
+  if (!isContentRoute()) return;
+
   // Annotate fresh content on initial run + every SPA swap (this script
   // is in the spa-nav re-inject list, so this whole IIFE re-runs).
   document.querySelectorAll('.article-body, .library-body').forEach(annotate);

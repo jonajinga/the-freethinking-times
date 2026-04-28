@@ -141,6 +141,13 @@
     {# ── Masthead ── #}
     {% include "partials/header.njk" %}
 
+    {# ── Sitewide breadcrumbs strip ──
+       Auto-generates from page.url. Suppresses on the home page and
+       any page that opts out via `hideBreadcrumbs: true` in front
+       matter. Renders as its own bar with thin rule borders, separate
+       from the main content. #}
+    {% include "partials/breadcrumbs.njk" %}
+
     {# ── Main Content ── #}
     <main id="main-content" class="site-main">
       {{ content | safe }}

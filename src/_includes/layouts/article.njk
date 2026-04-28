@@ -147,47 +147,23 @@ layout: layouts/base.njk
             {% endif %}
           </div>
 
-          {# Support row — author tipping + funding/republish/google
-             news. Listen pill lives in the meta-row below now (left
-             of word count) so it doesn't render here a second time. #}
-          {% if author and authors[author] %}
-          {% set tipAuthor = authors[author] %}
-          {% set authorTipUrl = tipAuthor.tipping.kofi or tipAuthor.tipping.bmac or tipAuthor.tipping.patreon %}
-          {% set pubTipUrl = site.tipping.kofi or site.tipping.bmac or site.tipping.patreon %}
-          {% if authorTipUrl or pubTipUrl %}
+          {# Republish badge — shields.io-style solid-color pill linked
+             to the open-license panel below. Shows on any article
+             carrying a syndicate flag. #}
+          {% if syndicate %}
           <div class="article-header__support-row">
-            {% set tipHidePublication = true %}
-            {% include "partials/tip-buttons.njk" %}
-            <span class="article-header__support-divider" aria-hidden="true"></span>
-            <button type="button" class="tip-badge tip-badge--cta" aria-expanded="false" aria-controls="funding-panel"
-                    aria-label="Open the funding disclosure"
-                    data-umami-event="funding-learn"
-                    onclick="toggleArticleDisclosure(this)">How We're Funded</button>
-            {% if syndicate %}
-            <span class="article-header__support-divider" aria-hidden="true"></span>
-            <button type="button" class="tip-badge tip-badge--cta" aria-expanded="false" aria-controls="republish-panel"
+            <button type="button" class="republish-badge" aria-expanded="false" aria-controls="republish-panel"
                     aria-label="Open republication terms and grab-code"
                     data-umami-event="license-learn"
-                    onclick="toggleArticleDisclosure(this)">Republish This Story</button>
-            {% endif %}
-            {% set _gnFollow = (site.googleNews and (site.googleNews.followUrl or site.googleNews.publicationId)) %}
-            {% if _gnFollow %}
-            {% set _gnUrl = site.googleNews.followUrl or ("https://news.google.com/publications/" + site.googleNews.publicationId) %}
-            <span class="article-header__support-divider" aria-hidden="true"></span>
-            <a class="tip-badge" href="{{ _gnUrl }}" target="_blank" rel="noopener noreferrer"
-               aria-label="Follow {{ site.title }} on Google News"
-               data-umami-event="google-news-follow">Add as Preferred on Google</a>
-            {% endif %}
+                    onclick="toggleArticleDisclosure(this)">
+              <span class="republish-badge__icon" aria-hidden="true">CC</span>
+              <span class="republish-badge__label">Republish this story</span>
+            </button>
           </div>
           {% endif %}
-          {% endif %}
 
-          {# Author-support, funding-disclosure, and open-license panels —
-             hidden by default, opened by the matching tip-badge buttons
-             in the support row. Mutual exclusion: only one open at a
-             time; opening any closes the others. #}
-          {% include "partials/author-support.njk" %}
-          {% include "partials/funding.njk" %}
+          {# Republish license + grab-code panel — hidden by default,
+             toggled by the badge above. #}
           {% include "partials/republish.njk" %}
           <script>
             window.toggleArticleDisclosure = window.toggleArticleDisclosure || function (btn) {
