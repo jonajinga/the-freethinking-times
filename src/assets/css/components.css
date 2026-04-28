@@ -19,6 +19,10 @@
   min-height: 36px;
   display: flex;
   align-items: center;
+  /* Uppercase to match the section-nav strip directly above so the
+   * two read as one continuous chrome. */
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 .breadcrumbs-bar__list {
   display: flex;
@@ -3689,22 +3693,22 @@ a.dateline:hover { color: var(--color-accent); }
  * the music bar when both are playing. Mobile uses smaller
  * heights for the toolbar (40 px). */
 body:has(.annotation-toolbar) .music-bar {
-  bottom: 52px;
+  bottom: 56px;
 }
 body:has(.annotation-toolbar) .audio-bar {
-  bottom: 52px;
+  bottom: 56px;
 }
 body:has(.annotation-toolbar) .music-bar:not([hidden]) ~ .audio-bar,
 body:has(.annotation-toolbar .music-bar:not([hidden])) .audio-bar {
-  bottom: calc(52px + 96px); /* toolbar + music-bar height */
+  bottom: calc(56px + 96px); /* toolbar + music-bar height */
 }
 body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar)) .audio-bar {
   bottom: 96px;
 }
 @media (max-width: 640px) {
-  body:has(.annotation-toolbar) .music-bar { bottom: 40px; }
-  body:has(.annotation-toolbar) .audio-bar  { bottom: 40px; }
-  body:has(.annotation-toolbar .music-bar:not([hidden])) .audio-bar { bottom: calc(40px + 96px); }
+  body:has(.annotation-toolbar) .music-bar { bottom: 60px; }
+  body:has(.annotation-toolbar) .audio-bar  { bottom: 60px; }
+  body:has(.annotation-toolbar .music-bar:not([hidden])) .audio-bar { bottom: calc(60px + 96px); }
 }
 
 /* Push the reading-floats (% pill + back-to-top) clear of the
@@ -5863,6 +5867,14 @@ body:has(.gs-panel.is-open) .reading-pct {
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
+}
+
+/* On article / library pages the in-toolbar pdf-basket-btn handles
+ * the basket UI; the floating tray that pdf-basket.js appends to
+ * body would just duplicate it. Hide the tray when the annotation
+ * toolbar is present. */
+body:has(.annotation-toolbar) .pdf-basket-tray {
+  display: none !important;
 }
 .pdf-basket-tray__count {
   position: absolute;

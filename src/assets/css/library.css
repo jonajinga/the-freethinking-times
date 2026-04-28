@@ -677,33 +677,46 @@
   color: var(--color-link);
 }
 
+/* Reader panel — mirrors the .nav-drawer / .gs-panel slide-in pattern
+ * for consistency. Right-anchored, full viewport height (covers the
+ * masthead while open), visibility flip delayed by the slide duration
+ * on close so the slide-out animation actually renders before the
+ * element disappears. Toggle via aria-hidden="false" like before so
+ * we don't have to touch the existing JS layer. */
 .library-panel {
   position: fixed;
-  top: var(--space-16);
+  top: 0;
   right: 0;
-  bottom: 56px; /* clear the bottom annotation toolbar so footer-links aren't hidden behind it */
-  width: min(746px, 90vw);
+  bottom: 0;
+  height: 100vh;
+  height: 100dvh;
+  width: min(540px, 92vw);
   background: var(--color-bg);
   border-left: 1px solid var(--color-rule);
-  box-shadow: -18px 0 48px rgba(0, 0, 0, 0.08), -2px 0 6px rgba(0, 0, 0, 0.04);
-  /* Sits above the annotation-toolbar (both share --z-overlay by default,
-     but the panel must win so selection buttons / download items in the
-     Share tab aren't intercepted by the toolbar). */
-  z-index: calc(var(--z-overlay) + 10);
+  box-shadow: -2px 0 28px rgba(0, 0, 0, 0.18);
+  z-index: var(--z-modal);
   display: flex;
   flex-direction: column;
-  transform: translateX(100%);
-  transition: transform var(--transition-normal);
   overflow: hidden;
+  overscroll-behavior: contain;
+  transform: translateX(100%);
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform var(--transition-normal), visibility 0s linear var(--transition-normal);
   font-family: 'DM Sans', system-ui, sans-serif;
 }
-@media (max-width: 640px) {
-  /* Mobile: toolbar wraps to two rows when music plays — leave more clearance. */
-  .library-panel { bottom: 96px; }
-}
-
 .library-panel[aria-hidden="false"] {
   transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
+  transition: transform var(--transition-normal), visibility 0s linear 0s;
+}
+@media (max-width: 640px) {
+  .library-panel {
+    width: 100vw;
+    border-left: none;
+    box-shadow: none;
+  }
 }
 
 /* ── Header: kicker + current title + close ───────────────── */
@@ -1424,12 +1437,17 @@
   bottom: 0;
   left: 0;
   right: 0;
-  display: flex;
+  /* Two-row grid: row 1 holds the scroll-arrow + main-row + scroll-
+   * arrow trio (always one line, the main row scrolls horizontally
+   * when its buttons exceed the available column). Row 2 hosts the
+   * docked music player when active. Grid prevents the wrap-pile
+   * we got with flex on narrow viewports. */
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
   align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  row-gap: var(--space-2);
   column-gap: var(--space-2);
+  row-gap: var(--space-2);
   background: #1a1a1a;
   border-top: 1px solid rgba(255,255,255,0.1);
   padding: var(--space-2) var(--space-2);
@@ -1440,6 +1458,10 @@
   z-index: var(--z-overlay);
   min-height: 56px;
 }
+.annotation-toolbar__scroll--left  { grid-column: 1; grid-row: 1; }
+.annotation-toolbar__main          { grid-column: 2; grid-row: 1; }
+.annotation-toolbar__scroll--right { grid-column: 3; grid-row: 1; }
+.annotation-toolbar__music         { grid-column: 1 / -1; grid-row: 2; }
 
 /* Page-arrow scroll buttons that flank the toolbar's main row. JS
  * (reader-panel-migrate.js) toggles their hidden state based on

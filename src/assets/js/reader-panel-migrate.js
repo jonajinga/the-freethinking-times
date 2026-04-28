@@ -38,18 +38,11 @@
   move('mark-read-btn',  'ann-mark-read-slot');
   move('pdf-basket-btn', 'ann-pdf-basket-slot');
 
-  // Reading-floats migration: pull #reading-pct and #back-to-top
-  // into the toolbar on reader pages. They're emitted from base.njk
-  // as floating fixed-position elements; once inside the toolbar
-  // their .toolbar-floats neutralize-rules (in editorial/library CSS)
-  // override the fixed positioning so they sit inline with everything
-  // else.
-  move('reading-pct',  'ann-pct-slot');
-  move('back-to-top',  'ann-back-top-slot');
-  ['reading-pct', 'back-to-top'].forEach(function (id) {
-    var el = document.getElementById(id);
-    if (el) el.classList.add('toolbar-floats');
-  });
+  // Reading-pct + back-to-top are now rendered server-side inline
+  // inside article.njk's toolbar (gated by isReadingPage). No more
+  // DOM-move from base.njk's reading-floats — that path was
+  // destructive across SPA nav swaps. The .toolbar-floats class is
+  // applied directly in the template.
 
   // After migration, give each engagement button the toolbar look while
   // keeping its existing id-based bindings intact.

@@ -217,6 +217,11 @@
      the tab order was a Lighthouse a11y failure. Visibility is handled
      in CSS via visibility: hidden, which removes the button from both
      the tab order and the accessibility tree until is-visible is set. #}
+  {# Reading-floats: rendered globally on non-reading pages. Reading
+     pages (article / library / glossary-term / book-entry) emit the
+     same markup directly inside their annotation-toolbar slots, so
+     we suppress the duplicate here to avoid double IDs. #}
+  {% if not isReadingPage %}
   <div class="reading-floats" id="reading-floats">
     <span class="reading-pct" id="reading-pct"></span>
     <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top">
@@ -226,6 +231,7 @@
       </svg>
     </button>
   </div>
+  {% endif %}
 
   {# ── Scripts ── #}
   <script src="/assets/js/drawer.js?v={{ buildTime }}" defer></script>

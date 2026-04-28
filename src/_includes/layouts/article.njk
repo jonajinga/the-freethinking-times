@@ -1,5 +1,6 @@
 ---
 layout: layouts/base.njk
+isReadingPage: true
 ---
 
 {% block head %}
@@ -1061,11 +1062,23 @@ window.__tftShowComments = window.__tftShowComments || function (btn, alwaysOpen
       {% include "partials/article-audio.njk" %}
     </div>
     {% endif %}
-    {# % through pill + back-to-top, migrated in from base.njk by
-       reader-panel-migrate.js so they live inside the toolbar on
-       reading pages instead of floating bottom-right. #}
-    <div id="ann-pct-slot" class="annotation-toolbar__slot"></div>
-    <div id="ann-back-top-slot" class="annotation-toolbar__slot"></div>
+    {# % through pill + back-to-top — rendered inline inside the
+       toolbar on reading pages (article + library + glossary +
+       book-entry). base.njk's floating .reading-floats is suppressed
+       on these pages via the isReadingPage flag, so there's only
+       one set of these IDs in the DOM. progress.js updates the
+       text content / scroll-to-top action; the parent
+       .reading-floats class still gates the visibility via
+       body:has(...) so they only show after scroll past 400 px. #}
+    <div id="reading-floats" class="reading-floats annotation-toolbar__slot">
+      <span class="reading-pct toolbar-floats" id="reading-pct"></span>
+      <button class="back-to-top toolbar-floats" id="back-to-top" type="button" aria-label="Back to top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="12" y1="20" x2="12" y2="4"/>
+          <polyline points="5 11 12 4 19 11"/>
+        </svg>
+      </button>
+    </div>
     <button class="annotation-toolbar__btn article-notes-toggle" type="button" aria-label="Open Reader panel" aria-controls="article-notes-panel" aria-expanded="false" title="Reader">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
     </button>
