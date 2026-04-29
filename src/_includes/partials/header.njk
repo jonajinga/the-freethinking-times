@@ -424,50 +424,20 @@
 {# ── Daily Quote Bar (homepage only) ──
    Full-bleed strip; inner content constrained to container width
    so the quote text aligns with the section-nav row above it. #}
-{% if page.url == "/" %}
+{# \u2500\u2500 Site motto strip (home page only) \u2500\u2500
+   Single fixed quotation \u2014 the publication's motto. Always rendered
+   server-side; visibility is gated by `body[data-page-url="/"]` (set
+   by the inline script below + spa-nav.js on every page load /
+   contentswap) so the strip survives SPA nav cleanly without
+   leaking onto non-home pages. #}
 <div class="quote-bar" id="quote-bar" data-pagefind-ignore>
   <div class="container quote-bar__inner">
-    <a class="quote-bar__link" href="/quotes/showcase/" title="View quotes showcase">
-      <span class="quote-bar__text" id="quote-bar-text"></span>
-      <span class="quote-bar__author" id="quote-bar-author"></span>
+    <a class="quote-bar__link" href="/quotes/" title="View quotes collection">
+      <span class="quote-bar__text">&ldquo;The destroyer of weeds, thistles and thorns is a benefactor, whether he soweth grain or not.&rdquo;</span>
+      <span class="quote-bar__author">&mdash; Robert G. Ingersoll</span>
     </a>
   </div>
 </div>
-<script>
-(function(){
-  var quotes={{ quotes | dump | safe }};
-  if(!quotes||!quotes.length)return;
-  var t=document.getElementById('quote-bar-text');
-  var a=document.getElementById('quote-bar-author');
-  var bar=document.getElementById('quote-bar');
-  if(!t||!a)return;
-  // Deterministic index from wall-clock time. Every 15 s window
-  // globally shows the same quote, so a page reload / SPA-nav
-  // never re-shuffles which one is on screen. The index advances
-  // exactly when the 15 s clock boundary ticks past.
-  var INTERVAL=15000;
-  function currentIdx(){return Math.floor(Date.now()/INTERVAL)%quotes.length;}
-  function render(idx,fade){
-    var q=quotes[idx];
-    var openQuote='\u201c', closeQuote='\u201d', dash='\u2014 ';
-    function paint(){
-      t.textContent=openQuote+q.quote+closeQuote;
-      a.textContent=dash+q.author;
-      bar.style.opacity='1';
-    }
-    if(fade){bar.style.opacity='0';setTimeout(paint,400);} else paint();
-  }
-  render(currentIdx(),false);
-  // Sync the first transition to the next clock boundary, then
-  // advance every INTERVAL after that. Keeps every viewer in sync.
-  var msUntilNext=INTERVAL-(Date.now()%INTERVAL);
-  setTimeout(function(){
-    render(currentIdx(),true);
-    setInterval(function(){render(currentIdx(),true);},INTERVAL);
-  },msUntilNext);
-})();
-</script>
-{% endif %}
 
 {# ── Search Modal ── (lives outside header for z-index stacking) #}
 <div class="search-overlay js-only" id="search-overlay" aria-hidden="true" onclick="var m=document.getElementById('search-modal'),o=this;m.classList.remove('is-open');m.setAttribute('aria-hidden','true');o.classList.remove('is-open');document.body.style.overflow='';document.getElementById('search-input').value='';document.getElementById('search-results').innerHTML='';"></div>

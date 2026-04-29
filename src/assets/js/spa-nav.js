@@ -167,6 +167,14 @@
         history.pushState({ url: url }, data.title, url);
       }
 
+      // Refresh body[data-page-url] so attribute-gated chrome (e.g.
+      // the home-only motto strip) flips visibility correctly on
+      // every navigation, not just full page loads.
+      try {
+        var pathname = new URL(url, window.location.origin).pathname;
+        document.body.setAttribute('data-page-url', pathname);
+      } catch (e) {}
+
       // Close any open overlays/panels
       var drawer = document.getElementById('nav-drawer');
       var drawerOverlay = document.getElementById('nav-drawer-overlay');

@@ -1456,7 +1456,11 @@
   padding-bottom: max(var(--space-2), env(safe-area-inset-bottom, 0));
   box-shadow: 0 -4px 16px rgba(0,0,0,0.25);
   z-index: var(--z-overlay);
-  min-height: 60px;
+  /* Tall enough to fully contain a 44 px button + comfortable padding,
+   * even on phones where the safe-area-inset reserves home-indicator
+   * space at the bottom — preventing the leftmost / rightmost icons
+   * from being clipped against the screen edge. */
+  min-height: 68px;
 }
 .annotation-toolbar__scroll--left  { grid-column: 1; grid-row: 1; }
 .annotation-toolbar__main          { grid-column: 2; grid-row: 1; }

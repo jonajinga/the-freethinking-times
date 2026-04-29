@@ -114,6 +114,10 @@
     if (rightBtn) rightBtn.addEventListener('click', function () { bumpScroll(1); });
     main.addEventListener('scroll', updateArrows, { passive: true });
     window.addEventListener('resize', updateArrows);
+    // Always start scrolled fully to the left so the first button
+    // (Listen) is in view on initial paint, regardless of whether
+    // `safe center` left a few px of leftmost content off-screen.
+    main.scrollLeft = 0;
     setTimeout(updateArrows, 0);
   })();
 

@@ -2427,6 +2427,15 @@ a.dateline:hover { color: var(--color-accent); }
   font-size: var(--text-sm);
   line-height: 1.5;
   transition: opacity 0.4s ease;
+  /* Hide everywhere except the home page. body[data-page-url] is set
+   * by base.njk and refreshed on every spa-nav swap. The motto bar
+   * lives in the persistent masthead chrome (outside #main-content)
+   * so this attribute selector is what actually keeps it from
+   * leaking onto interior pages. */
+  display: none;
+}
+body[data-page-url="/"] .quote-bar {
+  display: block;
 }
 /* Inner block uses the same container width as the masthead and
  * announcement strips so all four bars share aligned left/right
@@ -3693,23 +3702,24 @@ a.dateline:hover { color: var(--color-accent); }
  * the toolbar when both are present. TTS audio bar sits above
  * the music bar when both are playing. Mobile uses smaller
  * heights for the toolbar (40 px). */
-body:has(.annotation-toolbar) .music-bar {
-  bottom: 64px;
+/* Stacking-floor variable: the toolbar's effective height including
+ * the safe-area-inset-bottom (home-indicator chrome on iOS). The
+ * music + audio bars stack on top of this. Using one variable keeps
+ * the stack consistent on every device without per-breakpoint
+ * tweaking. */
+body:has(.annotation-toolbar) {
+  --toolbar-floor: calc(72px + env(safe-area-inset-bottom, 0px));
 }
-body:has(.annotation-toolbar) .audio-bar {
-  bottom: 64px;
-}
+body:has(.annotation-toolbar) .music-bar { bottom: var(--toolbar-floor); }
+body:has(.annotation-toolbar) .audio-bar { bottom: var(--toolbar-floor); }
 body:has(.annotation-toolbar) .music-bar:not([hidden]) ~ .audio-bar,
 body:has(.annotation-toolbar .music-bar:not([hidden])) .audio-bar {
-  bottom: calc(64px + 96px); /* toolbar + music-bar height + gap */
+  /* Lift above toolbar AND music bar (96 px tall) when both are
+   * stacked. */
+  bottom: calc(var(--toolbar-floor) + 96px);
 }
 body:has(.music-bar:not([hidden])):not(:has(.annotation-toolbar)) .audio-bar {
   bottom: 96px;
-}
-@media (max-width: 640px) {
-  body:has(.annotation-toolbar) .music-bar { bottom: 68px; }
-  body:has(.annotation-toolbar) .audio-bar  { bottom: 68px; }
-  body:has(.annotation-toolbar .music-bar:not([hidden])) .audio-bar { bottom: calc(68px + 96px); }
 }
 
 /* Push the reading-floats (% pill + back-to-top) clear of the
