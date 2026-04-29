@@ -2427,14 +2427,16 @@ a.dateline:hover { color: var(--color-accent); }
   font-size: var(--text-sm);
   line-height: 1.5;
   transition: opacity 0.4s ease;
-  /* Hide everywhere except the home page. body[data-page-url] is set
-   * by base.njk and refreshed on every spa-nav swap. The motto bar
-   * lives in the persistent masthead chrome (outside #main-content)
-   * so this attribute selector is what actually keeps it from
-   * leaking onto interior pages. */
+  /* Hide everywhere except the home page. body.is-home is added by
+   * base.njk on home and toggled on every soft navigation by
+   * spa-nav.js. The motto bar lives in the persistent masthead
+   * chrome (outside #main-content) so this class gate is what
+   * actually keeps it from leaking onto interior pages. (Class —
+   * not attribute-with-slash — because clean-css / PurgeCSS were
+   * dropping the body[data-page-url="/"] form.) */
   display: none;
 }
-body[data-page-url="/"] .quote-bar {
+body.is-home .quote-bar {
   display: block;
 }
 /* Inner block uses the same container width as the masthead and
@@ -5360,7 +5362,10 @@ select.w3f__input option {
 .listen-btn--icon:focus-visible {
   background: var(--color-ink);
   outline: none;
-  transform: scale(1.05);
+  /* No transform: scale on hover — the icon lives inside the
+   * fixed-height annotation toolbar and a scale grew it above the
+   * toolbar's vertical bounds, clipping the chrome. The colour
+   * change is enough hover affordance. */
 }
 .listen-btn--icon svg {
   width: 16px;

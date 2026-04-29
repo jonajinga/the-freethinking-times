@@ -167,12 +167,16 @@
         history.pushState({ url: url }, data.title, url);
       }
 
-      // Refresh body[data-page-url] so attribute-gated chrome (e.g.
-      // the home-only motto strip) flips visibility correctly on
-      // every navigation, not just full page loads.
+      // Refresh body[data-page-url] + body.is-home so chrome that
+      // gates on either (e.g. the home-only motto strip) flips
+      // visibility correctly on every soft navigation, not just
+      // full page loads. The class form is what's used in CSS;
+      // the attribute mirror is kept for any future gates that
+      // need to inspect the active path.
       try {
         var pathname = new URL(url, window.location.origin).pathname;
         document.body.setAttribute('data-page-url', pathname);
+        document.body.classList.toggle('is-home', pathname === '/');
       } catch (e) {}
 
       // Close any open overlays/panels

@@ -123,7 +123,7 @@
   {% block head %}{% endblock %}
 </head>
 
-<body data-page-url="{{ page.url }}">
+<body data-page-url="{{ page.url }}"{% if page.url == "/" %} class="is-home"{% endif %}>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div class="site-wrapper">
 

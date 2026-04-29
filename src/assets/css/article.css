@@ -523,37 +523,31 @@
 
 /* ── Article feedback popup ─────────────────────────────────── */
 .article-feedback-wrap { position: relative; }
+/* The Feedback button is migrated into the bottom annotation-toolbar
+ * by reader-panel-migrate.js, and this popup is re-parented to <body>
+ * so the toolbar's z-index stacking context can't trap it. That
+ * means the previous `position: absolute; top: 100%; right: 0`
+ * approach can't anchor to the wrap any more — it'd resolve against
+ * the viewport and land far off-screen on desktop. Centred fixed
+ * sheet at every viewport size, matching the share popover's modal
+ * pattern. */
 .article-feedback-popup {
-  position: absolute;
-  top: calc(100% + var(--space-2));
-  right: 0;
-  width: min(440px, 92vw);
-  max-height: calc(100vh - 6rem);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, -50%);
+  width: min(440px, calc(100vw - var(--space-4)));
+  max-height: calc(100vh - 4rem);
+  max-height: calc(100dvh - 4rem);
   overflow-y: auto;
   background: var(--color-bg);
   border: 1px solid var(--color-rule);
   border-top: 3px solid var(--color-accent);
   box-shadow: var(--shadow-md);
   padding: 0;
-  z-index: var(--z-overlay);
+  z-index: var(--z-modal);
   font-family: var(--font-ui);
-}
-/* Phones: the absolute-positioned popup overflowed the viewport on
- * narrow screens (the form's required fields, captcha, and submit
- * button stacked beyond the screen height). Switch to a centred
- * fixed sheet that fills available width and scrolls internally. */
-@media (max-width: 640px) {
-  .article-feedback-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    right: auto;
-    transform: translate(-50%, -50%);
-    width: min(440px, calc(100vw - var(--space-4)));
-    max-height: calc(100vh - 4rem);
-    max-height: calc(100dvh - 4rem);
-    z-index: var(--z-modal);
-  }
 }
 
 .article-feedback-popup__header {

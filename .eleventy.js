@@ -359,6 +359,11 @@ module.exports = function (eleventyConfig) {
               // Calendar dots/chips — classes built in JS from event.type
               /cal-dot--/,        // colored dots on month view
               /cal-week__chip--/, // colored chip borders on week view
+              // body.is-home gate — toggled by spa-nav.js on every
+              // navigation. PurgeCSS sees the class only on the home
+              // page's static HTML, but it needs to keep the rule
+              // because soft-nav can re-add the class to any body.
+              /is-home/,
             ],
           },
           variables: false,  // never strip CSS custom property declarations
