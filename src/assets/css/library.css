@@ -1450,17 +1450,17 @@
   row-gap: var(--space-2);
   background: #1a1a1a;
   border-top: 1px solid rgba(255,255,255,0.1);
-  padding: var(--space-2) var(--space-2);
+  padding: var(--space-2);
   /* Respect mobile browser's bottom chrome (address bar, home indicator)
-     so the bar isn't hidden behind it. */
-  padding-bottom: max(var(--space-2), env(safe-area-inset-bottom, 0));
+   * so the bar isn't hidden behind it. Both min-height and padding-bottom
+   * grow by env(safe-area-inset-bottom) so the bar's effective rendered
+   * height is exactly `68 + safe-area`. That makes --toolbar-floor below
+   * trivially trackable so the TTS / music bars stack flush against the
+   * top edge of the toolbar with no gap. */
+  padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom, 0));
   box-shadow: 0 -4px 16px rgba(0,0,0,0.25);
   z-index: var(--z-overlay);
-  /* Tall enough to fully contain a 44 px button + comfortable padding,
-   * even on phones where the safe-area-inset reserves home-indicator
-   * space at the bottom — preventing the leftmost / rightmost icons
-   * from being clipped against the screen edge. */
-  min-height: 68px;
+  min-height: calc(68px + env(safe-area-inset-bottom, 0));
 }
 .annotation-toolbar__scroll--left  { grid-column: 1; grid-row: 1; }
 .annotation-toolbar__main          { grid-column: 2; grid-row: 1; }

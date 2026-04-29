@@ -7,11 +7,10 @@
  *
  * Article-page UI: a button (#pdf-basket-btn) toggles membership.
  * Aria-pressed reflects current state. Fires Umami events for adds and
- * removes.
- *
- * Floating tray: when the basket has any items, a small tray fixed to the
- * bottom-right of the viewport shows the count and a link to /print-basket/.
- * Hidden on print, hidden when the basket is empty.
+ * removes. The previous floating bottom-right tray was removed — the
+ * toolbar button is the single basket affordance, and /print-basket/
+ * is reachable from the basket-list link in the reader tools or by
+ * direct URL.
  */
 (function () {
   'use strict';
@@ -25,40 +24,16 @@
     return -1;
   }
 
-  function ensureTray() {
-    var tray = document.getElementById('pdf-basket-tray');
-    if (!tray) {
-      tray = document.createElement('a');
-      tray.id = 'pdf-basket-tray';
-      tray.className = 'pdf-basket-tray';
-      tray.href = '/print-basket/';
-      tray.setAttribute('role', 'status');
-      tray.setAttribute('aria-label', 'Open print basket');
-      tray.setAttribute('title', 'Open print basket');
-      tray.setAttribute('data-umami-event', 'pdf-basket-open');
-      tray.innerHTML =
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-          '<path d="M3 7h18l-2 12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L3 7z"/>' +
-          '<path d="M8 7V5a4 4 0 0 1 8 0v2"/>' +
-        '</svg>' +
-        '<span class="pdf-basket-tray__count" data-pdf-basket-count>0</span>';
-      document.body.appendChild(tray);
-    }
-    return tray;
-  }
-
-  function refreshTray() {
-    var basket = load();
-    var tray = ensureTray();
-    var count = tray.querySelector('[data-pdf-basket-count]');
-    if (count) count.textContent = String(basket.length);
-    tray.hidden = basket.length === 0;
-    tray.setAttribute('aria-label', 'Open print basket (' + basket.length + ' article' + (basket.length === 1 ? '' : 's') + ')');
-  }
-
   function init() {
+    // Remove any legacy tray injected on prior visits before this
+    // floating affordance was retired (sticks around in cached DOM
+    // when navigating via spa-nav from a stale page).
+    var legacyTray = document.getElementById('pdf-basket-tray');
+    if (legacyTray && legacyTray.parentNode) {
+      legacyTray.parentNode.removeChild(legacyTray);
+    }
+
     var btn = document.getElementById('pdf-basket-btn');
-    refreshTray();
     if (!btn) return;
 
     var url = btn.getAttribute('data-url') || location.pathname;
@@ -90,7 +65,6 @@
       }
       save(basket);
       refreshBtn();
-      refreshTray();
     });
 
     refreshBtn();

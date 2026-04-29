@@ -3543,6 +3543,12 @@ body.is-home .quote-bar {
   padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--color-rule);
 }
+/* Touch devices don't have a keyboard, so the shortcut hints are
+ * pure noise on phones and tablets. Hide at <=1024 px so the drawer
+ * footer just shows the byline + copyright. */
+@media (max-width: 1024px) {
+  .nav-drawer__shortcuts { display: none; }
+}
 .nav-drawer__shortcut {
   display: inline-flex;
   align-items: center;
@@ -3704,13 +3710,12 @@ body.is-home .quote-bar {
  * the toolbar when both are present. TTS audio bar sits above
  * the music bar when both are playing. Mobile uses smaller
  * heights for the toolbar (40 px). */
-/* Stacking-floor variable: the toolbar's effective height including
- * the safe-area-inset-bottom (home-indicator chrome on iOS). The
- * music + audio bars stack on top of this. Using one variable keeps
- * the stack consistent on every device without per-breakpoint
- * tweaking. */
+/* Stacking-floor variable: matches the toolbar's exact rendered
+ * height, which is `min-height + safe-area-inset-bottom` (see the
+ * .annotation-toolbar rule in library.css). The music + audio bars
+ * sit flush against the top of the toolbar with no visual gap. */
 body:has(.annotation-toolbar) {
-  --toolbar-floor: calc(72px + env(safe-area-inset-bottom, 0px));
+  --toolbar-floor: calc(68px + env(safe-area-inset-bottom, 0px));
 }
 body:has(.annotation-toolbar) .music-bar { bottom: var(--toolbar-floor); }
 body:has(.annotation-toolbar) .audio-bar { bottom: var(--toolbar-floor); }
@@ -3888,6 +3893,13 @@ body:has(.music-bar:not([hidden])):has(.audio-bar:not([hidden])) .reading-floats
   padding: var(--space-4);
 }
 #kb-shortcuts-overlay[hidden] { display: none; }
+/* Hide the entire keyboard-shortcuts overlay on touch viewports —
+ * keyboards aren't available, so the help is pure noise even if a
+ * stray `?` keypress (paired Bluetooth keyboard, etc.) tries to
+ * surface it. */
+@media (max-width: 1024px) {
+  #kb-shortcuts-overlay { display: none !important; }
+}
 .kb-backdrop {
   position: absolute;
   inset: 0;
@@ -4220,6 +4232,11 @@ body:has(.music-bar:not([hidden])):has(.audio-bar:not([hidden])) .reading-floats
   display: flex;
   gap: var(--space-4);
   flex-shrink: 0;
+}
+/* Keyboard-shortcut hints in the search modal are noise on touch
+ * devices that don't have a keyboard. Hide on tablets and below. */
+@media (max-width: 1024px) {
+  .search-modal__footer { display: none; }
 }
 
 /* ── Search Results ─────────────────────────────────────────── */
@@ -5531,10 +5548,9 @@ select.w3f__input option {
 }
 @media print { .audio-bar { display: none !important; } }
 
-/* When the audio bar is open, push the back-to-top + basket buttons
-   up so they don't sit under it. Same trick as the music-bar push. */
-body.has-audio-bar .reading-floats,
-body.has-audio-bar .pdf-basket-tray { bottom: calc(6rem + 60px); }
+/* When the audio bar is open, push the back-to-top button up so
+   it doesn't sit under it. Same trick as the music-bar push. */
+body.has-audio-bar .reading-floats { bottom: calc(6rem + 60px); }
 
 /* ── TTS settings popover ───────────────────────────────────── */
 .tts-popover {
@@ -5692,29 +5708,12 @@ body.has-audio-bar .pdf-basket-tray { bottom: calc(6rem + 60px); }
 /* article-stat: legacy class, replaced by .article-meta-item--stat in
    article.css. Keep no rule here so PurgeCSS can drop it. */
 
-/* ── PDF basket floating button ─────────────────────────────── */
-/* Lives on the right edge at the same y position as back-to-top so the
- * two buttons read as a vertical pair. When back-to-top becomes visible
- * (reading-floats.is-visible), the basket lifts one slot higher to
- * stack above it. Hidden entirely when the basket is empty. */
-.pdf-basket-tray {
-  position: fixed;
-  right: var(--space-6);
-  bottom: 6rem;
-  z-index: var(--z-nav);
-  width: 44px;
-  height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-bg);
-  border: 1px solid var(--color-rule-heavy);
-  color: var(--color-ink);
-  text-decoration: none;
-  cursor: pointer;
-  transition: border-color var(--transition-fast), color var(--transition-fast), opacity var(--transition-fast);
-}
-.pdf-basket-tray[hidden] { display: none !important; }
+/* ── PDF basket floating button (RETIRED) ───────────────────── */
+/* The floating bottom-right tray has been retired — the toolbar
+ * #pdf-basket-btn is now the only basket affordance. Safety net
+ * for any legacy DOM (e.g. from a cached SPA visit) that may
+ * still carry the .pdf-basket-tray element: force it hidden. */
+.pdf-basket-tray { display: none !important; }
 
 /* ── Print cover page (notes export, editions PDF, etc.) ──── */
 /* Hidden on screen; shown as the first printed page. Magazine-
@@ -5852,81 +5851,17 @@ body.has-audio-bar .pdf-basket-tray { bottom: calc(6rem + 60px); }
     text-underline-offset: 1.5pt;
   }
 }
-.pdf-basket-tray:hover {
-  border-color: var(--color-ink);
-  color: var(--color-accent);
-}
-.pdf-basket-tray svg { width: 18px; height: 18px; }
-
-/* Article pages: the bottom annotation toolbar is always visible, so
- * lift the basket above its 52px height + a small gap. Also matches
- * back-to-top's bottom (6rem) so they stack when scrolled. */
-body:has(.annotation-toolbar) .pdf-basket-tray {
-  bottom: calc(6rem + 44px + var(--space-2));
-}
-/* On any page where the reading-floats are visible (back-to-top and
- * % pill flipped to is-visible after scroll), stack above them. */
-body:has(.reading-floats.is-visible) .pdf-basket-tray {
-  bottom: calc(6rem + 44px + var(--space-2));
-}
-
-/* Floating buttons must never appear above the nav drawer or the
+/* Floating overlays must never appear above the nav drawer or the
  * reader-display panel — both are full-height side drawers that should
  * own the screen while open. (.reading-floats uses display:contents so
  * we target its children directly.) */
-body:has(.nav-drawer.is-open) .pdf-basket-tray,
 body:has(.nav-drawer.is-open) .back-to-top,
 body:has(.nav-drawer.is-open) .reading-pct,
-body:has(.gs-panel.is-open) .pdf-basket-tray,
 body:has(.gs-panel.is-open) .back-to-top,
 body:has(.gs-panel.is-open) .reading-pct {
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
-}
-
-/* On article / library pages the in-toolbar pdf-basket-btn handles
- * the basket UI; the floating tray that pdf-basket.js appends to
- * body would just duplicate it. Hide the tray when the annotation
- * toolbar is present. */
-body:has(.annotation-toolbar) .pdf-basket-tray {
-  display: none !important;
-}
-.pdf-basket-tray__count {
-  position: absolute;
-  top: -7px;
-  right: -7px;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 4px;
-  background: var(--color-accent);
-  color: #fff;
-  font-family: var(--font-ui);
-  font-size: 0.65rem;
-  font-weight: 700;
-  border-radius: 9px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-}
-@media (max-width: 640px) {
-  /* Phones: tighter dimensions; smart-position rules above still apply. */
-  .pdf-basket-tray {
-    right: var(--space-4);
-    bottom: var(--space-3);
-    width: 40px;
-    height: 40px;
-  }
-  body:has(.annotation-toolbar) .pdf-basket-tray,
-  body:has(.reading-floats.is-visible) .pdf-basket-tray {
-    bottom: calc(7rem + 40px + var(--space-2));
-    right: var(--space-6);
-  }
-  .pdf-basket-tray svg { width: 16px; height: 16px; }
-}
-@media print {
-  .pdf-basket-tray { display: none !important; }
 }
 
 .w3f__checklist {
