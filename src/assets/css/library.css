@@ -1610,11 +1610,14 @@
    icons. */
 .annotation-toolbar__btn svg,
 .annotation-toolbar .article-action-btn svg,
+.annotation-toolbar .article-action-btn .bookmark-icon,
+.annotation-toolbar .article-action-btn .like-icon,
+.annotation-toolbar .article-action-btn .mark-read-icon,
 .annotation-toolbar__scroll svg,
 .annotation-toolbar #back-to-top svg,
 .annotation-toolbar .listen-btn--icon svg {
-  width: 22px;
-  height: 22px;
+  width: 22px !important;
+  height: 22px !important;
 }
 
 /* Toolbar holds 10+ buttons. We hold the WCAG AA 44×44 floor on every

@@ -854,11 +854,16 @@
   display: none;
 }
 
-/* Still style the selection toolbar + library reader actions on mobile —
-   those are independent of the article action bar. */
+/* The .annotation-toolbar is a grid container in library.css; this old
+ * media-query block applied flex-only properties (flex-wrap,
+ * justify-content) and overflow-x:auto to the whole toolbar, which
+ * conflicted with the grid layout and was overriding the toolbar's
+ * own padding-bottom (the safe-area-inset calc). The horizontal scroll
+ * lives on .annotation-toolbar__main, not on the toolbar itself.
+ * Restrict the leftover rule to .library-reader-actions (the article-
+ * header inline action row, which is still flex). */
 @media (max-width: 768px) {
-  .library-reader-actions,
-  .annotation-toolbar {
+  .library-reader-actions {
     flex-wrap: nowrap;
     justify-content: flex-start;
     gap: var(--space-1);
@@ -868,12 +873,7 @@
     scrollbar-width: none;
     padding-bottom: var(--space-1);
   }
-  .library-reader-actions::-webkit-scrollbar,
-  .annotation-toolbar::-webkit-scrollbar { display: none; }
-
-  .annotation-toolbar__btn {
-    flex-shrink: 0;
-  }
+  .library-reader-actions::-webkit-scrollbar { display: none; }
 }
 
 /* When reading-settings, share, or download panels are relocated into a
