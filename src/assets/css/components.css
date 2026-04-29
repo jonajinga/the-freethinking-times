@@ -282,6 +282,21 @@
   transition: transform var(--transition-normal), visibility 0s linear 0s;
 }
 
+/* The .gs-panel lives inside <header class="masthead"> in the DOM
+ * (header.njk renders both). The masthead is `position: sticky` with
+ * z-index var(--z-nav) (100), which creates a stacking context that
+ * bounds every descendant — so the panel's own z-index var(--z-modal)
+ * resolves to "100 plus relative ordering inside masthead", not 300 in
+ * the page. The bottom annotation toolbar at z-overlay (200) sits in
+ * a sibling context and renders above the panel.
+ *
+ * When the panel is open, lift the masthead's stacking context above
+ * the toolbar so the panel actually paints on top. Reverts to z-nav
+ * once the panel closes, keeping the masthead's normal layering. */
+body:has(.gs-panel.is-open) .masthead {
+  z-index: var(--z-modal);
+}
+
 @media (max-width: 640px) {
   .gs-panel {
     width: 100vw;
