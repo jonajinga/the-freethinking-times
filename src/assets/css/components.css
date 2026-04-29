@@ -2151,7 +2151,8 @@ a.dateline:hover { color: var(--color-accent); }
   border-radius: 50%;
   background: #fff;
   flex-shrink: 0;
-  animation: site-live-pulse 1.2s ease-in-out infinite;
+  /* Pulse animation removed — was distracting in a journalism context
+   * and a static red dot is enough signal. */
   box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.85);
 }
 @keyframes site-live-pulse {
@@ -2166,21 +2167,20 @@ a.dateline:hover { color: var(--color-accent); }
   .masthead__live-label { display: none; }
   .masthead__live {
     padding: 5px 7px;
-    /* Push the live-dot fully toward the hamburger — negative margin
-     * on the right is what visually pulls it leftward inside the lead
-     * column, away from the centred title. The nameplate's grid gap
-     * gives a separate buffer. */
     margin-left: 0;
-    margin-right: auto;
+    margin-right: 0;
   }
-  /* Tighten the lead column so the live-dot tucks right next to the
-   * hamburger, then the auto-flow margin-right above pulls it as far
-   * left as the column allows. */
+  /* Switch the nameplate from `1fr auto 1fr` to `auto 1fr auto` on
+   * phones. The 1fr lead column couldn't hold hamburger (44 px) +
+   * watch-live (~30 px) on a 360 viewport — content overflowed and
+   * butted against the centred title. Auto-sizing the lead and the
+   * right column lets the title's 1fr soak up whatever's left, and
+   * its text-align: center keeps it visually centred. */
+  .masthead__nameplate {
+    grid-template-columns: auto 1fr auto;
+    gap: var(--space-3);
+  }
   .masthead__lead { gap: var(--space-2); justify-self: start; }
-  /* Bump nameplate grid gap on phones so the live-dot doesn't crash
-   * into the title text. The default var(--space-3) is fine on
-   * desktop; phones need more separation since the auto column shrinks. */
-  .masthead__nameplate { gap: var(--space-6); }
 }
 
 /* ── Site announcement banner ──────────────────────────────── */

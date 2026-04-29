@@ -1506,13 +1506,13 @@
 .annotation-toolbar__main {
   display: flex;
   align-items: center;
-  /* Always left-aligned: the leftmost buttons (Listen / reader-tools)
-   * are always visible on initial paint, and the row scrolls right if
-   * it overflows. Centred layout looked nice on desktop but trapped
-   * the first few buttons off-screen on phones (centre-math pushed
-   * them past the start of the visible window before the user could
-   * scroll). Left-align is unambiguous and works at every width. */
-  justify-content: flex-start;
+  /* Centred on desktop / tablet (>=768) where the row almost always
+   * fits without overflow — looks intentional rather than left-clumped.
+   * On phones (<768) we override to flex-start in the media query
+   * below so the leftmost buttons (Listen / reading-pct / back-to-top)
+   * are always visible on initial paint. Centre-math on phones
+   * trapped the first few buttons past the visible viewport. */
+  justify-content: center;
   flex-wrap: nowrap;
   gap: var(--space-1);
   /* Always one row; overflow scrolls horizontally. The flanking
@@ -1609,16 +1609,21 @@
 
 /* Toolbar holds 10+ buttons. We hold the WCAG AA 44×44 floor on every
  * button at every viewport, and turn the inner row into a horizontal
- * scroll strip with ← / → page-arrows above 640 px so editors can
- * reach off-screen actions without ever sub-44 buttons. */
-@media (max-width: 640px) {
-  /* Phones: tighter horizontal density. Drop scroll-snap entirely;
-   * the smooth scroll-behavior on the parent + the flanking
-   * arrow buttons handle navigation, and snap was causing
-   * stutter / sticking under fast finger swipes. */
+ * scroll strip with ← / → page-arrows below 768 so users can reach
+ * off-screen actions without sub-44 buttons. */
+@media (max-width: 768px) {
+  /* Phones / tablet portrait: the row is wider than the viewport,
+   * so left-align it and let the user scroll right. Centre-math
+   * pushed the first few buttons past the start of the visible
+   * window. */
   .annotation-toolbar__main {
+    justify-content: flex-start;
     gap: 2px;
     column-gap: 2px;
+    /* No horizontal padding on phones — the leftmost button needs
+     * to sit flush against the scroll-arrow column edge so the
+     * Listen / % read buttons aren't visually pushed off-screen. */
+    padding: 0;
   }
   .annotation-toolbar { padding: 4px var(--space-1); column-gap: 2px; }
 }
@@ -1829,72 +1834,15 @@
 /* Mobile: bar wraps so the music player gets its own row below the icons.
    The icons themselves never scroll horizontally — they fit in one row
    even on narrow screens because the bar carries 8 icons max. */
+/* Legacy phone rules removed: previous iterations forced
+ * flex-direction: column on the toolbar at <=640 and shrank buttons
+ * to 32×32 / 30×30 with !important at <=480 / <=360. Both broke the
+ * 44×44 WCAG 2.2 AA touch-target floor and the horizontal-scroll
+ * design. The single <=768 rule above handles phones now: keep
+ * 44×44 buttons, scroll horizontally, left-align so the leftmost
+ * affordances stay visible. */
 @media (max-width: 640px) {
-  .annotation-toolbar {
-    flex-direction: column;
-    gap: var(--space-2);
-    padding: var(--space-2) var(--space-3);
-    padding-bottom: max(var(--space-2), env(safe-area-inset-bottom, 0));
-  }
-  .annotation-toolbar__main {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: nowrap;
-    gap: 2px;
-  }
-  .annotation-toolbar__music {
-    max-width: 100%;
-    width: 100%;
-    justify-content: center;
-  }
   .annotation-toolbar__music:not(:empty)::before { display: none; }
-}
-
-/* Phone: shrink icons so all 10 fit in a single row on 360px+ phones
-   without horizontal scrolling. Sizes are !important so article.css's
-   own .article-action-btn rules can't enlarge the migrated buttons. */
-@media (max-width: 480px) {
-  .annotation-toolbar {
-    padding: var(--space-1) var(--space-1);
-    padding-bottom: max(var(--space-1), env(safe-area-inset-bottom, 0));
-  }
-  .annotation-toolbar__btn,
-  .annotation-toolbar .article-action-btn {
-    width: 32px !important;
-    height: 32px !important;
-    padding: 0 !important;
-    min-width: 32px !important;
-    min-height: 32px !important;
-    border-radius: 4px;
-  }
-  .annotation-toolbar__btn svg,
-  .annotation-toolbar .article-action-btn svg {
-    width: 16px !important;
-    height: 16px !important;
-  }
-  .annotation-toolbar__main {
-    gap: 2px;
-    flex-wrap: nowrap;
-    justify-content: center;
-    /* No overflow-x: auto — user doesn't want the bar to scroll. */
-  }
-}
-
-/* Extra-narrow (iPhone SE 320px): even tighter so 10 icons still fit. */
-@media (max-width: 360px) {
-  .annotation-toolbar__btn,
-  .annotation-toolbar .article-action-btn {
-    width: 30px !important;
-    height: 30px !important;
-    min-width: 30px !important;
-    min-height: 30px !important;
-  }
-  .annotation-toolbar__btn svg,
-  .annotation-toolbar .article-action-btn svg {
-    width: 14px !important;
-    height: 14px !important;
-  }
-  .annotation-toolbar__main { gap: 1px; }
 }
 
 /* ── Share / download / print popover ──
