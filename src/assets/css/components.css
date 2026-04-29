@@ -3764,7 +3764,7 @@ body.is-home .quote-bar {
  * .annotation-toolbar rule in library.css). The music + audio bars
  * sit flush against the top of the toolbar with no visual gap. */
 body:has(.annotation-toolbar) {
-  --toolbar-floor: calc(68px + env(safe-area-inset-bottom, 0px));
+  --toolbar-floor: calc(72px + env(safe-area-inset-bottom, 0px));
 }
 body:has(.annotation-toolbar) .music-bar { bottom: var(--toolbar-floor); }
 body:has(.annotation-toolbar) .audio-bar { bottom: var(--toolbar-floor); }

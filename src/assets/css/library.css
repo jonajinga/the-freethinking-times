@@ -1460,7 +1460,10 @@
   padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom, 0));
   box-shadow: 0 -4px 16px rgba(0,0,0,0.25);
   z-index: var(--z-overlay);
-  min-height: calc(68px + env(safe-area-inset-bottom, 0));
+  /* Sized for 48 px buttons + 8 px top + 8 px bottom (+ safe-area).
+   * Matches --toolbar-floor below so the audio bar / music bar stack
+   * sits flush against the toolbar's top edge. */
+  min-height: calc(72px + env(safe-area-inset-bottom, 0));
 }
 .annotation-toolbar__scroll--left  { grid-column: 1; grid-row: 1; }
 .annotation-toolbar__main          { grid-column: 2; grid-row: 1; }
@@ -1471,8 +1474,8 @@
  * (reader-panel-migrate.js) toggles their hidden state based on
  * whether the row currently overflows + which edge it sits at. */
 .annotation-toolbar__scroll {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1514,7 +1517,9 @@
    * trapped the first few buttons past the visible viewport. */
   justify-content: center;
   flex-wrap: nowrap;
-  gap: var(--space-1);
+  /* Bumped from var(--space-1) (4 px) → var(--space-2) (8 px) so
+   * the buttons aren't visually pinched together. */
+  gap: var(--space-2);
   /* Always one row; overflow scrolls horizontally. The flanking
    * .annotation-toolbar__scroll buttons drive the scroll on click;
    * touch users can swipe directly. Hidden scrollbar — the page
@@ -1581,8 +1586,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   /* Opt out of the base.css universal 44 px floor — this toolbar
    * intentionally packs 10+ buttons on phones; the per-breakpoint
    * widths below override min-height/min-width. */
@@ -1608,8 +1613,8 @@
 .annotation-toolbar__scroll svg,
 .annotation-toolbar #back-to-top svg,
 .annotation-toolbar .listen-btn--icon svg {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
 }
 
 /* Toolbar holds 10+ buttons. We hold the WCAG AA 44×44 floor on every
@@ -1623,14 +1628,17 @@
    * window. */
   .annotation-toolbar__main {
     justify-content: flex-start;
-    gap: 2px;
-    column-gap: 2px;
+    /* Slightly tighter than desktop but not pinched — 4 px keeps
+     * the buttons from butting against each other while still
+     * fitting more on screen before the user scrolls. */
+    gap: 4px;
+    column-gap: 4px;
     /* No horizontal padding on phones — the leftmost button needs
      * to sit flush against the scroll-arrow column edge so the
      * Listen / % read buttons aren't visually pushed off-screen. */
     padding: 0;
   }
-  .annotation-toolbar { padding: 4px var(--space-1); column-gap: 2px; }
+  .annotation-toolbar { padding: 4px var(--space-1); column-gap: 4px; }
 }
 
 
@@ -1674,8 +1682,8 @@
   border-radius: 6px;
   background: transparent;
   color: #fff;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
 }
 .annotation-toolbar .listen-btn--icon:hover,
 .annotation-toolbar .listen-btn--icon:focus-visible {
@@ -1704,30 +1712,30 @@
   visibility: visible;
   pointer-events: auto;
   transform: none;
-  height: 44px;
+  height: 48px;
   min-height: 0;
   min-width: 0;
   background: transparent;
   color: #fff;
   padding: 0;
 }
-/* % through label — sits in the toolbar row at the same 44 px box
+/* % through label — sits in the toolbar row at the same 48 px box
  * height as every button so the row reads as one uniform set of
  * affordances. No border / no fill so it's visually a label rather
  * than a competing button; the horizontal padding gives the digits
  * room without dominating. */
 .annotation-toolbar #reading-pct {
   font-family: var(--font-ui);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 44px;
-  min-width: 44px;
-  padding: 0 8px;
+  height: 48px;
+  min-width: 48px;
+  padding: 0 10px;
   border: 0;
   border-radius: 6px;
   color: rgba(255, 255, 255, 0.85);
@@ -1736,8 +1744,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border: none;
   /* Default state = "at the top of the page" — the button is dimmed
    * to signal that it's not actionable yet. Once the user scrolls
@@ -1842,8 +1850,8 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
    can be positioned against the button. */
 .annotation-toolbar .article-action-btn {
   position: relative;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   padding: 0;
   background: none;
   border: none;
