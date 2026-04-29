@@ -1490,17 +1490,29 @@
   outline: none;
 }
 .annotation-toolbar__scroll svg { width: 16px; height: 16px; }
-.annotation-toolbar__scroll[hidden] { display: none; }
+/* Hide via visibility, not display: keeps the 44 px column reserved
+ * in the toolbar grid so the middle row's clientWidth stays constant
+ * when an arrow disappears. Without this the atEnd / atStart math
+ * races against layout reflow — the arrow toggles visible/hidden in
+ * a loop because the changed clientWidth flips the inequality back.
+ * Override the [hidden] user-agent display:none too so the box still
+ * occupies space. */
+.annotation-toolbar__scroll[hidden] {
+  display: inline-flex;
+  visibility: hidden;
+  pointer-events: none;
+}
 
 .annotation-toolbar__main {
   display: flex;
   align-items: center;
-  /* `safe center` keeps icons centred when there's room and falls
-   * back to flex-start once the row overflows so the leftmost
-   * buttons stay reachable via scroll. (Older browsers without
-   * `safe` support fall through to `center` and may briefly trap
-   * a few px of leftmost content; the page arrows recover those.) */
-  justify-content: safe center;
+  /* Always left-aligned: the leftmost buttons (Listen / reader-tools)
+   * are always visible on initial paint, and the row scrolls right if
+   * it overflows. Centred layout looked nice on desktop but trapped
+   * the first few buttons off-screen on phones (centre-math pushed
+   * them past the start of the visible window before the user could
+   * scroll). Left-align is unambiguous and works at every width. */
+  justify-content: flex-start;
   flex-wrap: nowrap;
   gap: var(--space-1);
   /* Always one row; overflow scrolls horizontally. The flanking

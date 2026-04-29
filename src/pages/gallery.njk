@@ -115,6 +115,28 @@ permalink: /gallery/
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--space-6);
 }
+@media (max-width: 480px) {
+  /* Phones: drop the 300 px floor so the grid collapses cleanly to a
+   * single full-width column at 360 viewport. */
+  .gallery-grid { grid-template-columns: 1fr; gap: var(--space-4); }
+}
+
+/* Phone-friendly filter row: at <=640 the search input takes a full
+ * row of its own and the three selects + count flow on a second row.
+ * Without this the search's inline min-width: 200 forced an overflow
+ * with the three selects beside it on a 360 viewport. */
+@media (max-width: 640px) {
+  #gallery-search {
+    min-width: 0 !important;
+    flex: 1 1 100% !important;
+  }
+  #gallery-category,
+  #gallery-license,
+  #gallery-source {
+    flex: 1 1 calc(50% - var(--space-3)) !important;
+    min-width: 0 !important;
+  }
+}
 
 .gallery-card {
   margin: 0;
