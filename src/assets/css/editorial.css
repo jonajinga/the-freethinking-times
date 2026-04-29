@@ -991,6 +991,13 @@
   padding: var(--space-5) var(--space-5) var(--space-4);
   border-bottom: 1px solid var(--color-rule);
 }
+/* Header text column shrinks when the close button + gap eat into the
+ * available width on narrow viewports. min-width: 0 lets a long
+ * single-word title wrap rather than push the close off-screen. */
+.eb-flyout__head-text {
+  min-width: 0;
+  flex: 1 1 auto;
+}
 .eb-flyout__kicker {
   font-family: var(--font-ui);
   font-size: var(--text-xs);
@@ -1006,6 +1013,11 @@
   font-weight: 700;
   margin: 0;
   line-height: 1.25;
+  /* Allow long titles to wrap inside the narrow drawer rather than
+   * overflow horizontally. word-break is friendlier than break-word
+   * for long URLs / IDs. */
+  overflow-wrap: anywhere;
+  min-width: 0;
 }
 .eb-flyout__close {
   flex: 0 0 auto;
