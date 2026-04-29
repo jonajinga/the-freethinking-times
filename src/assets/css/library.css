@@ -1664,15 +1664,26 @@
 }
 .annotation-toolbar .listen-btn__icon svg { fill: currentColor; }
 
-/* Listen-btn--icon (TTS play/pause) lives inside the toolbar's
- * standard 44 px button row. Match the row's square 6 px corners
- * rather than render as a circular accent — without this the
- * play button reads as visually bigger / different from its
- * neighbours, especially on phones where buttons are tightly
- * packed. The accent fill is kept so the play affordance still
- * stands out as the primary action. */
+/* Listen-btn--icon (TTS play/pause) inside the toolbar adopts the
+ * same chrome as every other __btn — square 6 px corners, transparent
+ * background, white-alpha hover. The accent red fill the icon
+ * variant ships with elsewhere stood out too much next to the
+ * uniform dark row; the user wants it visually identical to its
+ * neighbours. */
 .annotation-toolbar .listen-btn--icon {
   border-radius: 6px;
+  background: transparent;
+  color: #fff;
+  width: 44px;
+  height: 44px;
+}
+.annotation-toolbar .listen-btn--icon:hover,
+.annotation-toolbar .listen-btn--icon:focus-visible {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+.annotation-toolbar .listen-btn--icon.is-playing {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* When the reading-floats (#reading-pct / #back-to-top) get rendered
@@ -1700,9 +1711,11 @@
   color: #fff;
   padding: 0;
 }
-/* % through pill — bordered chip so it reads as a stat badge rather
- * than a floating number. Matches button height (44 px) so it lines
- * up with neighbours; modest horizontal padding hugs the percentage. */
+/* % through label — sits in the toolbar row at the same 44 px box
+ * height as every button so the row reads as one uniform set of
+ * affordances. No border / no fill so it's visually a label rather
+ * than a competing button; the horizontal padding gives the digits
+ * room without dominating. */
 .annotation-toolbar #reading-pct {
   font-family: var(--font-ui);
   font-size: 0.7rem;
@@ -1712,12 +1725,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 32px;
+  height: 44px;
   min-width: 44px;
-  padding: 0 10px;
-  margin-block: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 999px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.85);
 }
 .annotation-toolbar #back-to-top {
   display: inline-flex;
@@ -1870,23 +1883,80 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
    Anchored above the annotation toolbar near the share icon.
    Holds the migrated share-panel (social links), download-panel
    (txt / md), and an inline Print button. */
+/* Fullscreen modal — covers the whole viewport so the share / download /
+ * print options have plenty of breathing room and the close button in
+ * the corner is the only way out. */
 .ann-share-popover {
   position: fixed;
-  bottom: calc(var(--space-14, 3.5rem) + var(--space-2));
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(320px, 92vw);
-  max-height: 70vh;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
   overflow-y: auto;
   background: var(--color-bg);
-  border: 1px solid var(--color-rule);
-  border-radius: 8px;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.18);
-  padding: var(--space-3);
-  z-index: calc(var(--z-overlay) + 5);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  z-index: var(--z-modal);
   font-family: var(--font-ui);
 }
 .ann-share-popover[hidden] { display: none; }
+.ann-share-popover__header {
+  position: sticky;
+  top: 0;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--color-rule);
+  margin: 0 auto;
+  max-width: 640px;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1;
+}
+.ann-share-popover__title {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+.ann-share-popover__close {
+  background: none;
+  border: 1px solid var(--color-rule);
+  color: var(--color-ink-faint);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 4px;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.ann-share-popover__close:hover {
+  color: var(--color-ink);
+  background: var(--color-bg-alt);
+}
+.ann-share-popover__body {
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-6);
+  box-sizing: border-box;
+}
 
 .ann-share-popover__subhead {
   font-size: var(--text-xs);
