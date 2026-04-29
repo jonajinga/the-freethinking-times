@@ -718,6 +718,11 @@
   color: var(--color-ink);
 }
 .eb-toolbar__input { flex: 1 1 220px; min-width: 200px; }
+/* Phones: drop the min-width floor so the search field shrinks with
+ * the toolbar instead of forcing an overflow with adjacent buttons. */
+@media (max-width: 640px) {
+  .eb-toolbar__input { min-width: 0; flex: 1 1 100%; }
+}
 .eb-toolbar__check {
   font-family: var(--font-ui);
   font-size: var(--text-xs);
@@ -1237,6 +1242,18 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Tablet portrait: with 5 fixed cols (80+130+1fr+160+110 = ~480 of
+   width) the title column gets squeezed below ~250 px on a 768 viewport.
+   Drop the per-author and word-count cols so the title column gets back
+   the room — header row trims to match. */
+@media (max-width: 1024px) {
+  .cal-list__head,
+  .cal-list__row {
+    grid-template-columns: 80px 130px 1fr 110px;
+  }
+  .cal-list__head .cal-list__author,
+  .cal-list__row  .cal-list__author { display: none; }
+}
 /* Phones: collapse to two-row stacked layout (date+section pinned top,
    title spanning, author + length below). Header row is hidden because
    labels would dominate the available width. */
@@ -1254,7 +1271,7 @@
   .cal-list__date { grid-area: date; }
   .cal-list__section { grid-area: section; justify-self: end; }
   .cal-list__title { grid-area: title; -webkit-line-clamp: 3; }
-  .cal-list__author { grid-area: author; }
+  .cal-list__author { grid-area: author; display: revert; }
   .cal-list__words { grid-area: words; }
 }
 
