@@ -107,8 +107,15 @@
       if (rightBtn) rightBtn.hidden = !hasOverflow || atEnd;
     }
     function bumpScroll(dir) {
-      var dist = Math.max(120, Math.round(main.clientWidth * 0.6));
-      main.scrollBy({ left: dist * dir, behavior: 'smooth' });
+      // Jump to the extremes rather than nudging by 60% — users expect the
+      // arrows to take them all the way to that edge, and the right arrow
+      // never quite hides at the end with a 60% increment because fractional
+      // pixels leave a sliver of un-scrolled space.
+      if (dir < 0) {
+        main.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        main.scrollTo({ left: main.scrollWidth, behavior: 'smooth' });
+      }
     }
     if (leftBtn)  leftBtn.addEventListener('click',  function () { bumpScroll(-1); });
     if (rightBtn) rightBtn.addEventListener('click', function () { bumpScroll(1); });

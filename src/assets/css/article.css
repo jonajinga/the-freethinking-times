@@ -757,16 +757,17 @@
 /* Replaces the inline tags row with a properly bracketed section
  * sandwiched by horizontal rules so it reads as a discrete block. */
 .article-topics {
-  margin: var(--space-3) 0 var(--space-3);
-  padding: var(--space-2) 0;
-  border-top: 1px solid var(--color-rule);
+  /* Tucked tight under the meta-row — the meta-row's border-top is
+   * the only separator above this block. No extra rule above topics,
+   * minimal padding, modest top margin so the row breathes from the
+   * meta stats above without feeling like a separate section. */
+  margin: var(--space-2) 0 var(--space-3);
+  padding: 0;
+  border-top: none;
   display: flex;
   align-items: center;
   gap: var(--space-3);
   flex-wrap: nowrap;
-  /* Mirror the meta-row: keep tags on a single visual line and let
-   * the chip list scroll horizontally on narrow viewports rather
-   * than wrap into a ragged second row. */
   min-width: 0;
 }
 .article-topics__label {

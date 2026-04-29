@@ -2163,12 +2163,16 @@ a.dateline:hover { color: var(--color-accent); }
   .masthead__live {
     padding: 5px 7px;
     margin-left: 0;
+    /* Pull the live-dot away from the title — without an explicit
+     * margin-right the auto-sized title column can sit flush against
+     * the live-dot border. */
+    margin-right: var(--space-3);
   }
   .masthead__lead { gap: 4px; }
   /* Bump nameplate grid gap on phones so the live-dot doesn't crash
    * into the title text. The default var(--space-3) is fine on
    * desktop; phones need more separation since the auto column shrinks. */
-  .masthead__nameplate { gap: var(--space-4); }
+  .masthead__nameplate { gap: var(--space-5); }
 }
 
 /* ── Site announcement banner ──────────────────────────────── */
