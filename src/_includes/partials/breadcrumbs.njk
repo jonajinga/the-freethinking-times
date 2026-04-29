@@ -21,12 +21,19 @@
   {%- if seg -%}
     {%- set _path = _path + '/' + seg -%}
     {%- set _label = '' -%}
+    {%- set _url = _path + '/' -%}
     {%- if site.sections[seg] and site.sections[seg].label -%}
       {%- set _label = site.sections[seg].label -%}
+    {%- elif seg == 'author' -%}
+      {# /author/ has no index page; the publication's author list lives
+         at /contributors/. Remap the intermediate crumb so it doesn't
+         link to a 404. #}
+      {%- set _label = 'Contributors' -%}
+      {%- set _url = '/contributors/' -%}
     {%- else -%}
       {%- set _label = seg | replace('-', ' ') | replace('_', ' ') | title -%}
     {%- endif -%}
-    {%- set _crumbs = (_crumbs.push({ url: _path + '/', label: _label }), _crumbs) -%}
+    {%- set _crumbs = (_crumbs.push({ url: _url, label: _label }), _crumbs) -%}
   {%- endif -%}
 {%- endfor -%}
 {%- set _last = _crumbs.length - 1 -%}

@@ -16,9 +16,13 @@
   font-size: var(--text-xs);
   /* Fixed strip height so the inner ol can centre vertically against
    * the rule borders, regardless of any line-height inheritance. */
-  min-height: 36px;
+  min-height: 40px;
   display: flex;
   align-items: center;
+  /* Push the crumb text down a touch — visually centre + a few px of
+   * extra top padding makes the strip feel anchored to the section-
+   * nav strip above rather than floating between the two rules. */
+  padding-top: 4px;
   /* Uppercase to match the section-nav strip directly above so the
    * two read as one continuous chrome. */
   text-transform: uppercase;
@@ -2162,17 +2166,21 @@ a.dateline:hover { color: var(--color-accent); }
   .masthead__live-label { display: none; }
   .masthead__live {
     padding: 5px 7px;
+    /* Push the live-dot fully toward the hamburger — negative margin
+     * on the right is what visually pulls it leftward inside the lead
+     * column, away from the centred title. The nameplate's grid gap
+     * gives a separate buffer. */
     margin-left: 0;
-    /* Pull the live-dot away from the title — without an explicit
-     * margin-right the auto-sized title column can sit flush against
-     * the live-dot border. */
-    margin-right: var(--space-3);
+    margin-right: auto;
   }
-  .masthead__lead { gap: 4px; }
+  /* Tighten the lead column so the live-dot tucks right next to the
+   * hamburger, then the auto-flow margin-right above pulls it as far
+   * left as the column allows. */
+  .masthead__lead { gap: var(--space-2); justify-self: start; }
   /* Bump nameplate grid gap on phones so the live-dot doesn't crash
    * into the title text. The default var(--space-3) is fine on
    * desktop; phones need more separation since the auto column shrinks. */
-  .masthead__nameplate { gap: var(--space-5); }
+  .masthead__nameplate { gap: var(--space-6); }
 }
 
 /* ── Site announcement banner ──────────────────────────────── */
@@ -2195,6 +2203,28 @@ a.dateline:hover { color: var(--color-accent); }
   align-items: center;
   gap: var(--space-3);
   flex-wrap: wrap;
+}
+/* Phones: keep the announcement on a single line and scroll
+ * horizontally if it overflows. The previous flex-wrap stacked the
+ * badge / text / CTA on three lines at 360 viewport, which dominated
+ * the header chrome and looked broken. Scroll-snap to each segment so
+ * users can swipe through cleanly. */
+@media (max-width: 768px) {
+  .site-announce__inner {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .site-announce__inner::-webkit-scrollbar { display: none; }
+  .site-announce__inner > * { scroll-snap-align: start; flex-shrink: 0; }
+  .site-announce__text {
+    text-align: left;
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
 }
 .site-announce__badge {
   display: inline-block;

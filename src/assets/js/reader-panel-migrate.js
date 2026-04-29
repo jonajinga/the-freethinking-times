@@ -121,11 +121,20 @@
     if (rightBtn) rightBtn.addEventListener('click', function () { bumpScroll(1); });
     main.addEventListener('scroll', updateArrows, { passive: true });
     window.addEventListener('resize', updateArrows);
-    // Always start scrolled fully to the left so the first button
-    // (Listen) is in view on initial paint, regardless of whether
-    // `safe center` left a few px of leftmost content off-screen.
+    // Always start scrolled fully to the left so the leftmost buttons
+    // (Listen / reader-tools) are in view on initial paint. Browsers
+    // sometimes restore a previous horizontal scroll position on a
+    // soft navigation, and the toolbar's `scroll-behavior: smooth`
+    // can interfere with a one-shot reset. Force the scroll position
+    // immediately, again after the next layout frame, and one more
+    // time after a short delay — rAF + setTimeout together cover both
+    // first-paint and SPA-nav restoration paths.
     main.scrollLeft = 0;
-    setTimeout(updateArrows, 0);
+    requestAnimationFrame(function () {
+      main.scrollLeft = 0;
+      updateArrows();
+    });
+    setTimeout(function () { main.scrollLeft = 0; updateArrows(); }, 50);
   })();
 
   // ── Generic popover wiring used by Share and Print.
