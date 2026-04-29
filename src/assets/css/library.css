@@ -1860,6 +1860,15 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
   border: none;
   color: #fff;
   border-radius: 6px;
+  /* Migrated buttons (bookmark, like, mark-read, pdf-basket, feedback)
+   * default to flex-shrink: 1 — without this floor they collapse to
+   * their content width when the toolbar's main row is packed and
+   * scrolling. The bookmark icon's natural content was tiny (13 px
+   * inline attr) so it shrank to ~1/3 the width of its neighbours.
+   * Lock to no-shrink, matching __btn behaviour. */
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: 48px;
 }
 .annotation-toolbar .article-action-btn:hover,
 .annotation-toolbar .article-action-btn:focus-visible {
