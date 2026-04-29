@@ -27,7 +27,12 @@
     var target = document.querySelector('.article-body');
     var scrollTop = window.scrollY;
 
-    if (floats) floats.classList.toggle('is-visible', scrollTop > 400);
+    // Threshold dropped from 400 → 50: the .is-visible class now only
+    // drives the back-to-top button's "live" colour state (dim at the
+    // top, white once scrolled). Earlier it also gated visibility, but
+    // the button is permanently rendered now — flipping the class
+    // sooner makes the affordance feel responsive on a quick scroll.
+    if (floats) floats.classList.toggle('is-visible', scrollTop > 50);
 
     var dist;
     if (target) {

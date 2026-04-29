@@ -1489,7 +1489,7 @@
   background: rgba(255,255,255,0.18);
   outline: none;
 }
-.annotation-toolbar__scroll svg { width: 16px; height: 16px; }
+/* SVG size normalised to 20×20 in the unified rule above. */
 /* Hide via visibility, not display: keeps the 44 px column reserved
  * in the toolbar grid so the middle row's clientWidth stays constant
  * when an arrow disappears. Without this the atEnd / atStart math
@@ -1599,12 +1599,17 @@
 }
 
 /* Normalise SVG icon size so engagement buttons (like, mark-read,
-   pdf-basket, tts) render at the same 18px the rest of the toolbar
-   uses. Without this the like heart shipped at 13×13 and looked
-   missing next to the larger bookmark / share / comments icons. */
-.annotation-toolbar__btn svg {
-  width: 18px;
-  height: 18px;
+   pdf-basket, tts) render at the same 20px size the rest of the
+   toolbar uses. Without this the like heart shipped at 13×13 and
+   looked missing next to the larger bookmark / share / comments
+   icons. */
+.annotation-toolbar__btn svg,
+.annotation-toolbar .article-action-btn svg,
+.annotation-toolbar__scroll svg,
+.annotation-toolbar #back-to-top svg,
+.annotation-toolbar .listen-btn--icon svg {
+  width: 20px;
+  height: 20px;
 }
 
 /* Toolbar holds 10+ buttons. We hold the WCAG AA 44×44 floor on every
@@ -1659,6 +1664,17 @@
 }
 .annotation-toolbar .listen-btn__icon svg { fill: currentColor; }
 
+/* Listen-btn--icon (TTS play/pause) lives inside the toolbar's
+ * standard 44 px button row. Match the row's square 6 px corners
+ * rather than render as a circular accent — without this the
+ * play button reads as visually bigger / different from its
+ * neighbours, especially on phones where buttons are tightly
+ * packed. The accent fill is kept so the play affordance still
+ * stands out as the primary action. */
+.annotation-toolbar .listen-btn--icon {
+  border-radius: 6px;
+}
+
 /* When the reading-floats (#reading-pct / #back-to-top) get rendered
  * inline inside the toolbar (article.njk does this server-side via the
  * .toolbar-floats class), neutralize their fixed-position floating
@@ -1710,14 +1726,23 @@
   width: 44px;
   height: 44px;
   border: none;
+  /* Default state = "at the top of the page" — the button is dimmed
+   * to signal that it's not actionable yet. Once the user scrolls
+   * (progress.js flips .reading-floats.is-visible), the colour goes
+   * full white below to indicate the affordance is live. */
+  color: rgba(255, 255, 255, 0.35);
   cursor: pointer;
   border-radius: 6px;
-  transition: background var(--transition-fast);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
+  color: #fff;
 }
 .annotation-toolbar #back-to-top:hover {
   background: rgba(255,255,255,0.15);
+  color: #fff;
 }
-.annotation-toolbar #back-to-top svg { width: 18px; height: 18px; }
+/* SVG size normalised to 20×20 in the unified rule above. */
 /* Back-to-top + reading-pct used to hide until scrollY > 400. That
  * gated their visibility behind progress.js's class toggle, which
  * was failing on some mobile builds — users couldn't find the
@@ -1730,9 +1755,8 @@
   background: rgba(255,255,255,0.18);
 }
 
+/* Width / height set in the unified SVG-sizing rule above. */
 .annotation-toolbar__btn svg {
-  width: 20px;
-  height: 20px;
   display: block;
   pointer-events: none;
 }
@@ -1826,10 +1850,7 @@
   background: rgba(255,255,255,0.2);
   color: #fff;
 }
-.annotation-toolbar .article-action-btn svg {
-  width: 20px;
-  height: 20px;
-}
+/* SVG size set in the unified sizing rule near top of toolbar block. */
 
 /* Mobile: bar wraps so the music player gets its own row below the icons.
    The icons themselves never scroll horizontally — they fit in one row
