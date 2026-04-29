@@ -61,6 +61,22 @@ permalink: /print-basket/
   gap: var(--space-2) var(--space-4);
   align-items: baseline;
 }
+@media (max-width: 480px) {
+  /* Phones: stack the row — title spans full width, then meta + the
+   * two action buttons flow on a second row. The 3-col layout with
+   * an action button "auto" each side crowded the title to ~150 px
+   * on a 360 viewport. */
+  .pb-list li {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "title  title"
+      "meta   actions";
+    row-gap: var(--space-2);
+  }
+  .pb-list li > a { grid-area: title; }
+  .pb-list .pb-meta { grid-area: meta; }
+  .pb-list li > button { grid-area: actions; justify-self: end; }
+}
 .pb-list a {
   font-family: var(--font-headline);
   font-size: var(--text-lg);

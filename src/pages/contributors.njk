@@ -236,6 +236,11 @@ permalink: /contributors/
   color: var(--color-ink);
 }
 .contributors-toolbar__input { flex: 1 1 240px; min-width: 200px; }
+@media (max-width: 640px) {
+  /* Phones: drop the 200 px floor so the search input shrinks with
+   * the toolbar instead of forcing horizontal overflow. */
+  .contributors-toolbar__input { min-width: 0; flex: 1 1 100%; }
+}
 .contributors-chips {
   display: flex;
   gap: 4px;
@@ -380,8 +385,9 @@ permalink: /contributors/
 }
 
 /* Mobile collapse — already covered by existing .author-card mobile
-   media queries; just shrink the new bits. */
-@media (max-width: 700px) {
+   media queries; just shrink the new bits. Snapped 700 → 768 to
+   match the canonical 7-band breakpoint scale. */
+@media (max-width: 768px) {
   .author-card__beat { gap: 3px; }
   .author-card__beat-tag { font-size: 0.6rem; padding: 1px 6px; }
   .author-card__latest { padding: var(--space-2) var(--space-3); margin-bottom: var(--space-2); }
