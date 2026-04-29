@@ -1,11 +1,11 @@
 {
   "/news/federal-regulators-shelved-investigations/": {
-    "views": 77,
-    "shares": 312,
-    "likes": 39
+    "views": 82,
+    "shares": 656,
+    "likes": 82
   },
   "/news/": {
-    "views": 28,
+    "views": 29,
     "shares": 0,
     "likes": 0
   },
@@ -20,7 +20,7 @@
     "likes": 0
   },
   "/quotes/": {
-    "views": 27,
+    "views": 28,
     "shares": 0,
     "likes": 0
   },
@@ -44,6 +44,11 @@
     "shares": 8,
     "likes": 1
   },
+  "/news/missouri-library-funding-restriction/": {
+    "views": 15,
+    "shares": 120,
+    "likes": 15
+  },
   "/support/": {
     "views": 15,
     "shares": 0,
@@ -53,11 +58,6 @@
     "views": 24,
     "shares": 32,
     "likes": 4
-  },
-  "/news/missouri-library-funding-restriction/": {
-    "views": 14,
-    "shares": 112,
-    "likes": 14
   },
   "/letters/": {
     "views": 14,
@@ -79,13 +79,28 @@
     "shares": 0,
     "likes": 0
   },
+  "/newsletter/": {
+    "views": 13,
+    "shares": 0,
+    "likes": 0
+  },
   "/letters/on-regulatory-capture-coverage/": {
     "views": 12,
     "shares": 0,
     "likes": 0
   },
-  "/newsletter/": {
-    "views": 13,
+  "/events/": {
+    "views": 97,
+    "shares": 0,
+    "likes": 0
+  },
+  "/contribute/": {
+    "views": 11,
+    "shares": 0,
+    "likes": 0
+  },
+  "/quotes/showcase/": {
+    "views": 11,
     "shares": 0,
     "likes": 0
   },
@@ -94,7 +109,12 @@
     "shares": 0,
     "likes": 0
   },
-  "/search/": {
+  "/quotes/submit/": {
+    "views": 11,
+    "shares": 0,
+    "likes": 0
+  },
+  "/site-map/": {
     "views": 11,
     "shares": 0,
     "likes": 0
@@ -104,13 +124,13 @@
     "shares": 0,
     "likes": 0
   },
-  "/games/": {
+  "/search/": {
     "views": 11,
     "shares": 0,
     "likes": 0
   },
-  "/events/": {
-    "views": 97,
+  "/games/": {
+    "views": 11,
     "shares": 0,
     "likes": 0
   },
@@ -119,23 +139,18 @@
     "shares": 0,
     "likes": 0
   },
+  "/community/": {
+    "views": 12,
+    "shares": 0,
+    "likes": 0
+  },
   "/timeline/": {
     "views": 10,
     "shares": 0,
     "likes": 0
   },
-  "/contribute/": {
-    "views": 10,
-    "shares": 0,
-    "likes": 0
-  },
-  "/opinion/newspaper-sold-for-parts/": {
-    "views": 16,
-    "shares": 16,
-    "likes": 2
-  },
-  "/site-map/": {
-    "views": 10,
+  "/archives/": {
+    "views": 17,
     "shares": 0,
     "likes": 0
   },
@@ -144,32 +159,12 @@
     "shares": 0,
     "likes": 0
   },
-  "/quotes/showcase/": {
-    "views": 10,
-    "shares": 0,
-    "likes": 0
-  },
-  "/quotes/submit/": {
-    "views": 10,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/works-of-ingersoll/": {
-    "views": 9,
-    "shares": 0,
-    "likes": 0
+  "/opinion/newspaper-sold-for-parts/": {
+    "views": 16,
+    "shares": 40,
+    "likes": 5
   },
   "/submit/": {
-    "views": 9,
-    "shares": 0,
-    "likes": 0
-  },
-  "/analysis/regulatory-capture-field-guide/": {
-    "views": 14,
-    "shares": 48,
-    "likes": 6
-  },
-  "/resources/": {
     "views": 9,
     "shares": 0,
     "likes": 0
@@ -179,12 +174,22 @@
     "shares": 8,
     "likes": 1
   },
+  "/library/works-of-ingersoll/": {
+    "views": 9,
+    "shares": 0,
+    "likes": 0
+  },
   "/contributors/": {
     "views": 9,
     "shares": 0,
     "likes": 0
   },
-  "/opinion/": {
+  "/resources/": {
+    "views": 9,
+    "shares": 0,
+    "likes": 0
+  },
+  "/tips/": {
     "views": 9,
     "shares": 0,
     "likes": 0
@@ -194,48 +199,28 @@
     "shares": 8,
     "likes": 1
   },
-  "/tips/": {
-    "views": 9,
-    "shares": 0,
-    "likes": 0
-  },
-  "/community/": {
-    "views": 11,
-    "shares": 0,
-    "likes": 0
-  },
-  "/archives/": {
-    "views": 16,
-    "shares": 0,
-    "likes": 0
-  },
-  "/science-technology/": {
-    "views": 8,
-    "shares": 0,
-    "likes": 0
-  },
-  "/about/": {
-    "views": 8,
-    "shares": 0,
-    "likes": 0
-  },
-  "/reviews/review-better-angels-revisited/": {
-    "views": 8,
-    "shares": 16,
-    "likes": 2
-  },
-  "/news/pakistan-blasphemy-acquittal/": {
-    "views": 11,
-    "shares": 88,
-    "likes": 11
-  },
-  "/masthead/": {
+  "/privacy/": {
     "views": 10,
     "shares": 0,
     "likes": 0
   },
-  "/privacy/": {
+  "/analysis/regulatory-capture-field-guide/": {
+    "views": 14,
+    "shares": 48,
+    "likes": 6
+  },
+  "/opinion/": {
     "views": 9,
+    "shares": 0,
+    "likes": 0
+  },
+  "/videos/": {
+    "views": 8,
+    "shares": 0,
+    "likes": 0
+  },
+  "/masthead/": {
+    "views": 10,
     "shares": 0,
     "likes": 0
   },
@@ -249,12 +234,17 @@
     "shares": 0,
     "likes": 0
   },
+  "/reviews/review-better-angels-revisited/": {
+    "views": 8,
+    "shares": 16,
+    "likes": 2
+  },
   "/bookshelf/": {
     "views": 8,
     "shares": 0,
     "likes": 0
   },
-  "/videos/": {
+  "/about/": {
     "views": 8,
     "shares": 0,
     "likes": 0
@@ -264,8 +254,33 @@
     "shares": 0,
     "likes": 0
   },
+  "/science-technology/": {
+    "views": 8,
+    "shares": 0,
+    "likes": 0
+  },
+  "/news/pakistan-blasphemy-acquittal/": {
+    "views": 11,
+    "shares": 88,
+    "likes": 11
+  },
   "/reader/": {
     "views": 8,
+    "shares": 0,
+    "likes": 0
+  },
+  "/dashboard/": {
+    "views": 7,
+    "shares": 0,
+    "likes": 0
+  },
+  "/editions/": {
+    "views": 7,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/works-of-ingersoll-v2/": {
+    "views": 7,
     "shares": 0,
     "likes": 0
   },
@@ -279,7 +294,7 @@
     "shares": 0,
     "likes": 0
   },
-  "/editions/": {
+  "/reviews/": {
     "views": 7,
     "shares": 0,
     "likes": 0
@@ -289,32 +304,17 @@
     "shares": 0,
     "likes": 0
   },
-  "/reviews/": {
-    "views": 7,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/works-of-ingersoll-v2/": {
-    "views": 7,
-    "shares": 0,
-    "likes": 0
-  },
-  "/dashboard/": {
-    "views": 7,
-    "shares": 0,
-    "likes": 0
-  },
   "/analysis/": {
     "views": 6,
     "shares": 0,
     "likes": 0
   },
-  "/archives/showcase/": {
-    "views": 6,
-    "shares": 0,
-    "likes": 0
+  "/opinion/moral-cowardice-epistemic-humility/": {
+    "views": 9,
+    "shares": 32,
+    "likes": 4
   },
-  "/timeline/showcase/": {
+  "/library/age-of-reason/introduction/": {
     "views": 6,
     "shares": 0,
     "likes": 0
@@ -324,12 +324,17 @@
     "shares": 0,
     "likes": 0
   },
-  "/library/age-of-reason/introduction/": {
+  "/library/common-sense/full-text/": {
+    "views": 8,
+    "shares": 0,
+    "likes": 0
+  },
+  "/archives/showcase/": {
     "views": 6,
     "shares": 0,
     "likes": 0
   },
-  "/games/crossy-road/": {
+  "/library/works-of-ingersoll-v1/": {
     "views": 6,
     "shares": 0,
     "likes": 0
@@ -339,13 +344,13 @@
     "shares": 0,
     "likes": 0
   },
+  "/games/crossy-road/": {
+    "views": 6,
+    "shares": 0,
+    "likes": 0
+  },
   "/arts-culture/cinema-nostalgia-problem/": {
     "views": 8,
-    "shares": 32,
-    "likes": 4
-  },
-  "/opinion/moral-cowardice-epistemic-humility/": {
-    "views": 9,
     "shares": 32,
     "likes": 4
   },
@@ -354,8 +359,8 @@
     "shares": 0,
     "likes": 0
   },
-  "/library/common-sense/full-text/": {
-    "views": 8,
+  "/timeline/showcase/": {
+    "views": 6,
     "shares": 0,
     "likes": 0
   },
@@ -369,27 +374,17 @@
     "shares": 0,
     "likes": 0
   },
-  "/library/works-of-ingersoll-v1/": {
-    "views": 6,
-    "shares": 0,
-    "likes": 0
-  },
   "/letters/on-epistemic-humility-academy/": {
     "views": 6,
     "shares": 16,
     "likes": 2
   },
-  "/accessibility/": {
-    "views": 5,
+  "/style-guide/": {
+    "views": 6,
     "shares": 0,
     "likes": 0
   },
-  "/news/texas-chaplain-program-public-schools/": {
-    "views": 5,
-    "shares": 8,
-    "likes": 1
-  },
-  "/thought-experiments/": {
+  "/archives/timeline/": {
     "views": 5,
     "shares": 0,
     "likes": 0
@@ -404,42 +399,7 @@
     "shares": 0,
     "likes": 0
   },
-  "/glossary/atheism/": {
-    "views": 5,
-    "shares": 0,
-    "likes": 0
-  },
-  "/events/submit/": {
-    "views": 5,
-    "shares": 0,
-    "likes": 0
-  },
-  "/documents/": {
-    "views": 5,
-    "shares": 0,
-    "likes": 0
-  },
-  "/music/playlists/": {
-    "views": 5,
-    "shares": 0,
-    "likes": 0
-  },
-  "/start-here/": {
-    "views": 5,
-    "shares": 0,
-    "likes": 0
-  },
-  "/news/affordable-housing-fund-consulting/": {
-    "views": 11,
-    "shares": 56,
-    "likes": 7
-  },
-  "/style-guide/": {
-    "views": 6,
-    "shares": 0,
-    "likes": 0
-  },
-  "/archives/timeline/": {
+  "/accessibility/": {
     "views": 5,
     "shares": 0,
     "likes": 0
@@ -449,13 +409,53 @@
     "shares": 0,
     "likes": 0
   },
-  "/community-guidelines/": {
+  "/news/affordable-housing-fund-consulting/": {
+    "views": 11,
+    "shares": 56,
+    "likes": 7
+  },
+  "/news/texas-chaplain-program-public-schools/": {
+    "views": 5,
+    "shares": 8,
+    "likes": 1
+  },
+  "/documents/": {
     "views": 5,
     "shares": 0,
     "likes": 0
   },
-  "/topics/regulation/": {
-    "views": 4,
+  "/thought-experiments/": {
+    "views": 5,
+    "shares": 0,
+    "likes": 0
+  },
+  "/glossary/atheism/": {
+    "views": 5,
+    "shares": 0,
+    "likes": 0
+  },
+  "/more/": {
+    "views": 5,
+    "shares": 0,
+    "likes": 0
+  },
+  "/music/playlists/": {
+    "views": 5,
+    "shares": 0,
+    "likes": 0
+  },
+  "/events/submit/": {
+    "views": 5,
+    "shares": 0,
+    "likes": 0
+  },
+  "/start-here/": {
+    "views": 5,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/submit/": {
+    "views": 5,
     "shares": 0,
     "likes": 0
   },
@@ -464,17 +464,37 @@
     "shares": 0,
     "likes": 0
   },
-  "/library/why-i-am-not-a-christian/full-text/": {
+  "/legal/": {
     "views": 4,
     "shares": 0,
     "likes": 0
   },
-  "/library/works-of-ingersoll-v1/the-gods/": {
+  "/library/why-i-am-not-a-christian/": {
+    "views": 4,
+    "shares": 0,
+    "likes": 0
+  },
+  "/knowledge-map/": {
     "views": 4,
     "shares": 0,
     "likes": 0
   },
   "/back-of-book/": {
+    "views": 4,
+    "shares": 0,
+    "likes": 0
+  },
+  "/reader-tools/": {
+    "views": 4,
+    "shares": 0,
+    "likes": 0
+  },
+  "/community-guidelines/": {
+    "views": 5,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/works-of-ingersoll-v1/the-gods/": {
     "views": 4,
     "shares": 0,
     "likes": 0
@@ -494,57 +514,12 @@
     "shares": 0,
     "likes": 0
   },
-  "/library/why-i-am-not-a-christian/": {
-    "views": 4,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/submit/": {
-    "views": 4,
-    "shares": 0,
-    "likes": 0
-  },
-  "/resources/support/": {
-    "views": 4,
-    "shares": 0,
-    "likes": 0
-  },
-  "/gallery/": {
-    "views": 4,
-    "shares": 0,
-    "likes": 0
-  },
-  "/trials/showcase/": {
-    "views": 4,
-    "shares": 0,
-    "likes": 0
-  },
-  "/glossary/agnosticism/": {
-    "views": 4,
-    "shares": 0,
-    "likes": 0
-  },
   "/thank-you/": {
     "views": 4,
     "shares": 0,
     "likes": 0
   },
-  "/knowledge-map/": {
-    "views": 4,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/common-sense/": {
-    "views": 4,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/works-of-ingersoll-v2/some-mistakes-of-moses/i-he-who-endeavors/": {
-    "views": 4,
-    "shares": 0,
-    "likes": 0
-  },
-  "/ethics/": {
+  "/topics/regulation/": {
     "views": 4,
     "shares": 0,
     "likes": 0
@@ -554,12 +529,47 @@
     "shares": 0,
     "likes": 0
   },
+  "/glossary/agnosticism/": {
+    "views": 4,
+    "shares": 0,
+    "likes": 0
+  },
+  "/trials/showcase/": {
+    "views": 4,
+    "shares": 0,
+    "likes": 0
+  },
+  "/ethics/": {
+    "views": 4,
+    "shares": 0,
+    "likes": 0
+  },
+  "/gallery/": {
+    "views": 4,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/works-of-ingersoll-v2/some-mistakes-of-moses/i-he-who-endeavors/": {
+    "views": 4,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/why-i-am-not-a-christian/full-text/": {
+    "views": 4,
+    "shares": 0,
+    "likes": 0
+  },
   "/news/finland-secular-education-ruling/": {
     "views": 4,
     "shares": 0,
     "likes": 0
   },
-  "/more/": {
+  "/resources/support/": {
+    "views": 4,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/common-sense/": {
     "views": 4,
     "shares": 0,
     "likes": 0
@@ -569,7 +579,7 @@
     "shares": 0,
     "likes": 0
   },
-  "/legal/": {
+  "/community/submit/": {
     "views": 3,
     "shares": 0,
     "likes": 0
@@ -579,8 +589,68 @@
     "shares": 0,
     "likes": 0
   },
-  "/cookies/": {
+  "/bookshelf/why-i-am-not-a-christian/": {
     "views": 3,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/works-of-ingersoll-v1/humboldt/": {
+    "views": 3,
+    "shares": 0,
+    "likes": 0
+  },
+  "/glossary/submit/": {
+    "views": 3,
+    "shares": 0,
+    "likes": 0
+  },
+  "/transparency/": {
+    "views": 3,
+    "shares": 0,
+    "likes": 0
+  },
+  "/music/submit/": {
+    "views": 3,
+    "shares": 0,
+    "likes": 0
+  },
+  "/volunteer/": {
+    "views": 4,
+    "shares": 0,
+    "likes": 0
+  },
+  "/bookshelf/submit/": {
+    "views": 3,
+    "shares": 0,
+    "likes": 0
+  },
+  "/quotes/thomas-paine-my-own-mind-is-my-own/": {
+    "views": 3,
+    "shares": 0,
+    "likes": 0
+  },
+  "/glossary/abiogenesis/": {
+    "views": 3,
+    "shares": 0,
+    "likes": 0
+  },
+  "/trials/trial-of-socrates/": {
+    "views": 3,
+    "shares": 0,
+    "likes": 0
+  },
+  "/newsletter/welcome/": {
+    "views": 4,
+    "shares": 0,
+    "likes": 0
+  },
+  "/templates/": {
+    "views": 3,
+    "shares": 0,
+    "likes": 0
+  },
+  "/editorial/board/": {
+    "views": 4,
     "shares": 0,
     "likes": 0
   },
@@ -599,67 +669,17 @@
     "shares": 0,
     "likes": 0
   },
-  "/glossary/submit/": {
-    "views": 3,
-    "shares": 0,
-    "likes": 0
-  },
-  "/print-basket/": {
-    "views": 3,
-    "shares": 0,
-    "likes": 0
-  },
-  "/bookshelf/portable-atheist/": {
-    "views": 3,
-    "shares": 0,
-    "likes": 0
-  },
-  "/transparency/": {
-    "views": 3,
-    "shares": 0,
-    "likes": 0
-  },
   "/most-read/": {
     "views": 3,
     "shares": 0,
     "likes": 0
   },
-  "/bookshelf/submit/": {
+  "/cookies/": {
     "views": 3,
     "shares": 0,
     "likes": 0
   },
-  "/community/submit/": {
-    "views": 3,
-    "shares": 0,
-    "likes": 0
-  },
-  "/editorial-calendar/": {
-    "views": 3,
-    "shares": 0,
-    "likes": 0
-  },
-  "/bookshelf/why-i-am-not-a-christian/": {
-    "views": 3,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/works-of-ingersoll-v1/humboldt/": {
-    "views": 3,
-    "shares": 0,
-    "likes": 0
-  },
-  "/games/trivia/": {
-    "views": 3,
-    "shares": 0,
-    "likes": 0
-  },
-  "/trials/submit/": {
-    "views": 3,
-    "shares": 0,
-    "likes": 0
-  },
-  "/music/submit/": {
+  "/topics/accountability/": {
     "views": 3,
     "shares": 0,
     "likes": 0
@@ -669,33 +689,23 @@
     "shares": 0,
     "likes": 0
   },
-  "/templates/": {
+  "/library/authors/": {
     "views": 3,
     "shares": 0,
     "likes": 0
   },
-  "/editorial/board/": {
-    "views": 4,
-    "shares": 0,
-    "likes": 0
-  },
-  "/quotes/thomas-paine-my-own-mind-is-my-own/": {
+  "/games/trivia/": {
     "views": 3,
     "shares": 0,
     "likes": 0
   },
-  "/reader-tools/": {
+  "/bookshelf/portable-atheist/": {
     "views": 3,
     "shares": 0,
     "likes": 0
   },
-  "/trials/trial-of-socrates/": {
+  "/editorial-calendar/": {
     "views": 3,
-    "shares": 0,
-    "likes": 0
-  },
-  "/volunteer/": {
-    "views": 4,
     "shares": 0,
     "likes": 0
   },
@@ -704,12 +714,12 @@
     "shares": 0,
     "likes": 0
   },
-  "/newsletter/welcome/": {
-    "views": 4,
+  "/abbreviations/": {
+    "views": 3,
     "shares": 0,
     "likes": 0
   },
-  "/library/authors/": {
+  "/print-basket/": {
     "views": 3,
     "shares": 0,
     "likes": 0
@@ -724,87 +734,22 @@
     "shares": 0,
     "likes": 0
   },
-  "/glossary/abiogenesis/": {
+  "/trials/submit/": {
     "views": 3,
     "shares": 0,
     "likes": 0
   },
-  "/topics/accountability/": {
-    "views": 3,
-    "shares": 0,
-    "likes": 0
-  },
-  "/timeline/protagoras-and-relativism/": {
+  "/library/authors/robert-ingersoll/": {
     "views": 2,
     "shares": 0,
     "likes": 0
   },
-  "/editions/1/": {
+  "/glossary/deism/": {
     "views": 2,
     "shares": 0,
     "likes": 0
   },
-  "/library/on-liberty/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/bookshelf/enlightenment-now/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/science-technology/internet-infrastructure/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/random/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/works-of-ingersoll-v2/some-mistakes-of-moses/xii-saturday/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/age-of-reason/chapter-03/": {
-    "views": 5,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/infrastructure/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/resources/legal/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/quotes/epicurus-is-god-willing-to-prevent-evil/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/gallery/submit/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/glossary/determinism/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/contributor-contract/": {
-    "views": 5,
-    "shares": 0,
-    "likes": 0
-  },
-  "/glossary/skepticism/": {
+  "/api/": {
     "views": 2,
     "shares": 0,
     "likes": 0
@@ -814,42 +759,12 @@
     "shares": 0,
     "likes": 0
   },
-  "/documents/foia-financial-regulator-enforcement-2025/": {
+  "/science-technology/internet-infrastructure/": {
     "views": 2,
     "shares": 0,
     "likes": 0
   },
-  "/glossary/empiricism/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/authors/robert-ingersoll/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/music/songs/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/subjects/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/abbreviations/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/works-of-ingersoll-v1/the-ghosts/preface/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/newsletter/confirmed/": {
+  "/library/works-of-ingersoll-v2/some-mistakes-of-moses/xii-saturday/": {
     "views": 2,
     "shares": 0,
     "likes": 0
@@ -859,12 +774,77 @@
     "shares": 0,
     "likes": 0
   },
-  "/documents/housing-fund-spending-records-2024-2025/": {
+  "/timeline/carvaka-school-founded/": {
     "views": 2,
     "shares": 0,
     "likes": 0
   },
   "/topics/foia/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/quotes/epicurus-is-god-willing-to-prevent-evil/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/your-data/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/infrastructure/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/documents/housing-fund-spending-records-2024-2025/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/music/songs/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/newsletter/confirmed/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/random/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/author/jeff-womelsdorf/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/glossary/empiricism/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/glossary/skepticism/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/age-of-reason/chapter-03/": {
+    "views": 5,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/works-of-ingersoll-v1/the-ghosts/preface/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/timeline/protagoras-and-relativism/": {
     "views": 2,
     "shares": 0,
     "likes": 0
@@ -879,32 +859,12 @@
     "shares": 0,
     "likes": 0
   },
+  "/reviews/review-radicals-documentary/": {
+    "views": 2,
+    "shares": 16,
+    "likes": 2
+  },
   "/library/on-liberty/chapter-02/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/api/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/timeline/carvaka-school-founded/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/author/jeff-womelsdorf/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/glossary/deism/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/your-data/": {
     "views": 2,
     "shares": 0,
     "likes": 0
@@ -914,12 +874,7 @@
     "shares": 0,
     "likes": 0
   },
-  "/topics/blasphemy/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/resources/on-this-site/": {
+  "/documents/foia-financial-regulator-enforcement-2025/": {
     "views": 2,
     "shares": 0,
     "likes": 0
@@ -929,77 +884,102 @@
     "shares": 0,
     "likes": 0
   },
-  "/contributors/.../": {
+  "/gallery/submit/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/editions/1/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/bookshelf/enlightenment-now/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/resources/on-this-site/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/glossary/determinism/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/contributor-contract/": {
+    "views": 5,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/on-liberty/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/subjects/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/blasphemy/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/resources/legal/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/https://buttondown.com/482ea80b-0413-41e2-a6f7-dab3eea32486/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/library/enquiry-human-understanding/section-01/": {
-    "views": 4,
-    "shares": 0,
-    "likes": 0
-  },
-  "/reviews/review-radicals-documentary/": {
+  "/dashboard/internal-guide/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/topics/literary-criticism/": {
+  "/timeline/submit/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/glossary/freethought/": {
+  "/feeds/topics/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/music/playlists/submit/": {
+  "/quotes/thomas-paine-i-do-not-believe-in-the/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/library/works-of-ingersoll-v2/some-reasons-why/": {
+  "/trials/zola-dreyfus/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/enquiry-human-understanding/section-02/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/reader-response/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/https://buttondown.com/3321c4ee-e029-43ee-9f1f-a6d88adf93a6/": {
+  "/topics/film/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/topics/housing/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/dashboard/internal-guide.md/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/newsletter/subscribed/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/epistemology/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/works-of-ingersoll-v1/thomas-paine/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/dashboard//internal-guide.md/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/statistics/": {
+  "/topics/freethought/": {
     "views": 1,
     "shares": 0,
     "likes": 0
@@ -1009,17 +989,17 @@
     "shares": 0,
     "likes": 0
   },
-  "/library/works-of-ingersoll-v2/some-mistakes-of-moses/xx-faith-in-filth/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
   "/feeds/": {
     "views": 4,
     "shares": 0,
     "likes": 0
   },
-  "/https://buttondown.com/482ea80b-0413-41e2-a6f7-dab3eea32486/": {
+  "/thefreethinkingtimes/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/quotes/albert-einstein-i-cannot-imagine-a-god-who/": {
     "views": 1,
     "shares": 0,
     "likes": 0
@@ -1029,7 +1009,17 @@
     "shares": 0,
     "likes": 0
   },
+  "/topics/private-equity/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
   "/timeline/locke-s-letter-concerning-toleration/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/quotes/robert-g-ingersoll-the-destroyer-of-weeds-thistles-and/": {
     "views": 1,
     "shares": 0,
     "likes": 0
@@ -1044,42 +1034,107 @@
     "shares": 0,
     "likes": 0
   },
-  "/trials/salman-rushdie/": {
+  "/glossary/freethought/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/https://buttondown.com/b36bc747-e423-4528-8c48-cb2551f067d5/": {
+  "/quotes/thomas-jefferson-in-every-country-and-in-every/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/https://buttondown.com/9c1b3bbf-f42b-487f-b4f4-62cbd914c796/": {
+  "/bookshelf/sapiens/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/trials/zola-dreyfus/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/moral-progress/": {
+  "/topics/economics/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/glossary/fallacy/": {
+  "/https://buttondown.com/3321c4ee-e029-43ee-9f1f-a6d88adf93a6/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/timeline/elizabeth-cady-stanton-s-the-woman-s-bible/": {
-    "views": 1,
+  "/library/enquiry-human-understanding/section-01/": {
+    "views": 4,
     "shares": 0,
     "likes": 0
   },
   "/projects/freethinkers-map/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/works-of-ingersoll-v2/myth-and-miracle/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/https://buttondown.com/bea9f28b-8f0c-43f5-9d4a-61498484d4c9/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/bookshelf/history-of-western-philosophy/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/finance/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/science/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/terminology/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/public-spending/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/on-liberty/chapter-03/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/thought-experiments/trolley-problem/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/music/playlists/submit/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/explore/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/trials/pentagon-papers/": {
+    "views": 2,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/humanism/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/works-of-ingersoll-v2/some-reasons-why/": {
     "views": 1,
     "shares": 0,
     "likes": 0
@@ -1089,7 +1144,7 @@
     "shares": 0,
     "likes": 0
   },
-  "/library/on-liberty/introduction/": {
+  "/topics/corporate-power/": {
     "views": 1,
     "shares": 0,
     "likes": 0
@@ -1119,32 +1174,7 @@
     "shares": 0,
     "likes": 0
   },
-  "/bookshelf/open-society/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/finance/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/dashboard/internal-guide/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/philosophy/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/science-&-technology/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/timeline/submit/": {
+  "/library/works-of-ingersoll-v2/orthodoxy/": {
     "views": 1,
     "shares": 0,
     "likes": 0
@@ -1154,7 +1184,7 @@
     "shares": 0,
     "likes": 0
   },
-  "/topics/public-spending/": {
+  "/topics/culture/": {
     "views": 1,
     "shares": 0,
     "likes": 0
@@ -1164,57 +1194,12 @@
     "shares": 0,
     "likes": 0
   },
-  "/quotes/robert-g-ingersoll-the-destroyer-of-weeds-thistles-and/": {
+  "/library/works-of-ingersoll-v2/some-reasons-why/ix-christs-mission/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/library/on-liberty/chapter-03/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/quotes/denis-diderot-men-will-never-be-free-until/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/psychology/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/quotes/thomas-paine-i-do-not-believe-in-the/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/games/word-scramble/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/enquiry-human-understanding/section-03/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/quotes/thomas-jefferson-in-every-country-and-in-every/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/editions/3/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/enquiry-human-understanding/section-02/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/corporate-power/": {
+  "/topics/courts/": {
     "views": 1,
     "shares": 0,
     "likes": 0
@@ -1224,12 +1209,77 @@
     "shares": 0,
     "likes": 0
   },
-  "/topics/reader-response/": {
+  "/library/subjects/atheism/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/library/enquiry-human-understanding/": {
+  "/topics/housing/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/dashboard/internal-guide.md/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/works-of-ingersoll-v1/the-ghosts/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/statistics/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/bookshelf/story-of-philosophy/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/science-&-technology/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/literary-criticism/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/videos/robert-ingersoll-the-great-agnostic/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/https://buttondown.com/b36bc747-e423-4528-8c48-cb2551f067d5/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/https://buttondown.com/9c1b3bbf-f42b-487f-b4f4-62cbd914c796/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/moral-progress/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/glossary/fallacy/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/contributor…s/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/journalism/": {
     "views": 1,
     "shares": 0,
     "likes": 0
@@ -1249,117 +1299,7 @@
     "shares": 0,
     "likes": 0
   },
-  "/library/works-of-ingersoll-v2/myth-and-miracle/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/https://buttondown.com/bea9f28b-8f0c-43f5-9d4a-61498484d4c9/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/freethought/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/dashboard/guide/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/bookshelf/story-of-philosophy/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/bookshelf/history-of-western-philosophy/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/thefreethinkingtimes/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/quotes/albert-einstein-i-cannot-imagine-a-god-who/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/trials/pentagon-papers/": {
-    "views": 2,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/works-of-ingersoll-v2/orthodoxy/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/works-of-ingersoll-v2/myth-and-miracle/section-1/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/terminology/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/quotes/robert-g-ingersoll-the-clergy-know-that-i-know/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/resources/education/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/humanism/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/works-of-ingersoll-v2/some-reasons-why/ix-christs-mission/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/public-discourse/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/thought-experiments/showcase/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/courts/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/subjects/atheism/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/glossary/rationalism/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/film/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/library/enquiry-human-understanding/section-04/": {
+  "/bookshelf/open-society/": {
     "views": 1,
     "shares": 0,
     "likes": 0
@@ -1369,27 +1309,57 @@
     "shares": 0,
     "likes": 0
   },
-  "/topics/religion/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
   "/library/works-of-ingersoll-v2/myth-and-miracle/section-2/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/topics/science/": {
+  "/data/getpage.php/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/board/": {
+  "/quotes/denis-diderot-men-will-never-be-free-until/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/topics/private-equity/": {
+  "/topics/psychology/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/glossary/agape/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/on-liberty/introduction/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/works-of-ingersoll-v1/thomas-paine/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/dashboard//internal-guide.md/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/contributors/.../": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/philosophy/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/works-of-ingersoll-v2/myth-and-miracle/section-1/": {
     "views": 1,
     "shares": 0,
     "likes": 0
@@ -1409,57 +1379,22 @@
     "shares": 0,
     "likes": 0
   },
-  "/topics/culture/": {
+  "/quotes/robert-g-ingersoll-the-clergy-know-that-i-know/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/feeds/topics/": {
+  "/resources/education/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/data/getpage.php/": {
+  "/editions/3/": {
     "views": 1,
     "shares": 0,
     "likes": 0
   },
-  "/videos/robert-ingersoll-the-great-agnostic/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/thought-experiments/trolley-problem/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/explore/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/glossary/agape/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/bookshelf/sapiens/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/economics/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/surveillance/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/quotes/robert-g-ingersoll-the-hands-that-help-are-better/": {
+  "/timeline/elizabeth-cady-stanton-s-the-woman-s-bible/": {
     "views": 1,
     "shares": 0,
     "likes": 0
@@ -1479,12 +1414,7 @@
     "shares": 0,
     "likes": 0
   },
-  "/contributor…s/": {
-    "views": 1,
-    "shares": 0,
-    "likes": 0
-  },
-  "/topics/journalism/": {
+  "/glossary/rationalism/": {
     "views": 1,
     "shares": 0,
     "likes": 0
@@ -1494,7 +1424,77 @@
     "shares": 0,
     "likes": 0
   },
-  "/library/works-of-ingersoll-v1/the-ghosts/": {
+  "/library/works-of-ingersoll-v2/some-mistakes-of-moses/xx-faith-in-filth/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/religion/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/board/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/trials/salman-rushdie/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/games/word-scramble/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/enquiry-human-understanding/section-03/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/public-discourse/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/thought-experiments/showcase/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/surveillance/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/quotes/robert-g-ingersoll-the-hands-that-help-are-better/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/enquiry-human-understanding/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/newsletter/subscribed/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/topics/epistemology/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/dashboard/guide/": {
+    "views": 1,
+    "shares": 0,
+    "likes": 0
+  },
+  "/library/enquiry-human-understanding/section-04/": {
     "views": 1,
     "shares": 0,
     "likes": 0
