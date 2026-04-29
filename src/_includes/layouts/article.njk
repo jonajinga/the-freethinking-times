@@ -885,9 +885,13 @@ window.__tftShowComments = window.__tftShowComments || function (btn, alwaysOpen
       }, 200);
     }
   }
-  // Scroll into view (toolbar invocation passes alwaysOpen, so scroll there)
+  // Scroll into view (toolbar invocation passes alwaysOpen, so scroll there).
+  // Target the .article-comments wrapper rather than #comments-body so the
+  // user lands on the "Comments" heading, not deep inside the cusdis thread
+  // below the header / toggle button.
   if (alwaysOpen) {
-    var top = body.getBoundingClientRect().top + window.scrollY - 80;
+    var anchor = body.closest('.article-comments') || body;
+    var top = anchor.getBoundingClientRect().top + window.scrollY - 80;
     window.scrollTo({ top: top, behavior: 'smooth' });
   }
 };
