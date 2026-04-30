@@ -30,7 +30,7 @@
     "notice": "Free. Unsubscribe anytime.",
     "sidebarBody": "Articles are delivered to your inbox when published.",
     "footerHeading": "Subscribe to our newsletter",
-    "footerBody": "New articles are delivered the moment they are published."
+    "footerBody": "New articles are delivered one at a time."
   },
   "author": "The Freethinking Times",
   "googleNews": {
@@ -45,15 +45,15 @@
     "subtitle": "Edit site.live in src/_data/site-settings.json to wire a real broadcast"
   },
   "tipping": {
-    "kofi": "https://ko-fi.com/thefreethinkingtimes",
-    "bmac": ".",
+    "kofi": "",
+    "bmac": "",
     "patreon": "."
   },
   "social": {
     "rss": "/feeds/",
     "bluesky": "https://bsky.app/profile/jonajinga.bsky.social",
-    "twitter": ".",
-    "mastodon": "."
+    "twitter": "",
+    "mastodon": ""
   },
   "tagline": "Freethought writings and resources for the world.",
   "title": "The Freethinking Times",
