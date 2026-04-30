@@ -107,10 +107,16 @@ async function main() {
     stats[url].views += Number(row.y || 0);
   }
 
-  // Per-URL event counts via event-data values
+  // Per-URL event counts via event-data values.
+  // article-unlike fires from like-btn.js when a user toggles their
+  // like off; we subtract those so the displayed count is the *net*
+  // active likes, not gross button clicks. Without this a user who
+  // toggled like → unlike → like read as 2 likes when they ended up
+  // with 1.
   const events = ['share-twitter', 'share-linkedin', 'share-bluesky',
                   'share-mastodon', 'share-reddit', 'share-facebook',
-                  'share-email', 'share-copy', 'article-like'];
+                  'share-email', 'share-copy',
+                  'article-like', 'article-unlike'];
   for (const name of events) {
     let rows = [];
     try {
@@ -139,12 +145,19 @@ async function main() {
       // the stats again.
       if (!url || url === '/' || /^\/(article-|share-)/.test(url)) continue;
       stats[url] = stats[url] || { views: 0, shares: 0, likes: 0 };
-      if (name === 'article-like') stats[url].likes  += cnt;
-      else                          stats[url].shares += cnt;
+      if (name === 'article-like')        stats[url].likes  += cnt;
+      else if (name === 'article-unlike') stats[url].likes  -= cnt;
+      else                                 stats[url].shares += cnt;
       added += cnt;
     }
     if (added) console.log(`  ${name}: ${added} (across ${rows.length} URL${rows.length === 1 ? '' : 's'})`);
     else if (rows.length === 0) console.log(`  ${name}: (no rows)`);
+  }
+  // Floor likes at 0 — if a URL had more unlike events than likes
+  // (e.g. analytics retention dropped some old like events), don't
+  // show a negative number.
+  for (const url of Object.keys(stats)) {
+    if (stats[url].likes < 0) stats[url].likes = 0;
   }
 
   const out = join(__dirname, '..', 'src', '_data', 'articleStats.json');

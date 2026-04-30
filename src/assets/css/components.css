@@ -14,15 +14,17 @@
   border-bottom: 1px solid var(--color-rule);
   font-family: var(--font-ui);
   font-size: var(--text-xs);
-  /* Fixed strip height so the inner ol can centre vertically against
-   * the rule borders, regardless of any line-height inheritance. */
-  min-height: 40px;
+  /* Strip stays at its original 36 px height so the section-nav rule
+   * above and the breadcrumb's own border-bottom don't move. The
+   * crumb text is pushed lower inside the bar via flex-end + a small
+   * bottom inset, not by growing the container. */
+  min-height: 36px;
   display: flex;
-  align-items: center;
-  /* Push the crumb text down a touch — visually centre + a few px of
-   * extra top padding makes the strip feel anchored to the section-
-   * nav strip above rather than floating between the two rules. */
-  padding-top: 4px;
+  /* Anchor the crumb list to the bottom edge of the bar (just above
+   * the border) instead of vertically centred. Combined with the
+   * 4 px padding-bottom on the list itself, the text sits a touch
+   * lower than centre without nudging either separator. */
+  align-items: flex-end;
   /* Uppercase to match the section-nav strip directly above so the
    * two read as one continuous chrome. */
   text-transform: uppercase;
@@ -34,11 +36,12 @@
   align-items: center;
   width: 100%;
   list-style: none;
-  /* Vertical padding handled by the parent's min-height + flex-center,
-   * not the list itself, so the crumb text sits true-centre between
-   * the top and bottom rules. */
+  /* Pad just the bottom of the list so the text floats above the
+   * bar's border-bottom by a few px, anchored by align-items: flex-end
+   * on the parent. This shifts the text lower in the bar without
+   * changing the bar's own dimensions or border positions. */
   padding-top: 0;
-  padding-bottom: 0;
+  padding-bottom: 6px;
   line-height: 1;
   /* Keep margin-inline auto from .container so the crumbs align with
    * the article-card grid below; reset only the block margin that
