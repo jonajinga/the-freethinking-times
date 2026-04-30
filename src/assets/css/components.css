@@ -7276,7 +7276,10 @@ body:has(.gs-panel.is-open) .reading-pct {
   margin: 0;
 }
 
-/* A-Z strip */
+/* A-Z strip — sticky beneath the masthead chrome (~7 rem clearance,
+ * same offset .sg-nav uses for the style-guide sidebar). The strip
+ * gets a bottom shadow when stuck so it reads as a chrome rail
+ * rather than a sometimes-floating block. */
 .concept-index__alpha {
   display: flex;
   flex-wrap: wrap;
@@ -7286,8 +7289,30 @@ body:has(.gs-panel.is-open) .reading-pct {
   background: var(--color-bg-alt);
   border: 1px solid var(--color-rule);
   position: sticky;
-  top: 0;
+  top: 7rem;
   z-index: 5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+@media (max-width: 1180px) {
+  /* Smaller masthead clearance below the desktop layout. */
+  .concept-index__alpha { top: 4.5rem; }
+}
+@media (max-width: 640px) {
+  /* Phones: switch to a horizontal scroll-snap strip so 26 letters
+   * fit on one line without wrapping into a second row. */
+  .concept-index__alpha {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    top: 3.5rem;
+  }
+  .concept-index__alpha::-webkit-scrollbar { display: none; }
+  .concept-index__alpha-letter {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
 }
 .concept-index__alpha-letter {
   display: inline-flex;
