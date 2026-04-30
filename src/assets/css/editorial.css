@@ -1173,7 +1173,8 @@
   grid-template-columns: 80px 130px 1fr 160px 110px;
   align-items: center;
   gap: var(--space-3);
-  padding: 8px var(--space-4);
+  /* Match the row padding-x so head + body columns line up vertically. */
+  padding: 12px var(--space-5);
   background: var(--color-bg-alt);
   border-bottom: 1px solid var(--color-rule);
   font-size: 0.65rem;
@@ -1187,7 +1188,9 @@
   grid-template-columns: 80px 130px 1fr 160px 110px;
   align-items: baseline;
   gap: var(--space-3);
-  padding: 10px var(--space-4);
+  /* Vertical breathing room: 14 / 16 px instead of 10 so rows don't
+   * feel cramped on a desktop viewport. */
+  padding: 14px var(--space-5);
   border-bottom: 1px solid var(--color-rule);
   text-decoration: none;
   color: var(--color-ink);
@@ -1218,9 +1221,11 @@
 }
 .cal-list__title {
   font-family: var(--font-headline);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  line-height: 1.35;
+  /* Bumped to text-base so titles read like article-card headlines
+   * rather than meta text. */
+  font-size: var(--text-base);
+  font-weight: 700;
+  line-height: 1.3;
   color: var(--color-ink);
   overflow: hidden;
   display: -webkit-box;
