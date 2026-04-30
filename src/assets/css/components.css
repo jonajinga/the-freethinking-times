@@ -36,12 +36,12 @@
   align-items: center;
   width: 100%;
   list-style: none;
-  /* Pad just the bottom of the list so the text floats above the
-   * bar's border-bottom by a few px, anchored by align-items: flex-end
-   * on the parent. This shifts the text lower in the bar without
-   * changing the bar's own dimensions or border positions. */
+  /* Reduce the bottom padding so the text floats just 2 px above the
+   * border-bottom — visibly lower in the bar than centre. Bar's own
+   * 36 px height + the section-nav rule above it stay put; only the
+   * text shifts down. */
   padding-top: 0;
-  padding-bottom: 6px;
+  padding-bottom: 2px;
   line-height: 1;
   /* Keep margin-inline auto from .container so the crumbs align with
    * the article-card grid below; reset only the block margin that
