@@ -146,18 +146,9 @@ isReadingPage: true
             {% if location %}
             <span class="dateline">{{ location }}</span>
             {% endif %}
-            {# Republish badge — inline with byline meta so it sits as
-               just-another-meta-item rather than a CTA banner on its
-               own line. Toggles the open-license panel below. #}
-            {% if syndicate %}
-            <button type="button" class="republish-badge" aria-expanded="false" aria-controls="republish-panel"
-                    aria-label="Open republication terms and grab-code"
-                    data-umami-event="license-learn"
-                    onclick="toggleArticleDisclosure(this)">
-              <span class="republish-badge__icon" aria-hidden="true">CC</span>
-              <span class="republish-badge__label">Republish</span>
-            </button>
-            {% endif %}
+            {# Republish badge has moved to the bottom annotation toolbar
+               (see "Republish" in article.njk's toolbar block). The
+               license panel below is still toggled by that button. #}
           </div>
 
           {# Republish license + grab-code panel — hidden by default,
@@ -1100,6 +1091,16 @@ window.__tftShowComments = window.__tftShowComments || function (btn, alwaysOpen
     <div id="ann-like-slot" class="annotation-toolbar__slot"></div>
     <div id="ann-mark-read-slot" class="annotation-toolbar__slot"></div>
     <div id="ann-pdf-basket-slot" class="annotation-toolbar__slot"></div>
+    {# Republish — toggles the open-license panel rendered after the
+       byline (data-article-disclosure). Only renders when the article
+       opts in via the `syndicate` front-matter flag. #}
+    {% if syndicate %}
+    <button id="ann-republish-btn" class="annotation-toolbar__btn" type="button" aria-label="Republication terms and grab-code" aria-expanded="false" aria-controls="republish-panel" title="Republish"
+      data-umami-event="license-learn"
+      onclick="window.toggleArticleDisclosure(this);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.5 9.5a2.5 2.5 0 0 1 5 0c0 .8-.4 1.5-1 2-.5.4-1 1-1 1.7"/><circle cx="12" cy="17" r=".5" fill="currentColor"/></svg>
+    </button>
+    {% endif %}
     <button id="ann-share-btn" class="annotation-toolbar__btn" type="button" aria-label="Share, download, print" aria-controls="ann-share-popover" aria-expanded="false" title="Share, download, print">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
     </button>

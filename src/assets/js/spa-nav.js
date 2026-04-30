@@ -123,9 +123,21 @@
     mainEl.style.opacity = '0';
     mainEl.style.transition = 'opacity 0.15s ease';
 
+    // Safety net: if anything below throws / never resolves the
+    // transition (e.g. a re-injected page-script throws, popstate
+    // races the in-flight swap, network stalls), force the main
+    // back to opaque after 1.5 s so the article header isn't stuck
+    // invisible. The fix-it timer is cleared on a successful swap.
+    var rescueTimer = setTimeout(function () {
+      mainEl.style.opacity = '1';
+      mainEl.style.transition = '';
+      transitioning = false;
+    }, 1500);
+
     var doSwap = function (data) {
       if (!data.main) {
         // Fallback to full reload
+        clearTimeout(rescueTimer);
         location.href = url;
         return;
       }
@@ -247,6 +259,9 @@
       // and article-layout scripts can rebind to the new DOM.
       document.dispatchEvent(new Event('spa:contentswap'));
 
+      // Successful swap — clear the rescue timer.
+      clearTimeout(rescueTimer);
+
       // Fade in
       requestAnimationFrame(function () {
         mainEl.style.opacity = '1';
@@ -289,6 +304,9 @@
       })
       .catch(function () {
         // Fallback to full navigation
+        clearTimeout(rescueTimer);
+        mainEl.style.opacity = '1';
+        mainEl.style.transition = '';
         transitioning = false;
         location.href = url;
       });
