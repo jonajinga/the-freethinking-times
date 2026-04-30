@@ -1750,11 +1750,13 @@
   width: 48px;
   height: 48px;
   border: none;
-  /* Default state = "at the top of the page" — the button is dimmed
-   * to signal that it's not actionable yet. Once the user scrolls
-   * (progress.js flips .reading-floats.is-visible), the colour goes
-   * full white below to indicate the affordance is live. */
-  color: rgba(255, 255, 255, 0.35);
+  /* Default = "at the top of the page" — visibly present at 60 %
+   * white but slightly dimmer than its neighbours so the reader
+   * understands it's not actionable yet. Once they scroll past
+   * 50 px (progress.js flips .reading-floats.is-visible), it goes
+   * to full #fff. The previous 0.35 alpha was nearly invisible on
+   * a few mobile screens and read as "missing". */
+  color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
   border-radius: 6px;
   transition: background var(--transition-fast), color var(--transition-fast);

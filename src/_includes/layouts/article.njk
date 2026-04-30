@@ -926,8 +926,19 @@ window.__tftShowComments = window.__tftShowComments || function (btn, alwaysOpen
       apply();
     });
   }
-  apply(); bind();
-  document.addEventListener('spa:contentswap', function () { apply(); bind(); });
+  // The toolbar (containing #ann-info-btn) renders LATER in the
+  // article.njk source than this script, so on initial page load
+  // the button doesn't exist yet when the script runs. Defer the
+  // first apply()/bind() until after parsing finishes. SPA-nav
+  // re-renders scripts after innerHTML, so spa:contentswap can
+  // call directly.
+  function run() { apply(); bind(); }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+  document.addEventListener('spa:contentswap', run);
 })();
 </script>
 
@@ -1087,6 +1098,17 @@ window.__tftShowComments = window.__tftShowComments || function (btn, alwaysOpen
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 6 9 12 15 18"/></svg>
   </button>
   <div class="annotation-toolbar__main">
+    {# Toolbar order: info → TTS play → % through → back-to-top →
+       reader-tools toggle → rest. The leftmost cluster (info / TTS /
+       progress / scroll-to-top) is what the user reaches for most
+       often, so it sits at the start of the row regardless of
+       viewport. #}
+    {# Article-info toggle — reveal/hide the eyebrow + byline + stats +
+       topics sections in the article header. Default collapsed;
+       preference persists site-wide in localStorage. #}
+    <button id="ann-info-btn" class="annotation-toolbar__btn" type="button" aria-label="Show article details" aria-expanded="false" title="Article details">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    </button>
     {# Listen pill — embedded directly here (not migrated) so the
        toolbar shows it on every article that has a generated MP3. #}
     {% if audioManifest[page.url] %}
@@ -1099,9 +1121,9 @@ window.__tftShowComments = window.__tftShowComments || function (btn, alwaysOpen
        book-entry). base.njk's floating .reading-floats is suppressed
        on these pages via the isReadingPage flag, so there's only
        one set of these IDs in the DOM. progress.js updates the
-       text content / scroll-to-top action; the parent
-       .reading-floats class still gates the visibility via
-       body:has(...) so they only show after scroll past 400 px. #}
+       text content / scroll-to-top action and toggles is-visible
+       on .reading-floats so back-to-top brightens once the user has
+       scrolled. #}
     <div id="reading-floats" class="reading-floats annotation-toolbar__slot">
       <span class="reading-pct toolbar-floats" id="reading-pct"></span>
       <button class="back-to-top toolbar-floats" id="back-to-top" type="button" aria-label="Back to top">
@@ -1114,12 +1136,6 @@ window.__tftShowComments = window.__tftShowComments || function (btn, alwaysOpen
     <button class="annotation-toolbar__btn article-notes-toggle" type="button" aria-label="Open Reader panel" aria-controls="article-notes-panel" aria-expanded="false" title="Reader">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
     </button>
-    {# Article-info toggle — reveal/hide the eyebrow + byline + stats +
-       topics sections in the article header. Default collapsed; preference
-       persists site-wide in localStorage. #}
-    <button id="ann-info-btn" class="annotation-toolbar__btn" type="button" aria-label="Show article details" aria-expanded="false" title="Article details">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-    </button>
     <button id="ann-highlight-btn" class="annotation-toolbar__btn annotation-toolbar__btn--needs-selection" type="button" aria-label="Highlight selection" title="Highlight">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
     </button>
@@ -1130,14 +1146,21 @@ window.__tftShowComments = window.__tftShowComments || function (btn, alwaysOpen
     <button id="ann-bookmark-btn" class="annotation-toolbar__btn" type="button" aria-label="Bookmark this spot" title="Bookmark this spot">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
     </button>
-    <div id="ann-focus-slot" class="annotation-toolbar__slot"></div>
+    {# Engagement state group (article-level): save / like / mark-read
+       slots are populated by reader-panel-migrate.js with the migrated
+       buttons from .article-header__actions. #}
     <div id="ann-save-slot" class="annotation-toolbar__slot"></div>
     <div id="ann-like-slot" class="annotation-toolbar__slot"></div>
     <div id="ann-mark-read-slot" class="annotation-toolbar__slot"></div>
+    {# Output / distribution group: collect → share → republish. #}
     <div id="ann-pdf-basket-slot" class="annotation-toolbar__slot"></div>
+    <button id="ann-share-btn" class="annotation-toolbar__btn" type="button" aria-label="Share, download, print" aria-controls="ann-share-popover" aria-expanded="false" title="Share, download, print">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+    </button>
     {# Republish — toggles the open-license panel rendered after the
        byline (data-article-disclosure). Only renders when the article
-       opts in via the `syndicate` front-matter flag. #}
+       opts in via the `syndicate` front-matter flag. Sits after Share
+       since the user reaches for share more often than republish. #}
     {% if syndicate %}
     <button id="ann-republish-btn" class="annotation-toolbar__btn" type="button" aria-label="Republication terms and grab-code" aria-expanded="false" aria-controls="republish-panel" title="Republish"
       data-umami-event="license-learn"
@@ -1145,9 +1168,8 @@ window.__tftShowComments = window.__tftShowComments || function (btn, alwaysOpen
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.5 9.5a2.5 2.5 0 0 1 5 0c0 .8-.4 1.5-1 2-.5.4-1 1-1 1.7"/><circle cx="12" cy="17" r=".5" fill="currentColor"/></svg>
     </button>
     {% endif %}
-    <button id="ann-share-btn" class="annotation-toolbar__btn" type="button" aria-label="Share, download, print" aria-controls="ann-share-popover" aria-expanded="false" title="Share, download, print">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-    </button>
+    {# ann-focus-slot retired — nothing was ever migrated into it.
+       Keeping the order document-friendly without the dead slot. #}
     {# Comments, always present in the bar; scrolls to the comments
        section at the bottom of the article. Hides itself in JS if the
        comments-body element isn't on the page. #}
