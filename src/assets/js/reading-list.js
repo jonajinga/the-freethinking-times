@@ -217,44 +217,65 @@
       return;
     }
 
-    var ul = document.createElement('ul');
-    ul.className = 'reading-list';
-    ul.setAttribute('role', 'list');
+    // Cards rendered using the canonical .article-card class system —
+    // matches the home page, section pages, and topic pages so the
+    // reading list reads like one consistent listing surface across
+    // the site rather than its own bespoke card chrome.
+    var grid = document.createElement('div');
+    grid.className = 'reading-list-grid';
+    grid.setAttribute('role', 'list');
+
+    function escAttr(s) {
+      return String(s || '')
+        .replace(/&/g, '&amp;').replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    function slugify(s) {
+      return String(s || '').toLowerCase().trim()
+        .replace(/&/g, ' and ')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
 
     list.forEach(function (item) {
-      var li = document.createElement('li');
-      li.className = 'reading-list__item';
+      var li = document.createElement('article');
+      li.className = 'article-card reading-list-card';
+      li.setAttribute('role', 'listitem');
 
+      var sectionSlug = slugify(item.section);
       var sectionHtml = item.section
-        ? '<span class="reading-list__section">' + item.section + '</span>'
+        ? '<a href="/' + sectionSlug + '/" class="section-badge section-badge--' + sectionSlug + '">' + escAttr(item.section) + '</a>'
         : '';
-
-      var minsHtml = item.mins
-        ? '<span class="reading-list__mins">' + item.mins + ' min read</span>'
+      var dateHtml = item.date
+        ? '<a href="/archives/#' + escAttr(item.date) + '" class="dateline"><time datetime="' + escAttr(item.date) + '">' + escAttr(item.date) + '</time></a>'
         : '';
 
       var listenHtml = (window.__tftAudioBar && window.__tftAudioBar.renderListenButton)
         ? window.__tftAudioBar.renderListenButton(item.url, item.title)
         : '';
 
-      li.innerHTML =
-        '<div class="reading-list__meta">' + sectionHtml + minsHtml + '</div>'
-        + '<a class="reading-list__title" href="' + item.url + '">' + item.title + '</a>'
-        + (listenHtml ? '<div class="reading-list__listen">' + listenHtml + '</div>' : '')
-        + '<div class="reading-list__foot">'
-        + '<time class="reading-list__date">' + (item.date || '') + '</time>'
-        + '<button class="reading-list__remove" type="button" data-url="' + item.url + '" aria-label="Remove from reading list">Remove</button>'
-        + '</div>';
+      var minsHtml = item.mins
+        ? '<span class="article-card__byline-item">' + escAttr(item.mins) + ' min read</span>'
+        : '';
 
-      li.querySelector('.reading-list__remove').addEventListener('click', function () {
+      li.innerHTML =
+          '<div class="article-card__eyebrow">' + sectionHtml + dateHtml + '</div>'
+        + '<a class="article-card__headline article-card__headline--md" href="' + escAttr(item.url) + '">' + escAttr(item.title) + '</a>'
+        + (listenHtml ? '<div class="article-card__listen">' + listenHtml + '</div>' : '')
+        + '<p class="article-card__byline">'
+        +   minsHtml
+        +   '<span class="article-card__byline-item"><button class="reading-list-card__remove" type="button" data-url="' + escAttr(item.url) + '" aria-label="Remove from reading list">Remove</button></span>'
+        + '</p>';
+
+      li.querySelector('.reading-list-card__remove').addEventListener('click', function () {
         removeItem(item.url);
         render();
       });
 
-      ul.appendChild(li);
+      grid.appendChild(li);
     });
 
-    root.appendChild(ul);
+    root.appendChild(grid);
   }
 
   render();
