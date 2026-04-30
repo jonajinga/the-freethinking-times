@@ -100,7 +100,7 @@
       { "label": "Open Source",      "url": "/open-source/", "title": "The entire site is open source. Fork it, study it, adapt it, contribute back." },
       { "label": "Style Guide",      "url": "/style-guide/", "title": "Brand identity, colour palette, typography, components, and interaction patterns." },
       { "label": "License (CC)",     "url": "/license/",     "title": "All articles are CC BY-NC-ND 4.0 — free to republish under attribution, no derivatives, no commercial reuse." },
-      { "label": "Site Map",         "url": "/site-map/",    "title": "A directory of every page on the site." }
+      { "label": "Sitemap",          "url": "/site-map/",    "title": "A directory of every page on the site." }
     ]
   },
   {

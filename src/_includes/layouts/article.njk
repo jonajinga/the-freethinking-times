@@ -613,13 +613,16 @@ isReadingPage: true
               <span class="btn-label">Feedback</span>
             </button>
             <div id="article-feedback-popup" class="article-feedback-popup" hidden>
-              <div class="article-feedback-popup__header">
-                <p class="article-feedback-popup__title">Send feedback</p>
+              <header class="article-feedback-popup__header">
+                <div class="article-feedback-popup__head-text">
+                  <p class="article-feedback-popup__kicker">{{ site.title }}</p>
+                  <h2 class="article-feedback-popup__title">Send feedback</h2>
+                </div>
                 <button type="button" class="article-feedback-popup__close" aria-label="Close feedback"
                   onclick="var p=document.getElementById('article-feedback-popup');p.hidden=true;var b=document.getElementById('article-feedback-btn');if(b)b.setAttribute('aria-expanded','false');">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
-              </div>
+              </header>
               <form class="article-feedback-form" action="https://api.web3forms.com/submit" method="POST">
                 <input type="hidden" name="access_key" value="{{ site.forms.accessKey }}">
                 <input type="hidden" name="subject" value="Article feedback, {{ title | escape }}">
@@ -659,6 +662,10 @@ isReadingPage: true
                   <p>Want to respond to this piece? <a href="/letters/submit/">Write a letter to the editor</a></p>
                 </div>
               </form>
+              <footer class="article-feedback-popup__footer">
+                <p class="article-feedback-popup__footer-mark">{{ site.title }}</p>
+                <p class="article-feedback-popup__footer-tag">{{ site.tagline or "Independent journalism, freely shared." }}</p>
+              </footer>
             </div>
           </div>
 

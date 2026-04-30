@@ -36,11 +36,11 @@
   align-items: center;
   width: 100%;
   list-style: none;
-  /* 5 px padding-bottom — text sits a touch lower than centre but
-   * not flush against the border. Bar's own 36 px height + the
-   * section-nav rule above stay put; only the text moves. */
+  /* 4 px padding-bottom — text sits 1 px closer to the border than
+   * the previous 5 px. Bar's own 36 px height + the section-nav
+   * rule above stay put; only the text moves. */
   padding-top: 0;
-  padding-bottom: 5px;
+  padding-bottom: 4px;
   line-height: 1;
   /* Keep margin-inline auto from .container so the crumbs align with
    * the article-card grid below; reset only the block margin that
