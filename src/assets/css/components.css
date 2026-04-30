@@ -882,6 +882,109 @@ body { word-spacing: var(--gs-word-spacing, 0); }
 }
 .republish__copy:hover { background: var(--color-accent); }
 
+/* Fullscreen modal variant — matches the article-feedback popup
+ * pattern. Used when the toolbar's republish button (.ann-republish-btn)
+ * toggles the panel; the in-line .republish--panel variant above is
+ * legacy. */
+.republish.republish--modal {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  border-top: 4px solid var(--color-accent);
+  background: var(--color-bg);
+  overflow-y: auto;
+  z-index: var(--z-modal);
+  font-family: var(--font-ui);
+  display: flex;
+  flex-direction: column;
+}
+.republish.republish--modal[hidden] { display: none; }
+.republish__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-rule);
+  max-width: 720px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.republish__head-text { min-width: 0; }
+.republish__kicker {
+  margin: 0 0 4px;
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.republish.republish--modal .republish__heading {
+  font-family: var(--font-headline);
+  font-size: var(--text-lg);
+  margin: 0;
+  line-height: 1.15;
+}
+.republish__close {
+  background: none;
+  border: 1px solid var(--color-rule);
+  color: var(--color-ink-faint);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.republish__close:hover { color: var(--color-ink); background: var(--color-bg-alt); }
+.republish.republish--modal .republish__body {
+  background: transparent;
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-6);
+  max-width: 720px;
+  width: 100%;
+  box-sizing: border-box;
+  flex: 1;
+}
+.republish__footer {
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-6) var(--space-8);
+  border-top: 1px solid var(--color-rule);
+  text-align: center;
+  max-width: 720px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.republish__footer-mark {
+  margin: 0 0 4px;
+  font-family: var(--font-masthead);
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--color-ink);
+  letter-spacing: -0.01em;
+}
+.republish__footer-tag {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-style: italic;
+  color: var(--color-ink-faint);
+}
+
 /* Funding disclosure panel ----------------------------------- */
 .funding__kicker {
   font-family: var(--font-ui);

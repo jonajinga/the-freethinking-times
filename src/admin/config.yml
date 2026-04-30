@@ -31,46 +31,51 @@ collections:
         fields:
           - { name: title, widget: string, label: "Publication Name", required: true }
           - { name: description, widget: text, label: "Site Description (shown in SEO and social previews)", required: true }
-          - { name: tagline, widget: text, label: "Tagline (shown below publication name in the footer)" }
+          - { name: tagline, widget: text, label: "Tagline (shown below publication name in the footer)", required: false }
           - { name: author, widget: string, label: "Publication Byline (used in RSS, JSON-LD, etc.)", required: true }
-          - { name: email, widget: string, label: "Contact Email Address" }
-          - { name: founded, widget: number, label: "Year Founded" }
-          - { name: footerByline, widget: string, label: "Footer Byline (overrides the auto-generated 'Founded X. Tagline' text)" }
-          - { name: gtranslate, widget: boolean, label: "Enable Google Translate Widget" }
+          - { name: email, widget: string, label: "Contact Email Address", required: false }
+          - { name: founded, widget: number, label: "Year Founded", required: false }
+          - { name: footerByline, widget: string, label: "Footer Byline (overrides the auto-generated 'Founded X. Tagline' text)", required: false }
+          - { name: gtranslate, widget: boolean, label: "Enable Google Translate Widget", required: false }
           - name: tipping
             widget: object
             label: "Reader Support Links (Ko-fi, BMAC, or Patreon — first non-empty wins)"
+            required: false
             fields:
-              - { name: kofi, widget: string, label: "Ko-fi URL" }
-              - { name: bmac, widget: string, label: "Buy Me A Coffee URL" }
-              - { name: patreon, widget: string, label: "Patreon URL" }
+              - { name: kofi, widget: string, label: "Ko-fi URL", required: false }
+              - { name: bmac, widget: string, label: "Buy Me A Coffee URL", required: false }
+              - { name: patreon, widget: string, label: "Patreon URL", required: false }
           - name: newsletter
             widget: object
             label: "Newsletter (Buttondown)"
+            required: false
             fields:
-              - { name: provider, widget: string, label: "Provider (enter: buttondown)" }
-              - { name: username, widget: string, label: "Buttondown Username" }
+              - { name: provider, widget: string, label: "Provider (enter: buttondown)", required: false }
+              - { name: username, widget: string, label: "Buttondown Username", required: false }
           - name: social
             widget: object
             label: "Social Media Links"
+            required: false
             fields:
-              - { name: twitter, widget: string, label: "Twitter / X URL" }
-              - { name: mastodon, widget: string, label: "Mastodon URL" }
-              - { name: rss, widget: string, label: "RSS Feed Path (default: /feed.xml)" }
+              - { name: twitter, widget: string, label: "Twitter / X URL", required: false }
+              - { name: mastodon, widget: string, label: "Mastodon URL", required: false }
+              - { name: rss, widget: string, label: "RSS Feed Path (default: /feed.xml)", required: false }
           - name: subscribe
             widget: object
             label: "Newsletter Subscribe Block Copy"
+            required: false
             fields:
-              - { name: eyebrow,       widget: string, label: "Eyebrow Line (inline newsletter block)" }
-              - { name: heading,       widget: string, label: "Heading (inline newsletter block)" }
-              - { name: body,          widget: text,   label: "Body Copy (inline newsletter block)" }
-              - { name: notice,        widget: string, label: "Notice Line (below the signup form)" }
-              - { name: sidebarBody,   widget: string, label: "Sidebar Widget Copy" }
-              - { name: footerHeading, widget: string, label: "Footer Block Heading" }
-              - { name: footerBody,    widget: string, label: "Footer Block Body Copy" }
+              - { name: eyebrow,       widget: string, label: "Eyebrow Line (inline newsletter block)", required: false }
+              - { name: heading,       widget: string, label: "Heading (inline newsletter block)", required: false }
+              - { name: body,          widget: text,   label: "Body Copy (inline newsletter block)", required: false }
+              - { name: notice,        widget: string, label: "Notice Line (below the signup form)", required: false }
+              - { name: sidebarBody,   widget: string, label: "Sidebar Widget Copy", required: false }
+              - { name: footerHeading, widget: string, label: "Footer Block Heading", required: false }
+              - { name: footerBody,    widget: string, label: "Footer Block Body Copy", required: false }
           - name: contactSubjects
             widget: list
             label: "Contact Form Subject Options"
+            required: false
             field: { name: subject, widget: string }
 
       - name: nav
@@ -84,8 +89,8 @@ collections:
               - { name: label, widget: string, label: "Link Label", required: true }
               - { name: url, widget: string, label: "URL", required: true }
               - { name: key, widget: string, label: "Unique Key (slug, no spaces — used for dropdown IDs)", required: true }
-              - { name: collection, widget: string, label: "Eleventy Collection Name (e.g. news, opinion) — enables section dropdown" }
-              - { name: type, widget: string, label: "Special Type: 'more' (mega-menu) or 'library'" }
+              - { name: collection, widget: string, label: "Eleventy Collection Name (e.g. news, opinion) — enables section dropdown", required: false }
+              - { name: type, widget: string, label: "Special Type: 'more' (mega-menu) or 'library'", required: false }
 
       - name: footerLinks
         label: Footer Navigation
@@ -96,14 +101,14 @@ collections:
             label: "Footer Columns"
             fields:
               - { name: heading, widget: string, label: "Column Heading", required: true }
-              - { name: headingUrl, widget: string, label: "Heading URL (optional — makes the heading a link)" }
+              - { name: headingUrl, widget: string, label: "Heading URL (optional — makes the heading a link)", required: false }
               - name: links
                 widget: list
                 label: "Links"
                 fields:
                   - { name: label, widget: string, label: "Link Text", required: true }
                   - { name: url, widget: string, label: "URL", required: true }
-                  - { name: title, widget: string, label: "Tooltip (title attribute)" }
+                  - { name: title, widget: string, label: "Tooltip (title attribute)", required: false }
 
       - name: megaMenu
         label: '"More" Mega Menu'
@@ -120,7 +125,7 @@ collections:
                 fields:
                   - { name: title, widget: string, label: "Link Title", required: true }
                   - { name: url, widget: string, label: "URL", required: true }
-                  - { name: desc, widget: string, label: "Short Description (shown below the link title)", required: true }
+                  - { name: desc, widget: string, label: "Short Description (shown below the link title)", required: false }
 
       - name: drawerLinks
         label: Mobile Drawer Navigation
@@ -130,9 +135,9 @@ collections:
             widget: list
             label: "Link Groups"
             fields:
-              - { name: heading, widget: string, label: "Section Heading (leave blank for no heading)" }
-              - { name: showSupportBadgeAfter, widget: boolean, label: "Show Support Badge After This Group" }
-              - { name: small, widget: boolean, label: "Use Small Link Style" }
+              - { name: heading, widget: string, label: "Section Heading (leave blank for no heading)", required: false }
+              - { name: showSupportBadgeAfter, widget: boolean, label: "Show Support Badge After This Group", required: false }
+              - { name: small, widget: boolean, label: "Use Small Link Style", required: false }
               - name: links
                 widget: list
                 label: "Links"
@@ -166,7 +171,7 @@ collections:
         file: src/_data/supportContent.json
         fields:
           - { name: headerHeading,        widget: string, label: "Page Heading", required: true }
-          - { name: headerSubtitle,       widget: text,   label: "Header Subtitle (italic intro)", required: true }
+          - { name: headerSubtitle,       widget: text,   label: "Header Subtitle (italic intro)", required: false }
           - name: howFunded
             widget: list
             label: "How We're Funded"
@@ -179,7 +184,7 @@ collections:
           - { name: authorBlockBody,      widget: text,   label: "Author Support Block Body", required: true }
           - { name: nobudgetHeading,      widget: string, label: "Subscribe-Instead Heading", required: true }
           - { name: nobudgetBody,         widget: text,   label: "Subscribe-Instead Body", required: true }
-          - { name: closingNote,          widget: text,   label: "Footer Closing Note (displayed in italics)", required: true }
+          - { name: closingNote,          widget: text,   label: "Footer Closing Note (displayed in italics)", required: false }
 
       - name: contributeContent
         label: Contribute Page Content
@@ -190,7 +195,7 @@ collections:
             label: "Contributor Tiers"
             fields:
               - { name: name, widget: string, label: "Tier Name", required: true }
-              - { name: desc, widget: text,   label: "Description", required: true }
+              - { name: desc, widget: text,   label: "Description", required: false }
           - name: lookingFor
             widget: list
             label: "What We Look For"
@@ -219,68 +224,68 @@ collections:
             label: "Standard Article"
             fields:
               - { name: label, widget: string, label: "Label" }
-              - { name: description, widget: text, label: "Description" }
-              - { name: icon, widget: string, label: "Icon" }
+              - { name: description, widget: text, label: "Description", required: false }
+              - { name: icon, widget: string, label: "Icon", required: false }
           - name: interview
             widget: object
             label: "Interview / Q&A"
             fields:
               - { name: label, widget: string, label: "Label" }
-              - { name: description, widget: text, label: "Description" }
-              - { name: icon, widget: string, label: "Icon" }
-              - { name: badge, widget: string, label: "Badge" }
+              - { name: description, widget: text, label: "Description", required: false }
+              - { name: icon, widget: string, label: "Icon", required: false }
+              - { name: badge, widget: string, label: "Badge", required: false }
           - name: longread
             widget: object
             label: "Long-form Investigation"
             fields:
               - { name: label, widget: string, label: "Label" }
-              - { name: description, widget: text, label: "Description" }
-              - { name: icon, widget: string, label: "Icon" }
-              - { name: badge, widget: string, label: "Badge" }
-              - { name: minReadingMinutes, widget: number, label: "Minimum Reading Minutes" }
+              - { name: description, widget: text, label: "Description", required: false }
+              - { name: icon, widget: string, label: "Icon", required: false }
+              - { name: badge, widget: string, label: "Badge", required: false }
+              - { name: minReadingMinutes, widget: number, label: "Minimum Reading Minutes", required: false }
           - name: photoessay
             widget: object
             label: "Photo Essay"
             fields:
               - { name: label, widget: string, label: "Label" }
-              - { name: description, widget: text, label: "Description" }
-              - { name: icon, widget: string, label: "Icon" }
-              - { name: badge, widget: string, label: "Badge" }
-              - { name: fullBleed, widget: boolean, label: "Full Bleed" }
+              - { name: description, widget: text, label: "Description", required: false }
+              - { name: icon, widget: string, label: "Icon", required: false }
+              - { name: badge, widget: string, label: "Badge", required: false }
+              - { name: fullBleed, widget: boolean, label: "Full Bleed", required: false }
           - name: podcast
             widget: object
             label: "Podcast Episode"
             fields:
               - { name: label, widget: string, label: "Label" }
-              - { name: description, widget: text, label: "Description" }
-              - { name: icon, widget: string, label: "Icon" }
-              - { name: badge, widget: string, label: "Badge" }
-              - { name: requiresAudio, widget: boolean, label: "Requires Audio" }
+              - { name: description, widget: text, label: "Description", required: false }
+              - { name: icon, widget: string, label: "Icon", required: false }
+              - { name: badge, widget: string, label: "Badge", required: false }
+              - { name: requiresAudio, widget: boolean, label: "Requires Audio", required: false }
           - name: datavisualization
             widget: object
             label: "Data Visualization"
             fields:
               - { name: label, widget: string, label: "Label" }
-              - { name: description, widget: text, label: "Description" }
-              - { name: icon, widget: string, label: "Icon" }
-              - { name: badge, widget: string, label: "Badge" }
+              - { name: description, widget: text, label: "Description", required: false }
+              - { name: icon, widget: string, label: "Icon", required: false }
+              - { name: badge, widget: string, label: "Badge", required: false }
           - name: brief
             widget: object
             label: "Brief"
             fields:
               - { name: label, widget: string, label: "Label" }
-              - { name: description, widget: text, label: "Description" }
-              - { name: icon, widget: string, label: "Icon" }
-              - { name: badge, widget: string, label: "Badge" }
-              - { name: maxReadingMinutes, widget: number, label: "Maximum Reading Minutes" }
+              - { name: description, widget: text, label: "Description", required: false }
+              - { name: icon, widget: string, label: "Icon", required: false }
+              - { name: badge, widget: string, label: "Badge", required: false }
+              - { name: maxReadingMinutes, widget: number, label: "Maximum Reading Minutes", required: false }
           - name: explainer
             widget: object
             label: "Explainer"
             fields:
               - { name: label, widget: string, label: "Label" }
-              - { name: description, widget: text, label: "Description" }
-              - { name: icon, widget: string, label: "Icon" }
-              - { name: badge, widget: string, label: "Badge" }
+              - { name: description, widget: text, label: "Description", required: false }
+              - { name: icon, widget: string, label: "Icon", required: false }
+              - { name: badge, widget: string, label: "Badge", required: false }
 
   # ── Group 2: Authors ─────────────────────────────────────────────────────────
 
@@ -296,32 +301,34 @@ collections:
     fields:
       - { name: slug, widget: string, label: "Slug (e.g. jane-doe — used in articles and author page URL)", required: true }
       - { name: name, widget: string, label: "Display Name", required: true }
-      - { name: role, widget: string, label: "Role (e.g. Founding Editor, Staff Reporter)" }
-      - { name: title, widget: string, label: "Professional Title" }
-      - { name: location, widget: string, label: "Location (e.g. Denver, Colorado)" }
-      - { name: bio, widget: text, label: "Short Bio (shown in byline tooltips)" }
-      - { name: bioLong, widget: markdown, label: "Full Bio (shown on author page)" }
-      - { name: photo, widget: image, label: "Author Photo" }
+      - { name: role, widget: string, label: "Role (e.g. Founding Editor, Staff Reporter)", required: false }
+      - { name: title, widget: string, label: "Professional Title", required: false }
+      - { name: location, widget: string, label: "Location (e.g. Denver, Colorado)", required: false }
+      - { name: bio, widget: text, label: "Short Bio (shown in byline tooltips)", required: false }
+      - { name: bioLong, widget: markdown, label: "Full Bio (shown on author page)", required: false }
+      - { name: photo, widget: image, label: "Author Photo", required: false }
       - name: social
         widget: object
         label: "Social Media Links"
+        required: false
         fields:
-          - { name: x,         widget: string, label: "X / Twitter URL" }
-          - { name: bluesky,   widget: string, label: "Bluesky URL" }
-          - { name: mastodon,  widget: string, label: "Mastodon URL" }
-          - { name: linkedin,  widget: string, label: "LinkedIn URL" }
-          - { name: github,    widget: string, label: "GitHub URL" }
-          - { name: threads,   widget: string, label: "Threads URL" }
-          - { name: instagram, widget: string, label: "Instagram URL" }
-          - { name: website,   widget: string, label: "Personal Website URL" }
-          - { name: email,     widget: string, label: "Public Email Address" }
+          - { name: x,         widget: string, label: "X / Twitter URL", required: false }
+          - { name: bluesky,   widget: string, label: "Bluesky URL", required: false }
+          - { name: mastodon,  widget: string, label: "Mastodon URL", required: false }
+          - { name: linkedin,  widget: string, label: "LinkedIn URL", required: false }
+          - { name: github,    widget: string, label: "GitHub URL", required: false }
+          - { name: threads,   widget: string, label: "Threads URL", required: false }
+          - { name: instagram, widget: string, label: "Instagram URL", required: false }
+          - { name: website,   widget: string, label: "Personal Website URL", required: false }
+          - { name: email,     widget: string, label: "Public Email Address", required: false }
       - name: tipping
         widget: object
         label: "Support / Donation Links"
+        required: false
         fields:
-          - { name: kofi,    widget: string, label: "Ko-fi URL" }
-          - { name: bmac,    widget: string, label: "Buy Me A Coffee URL" }
-          - { name: patreon, widget: string, label: "Patreon URL" }
+          - { name: kofi,    widget: string, label: "Ko-fi URL", required: false }
+          - { name: bmac,    widget: string, label: "Buy Me A Coffee URL", required: false }
+          - { name: patreon, widget: string, label: "Patreon URL", required: false }
 
   # ── Group 3: Write Articles ──────────────────────────────────────────────────
 
@@ -336,46 +343,46 @@ collections:
       - { name: section,     widget: hidden, default: News }
       - { name: subsection,  widget: select, label: "Subsection", required: false, hint: "Optional — groups this article within News", options: ["U.S.", "World", "Politics", "Local", "Climate", "Education", "Health"] }
       - { name: title,      widget: string, label: "Title", required: true }
-      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: true }
-      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
-      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
+      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: false }
+      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga, required: false }
+      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga", required: false }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
       - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
       - { name: image,      widget: image,  label: "Cover Image", required: false }
       - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
-      - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
-      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
+      - { name: tags,       widget: list,   label: "Tags", required: false, field: { name: tag, widget: string } }
+      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, required: false }
       - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
       - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
       - { name: series,     widget: string, label: "Series Title (optional)", required: false }
       - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
       - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)", required: false }
       - { name: edition,    widget: number, label: "Edition Number", required: false }
-      - { name: featured,   widget: boolean, label: "Featured", default: false }
-      - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: featured,   widget: boolean, label: "Featured", default: false, required: false }
+      - { name: draft,      widget: boolean, label: "Draft", default: true, required: false }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, required: false, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
       - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
       - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
       - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
       - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
       - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
-      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
+      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false, required: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
       - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
         fields:
-          - { name: description, widget: text, label: "What Was Corrected", required: true }
-          - { name: date,        widget: datetime, label: "Correction Date", required: true }
+          - { name: description, widget: text, label: "What Was Corrected", required: false }
+          - { name: date,        widget: datetime, label: "Correction Date", required: false }
       - name: attachments
         widget: list
         label: "File Attachments"
         fields:
-          - { name: name,        widget: string, label: "File Name", required: true }
+          - { name: name,        widget: string, label: "File Name", required: false }
           - { name: path,        widget: string, label: "File Path or URL", required: true }
-          - { name: description, widget: string, label: "Description" }
+          - { name: description, widget: string, label: "Description", required: false }
       - { name: body, widget: markdown, label: "Article Body" }
 
   - name: opinion
@@ -389,46 +396,46 @@ collections:
       - { name: section,     widget: hidden, default: Opinion }
       - { name: subsection,  widget: select, label: "Subsection", required: false, hint: "Optional — groups this article within Opinion", options: ["Editorials", "Columns", "Letters to the Editor", "Guest Essays"] }
       - { name: title,      widget: string, label: "Title", required: true }
-      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: true }
-      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
-      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
+      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: false }
+      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga, required: false }
+      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga", required: false }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
       - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
       - { name: image,      widget: image,  label: "Cover Image", required: false }
       - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
-      - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
-      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
+      - { name: tags,       widget: list,   label: "Tags", required: false, field: { name: tag, widget: string } }
+      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, required: false }
       - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
       - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
       - { name: series,     widget: string, label: "Series Title (optional)", required: false }
       - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
       - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)", required: false }
       - { name: edition,    widget: number, label: "Edition Number", required: false }
-      - { name: featured,   widget: boolean, label: "Featured", default: false }
-      - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: featured,   widget: boolean, label: "Featured", default: false, required: false }
+      - { name: draft,      widget: boolean, label: "Draft", default: true, required: false }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, required: false, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
       - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
       - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
       - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
       - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
       - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
-      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
+      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false, required: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
       - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
         fields:
-          - { name: description, widget: text, label: "What Was Corrected", required: true }
-          - { name: date,        widget: datetime, label: "Correction Date", required: true }
+          - { name: description, widget: text, label: "What Was Corrected", required: false }
+          - { name: date,        widget: datetime, label: "Correction Date", required: false }
       - name: attachments
         widget: list
         label: "File Attachments"
         fields:
-          - { name: name,        widget: string, label: "File Name", required: true }
+          - { name: name,        widget: string, label: "File Name", required: false }
           - { name: path,        widget: string, label: "File Path or URL", required: true }
-          - { name: description, widget: string, label: "Description" }
+          - { name: description, widget: string, label: "Description", required: false }
       - { name: body, widget: markdown, label: "Article Body" }
 
   - name: analysis
@@ -442,46 +449,46 @@ collections:
       - { name: section,     widget: hidden, default: Analysis }
       - { name: subsection,  widget: select, label: "Subsection", required: false, hint: "Optional — groups this article within Analysis", options: ["Data", "Explainers", "Context", "Deep Dives"] }
       - { name: title,      widget: string, label: "Title", required: true }
-      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: true }
-      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
-      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
+      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: false }
+      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga, required: false }
+      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga", required: false }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
       - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
       - { name: image,      widget: image,  label: "Cover Image", required: false }
       - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
-      - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
-      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
+      - { name: tags,       widget: list,   label: "Tags", required: false, field: { name: tag, widget: string } }
+      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, required: false }
       - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
       - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
       - { name: series,     widget: string, label: "Series Title (optional)", required: false }
       - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
       - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)", required: false }
       - { name: edition,    widget: number, label: "Edition Number", required: false }
-      - { name: featured,   widget: boolean, label: "Featured", default: false }
-      - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: featured,   widget: boolean, label: "Featured", default: false, required: false }
+      - { name: draft,      widget: boolean, label: "Draft", default: true, required: false }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, required: false, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
       - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
       - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
       - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
       - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
       - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
-      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
+      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false, required: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
       - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
         fields:
-          - { name: description, widget: text, label: "What Was Corrected", required: true }
-          - { name: date,        widget: datetime, label: "Correction Date", required: true }
+          - { name: description, widget: text, label: "What Was Corrected", required: false }
+          - { name: date,        widget: datetime, label: "Correction Date", required: false }
       - name: attachments
         widget: list
         label: "File Attachments"
         fields:
-          - { name: name,        widget: string, label: "File Name", required: true }
+          - { name: name,        widget: string, label: "File Name", required: false }
           - { name: path,        widget: string, label: "File Path or URL", required: true }
-          - { name: description, widget: string, label: "Description" }
+          - { name: description, widget: string, label: "Description", required: false }
       - { name: body, widget: markdown, label: "Article Body" }
 
   - name: arts-culture
@@ -495,46 +502,46 @@ collections:
       - { name: section,     widget: hidden, default: "Arts & Culture" }
       - { name: subsection,  widget: select, label: "Subsection", required: false, hint: "Optional — groups this article within Arts & Culture", options: ["Books", "Film", "Music", "Television", "Visual Arts", "Theater"] }
       - { name: title,      widget: string, label: "Title", required: true }
-      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: true }
-      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
-      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
+      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: false }
+      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga, required: false }
+      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga", required: false }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
       - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
       - { name: image,      widget: image,  label: "Cover Image", required: false }
       - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
-      - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
-      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
+      - { name: tags,       widget: list,   label: "Tags", required: false, field: { name: tag, widget: string } }
+      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, required: false }
       - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
       - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
       - { name: series,     widget: string, label: "Series Title (optional)", required: false }
       - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
       - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)", required: false }
       - { name: edition,    widget: number, label: "Edition Number", required: false }
-      - { name: featured,   widget: boolean, label: "Featured", default: false }
-      - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: featured,   widget: boolean, label: "Featured", default: false, required: false }
+      - { name: draft,      widget: boolean, label: "Draft", default: true, required: false }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, required: false, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
       - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
       - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
       - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
       - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
       - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
-      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
+      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false, required: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
       - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
         fields:
-          - { name: description, widget: text, label: "What Was Corrected", required: true }
-          - { name: date,        widget: datetime, label: "Correction Date", required: true }
+          - { name: description, widget: text, label: "What Was Corrected", required: false }
+          - { name: date,        widget: datetime, label: "Correction Date", required: false }
       - name: attachments
         widget: list
         label: "File Attachments"
         fields:
-          - { name: name,        widget: string, label: "File Name", required: true }
+          - { name: name,        widget: string, label: "File Name", required: false }
           - { name: path,        widget: string, label: "File Path or URL", required: true }
-          - { name: description, widget: string, label: "Description" }
+          - { name: description, widget: string, label: "Description", required: false }
       - { name: body, widget: markdown, label: "Article Body" }
 
   - name: science-technology
@@ -548,46 +555,46 @@ collections:
       - { name: section,     widget: hidden, default: "Science & Technology" }
       - { name: subsection,  widget: select, label: "Subsection", required: false, hint: "Optional — groups this article within Science & Tech", options: ["Science", "Technology", "Space", "Medicine", "Environment"] }
       - { name: title,      widget: string, label: "Title", required: true }
-      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: true }
-      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
-      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
+      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: false }
+      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga, required: false }
+      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga", required: false }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
       - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
       - { name: image,      widget: image,  label: "Cover Image", required: false }
       - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
-      - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
-      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
+      - { name: tags,       widget: list,   label: "Tags", required: false, field: { name: tag, widget: string } }
+      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, required: false }
       - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
       - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
       - { name: series,     widget: string, label: "Series Title (optional)", required: false }
       - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
       - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)", required: false }
       - { name: edition,    widget: number, label: "Edition Number", required: false }
-      - { name: featured,   widget: boolean, label: "Featured", default: false }
-      - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: featured,   widget: boolean, label: "Featured", default: false, required: false }
+      - { name: draft,      widget: boolean, label: "Draft", default: true, required: false }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, required: false, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
       - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
       - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
       - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
       - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
       - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
-      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
+      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false, required: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
       - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
         fields:
-          - { name: description, widget: text, label: "What Was Corrected", required: true }
-          - { name: date,        widget: datetime, label: "Correction Date", required: true }
+          - { name: description, widget: text, label: "What Was Corrected", required: false }
+          - { name: date,        widget: datetime, label: "Correction Date", required: false }
       - name: attachments
         widget: list
         label: "File Attachments"
         fields:
-          - { name: name,        widget: string, label: "File Name", required: true }
+          - { name: name,        widget: string, label: "File Name", required: false }
           - { name: path,        widget: string, label: "File Path or URL", required: true }
-          - { name: description, widget: string, label: "Description" }
+          - { name: description, widget: string, label: "Description", required: false }
       - { name: body, widget: markdown, label: "Article Body" }
 
   - name: history
@@ -601,46 +608,46 @@ collections:
       - { name: section,     widget: hidden, default: History }
       - { name: subsection,  widget: select, label: "Subsection", required: false, hint: "Optional — groups this article within History", options: ["Ancient", "Medieval", "Modern", "U.S. History", "World History"] }
       - { name: title,      widget: string, label: "Title", required: true }
-      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: true }
-      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
-      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
+      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: false }
+      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga, required: false }
+      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga", required: false }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
       - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
       - { name: image,      widget: image,  label: "Cover Image", required: false }
       - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
-      - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
-      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
+      - { name: tags,       widget: list,   label: "Tags", required: false, field: { name: tag, widget: string } }
+      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, required: false }
       - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
       - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
       - { name: series,     widget: string, label: "Series Title (optional)", required: false }
       - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
       - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)", required: false }
       - { name: edition,    widget: number, label: "Edition Number", required: false }
-      - { name: featured,   widget: boolean, label: "Featured", default: false }
-      - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: featured,   widget: boolean, label: "Featured", default: false, required: false }
+      - { name: draft,      widget: boolean, label: "Draft", default: true, required: false }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, required: false, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
       - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
       - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
       - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
       - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
       - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
-      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
+      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false, required: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
       - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
         fields:
-          - { name: description, widget: text, label: "What Was Corrected", required: true }
-          - { name: date,        widget: datetime, label: "Correction Date", required: true }
+          - { name: description, widget: text, label: "What Was Corrected", required: false }
+          - { name: date,        widget: datetime, label: "Correction Date", required: false }
       - name: attachments
         widget: list
         label: "File Attachments"
         fields:
-          - { name: name,        widget: string, label: "File Name", required: true }
+          - { name: name,        widget: string, label: "File Name", required: false }
           - { name: path,        widget: string, label: "File Path or URL", required: true }
-          - { name: description, widget: string, label: "Description" }
+          - { name: description, widget: string, label: "Description", required: false }
       - { name: body, widget: markdown, label: "Article Body" }
 
   - name: letters
@@ -653,46 +660,46 @@ collections:
       - { name: layout,     widget: hidden, default: article }
       - { name: section,    widget: hidden, default: Letters }
       - { name: title,      widget: string, label: "Title", required: true }
-      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: true }
-      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
-      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
+      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: false }
+      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga, required: false }
+      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga", required: false }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
       - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
       - { name: image,      widget: image,  label: "Cover Image", required: false }
       - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
-      - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
-      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
+      - { name: tags,       widget: list,   label: "Tags", required: false, field: { name: tag, widget: string } }
+      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, required: false }
       - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
       - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
       - { name: series,     widget: string, label: "Series Title (optional)", required: false }
       - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
       - { name: location,   widget: string, label: "Dateline (e.g. Denver, Colorado)", required: false }
       - { name: edition,    widget: number, label: "Edition Number", required: false }
-      - { name: featured,   widget: boolean, label: "Featured", default: false }
-      - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: featured,   widget: boolean, label: "Featured", default: false, required: false }
+      - { name: draft,      widget: boolean, label: "Draft", default: true, required: false }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, required: false, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
       - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
       - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
       - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
       - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
       - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
       - { name: responseTo, widget: string, label: "Response To (URL of the article this replies to)", required: false }
-      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
+      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false, required: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
       - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
         fields:
-          - { name: description, widget: text, label: "What Was Corrected", required: true }
-          - { name: date,        widget: datetime, label: "Correction Date", required: true }
+          - { name: description, widget: text, label: "What Was Corrected", required: false }
+          - { name: date,        widget: datetime, label: "Correction Date", required: false }
       - name: attachments
         widget: list
         label: "File Attachments"
         fields:
-          - { name: name,        widget: string, label: "File Name", required: true }
+          - { name: name,        widget: string, label: "File Name", required: false }
           - { name: path,        widget: string, label: "File Path or URL", required: true }
-          - { name: description, widget: string, label: "Description" }
+          - { name: description, widget: string, label: "Description", required: false }
       - { name: body, widget: markdown, label: "Article Body" }
 
   - name: reviews
@@ -706,48 +713,48 @@ collections:
       - { name: section,     widget: hidden, default: Reviews }
       - { name: subsection,  widget: select, label: "Subsection", required: false, hint: "Optional — groups this article within Reviews", options: ["Books", "Film", "Music", "Television", "Theater", "Games"] }
       - { name: title,      widget: string, label: "Title", required: true }
-      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: true }
-      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga }
-      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga" }
+      - { name: description, widget: text,  label: "Description (shown in search results and social previews)", required: false }
+      - { name: author,     widget: string, label: "Author Slug (must match an entry in Authors)", default: jon-ajinga, required: false }
+      - { name: authorName, widget: string, label: "Author Display Name", default: "Jon Ajinga", required: false }
       - { name: date,       widget: datetime, label: "Publish Date", required: true }
       - { name: updated,    widget: datetime, label: "Last Updated Date (optional)", required: false }
       - { name: mediaType,  widget: select, label: "Media Type", options: [Book, Film, Podcast, Documentary, Series], required: true }
       - { name: creator,    widget: string, label: "Creator / Director / Author", required: true }
-      - { name: year,       widget: number, label: "Year of Release" }
-      - { name: rating,     widget: number, label: "Rating (1–5)" }
+      - { name: year,       widget: number, label: "Year of Release", required: false }
+      - { name: rating,     widget: number, label: "Rating (1–5)", required: false }
       - { name: image,      widget: image,  label: "Cover Image", required: false }
       - { name: imageAlt,   widget: string, label: "Image Alt Text (required for accessibility)", required: false }
-      - { name: tags,       widget: list,   label: "Tags", field: { name: tag, widget: string } }
-      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
+      - { name: tags,       widget: list,   label: "Tags", required: false, field: { name: tag, widget: string } }
+      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, required: false }
       - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
       - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
       - { name: series,     widget: string, label: "Series Title (optional)", required: false }
       - { name: seriesPart, widget: number, label: "Part Number in Series", required: false }
       - { name: edition,    widget: number, label: "Edition Number", required: false }
-      - { name: featured,   widget: boolean, label: "Featured", default: false }
-      - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: featured,   widget: boolean, label: "Featured", default: false, required: false }
+      - { name: draft,      widget: boolean, label: "Draft", default: true, required: false }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, required: false, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
       - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
       - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
       - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
       - { name: pitchedDate, widget: datetime, label: "Pitched Date", required: false, hint: "When the piece entered the pipeline. Used for pipeline-length stats." }
       - { name: spikedReason, widget: text, label: "Spiked Reason", required: false, hint: "If status is spiked: short note for the team about why the piece was held or killed. Surfaces on the spiked-column card." }
-      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false }
+      - { name: emailOnly,  widget: boolean, label: "Email Only (newsletter — no public page)", default: false, required: false }
       - { name: assignedTo, widget: string, label: "Assigned To (author slug)", required: false }
       - { name: dueDate,    widget: datetime, label: "Due Date", required: false }
       - name: corrections
         widget: list
         label: "Corrections"
         fields:
-          - { name: description, widget: text, label: "What Was Corrected", required: true }
-          - { name: date,        widget: datetime, label: "Correction Date", required: true }
+          - { name: description, widget: text, label: "What Was Corrected", required: false }
+          - { name: date,        widget: datetime, label: "Correction Date", required: false }
       - name: attachments
         widget: list
         label: "File Attachments"
         fields:
-          - { name: name,        widget: string, label: "File Name", required: true }
+          - { name: name,        widget: string, label: "File Name", required: false }
           - { name: path,        widget: string, label: "File Path or URL", required: true }
-          - { name: description, widget: string, label: "Description" }
+          - { name: description, widget: string, label: "Description", required: false }
       - { name: body, widget: markdown, label: "Article Body" }
 
   # ── Group 4: Curated Collections ─────────────────────────────────────────────
@@ -761,20 +768,22 @@ collections:
     fields:
       - { name: layout,      widget: hidden, default: "layouts/glossary-entry" }
       - { name: title,       widget: string, label: "Term", required: true }
-      - { name: description, widget: text,   label: "Short Definition", required: true }
-      - { name: etymology,   widget: text,   label: "Etymology" }
+      - { name: description, widget: text,   label: "Short Definition", required: false }
+      - { name: etymology,   widget: text,   label: "Etymology", required: false }
       - name: keyFigures
         widget: list
         label: "Key Figures"
+        required: false
         field: { name: name, widget: string }
       - name: relatedTerms
         widget: list
         label: "Related Terms"
+        required: false
         fields:
           - { name: title, widget: string, label: "Term Name", required: true }
           - { name: url,   widget: string, label: "URL", required: true }
-      - { name: tags, widget: list, label: "Tags", field: { name: tag, widget: string } }
-      - { name: date, widget: datetime, label: "Date Added" }
+      - { name: tags, widget: list, label: "Tags", required: false, field: { name: tag, widget: string } }
+      - { name: date, widget: datetime, label: "Date Added", required: false }
       - { name: body, widget: markdown, label: "Full Definition" }
 
   - name: bookshelf
@@ -787,15 +796,15 @@ collections:
       - { name: layout,      widget: hidden, default: book-entry }
       - { name: title,       widget: string, label: "Book Title", required: true }
       - { name: bookAuthor,  widget: string, label: "Author", required: true }
-      - { name: year,        widget: number, label: "Year Published" }
-      - { name: publisher,   widget: string, label: "Publisher" }
-      - { name: category,    widget: string, label: "Category" }
-      - { name: difficulty,  widget: select, label: "Difficulty Level", options: [Accessible, Intermediate, Advanced] }
-      - { name: description, widget: text,   label: "Short Description", required: true }
-      - { name: bestFor,     widget: text,   label: "Best For (describe the ideal reader)" }
-      - { name: tags, widget: list, label: "Tags", field: { name: tag, widget: string } }
-      - { name: date, widget: datetime, label: "Date Added" }
-      - { name: body, widget: markdown, label: "Full Review / Notes" }
+      - { name: year,        widget: number, label: "Year Published", required: false }
+      - { name: publisher,   widget: string, label: "Publisher", required: false }
+      - { name: category,    widget: string, label: "Category", required: false }
+      - { name: difficulty,  widget: select, label: "Difficulty Level", options: [Accessible, Intermediate, Advanced], required: false }
+      - { name: description, widget: text,   label: "Short Description", required: false }
+      - { name: bestFor,     widget: text,   label: "Best For (describe the ideal reader)", required: false }
+      - { name: tags, widget: list, label: "Tags", required: false, field: { name: tag, widget: string } }
+      - { name: date, widget: datetime, label: "Date Added", required: false }
+      - { name: body, widget: markdown, label: "Full Review / Notes", required: false }
 
   - name: thought-experiments
     label: Thought Experiments
@@ -807,21 +816,21 @@ collections:
       - { name: layout,       widget: hidden, default: article }
       - { name: section,      widget: hidden, default: "Thought Experiments" }
       - { name: title,        widget: string, label: "Title", required: true }
-      - { name: description,  widget: text,   label: "Description (shown in search results and social previews)", required: true }
-      - { name: author,       widget: string, label: "Author Slug (must match an entry in Authors)", default: staff }
+      - { name: description,  widget: text,   label: "Description (shown in search results and social previews)", required: false }
+      - { name: author,       widget: string, label: "Author Slug (must match an entry in Authors)", default: staff, required: false }
       - { name: date,         widget: datetime, label: "Publish Date", required: true }
-      - { name: updated,      widget: datetime, label: "Last Updated Date (optional)" }
-      - { name: philosopher,  widget: string, label: "Philosopher / Originator" }
-      - { name: yearProposed, widget: string, label: "Year Proposed" }
-      - { name: field,        widget: string, label: "Field (e.g. Epistemology, Ethics)" }
-      - { name: image,        widget: image,  label: "Cover Image" }
-      - { name: imageAlt,     widget: string, label: "Image Alt Text (required for accessibility)" }
-      - { name: tags, widget: list, label: "Tags", field: { name: tag, widget: string } }
-      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
+      - { name: updated,      widget: datetime, label: "Last Updated Date (optional)", required: false }
+      - { name: philosopher,  widget: string, label: "Philosopher / Originator", required: false }
+      - { name: yearProposed, widget: string, label: "Year Proposed", required: false }
+      - { name: field,        widget: string, label: "Field (e.g. Epistemology, Ethics)", required: false }
+      - { name: image,        widget: image,  label: "Cover Image", required: false }
+      - { name: imageAlt,     widget: string, label: "Image Alt Text (required for accessibility)", required: false }
+      - { name: tags, widget: list, label: "Tags", required: false, field: { name: tag, widget: string } }
+      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, required: false }
       - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
       - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
-      - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: draft,      widget: boolean, label: "Draft", default: true, required: false }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, required: false, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
       - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
       - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
       - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
@@ -833,8 +842,8 @@ collections:
         widget: list
         label: "Corrections"
         fields:
-          - { name: description, widget: text,     label: "What Was Corrected", required: true }
-          - { name: date,        widget: datetime, label: "Correction Date", required: true }
+          - { name: description, widget: text,     label: "What Was Corrected", required: false }
+          - { name: date,        widget: datetime, label: "Correction Date", required: false }
       - { name: body, widget: markdown, label: "Article Body" }
 
   - name: trials
@@ -847,25 +856,25 @@ collections:
       - { name: layout,       widget: hidden, default: article }
       - { name: section,      widget: hidden, default: "Trials of Thought" }
       - { name: title,        widget: string, label: "Title", required: true }
-      - { name: description,  widget: text,   label: "Description (shown in search results and social previews)", required: true }
-      - { name: author,       widget: string, label: "Author Slug (must match an entry in Authors)", default: staff }
+      - { name: description,  widget: text,   label: "Description (shown in search results and social previews)", required: false }
+      - { name: author,       widget: string, label: "Author Slug (must match an entry in Authors)", default: staff, required: false }
       - { name: date,         widget: datetime, label: "Publish Date", required: true }
-      - { name: updated,      widget: datetime, label: "Last Updated Date (optional)" }
-      - { name: year,         widget: number, label: "Year of Trial" }
-      - { name: yearLabel,    widget: string, label: "Year Label (display, e.g. 1895 or c. 399 BCE)" }
-      - { name: jurisdiction, widget: string, label: "Jurisdiction" }
-      - { name: defendant,    widget: string, label: "Defendant" }
-      - { name: charge,       widget: text,   label: "Charge" }
-      - { name: verdict,      widget: string, label: "Verdict" }
-      - { name: outcome,      widget: text,   label: "Outcome" }
-      - { name: image,        widget: image,  label: "Cover Image" }
-      - { name: imageAlt,     widget: string, label: "Image Alt Text (required for accessibility)" }
-      - { name: tags, widget: list, label: "Tags", field: { name: tag, widget: string } }
-      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard }
+      - { name: updated,      widget: datetime, label: "Last Updated Date (optional)", required: false }
+      - { name: year,         widget: number, label: "Year of Trial", required: false }
+      - { name: yearLabel,    widget: string, label: "Year Label (display, e.g. 1895 or c. 399 BCE)", required: false }
+      - { name: jurisdiction, widget: string, label: "Jurisdiction", required: false }
+      - { name: defendant,    widget: string, label: "Defendant", required: true }
+      - { name: charge,       widget: text,   label: "Charge", required: false }
+      - { name: verdict,      widget: string, label: "Verdict", required: false }
+      - { name: outcome,      widget: text,   label: "Outcome", required: false }
+      - { name: image,        widget: image,  label: "Cover Image", required: false }
+      - { name: imageAlt,     widget: string, label: "Image Alt Text (required for accessibility)", required: false }
+      - { name: tags, widget: list, label: "Tags", required: false, field: { name: tag, widget: string } }
+      - { name: profile,    widget: select, label: "Content Format", options: [standard, interview, longread, photoessay, podcast, datavisualization, brief, explainer], default: standard, required: false }
       - { name: audioUrl,   widget: string, label: "Audio URL (podcast format only)", required: false }
       - { name: embedUrl,   widget: string, label: "Embed URL (data visualisation format only)", required: false }
-      - { name: draft,      widget: boolean, label: "Draft", default: true }
-      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
+      - { name: draft,      widget: boolean, label: "Draft", default: true, required: false }
+      - { name: status,     widget: select, label: "Status", options: [pitched, drafting, review, scheduled, published, spiked], default: drafting, required: false, hint: "Editorial workflow column on /editorial/board/. Future-dated pieces auto-read as scheduled regardless." }
       - { name: editor,     widget: string, label: "Editor (author slug)", required: false, hint: "Slug of the editor responsible for this piece. Surfaces on the Editorial Board card as 'ed: …'." }
       - { name: reviewer,   widget: string, label: "Reviewer (author slug)", required: false, hint: "Slug of the reviewer doing the read. Surfaces on the Editorial Board card as 'rv: …'." }
       - { name: lastStatusChange, widget: datetime, label: "Last Status Change", required: false, hint: "Bumped when the article moves columns. Drives the stuck-card amber/red dots after 7 / 14 days." }
@@ -877,8 +886,8 @@ collections:
         widget: list
         label: "Corrections"
         fields:
-          - { name: description, widget: text,     label: "What Was Corrected", required: true }
-          - { name: date,        widget: datetime, label: "Correction Date", required: true }
+          - { name: description, widget: text,     label: "What Was Corrected", required: false }
+          - { name: date,        widget: datetime, label: "Correction Date", required: false }
       - { name: body, widget: markdown, label: "Article Body" }
 
   - name: library-chapters
@@ -890,12 +899,12 @@ collections:
     fields:
       - { name: layout,             widget: hidden }
       - { name: title,              widget: string, label: "Work Title (parent book or text)", required: true }
-      - { name: chapterTitle,       widget: string, label: "Chapter Title" }
-      - { name: chapterNumber,      widget: number, label: "Chapter Number" }
-      - { name: chapterSlug,        widget: string, label: "Chapter Slug (used in URL)" }
-      - { name: workSlug,           widget: string, label: "Work Slug (e.g. age-of-reason)" }
-      - { name: readingTimeMinutes, widget: number, label: "Reading Time (minutes)" }
-      - { name: permalink,          widget: string, label: "Permalink (leave blank to auto-generate)" }
+      - { name: chapterTitle,       widget: string, label: "Chapter Title", required: false }
+      - { name: chapterNumber,      widget: number, label: "Chapter Number", required: true }
+      - { name: chapterSlug,        widget: string, label: "Chapter Slug (used in URL)", required: false }
+      - { name: workSlug,           widget: string, label: "Work Slug (e.g. age-of-reason)", required: true }
+      - { name: readingTimeMinutes, widget: number, label: "Reading Time (minutes)", required: false }
+      - { name: permalink,          widget: string, label: "Permalink (leave blank to auto-generate)", required: false }
       - { name: body,               widget: markdown, label: "Chapter Body" }
 
   # ── Group 5: Resources & Media ───────────────────────────────────────────────
@@ -911,8 +920,8 @@ collections:
     fields:
       - { name: title,       widget: string, label: "Event Title", required: true }
       - { name: year,        widget: number, label: "Year (use negative for BCE, e.g. -399)", required: true }
-      - { name: description, widget: text,   label: "Description", required: true }
-      - { name: era,         widget: select, label: "Era", options: ["Ancient", "Early Modern", "Enlightenment", "18th Century", "19th Century", "20th Century", "21st Century"], required: true }
+      - { name: description, widget: text,   label: "Description", required: false }
+      - { name: era,         widget: select, label: "Era", options: ["Ancient", "Early Modern", "Enlightenment", "18th Century", "19th Century", "20th Century", "21st Century"], required: false }
 
   - name: events
     label: Events
@@ -925,16 +934,16 @@ collections:
     fields:
       - { name: name,             widget: string,   label: "Event Name", required: true }
       - { name: date,             widget: datetime, label: "Date", required: true }
-      - { name: endDate,          widget: datetime, label: "End Date (optional)" }
-      - { name: location,         widget: string,   label: "Location" }
-      - { name: region,           widget: select,   label: "Region", options: [National, Northeast, Southeast, Midwest, Southwest, West, Pacific, International, Online] }
-      - { name: type,             widget: select,   label: "Event Type", options: [Convention, Conference, Meetup, Observance, Workshop, Lecture, Online] }
-      - { name: url,              widget: string,   label: "Website URL" }
-      - { name: description,      widget: text,     label: "Description" }
-      - { name: recurrence,       widget: select,   label: "Recurrence", options: ["", annual, monthly, weekly] }
-      - { name: recurrenceMonth,  widget: number,   label: "Recurrence Month (1–12)" }
-      - { name: recurrenceWeek,   widget: number,   label: "Recurrence Week (1–5)" }
-      - { name: recurrenceDay,    widget: number,   label: "Recurrence Day (0 = Sun, 6 = Sat)" }
+      - { name: endDate,          widget: datetime, label: "End Date (optional)", required: false }
+      - { name: location,         widget: string,   label: "Location", required: false }
+      - { name: region,           widget: select,   label: "Region", options: [National, Northeast, Southeast, Midwest, Southwest, West, Pacific, International, Online], required: false }
+      - { name: type,             widget: select,   label: "Event Type", options: [Convention, Conference, Meetup, Observance, Workshop, Lecture, Online], required: false }
+      - { name: url,              widget: string,   label: "Website URL", required: false }
+      - { name: description,      widget: text,     label: "Description", required: false }
+      - { name: recurrence,       widget: select,   label: "Recurrence", options: ["", annual, monthly, weekly], required: false }
+      - { name: recurrenceMonth,  widget: number,   label: "Recurrence Month (1–12)", required: false }
+      - { name: recurrenceWeek,   widget: number,   label: "Recurrence Week (1–5)", required: false }
+      - { name: recurrenceDay,    widget: number,   label: "Recurrence Day (0 = Sun, 6 = Sat)", required: false }
 
   - name: quotes
     label: Quotes
@@ -947,9 +956,9 @@ collections:
     fields:
       - { name: author, widget: string, label: "Author", required: true }
       - { name: quote,  widget: text,   label: "Quote", required: true }
-      - { name: source, widget: string, label: "Source (book, speech, or publication)" }
-      - { name: tags,   widget: list,   label: "Tags", field: { name: tag, widget: string } }
-      - { name: era,    widget: select, label: "Era", options: ["Ancient", "Early Modern", "Enlightenment", "18th Century", "19th Century", "20th Century", "21st Century"] }
+      - { name: source, widget: string, label: "Source (book, speech, or publication)", required: false }
+      - { name: tags,   widget: list,   label: "Tags", required: false, field: { name: tag, widget: string } }
+      - { name: era,    widget: select, label: "Era", options: ["Ancient", "Early Modern", "Enlightenment", "18th Century", "19th Century", "20th Century", "21st Century"], required: false }
 
   - name: videos
     label: Videos
@@ -961,13 +970,13 @@ collections:
     slug: "{{speaker}}-{{title}}"
     fields:
       - { name: title,       widget: string, label: "Title", required: true }
-      - { name: speaker,     widget: string, label: "Speaker / Creator" }
+      - { name: speaker,     widget: string, label: "Speaker / Creator", required: false }
       - { name: url,         widget: string, label: "YouTube URL", required: true }
       - { name: embed,       widget: string, label: "Embed URL (use youtube-nocookie.com)", required: true }
-      - { name: duration,    widget: string, label: "Duration (e.g. 58:00)" }
-      - { name: date,        widget: string, label: "Year" }
-      - { name: tags,        widget: list,   label: "Tags", field: { name: tag, widget: string } }
-      - { name: description, widget: text,   label: "Description" }
+      - { name: duration,    widget: string, label: "Duration (e.g. 58:00)", required: false }
+      - { name: date,        widget: string, label: "Year", required: false }
+      - { name: tags,        widget: list,   label: "Tags", required: false, field: { name: tag, widget: string } }
+      - { name: description, widget: text,   label: "Description", required: false }
 
   - name: gallery
     label: Gallery
@@ -980,9 +989,9 @@ collections:
     fields:
       - { name: src,      widget: image,  label: "Photo", required: true }
       - { name: alt,      widget: string, label: "Alt Text (required for accessibility)", required: true }
-      - { name: credit,   widget: string, label: "Credit (photographer or source)" }
-      - { name: license,  widget: select, label: "License", options: ["Public Domain", "CC0", "CC BY", "CC BY-SA", "CC BY-NC", "All Rights Reserved"] }
-      - { name: category, widget: string, label: "Category" }
+      - { name: credit,   widget: string, label: "Credit (photographer or source)", required: false }
+      - { name: license,  widget: select, label: "License", options: ["Public Domain", "CC0", "CC BY", "CC BY-SA", "CC BY-NC", "All Rights Reserved"], required: false }
+      - { name: category, widget: string, label: "Category", required: false }
 
   - name: playlists
     label: Music Playlists
@@ -994,9 +1003,9 @@ collections:
     slug: "{{name}}"
     fields:
       - { name: name,        widget: string, label: "Playlist Name", required: true }
-      - { name: description, widget: text,   label: "Description" }
+      - { name: description, widget: text,   label: "Description", required: false }
       - { name: playlistId,  widget: string, label: "YouTube Playlist ID (the part after list= in the URL)", required: true }
-      - { name: category,    widget: select, label: "Category", options: [Mixed, Focus, Ambient, Classical, Jazz, Electronic] }
+      - { name: category,    widget: select, label: "Category", options: [Mixed, Focus, Ambient, Classical, Jazz, Electronic], required: false }
 
   - name: songs
     label: Songs
@@ -1009,11 +1018,11 @@ collections:
     fields:
       - { name: title,  widget: string, label: "Song Title", required: true }
       - { name: artist, widget: string, label: "Artist", required: true }
-      - { name: album,  widget: string, label: "Album" }
-      - { name: year,   widget: number, label: "Year Released" }
-      - { name: genre,  widget: string, label: "Genre" }
-      - { name: tags,   widget: list,   label: "Tags", field: { name: tag, widget: string } }
-      - { name: url,    widget: string, label: "YouTube URL" }
+      - { name: album,  widget: string, label: "Album", required: false }
+      - { name: year,   widget: number, label: "Year Released", required: false }
+      - { name: genre,  widget: string, label: "Genre", required: false }
+      - { name: tags,   widget: list,   label: "Tags", required: false, field: { name: tag, widget: string } }
+      - { name: url,    widget: string, label: "YouTube URL", required: false }
 
   - name: feeds
     label: RSS Feeds
@@ -1026,7 +1035,7 @@ collections:
     fields:
       - { name: name,     widget: string, label: "Feed Name", required: true }
       - { name: url,      widget: string, label: "Feed URL", required: true }
-      - { name: category, widget: select, label: "Category", options: [Organizations, Publications] }
+      - { name: category, widget: select, label: "Category", options: [Organizations, Publications], required: false }
 
   - name: games
     label: Games
@@ -1040,8 +1049,8 @@ collections:
     fields:
       - { name: slug,        widget: string, label: "Slug (e.g. fifteen-puzzle — used in URL)", required: true }
       - { name: title,       widget: string, label: "Game Title", required: true }
-      - { name: description, widget: text,   label: "Description", required: true }
-      - { name: icon,        widget: string, label: "Emoji Icon" }
+      - { name: description, widget: text,   label: "Description", required: false }
+      - { name: icon,        widget: string, label: "Emoji Icon", required: false }
       - { name: url,         widget: string, label: "Game URL or Path", required: true }
 
   # ── Group 6: Advanced / Rarely Touched ──────────────────────────────────────
@@ -1078,6 +1087,6 @@ collections:
     fields:
       - { name: layout,      widget: hidden, default: base }
       - { name: title,       widget: string, label: "Page Title", required: true }
-      - { name: description, widget: text,   label: "SEO Description" }
-      - { name: permalink,   widget: string, label: "Permalink (e.g. /about/)" }
+      - { name: description, widget: text,   label: "SEO Description", required: false }
+      - { name: permalink,   widget: string, label: "Permalink (e.g. /about/)", required: false }
       - { name: body,        widget: text,   label: "Page Body (Nunjucks — edit with care)" }
