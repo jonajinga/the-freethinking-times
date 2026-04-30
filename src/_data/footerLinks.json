@@ -1,134 +1,62 @@
 [
   {
-    "heading": "Contribute",
-    "headingUrl": "/contribute/",
-    "links": [
-      { "label": "Write for Us",          "url": "/contribute/",            "title": "Our contributor guidelines, who we publish, what we look for, how the editorial process works, and how to pitch us a piece." },
-      { "label": "Submit an Article",     "url": "/submit/",                "title": "Pitch a piece of reported news, analysis, opinion, or review. Pitches are read by an editor within two weeks; selective publication." },
-      { "label": "Write a Letter",        "url": "/letters/submit/",        "title": "Respond to a specific piece we've published. Letters are selected, edited for length and clarity, and published in the Letters section." },
-      { "label": "Volunteer With Us",     "url": "/volunteer/",             "title": "Open volunteer roles, fact-checker, copy editor, researcher, translator, moderator, and more." },
-      { "label": "Reader Survey",         "url": "/survey/",                "title": "Five-minute reader survey: what you read, what's missing, and what would make the site better." },
-      { "label": "Contributor Contract",  "url": "/contributor-contract/",  "title": "The written terms between writers and the publication. Plain English, no surprises later." },
-      { "label": "Support Us",            "url": "/support/",               "title": "How reader contributions are used. No ads, no paywalls, no corporate parent. One-time tips via Ko-fi keep the lights on." }
-    ]
-  },
-  {
-    "heading": "Freethought Community",
-    "headingUrl": "/community/",
-    "links": [
-      { "label": "Community Directory", "url": "/community/",            "title": "A curated directory of freethought, humanist, and secular organizations worldwide, filterable by region, focus, and activity level." },
-      { "label": "Events Calendar",     "url": "/events/",               "title": "Upcoming conferences, conventions, meetups, and observances relevant to freethinkers, browsable by month, week, or day with filtering." },
-      { "label": "RSS Reader",          "url": "/reader/",               "title": "A built-in reader for following freethought-adjacent publications via RSS, without needing a separate app." },
-      { "label": "Suggest a Group",     "url": "/community/submit/",     "title": "Know a freethought, humanist, or secular group we should list? Send us the name, city, and what they do, we'll evaluate and add qualifying groups." }
-    ]
-  },
-  {
-    "heading": "Freethought Projects",
+    "heading": "Read",
     "headingUrl": "/projects/",
     "links": [
-      { "label": "Freethought Music",   "url": "/music/",               "title": "Curated YouTube playlists, music chosen for reading, thinking, and working. Persistent background player that follows you across pages." },
-      { "label": "Glossary of Terms",   "url": "/glossary/",            "title": "Plain-English definitions of the philosophical, religious, and scientific vocabulary that appears in our coverage, hover the dotted terms anywhere on the site." },
-      { "label": "Historical Timeline", "url": "/timeline/",            "title": "Two and a half millennia of freethought history, from Greek philosophy to the modern secular movement, in a filterable interactive timeline." },
-      { "label": "Photo Gallery",       "url": "/gallery/",             "title": "Natural-world photography, landscapes, wildlife, and the cosmos, with full license and credit information for every image." },
-      { "label": "Public Domain Library","url": "/library/",            "title": "Classic freethought, philosophy, and secular-humanist texts, in full, with annotations, bookmarks, and modern reader tooling." },
-      { "label": "Quotes Collection",   "url": "/quotes/",              "title": "A curated collection of quotations from the freethought tradition, attributed to named authors, sourced to named works, not the internet rumour mill." },
-      { "label": "Recommended Reading", "url": "/bookshelf/",           "title": "An annotated reading list, contemporary and classic books worth the time of someone serious about reason, science, ethics, and liberty." },
-      { "label": "Resources",           "url": "/resources/",           "title": "Education, legal, support, and advocacy organizations that help people navigate life outside religious institutions." },
-      { "label": "Thought Experiments", "url": "/thought-experiments/", "title": "Classic and modern thought experiments given serious popular treatment, the scenarios philosophers use to press on what we actually think." },
-      { "label": "Trials of Thought",   "url": "/trials/",              "title": "Landmark trials in which an idea, not just a person, was on the defendant's bench. Socrates to Scopes, Galileo to Rushdie." },
-      { "label": "Video Library",       "url": "/videos/",              "title": "Lectures, debates, and documentaries worth watching, curated and time-stamped, with context on who's speaking and why it matters." }
+      { "label": "Library",           "url": "/library/",          "title": "Classic freethought, philosophy, and secular-humanist texts in full." },
+      { "label": "Quotes",            "url": "/quotes/",           "title": "Curated quotations from the freethought tradition, attributed and sourced." },
+      { "label": "Bookshelf",         "url": "/bookshelf/",        "title": "Annotated reading list of contemporary and classic books." },
+      { "label": "Timeline",          "url": "/timeline/",         "title": "Two and a half millennia of freethought history." },
+      { "label": "Glossary",          "url": "/glossary/",         "title": "Plain-English definitions of philosophical, religious, and scientific terms." },
+      { "label": "All projects →", "url": "/projects/",       "title": "Every freethought project we run, with a short description of each." }
     ]
   },
   {
-    "heading": "Contribute to Our Projects",
-    "headingUrl": "/submit/",
-    "links": [
-      { "label": "Recommend a Book",          "url": "/bookshelf/submit/",          "title": "Tell us about a book worth adding to the Freethought Reading list. Contemporary or classic, fiction or non-fiction, we want titles that reward serious readers." },
-      { "label": "Recommend a Song",          "url": "/music/submit/",              "title": "Suggest a track for our Freethought Music playlists, instrumental or vocal, any genre, chosen for reading, thinking, or working." },
-      { "label": "Suggest a Glossary Term",   "url": "/glossary/submit/",           "title": "Is there a word we should define? Submit a term that matters in the philosophical, scientific, or religious vocabulary we cover." },
-      { "label": "Suggest a Library Text",    "url": "/library/submit/",            "title": "Point us to a public-domain work worth adding to the library, full-text, annotated, and free to read forever. Anglophone and translated both welcome." },
-      { "label": "Suggest a Thought Experiment","url": "/thought-experiments/submit/","title": "Which thought experiment deserves a serious popular treatment next? Trolley problem, ship of Theseus, veil of ignorance, or something we haven't thought of." },
-      { "label": "Suggest a Trial",           "url": "/trials/submit/",             "title": "Nominate a trial where ideas, not just people, were the defendant. Historical or contemporary, landmark or overlooked." },
-      { "label": "Submit an Event",           "url": "/events/submit/",             "title": "Know of a conference, convention, meetup, or observance we should list? Tell us what, when, where, and who should care." },
-      { "label": "Submit a Photo",            "url": "/gallery/submit/",            "title": "Contribute a nature or landscape photograph to our gallery, high resolution, full license terms, full credit to the photographer." },
-      { "label": "Submit a Quote",            "url": "/quotes/submit/",             "title": "Suggest a quotation, with named author, named source, and a verifiable citation. We check attributions before publishing anything." },
-      { "label": "Submit a Timeline Entry",   "url": "/timeline/submit/",           "title": "Nominate a pivotal moment in freethought history we should add to the timeline, from ancient philosophy to contemporary events." }
-    ]
-  },
-  {
-    "heading": "Contact",
-    "headingUrl": "/contact/",
-    "links": [
-      { "label": "Contact Us",         "url": "/contact/",           "title": "The general contact form, goes directly to the editorial inbox. Every message is read by a person, usually within one business day." },
-      { "label": "Send Feedback",       "url": "/feedback/",          "title": "Tell us about a bug, feature idea, or general site issue. We read everything; we fix what we can." },
-      { "label": "Tip Line",            "url": "/tips/",              "title": "An anonymous submission channel for tips on stories we should be covering. We protect sources." },
-      { "label": "Report a Correction","url": "/corrections/report/","title": "Spot an error in a published piece? Send us the specifics, we correct quickly, publicly, and with a labeled correction notice on the article itself." }
-    ]
-  },
-  {
-    "heading": "Reader Tools",
+    "heading": "Tools",
     "headingUrl": "/reader-tools/",
     "links": [
-      { "label": "Archives",      "url": "/archives/",      "title": "Every article we've ever published, indexed by date, author, section, and topic. The definitive record of our work." },
-      { "label": "Community Guidelines","url": "/community-guidelines/","title": "The standards we apply to comments, letters, and any discussion we host on our articles, disagreement welcome, bad-faith argument isn't." },
-      { "label": "Documents",     "url": "/documents/",     "title": "Primary source materials, FOIA responses, public records, court filings, and government reports underlying our reporting." },
-      { "label": "Editions",      "url": "/editions/",      "title": "Articles grouped into numbered editions, a periodical-style view that collects a week's or a month's work in one place." },
-      { "label": "Newsletter",    "url": "/newsletter/",    "title": "An occasional email. One message at a time. No tracking pixels, no third-party data sharing, one-click unsubscribe." },
-      { "label": "Notes & Highlights","url": "/notes/",     "title": "Your personal highlights, margin notes, and bookmarks across every article and library text you've read on the site, stored locally in your browser." },
-      { "label": "Reading List",       "url": "/reading-list/",       "title": "Articles you've saved to read later, bookmark from any piece, pick up where you left off on any device." },
-      { "label": "Reading History",    "url": "/reading-history/",    "title": "Articles you've finished or marked as read on this device, kept locally in your browser." },
-      { "label": "Reading Calendar",   "url": "/reading-calendar/",   "title": "Your reading by date — a personal heat-mapped calendar drawn from this device's local history." },
-      { "label": "Editorial Calendar", "url": "/editorial-calendar/", "title": "Every article we've published, laid out on a month-by-month grid by publication date." },
-      { "label": "Responses",          "url": "/responses/",          "title": "Articles that respond to other pieces — internal threads under our originals plus replies to outside writing." },
-      { "label": "Back-of-Book Index", "url": "/back-of-book/",       "title": "A scholarly back-of-book index of concepts, figures, and themes — three-tier hierarchy with cross-references to the articles where each idea is discussed." },
-      { "label": "Print Basket",       "url": "/print-basket/",       "title": "Articles you've added with the Add-to-PDF button, ready to print as one combined PDF in your browser." },
-      { "label": "Most Read",         "url": "/most-read/",        "title": "Ranked bar chart of articles by Umami pageviews, what readers are spending the most time with." },
-      { "label": "Knowledge Map",     "url": "/knowledge-map/",    "title": "Force-directed visual map of every article, clustered by shared topics and authors. Drag, zoom, click any node to read." },
-      { "label": "Feeds",             "url": "/feeds/",            "title": "All RSS feeds in one place, the whole site, each editorial section, every author, every topic. Subscribe in any reader, no account, no algorithm." },
-      { "label": "API",           "url": "/api/",           "title": "Public JSON API, articles, quotes, timeline entries, glossary terms, and more. Free for developers, academics, and other publications." },
-      { "label": "Search",        "url": "/search/",        "title": "Full-text search across every article, library work, quote, glossary entry, and timeline event. Press / anywhere on the site to open it." },
-      { "label": "Start Here",    "url": "/start-here/",    "title": "A curated introduction for new readers, the pieces that best represent what we do, organized by what you want to know first." },
-      { "label": "Topics",        "url": "/topics/",        "title": "Every topic we've covered, with the number of articles for each. A different way into the archive." },
-      { "label": "Your Data",     "url": "/your-data/",     "title": "Export, import, or clear your notes, bookmarks, reading history, and settings. Everything is stored locally, you own it and can take it with you." }
+      { "label": "Search",            "url": "/search/",           "title": "Full-text search across every article, library work, quote, and glossary entry." },
+      { "label": "Reading List",      "url": "/reading-list/",     "title": "Articles you've saved to read later, stored locally in your browser." },
+      { "label": "Notes",             "url": "/notes/",            "title": "Your highlights, margin notes, and bookmarks across the site." },
+      { "label": "Archives",          "url": "/archives/",         "title": "Every article we've published, indexed by date, author, section, and topic." },
+      { "label": "Newsletter",        "url": "/newsletter/",       "title": "An occasional email. No tracking pixels, one-click unsubscribe." },
+      { "label": "All reader tools →", "url": "/reader-tools/", "title": "The full set of reader tools, calendars, history, knowledge map, and more." }
+    ]
+  },
+  {
+    "heading": "Submit",
+    "headingUrl": "/submit/",
+    "links": [
+      { "label": "Pitch an Article",   "url": "/submit/",          "title": "Pitch a piece of reported news, analysis, opinion, or review." },
+      { "label": "Write a Letter",     "url": "/letters/submit/",  "title": "Respond to a specific piece. Letters are selected and edited for length." },
+      { "label": "Tip Line",           "url": "/tips/",            "title": "An anonymous channel for tips on stories we should cover." },
+      { "label": "Volunteer",          "url": "/volunteer/",       "title": "Open volunteer roles, fact-checker, copy editor, researcher, translator." },
+      { "label": "Report a Correction","url": "/corrections/report/","title": "Send us specifics on an error and we'll correct it quickly with a labeled notice." },
+      { "label": "All ways to submit →", "url": "/contribute/", "title": "Every way to contribute to the publication or to our projects." }
     ]
   },
   {
     "heading": "About",
     "headingUrl": "/about/",
     "links": [
-      { "label": "About Us",            "url": "/about/",        "title": "What this publication is, why it exists, what it will and will not do, and the standards we hold ourselves to." },
-      { "label": "Masthead",            "url": "/masthead/",     "title": "Who makes editorial decisions, who writes, and who is accountable for what appears on this site." },
-      { "label": "Contributors",        "url": "/contributors/", "title": "The writers and editors whose work appears here, with bios, article counts, and all of their published pieces." },
-      { "label": "Editorial Ethics",    "url": "/ethics/",       "title": "Our standards for accuracy, sourcing, conflicts of interest, corrections, and the relationship between reporting and opinion." },
-      { "label": "Editorial Handbook",  "url": "/editorial/",    "title": "The full handbook, mission, accuracy rules, sourcing, editorial independence, corrections, tone, contributor expectations, and conflicts of interest." },
-      { "label": "Editorial Dashboard", "url": "/dashboard/",    "title": "Internal view of content counts, recent publications, and editorial activity, kept public as part of our transparency commitment." },
-      { "label": "Editorial Board",     "url": "/editorial/board/","title": "Kanban view of every article by status, from pitched to in-progress to published, so readers can see what's in the pipeline." },
-      { "label": "Content Templates",   "url": "/templates/",    "title": "Pre-filled markdown templates for news, opinion, analysis, interview, review, and explainer pieces, the structure we edit toward." },
-      { "label": "Abbreviations",       "url": "/abbreviations/","title": "A personal abbreviation dictionary, terminology we use internally, documented here so readers can decode it." }
-    ]
-  },
-  {
-    "heading": "Transparency",
-    "headingUrl": "/transparency/",
-    "links": [
-      { "label": "Features",          "url": "/features/",    "title": "A complete public inventory of every feature on this site, what exists, what works, what's experimental, what's retired." },
-      { "label": "How It's Built",    "url": "/stack/",       "title": "The technology stack behind every page, the generator, the hosting, the fonts, the analytics, the forms, the comments, documented and linkable." },
-      { "label": "Changelog",         "url": "/changelog/",   "title": "A public record of every change we make to the site and the publication, shipped features, policy updates, corrections policy revisions, and more." },
-      { "label": "Costs",             "url": "/costs/",       "title": "What it costs to run this publication in dollars, disclosed line by line, hosting, domains, services, and where reader contributions go." },
-      { "label": "Open Source",       "url": "/open-source/", "title": "The entire site is open source. Fork it on GitHub, study it, adapt it to your own publication, or submit improvements back to this one." },
-      { "label": "Style Guide",       "url": "/style-guide/", "title": "Brand identity, colour palette, typography, components, and interaction patterns, the single source of design truth for this publication." }
+      { "label": "About Us",          "url": "/about/",            "title": "What this publication is, why it exists, and what it stands for." },
+      { "label": "Masthead",          "url": "/masthead/",         "title": "Who makes editorial decisions and who is accountable for what appears here." },
+      { "label": "Editorial Ethics",  "url": "/ethics/",           "title": "Our standards for accuracy, sourcing, conflicts of interest, and corrections." },
+      { "label": "Contact",           "url": "/contact/",          "title": "The general contact form. Every message is read by a person." },
+      { "label": "Send Feedback",     "url": "/feedback/",         "title": "Bug reports, feature ideas, general site feedback." },
+      { "label": "Editorial handbook →", "url": "/editorial/", "title": "The full editorial handbook, mission, accuracy, sourcing, independence." }
     ]
   },
   {
     "heading": "Legal",
     "headingUrl": "/legal/",
     "links": [
-      { "label": "Privacy Policy",       "url": "/privacy/",       "title": "What data we collect (very little) and what we don't (almost everything else). Cookieless analytics, local-only reader data, no third-party tracking pixels." },
-      { "label": "Terms of Use",         "url": "/terms/",         "title": "The terms that govern your use of this site, content ownership, submissions, acceptable use, and third-party services we rely on." },
-      { "label": "Cookies Policy",       "url": "/cookies/",       "title": "A full accounting of zero first-party cookies, what localStorage stores in your browser, and exactly what third-party services do if you interact with them." },
-      { "label": "Accessibility",        "url": "/accessibility/", "title": "Our commitment to WCAG 2.2 AA, what we've built for accessibility, known limitations we're still working on, and how to report issues you encounter." },
-      { "label": "Republication License","url": "/license/",       "title": "Articles are released under CC BY-NC-ND 4.0. You can republish, quote, and translate our work freely, provided you follow four short rules — attribution, no derivatives, non-commercial, webmentions welcome." },
-      { "label": "Sitemap",              "url": "/site-map/",      "title": "A directory of every page on the site, handy if you're looking for something specific or want a lay of the land." }
+      { "label": "Privacy Policy",    "url": "/privacy/",          "title": "What data we collect (very little) and what we don't." },
+      { "label": "Terms of Use",      "url": "/terms/",            "title": "Content ownership, submissions, acceptable use." },
+      { "label": "Republication License","url": "/license/",       "title": "Articles are CC BY-NC-ND 4.0 — free to republish under attribution." },
+      { "label": "Accessibility",     "url": "/accessibility/",    "title": "Our WCAG 2.2 AA commitment and how to report issues." },
+      { "label": "Sitemap",           "url": "/site-map/",         "title": "A complete directory of every page on this site." },
+      { "label": "Transparency →", "url": "/transparency/",   "title": "Costs, changelog, stack, open source, and the full transparency hub." }
     ]
   }
 ]
