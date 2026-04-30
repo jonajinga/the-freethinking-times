@@ -1,21 +1,19 @@
 slug: jon-ajinga
 name: Jon Ajinga
 role: Founding Editor
-title: Writer, editor, and independent publisher
-location: Denver, Colorado
-bio: >-
-  Jon Ajinga is the founding editor of The Freethinking Times, covering regulation, institutional power, and the life of
-  ideas.
+title: ""
+location: Colorado
+bio: Jon Ajinga is the founding editor of The Freethinking Times.
 photo: src/assets/img/authors/jon-ajinga.webp
 social:
   x: https://x.com/jonajinga
   bluesky: https://bsky.app/profile/jonajinga.bsky.social
-  mastodon: 
-  linkedin: 
+  mastodon: null
+  linkedin: null
   github: https://github.com/jonajinga
   website: https://jonajinga.com
-  email: 
+  email: null
 tipping:
-  kofi: 
+  kofi: null
   bmac: ""
   patreon: ""
