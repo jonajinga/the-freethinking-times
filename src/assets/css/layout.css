@@ -117,6 +117,16 @@
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--space-6);
 }
+/* Vertical hairline separator between adjacent article cards on the
+ * home-page section strips. Only applied when the grid has at least
+ * two columns (>=768 px); on phones the cards stack one-per-row and
+ * a left-border would look like an orphan rule down the left side. */
+@media (min-width: 768px) {
+  .front-section-strip__articles > * + * {
+    border-left: 1px solid var(--color-rule);
+    padding-left: var(--space-6);
+  }
+}
 
 @media (max-width: 640px) {
   .front-section-strip { grid-template-columns: 1fr; }

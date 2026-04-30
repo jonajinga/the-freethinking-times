@@ -1721,6 +1721,13 @@
   background: transparent;
   color: #fff;
   padding: 0;
+  /* Lock both back-to-top and reading-pct to no-shrink so the
+   * scrolling toolbar row can't squash them to zero width. Without
+   * this, on a phone viewport the row treats them as flex items
+   * with default flex-shrink: 1 and back-to-top collapses to ~0
+   * before the user notices it should be there. Same fix we
+   * applied to .article-action-btn for the bookmark/save button. */
+  flex-shrink: 0;
 }
 /* % through label — sits in the toolbar row at the same 48 px box
  * height as every button so the row reads as one uniform set of

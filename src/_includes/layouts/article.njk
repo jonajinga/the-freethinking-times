@@ -112,6 +112,22 @@ isReadingPage: true
           {% endif %}
         </div>
 
+        {# Article topics — moved up beneath the eyebrow so the
+           categorisation cluster (section / subsection / edition →
+           topics) reads as one group ahead of the title. #}
+        {% if tags %}
+        {% set _hasTopics = false %}
+        {% for tag in tags %}{% if tag != "post" %}{% set _hasTopics = true %}{% endif %}{% endfor %}
+        {% if _hasTopics %}
+        <nav class="article-topics" aria-label="Topics" data-pagefind-ignore>
+          <span class="article-topics__label">Topics</span>
+          <ul class="article-topics__list" role="list">
+            {% for tag in tags %}{% if tag != "post" %}<li><a href="/topics/{{ tag | slugify }}/">{{ tag }}</a></li>{% endif %}{% endfor %}
+          </ul>
+        </nav>
+        {% endif %}
+        {% endif %}
+
         <h1 class="article-header__headline">{{ title }}</h1>
 
         {% if description %}
@@ -119,13 +135,24 @@ isReadingPage: true
         {% endif %}
 
         <div class="article-header__byline-block" data-pagefind-ignore>
-          <div class="article-header__byline-meta">
+          {# Two-row byline: author + (location) on one line, published
+             + updated dates on a second line. The pipe-separator rules
+             target each row independently so each row's items separate
+             cleanly from each other but author doesn't get a pipe before
+             the dates row. #}
+          <div class="article-header__byline-meta article-header__byline-row">
             {% if author %}
             <a class="article-header__author" href="/author/{{ author | slugify }}/"
               {% if authors[author] and authors[author].bio %}data-tippy-content="{{ authors[author].bio }}" data-tippy-theme="author-bio"{% endif %}>
               By {{ authors[author].name or authorName or author }}
             </a>
             {% endif %}
+            {% if location %}
+            <span class="dateline">{{ location }}</span>
+            {% endif %}
+          </div>
+
+          <div class="article-header__byline-meta article-header__byline-row article-header__byline-row--dates">
             {% set sameDateArticles = collections.allContent | sameDate(page.date, page.url) %}
             <span class="date-popover-wrap">
               <a class="article-header__date" href="/archives/#{{ page.date | htmlDateString }}">
@@ -145,9 +172,6 @@ isReadingPage: true
             {% set updatedDate = updated or lastUpdated %}
             {% if updatedDate %}
             <span class="article-header__updated">Updated: <time datetime="{{ updatedDate | htmlDateString }}">{{ updatedDate | readableDate }}</time></span>
-            {% endif %}
-            {% if location %}
-            <span class="dateline">{{ location }}</span>
             {% endif %}
             {# Republish badge has moved to the bottom annotation toolbar
                (see "Republish" in article.njk's toolbar block). The
@@ -189,21 +213,9 @@ isReadingPage: true
             {% if _stats.likes %}<span class="article-meta-item article-meta-item--stat" title="Reader likes">{{ _stats.likes | numberFmt }} {{ "like" if _stats.likes == 1 else "likes" }}</span>{% endif %}
           {% endif %}
         </div>
-        {# Article topics — its own section, separated by hairline
-           rules, distinct from the dense meta-row above. #}
-        {% if tags %}
-        {% set _topicTags = tags | rejectAttr if false else tags %}
-        {% set _hasTopics = false %}
-        {% for tag in tags %}{% if tag != "post" %}{% set _hasTopics = true %}{% endif %}{% endfor %}
-        {% if _hasTopics %}
-        <nav class="article-topics" aria-label="Topics" data-pagefind-ignore>
-          <span class="article-topics__label">Topics</span>
-          <ul class="article-topics__list" role="list">
-            {% for tag in tags %}{% if tag != "post" %}<li><a href="/topics/{{ tag | slugify }}/">{{ tag }}</a></li>{% endif %}{% endfor %}
-          </ul>
-        </nav>
-        {% endif %}
-        {% endif %}
+        {# Topics row was moved up directly under the eyebrow so the
+           categorisation cluster reads as one group ahead of the
+           title — duplicate block here removed. #}
 
         {# Listen pill is now rendered inline in the byline support
            row above (next to "How We're Funded" / "Republish" /
