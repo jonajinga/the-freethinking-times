@@ -51,19 +51,8 @@
       { "label": "Contributors",      "url": "/contributors/",     "title": "Writers and editors whose work appears here, with bios and article counts." },
       { "label": "Editorial Ethics",  "url": "/ethics/",           "title": "Our standards for accuracy, sourcing, conflicts of interest, and corrections." },
       { "label": "Contact",           "url": "/contact/",          "title": "The general contact form. Every message is read by a person." },
+      { "label": "Legal",             "url": "/legal/",            "title": "Privacy policy, terms of use, republication license, accessibility, and the sitemap." },
       { "label": "Editorial handbook →", "url": "/editorial/", "title": "The full handbook — mission, accuracy, sourcing, independence." }
-    ]
-  },
-  {
-    "heading": "Legal",
-    "headingUrl": "/legal/",
-    "showSupportBadgeAfter": false,
-    "small": true,
-    "links": [
-      { "label": "Privacy Policy",    "url": "/privacy/",          "title": "What data we collect, and what we don't." },
-      { "label": "Terms of Use",      "url": "/terms/",            "title": "Content ownership, submissions, and acceptable use." },
-      { "label": "Republication License","url": "/license/",       "title": "Articles are CC BY-NC-ND 4.0 — free to republish under attribution." },
-      { "label": "Sitemap",           "url": "/site-map/",         "title": "A complete directory of every page on the site." }
     ]
   }
 ]

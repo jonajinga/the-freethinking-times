@@ -44,19 +44,8 @@
       { "label": "Editorial Ethics",  "url": "/ethics/",           "title": "Our standards for accuracy, sourcing, conflicts of interest, and corrections." },
       { "label": "Contact",           "url": "/contact/",          "title": "The general contact form. Every message is read by a person." },
       { "label": "Send Feedback",     "url": "/feedback/",         "title": "Bug reports, feature ideas, general site feedback." },
+      { "label": "Legal",             "url": "/legal/",            "title": "Privacy, terms, republication license, accessibility, and the sitemap." },
       { "label": "Editorial handbook →", "url": "/editorial/", "title": "The full editorial handbook, mission, accuracy, sourcing, independence." }
-    ]
-  },
-  {
-    "heading": "Legal",
-    "headingUrl": "/legal/",
-    "links": [
-      { "label": "Privacy Policy",    "url": "/privacy/",          "title": "What data we collect (very little) and what we don't." },
-      { "label": "Terms of Use",      "url": "/terms/",            "title": "Content ownership, submissions, acceptable use." },
-      { "label": "Republication License","url": "/license/",       "title": "Articles are CC BY-NC-ND 4.0 — free to republish under attribution." },
-      { "label": "Accessibility",     "url": "/accessibility/",    "title": "Our WCAG 2.2 AA commitment and how to report issues." },
-      { "label": "Sitemap",           "url": "/site-map/",         "title": "A complete directory of every page on this site." },
-      { "label": "Transparency →", "url": "/transparency/",   "title": "Costs, changelog, stack, open source, and the full transparency hub." }
     ]
   }
 ]
