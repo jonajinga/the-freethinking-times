@@ -1788,6 +1788,19 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
   background: rgba(255,255,255,0.18);
 }
 
+/* Disabled state — used by ann-bookmark-btn at end-of-article so
+ * readers can't stack pointless bookmarks against the footer. */
+.annotation-toolbar__btn.is-disabled,
+.annotation-toolbar__btn[aria-disabled="true"] {
+  color: rgba(255, 255, 255, 0.25);
+  cursor: not-allowed;
+}
+.annotation-toolbar__btn.is-disabled:hover,
+.annotation-toolbar__btn[aria-disabled="true"]:hover {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.25);
+}
+
 /* Width / height set in the unified SVG-sizing rule above. */
 .annotation-toolbar__btn svg {
   display: block;

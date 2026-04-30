@@ -100,14 +100,19 @@
   // is in the spa-nav re-inject list, so this whole IIFE re-runs).
   document.querySelectorAll('.article-body, .library-body').forEach(annotate);
 
-  // Single document-level click handler bound on first run; survives
-  // SPA navigations because document persists across content swaps.
-  if (isFirstRun) {
+  // Single document-level click handler. Use its own one-shot flag
+  // (rather than the IIFE's `isFirstRun`) so the binding survives
+  // any race where __paraAnchorsBootstrapped is set by something
+  // else before this script runs — that path was leaving the
+  // pilcrow click silently unbound on first load.
+  if (!window.__paraAnchorClickBound) {
+    window.__paraAnchorClickBound = true;
     document.addEventListener('click', function (e) {
       var a = e.target.closest && e.target.closest('.para-anchor');
       if (!a) return;
       // Buttons don't navigate, but stop the click from bubbling to
       // any global scroll-jacking handler just in case.
+      e.preventDefault();
       e.stopPropagation();
       copyAndFlash(a);
       // Reflect the permalink in the address bar so the reader can

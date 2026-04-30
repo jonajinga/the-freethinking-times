@@ -996,7 +996,42 @@
       }
 
       if (bookmarkBtn) {
+        // Disable bookmarking once the reader is at (or past) the
+        // bottom of the article — otherwise readers stack a row of
+        // bookmarks against the footer that point at nothing they
+        // actually want to return to. Watch scroll + resize and
+        // sync aria-disabled + a visual greyed-out state.
+        function syncBookmarkAvailability() {
+          var sTop = window.scrollY || document.documentElement.scrollTop;
+          var dHeight = document.documentElement.scrollHeight - window.innerHeight;
+          var pct = dHeight > 0 ? (sTop / dHeight) * 100 : 0;
+          var atEnd = pct >= 100;
+          bookmarkBtn.disabled = atEnd;
+          bookmarkBtn.setAttribute('aria-disabled', atEnd ? 'true' : 'false');
+          bookmarkBtn.classList.toggle('is-disabled', atEnd);
+          bookmarkBtn.title = atEnd
+            ? 'You are already at the end of the article'
+            : 'Bookmark this spot';
+        }
+        // SPA-nav re-runs annotations.js, so guard the window-level
+        // listeners with a one-shot flag to avoid stacking handlers
+        // on every soft navigation.
+        if (!window.__bookmarkBtnAvailListener) {
+          window.__bookmarkBtnAvailListener = true;
+          window.addEventListener('scroll', function () {
+            var b = document.getElementById('ann-bookmark-btn');
+            if (b && b.__syncAvail) b.__syncAvail();
+          }, { passive: true });
+          window.addEventListener('resize', function () {
+            var b = document.getElementById('ann-bookmark-btn');
+            if (b && b.__syncAvail) b.__syncAvail();
+          });
+        }
+        bookmarkBtn.__syncAvail = syncBookmarkAvailability;
+        syncBookmarkAvailability();
+
         bookmarkBtn.addEventListener('click', function () {
+          if (bookmarkBtn.disabled) return;
           var scrollTop = window.scrollY || document.documentElement.scrollTop;
           var docHeight = document.documentElement.scrollHeight - window.innerHeight;
           var pagePct = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;

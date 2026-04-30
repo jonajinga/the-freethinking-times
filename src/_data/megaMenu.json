@@ -1,66 +1,45 @@
 [
   {
-    "heading": "Explore",
+    "heading": "Read",
     "links": [
-      { "title": "Public Domain Library", "url": "/library/",         "desc": "Full texts from the freethought tradition" },
-      { "title": "Quotes",                "url": "/quotes/",          "desc": "Curated freethought quotes" },
-      { "title": "Videos",                "url": "/videos/",          "desc": "Lectures, debates, and documentaries" },
-      { "title": "Timeline",              "url": "/timeline/",        "desc": "2,400 years of freethought history" },
-      { "title": "Knowledge Map",         "url": "/knowledge-map/",   "desc": "Every article, plotted by topic" }
+      { "title": "Library",   "url": "/library/",   "desc": "Public-domain freethought texts in full." },
+      { "title": "Quotes",    "url": "/quotes/",    "desc": "Curated, attributed quotations." },
+      { "title": "Bookshelf", "url": "/bookshelf/", "desc": "Annotated reading list." },
+      { "title": "Timeline",  "url": "/timeline/",  "desc": "Two and a half millennia of history." },
+      { "title": "Glossary",  "url": "/glossary/",  "desc": "Plain-English term definitions." },
+      { "title": "All projects →", "url": "/projects/", "desc": "Every freethought project we run." }
     ]
   },
   {
-    "heading": "Projects",
+    "heading": "Tools",
     "links": [
-      { "title": "Glossary",            "url": "/glossary/",            "desc": "Philosophical terms and definitions" },
-      { "title": "Bookshelf",           "url": "/bookshelf/",           "desc": "Reading recommendations" },
-      { "title": "Thought Experiments", "url": "/thought-experiments/", "desc": "Classic experiments examined" },
-      { "title": "Trials of Thought",   "url": "/trials/",              "desc": "Landmark trials of ideas" },
-      { "title": "Games",               "url": "/games/",               "desc": "Trivia, puzzles, and word games" }
-    ]
-  },
-  {
-    "heading": "Reader Tools",
-    "links": [
-      { "title": "Search",               "url": "/search/",             "desc": "Full search page" },
-      { "title": "Start Here",           "url": "/start-here/",         "desc": "New to the site?" },
-      { "title": "Reading History",      "url": "/reading-history/",    "desc": "Articles you've read" },
-      { "title": "Reading List",         "url": "/reading-list/",       "desc": "Saved for later" },
-      { "title": "Reading Calendar",     "url": "/reading-calendar/",   "desc": "Your reading by date, on this device" },
-      { "title": "Editorial Calendar",   "url": "/editorial-calendar/", "desc": "Every article by publish date" },
-      { "title": "Responses",            "url": "/responses/",          "desc": "Threads of replies and rebuttals" },
-      { "title": "Back-of-Book Index",   "url": "/back-of-book/",       "desc": "Scholarly index of concepts and themes" },
-      { "title": "Print Basket",         "url": "/print-basket/",       "desc": "Combine articles into one PDF" },
-      { "title": "Notes & Highlights",   "url": "/notes/",              "desc": "Your saved annotations" },
-      { "title": "Most Read",            "url": "/most-read/",          "desc": "What readers are spending time with" },
-      { "title": "RSS Reader",           "url": "/reader/",             "desc": "Built-in feed reader" },
-      { "title": "Feeds",                "url": "/feeds/",              "desc": "Every RSS feed in one place" }
+      { "title": "Search",       "url": "/search/",       "desc": "Full-text site search." },
+      { "title": "Reading List", "url": "/reading-list/", "desc": "Articles saved for later." },
+      { "title": "Notes",        "url": "/notes/",        "desc": "Your highlights and bookmarks." },
+      { "title": "Archives",     "url": "/archives/",     "desc": "Every article, indexed." },
+      { "title": "Newsletter",   "url": "/newsletter/",   "desc": "Occasional email, no tracking." },
+      { "title": "All reader tools →", "url": "/reader-tools/", "desc": "Calendars, history, knowledge map, more." }
     ]
   },
   {
     "heading": "Community",
     "links": [
-      { "title": "Community Hub", "url": "/community/",   "desc": "Organizations worldwide" },
-      { "title": "Events",        "url": "/events/",      "desc": "Conferences and meetups" },
-      { "title": "Resources",     "url": "/resources/",   "desc": "Education, legal, and support" },
-      { "title": "Newsletter",    "url": "/newsletter/",  "desc": "Free, no tracking" },
-      { "title": "Reader Survey", "url": "/survey/",      "desc": "Tell us what we're missing" },
-      { "title": "Volunteer",     "url": "/volunteer/",   "desc": "Open positions" },
-      { "title": "Contribute",    "url": "/contribute/",  "desc": "Pitch a piece" },
-      { "title": "Send Feedback", "url": "/feedback/",    "desc": "Bug, idea, compliment" }
+      { "title": "Directory",  "url": "/community/",  "desc": "Freethought groups worldwide." },
+      { "title": "Events",     "url": "/events/",     "desc": "Conferences and meetups." },
+      { "title": "RSS Reader", "url": "/reader/",     "desc": "Built-in feed reader." },
+      { "title": "Contribute", "url": "/contribute/", "desc": "How to write for us." },
+      { "title": "Submit",     "url": "/submit/",     "desc": "Pitch an article, suggest a quote, recommend a book." }
     ]
   },
   {
     "heading": "About",
     "links": [
-      { "title": "About Us",              "url": "/about/",                 "desc": "What we are and why" },
-      { "title": "Masthead",              "url": "/masthead/",              "desc": "The team" },
-      { "title": "Editorial Standards",   "url": "/standards/",             "desc": "How we work" },
-      { "title": "Contributor Contract",  "url": "/contributor-contract/",  "desc": "Terms for writers" },
-      { "title": "Transparency",          "url": "/transparency/",          "desc": "Costs, disclosures, sources" },
-      { "title": "Support Us",            "url": "/support/",               "desc": "Keep us independent" },
-      { "title": "License",               "url": "/license/",               "desc": "CC BY-NC-ND 4.0" },
-      { "title": "Open Source",           "url": "/open-source/",           "desc": "Fork our codebase" }
+      { "title": "About Us",         "url": "/about/",        "desc": "What we are, why we exist." },
+      { "title": "Masthead",         "url": "/masthead/",     "desc": "Who runs this publication." },
+      { "title": "Editorial Ethics", "url": "/ethics/",       "desc": "Standards for accuracy, sourcing, corrections." },
+      { "title": "Contact",          "url": "/contact/",      "desc": "Reach the editorial inbox." },
+      { "title": "Legal",            "url": "/legal/",        "desc": "Privacy, terms, license, accessibility, sitemap." },
+      { "title": "Editorial handbook →", "url": "/editorial/", "desc": "The full handbook." }
     ]
   }
 ]
