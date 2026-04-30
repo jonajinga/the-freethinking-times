@@ -6,8 +6,12 @@ pagination:
   alias: event
   addAllPagesToCollections: true
 eleventyComputed:
-  title: "{{ event.title }}"
-  description: "{{ event.description }}"
+  # `| safe` here so apostrophes / ampersands in event.title aren't
+  # double-escaped: the eleventyComputed eval would auto-escape the
+  # value once, then the page templates would escape `&` to `&amp;`
+  # again at render time, producing literal `&amp;#39;` in output.
+  title: "{{ event.title | safe }}"
+  description: "{{ event.description | safe }}"
 permalink: /timeline/{{ event.title | slugify }}/
 ---
 

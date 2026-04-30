@@ -8,12 +8,12 @@ photo: src/assets/favicon.svg
 social:
   x: https://x.com/freethinkingtms
   bluesky: https://bsky.app/profile/thefreethinkingtimes.com
-  mastodon: https://mastodon.social/@freethinkingtimes
-  linkedin: ""
-  github: https://github.com/jonajinga/the-freethinking-times
+  mastodon: 
+  linkedin: 
+  github: 
   website: https://thefreethinkingtimes.com
-  email: hello@thefreethinkingtimes.com
+  email: 
 tipping:
-  kofi: https://ko-fi.com/thefreethinkingtimes
-  bmac: ""
-  patreon: ""
+  kofi: 
+  bmac: 
+  patreon: 

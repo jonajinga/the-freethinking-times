@@ -6,8 +6,8 @@ pagination:
   alias: libraryAuthor
 permalink: /library/authors/{{ libraryAuthor.slug }}/
 eleventyComputed:
-  title: "{{ libraryAuthor.name }}"
-  description: "{{ libraryAuthor.significance }}"
+  title: "{{ libraryAuthor.name | safe }}"
+  description: "{{ libraryAuthor.significance | safe }}"
 ---
 <div class="library-author-page" data-pagefind-body>
   <div class="container">

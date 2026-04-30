@@ -10,12 +10,12 @@ photo: src/assets/img/authors/jon-ajinga.webp
 social:
   x: https://x.com/jonajinga
   bluesky: https://bsky.app/profile/jonajinga.bsky.social
-  mastodon: https://mastodon.social/@jonajinga
-  linkedin: https://www.linkedin.com/in/jonajinga/
+  mastodon: 
+  linkedin: 
   github: https://github.com/jonajinga
   website: https://jonajinga.com
-  email: jon@thefreethinkingtimes.com
+  email: 
 tipping:
-  kofi: https://ko-fi.com/jonajinga
+  kofi: 
   bmac: ""
   patreon: ""

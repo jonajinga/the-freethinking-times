@@ -6,8 +6,8 @@ pagination:
   alias: q
   addAllPagesToCollections: true
 eleventyComputed:
-  title: "{{ q.author }}"
-  description: "A quote by {{ q.author }} from the freethought tradition."
+  title: "{{ q.author | safe }}"
+  description: "A quote by {{ q.author | safe }} from the freethought tradition."
 permalink: /quotes/{{ q | quoteSlug }}/
 ---
 

@@ -6,5 +6,5 @@ pagination:
   alias: tag
 permalink: "/topics/{{ tag | slugify }}/"
 eleventyComputed:
-  title: "{{ tag }}"
+  title: "{{ tag | safe }}"
 ---

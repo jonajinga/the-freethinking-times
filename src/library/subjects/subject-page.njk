@@ -6,8 +6,8 @@ pagination:
   alias: subject
 permalink: /library/subjects/{{ subject | slugify }}/
 eleventyComputed:
-  title: "{{ subject }} — Library"
-  description: "Public domain works on {{ subject }} in the Freethinking Times Library."
+  title: "{{ subject | safe }} — Library"
+  description: "Public domain works on {{ subject | safe }} in the Freethinking Times Library."
 ---
 <div class="library-discovery" data-pagefind-ignore>
   <div class="container">

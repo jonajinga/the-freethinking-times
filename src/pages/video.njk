@@ -6,8 +6,8 @@ pagination:
   alias: v
   addAllPagesToCollections: true
 eleventyComputed:
-  title: "{{ v.title }}"
-  description: "{{ v.description }}"
+  title: "{{ v.title | safe }}"
+  description: "{{ v.description | safe }}"
 permalink: /videos/{{ v.title | slugify }}/
 ---
 
