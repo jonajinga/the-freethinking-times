@@ -235,6 +235,7 @@ table {
   .article-body table,
   .library-body table,
   .container--prose table,
+  .doc-body table,
   .dash-card table {
     display: block;
     overflow-x: auto;

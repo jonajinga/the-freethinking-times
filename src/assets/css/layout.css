@@ -128,7 +128,12 @@
   }
 }
 
-@media (max-width: 640px) {
+/* Tablet portrait: at 768 the 220px label column leaves the inner cards
+ * row only ~480-500px wide — the auto-fit minmax(220, 1fr) drops to a
+ * single column there, making the label column a stranded artefact.
+ * Collapse the whole strip to single-column at 1024 and below so the
+ * label sits above the cards row in tablet portrait. */
+@media (max-width: 1024px) {
   .front-section-strip { grid-template-columns: 1fr; }
 }
 
