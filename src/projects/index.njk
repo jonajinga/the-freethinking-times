@@ -11,9 +11,9 @@ permalink: /projects/
 
 <div class="container" style="padding-top: var(--space-10); padding-bottom: var(--space-20);">
 
-  <header style="margin-bottom: var(--space-10); padding-bottom: var(--space-6); border-bottom: 3px solid var(--color-ink);">
-    <h1 style="font-family: var(--font-masthead); font-size: clamp(1.8rem, 5vw, 3.815rem); margin-bottom: var(--space-4);">Freethought Projects</h1>
-    <p style="font-size: var(--text-lg); color: var(--color-ink-muted); font-style: italic; max-width: 60ch; line-height: var(--leading-normal);">
+  <header class="page-header">
+    <h1 class="page-header__title">Freethought Projects</h1>
+    <p class="page-header__lede">
       Interactive tools, historical databases, and research projects that go beyond
       the article format. Each project is a living document, updated as new material emerges.
     </p>
@@ -74,6 +74,16 @@ permalink: /projects/
     <a href="/videos/" {{ cardStyle | safe }}>
       <h2 {{ h2Style | safe }}>Video Library</h2>
       <p {{ descStyle | safe }}>Lectures, debates, and documentaries from the freethought tradition, filterable by speaker and topic.</p>
+    </a>
+
+    <a href="/games/" {{ cardStyle | safe }}>
+      <h2 {{ h2Style | safe }}>Games</h2>
+      <p {{ descStyle | safe }}>A small collection of thinking games — crossy-road, trivia, word scramble, and more.</p>
+    </a>
+
+    <a href="/knowledge-map/" {{ cardStyle | safe }}>
+      <h2 {{ h2Style | safe }}>Knowledge Map</h2>
+      <p {{ descStyle | safe }}>Force-directed visual map of every article, clustered by topic and author. Drag, zoom, click any node to read.</p>
     </a>
 
   </div>
