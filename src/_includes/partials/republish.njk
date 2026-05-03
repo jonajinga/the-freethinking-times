@@ -29,7 +29,7 @@
       See our <a href="/license/" data-umami-event="license-learn">full republication terms</a>.
     </p>
     <label class="republish__label" for="republish-html">Select all, copy, and paste into your CMS&rsquo; HTML view:</label>
-    <textarea id="republish-html" class="republish__textarea" readonly rows="10" onclick="this.select()"><p><em>This story was originally published by <a href="{{ site.url }}{{ page.url }}">{{ site.title }}</a> under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> license.</em></p>
+    <textarea id="republish-html" class="republish__textarea" readonly rows="30" onclick="this.select()"><p><em>This story was originally published by <a href="{{ site.url }}{{ page.url }}">{{ site.title }}</a> under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> license.</em></p>
 <h1>{{ title | escape }}</h1>
 <p><strong>By {% if authors[author].name %}{{ authors[author].name }}{% elif authorName %}{{ authorName }}{% else %}{{ author }}{% endif %}</strong> &mdash; <time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate }}</time></p>
 {{ content | safe }}
