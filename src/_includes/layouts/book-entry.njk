@@ -53,17 +53,10 @@ isReadingPage: true
             <span class="btn-label">Save</span>
           </button>
 
+          {# Share-panel migrates into the bottom-toolbar share popover
+             via reader-panel-migrate.js. The inline trigger button is
+             gone — ann-share-btn in the toolbar replaces it. #}
           <div class="share-wrap">
-            <button class="article-action-btn" id="share-btn" type="button"
-              aria-label="Share this entry" aria-expanded="false" aria-controls="share-panel"
-              data-title="{{ title | escape }}"
-              data-url="{{ site.url }}{{ page.url }}">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-              </svg>
-              <span class="btn-label">Share</span>
-            </button>
             <div id="share-panel" class="share-panel" hidden role="menu">
               <a class="share-panel__item" id="share-twitter" href="#" target="_blank" rel="noopener noreferrer" role="menuitem">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -95,53 +88,10 @@ isReadingPage: true
             </div>
           </div>
 
-          <div class="reading-settings-wrap">
-            <button class="article-action-btn" id="reading-settings-btn" type="button"
-              aria-label="Reading settings" aria-expanded="false" aria-controls="reading-settings-panel">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
-                <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
-                <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
-                <line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
-              </svg>
-              <span class="btn-label">Reading</span>
-            </button>
-            <div id="reading-settings-panel" class="reading-settings-panel" hidden>
-              <div class="rs-group">
-                <label class="rs-label" for="rs-font-size">Text size</label>
-                <div class="rs-size-row">
-                  <span class="rs-size-a rs-small" aria-hidden="true">A</span>
-                  <input type="range" class="rs-slider" id="rs-font-size" min="14" max="24" step="1" value="18" aria-label="Font size in pixels">
-                  <span class="rs-size-a rs-large" aria-hidden="true">A</span>
-                </div>
-              </div>
-              <div class="rs-group">
-                <p class="rs-label" id="rs-font-label">Font</p>
-                <div class="rs-btngroup" role="group" aria-labelledby="rs-font-label">
-                  <button class="rs-btn is-active" data-rs-font="serif" type="button">Serif</button>
-                  <button class="rs-btn" data-rs-font="sans" type="button">Sans</button>
-                  <button class="rs-btn" data-rs-font="dyslexic" type="button">OpenDyslexic</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <button class="article-action-btn" id="print-btn" type="button" aria-label="Print or save as PDF">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="6 9 6 2 18 2 18 9"/>
-              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
-              <rect x="6" y="14" width="12" height="8"/>
-            </svg>
-            <span class="btn-label">Print</span>
-          </button>
-
-          <button class="article-action-btn" id="cite-btn" type="button" aria-label="Cite this entry" aria-expanded="false" aria-controls="cite-modal">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.685.54-2.293.44-.6 1.05-1.05 1.83-1.343.78-.295 1.56-.43 2.34-.43v-1.52c-.976 0-1.94.16-2.886.48-.95.32-1.8.824-2.556 1.51-.755.685-1.347 1.54-1.78 2.563-.432 1.025-.65 2.218-.65 3.58 0 1.36.22 2.47.65 3.33.432.86 1.02 1.5 1.76 1.92.74.42 1.57.63 2.48.63.97 0 1.79-.22 2.46-.66.67-.44 1.17-1.03 1.5-1.77.33-.74.5-1.55.5-2.44zm9 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.132-1.54-.022-.16-.95.1-1.685.54-2.294.44-.606 1.05-1.056 1.83-1.35.78-.294 1.56-.43 2.34-.43v-1.52c-.976 0-1.94.16-2.886.48-.95.32-1.8.825-2.556 1.51-.755.686-1.347 1.54-1.78 2.565-.432 1.022-.65 2.216-.65 3.578 0 1.36.22 2.47.65 3.33.432.86 1.02 1.5 1.76 1.92.74.42 1.57.63 2.48.63.97 0 1.79-.22 2.46-.66.67-.44 1.17-1.03 1.5-1.77.33-.74.5-1.55.5-2.44z"/>
-            </svg>
-            <span class="btn-label">Cite</span>
-          </button>
-
+          {# Reading-settings panel removed — display preferences live in
+             the global gs-panel reachable from the masthead. Print and
+             cite buttons moved into the bottom toolbar (their #print-btn
+             and #cite-btn handlers in progress.js still wire up). #}
         </div>
 
         <div id="cite-data"
@@ -236,6 +186,8 @@ isReadingPage: true
   <span>{{ site.title }}, {{ site.url }}{{ page.url }}</span>
   <span>Published {{ page.date | readableDate }}</span>
 </footer>
+
+{% include "partials/reader-toolbar-mini.njk" %}
 
 {% block scripts %}
 
