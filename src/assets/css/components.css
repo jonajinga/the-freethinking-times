@@ -900,13 +900,21 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   border: 0;
   border-top: 4px solid var(--color-accent);
   background: var(--color-bg);
-  overflow-y: auto;
+  /* Body scrolls, not the modal — header stays pinned. */
+  overflow: hidden;
   z-index: var(--z-modal);
   font-family: var(--font-ui);
   display: flex;
   flex-direction: column;
 }
 .republish.republish--modal[hidden] { display: none; }
+/* Pin the header to the top of the modal so the close button is
+ * always reachable. The body below scrolls instead of the whole
+ * modal. flex-shrink: 0 keeps the header from collapsing. */
+.republish.republish--modal .republish__header {
+  flex-shrink: 0;
+  background: var(--color-bg);
+}
 .republish__header {
   display: flex;
   align-items: flex-start;
@@ -961,8 +969,13 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   width: 100%;
   box-sizing: border-box;
   flex: 1;
+  /* Body owns the scroll instead of the modal as a whole. */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
 }
 .republish__footer {
+  flex-shrink: 0;
   margin: 0 auto;
   padding: var(--space-5) var(--space-6) var(--space-8);
   border-top: 1px solid var(--color-rule);
@@ -970,6 +983,7 @@ body { word-spacing: var(--gs-word-spacing, 0); }
   max-width: 720px;
   width: 100%;
   box-sizing: border-box;
+  background: var(--color-bg);
 }
 .republish__footer-mark {
   margin: 0 0 4px;
