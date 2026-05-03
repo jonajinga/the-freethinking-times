@@ -27,8 +27,7 @@ isReadingPage: true
 {# Context for annotations.js #}
 <div id="annotations-context" data-page-slug="{{ workSlug }}-{{ page.fileSlug }}" data-page-url="{{ page.url }}" data-page-title="{{ workTitle }}: {{ title | escape }}" hidden></div>
 
-{# Inline script: apply focus mode before paint to avoid layout shift #}
-<script>document.documentElement.classList.add('is-library-reading');(function(){if(localStorage.getItem((window.__PREFIX||
+<script>document.documentElement.classList.add('is-library-reading');</script>
 
 {# ── Reading progress bar ── #}
 <div class="library-reading-progress" aria-hidden="true">

@@ -195,12 +195,16 @@
         if (willOpen) {
           panel.removeAttribute('hidden');
           btn.setAttribute('aria-expanded', 'true');
-          // Scroll so the panel is visible. Use 'start' so its top
-          // sits below the masthead, with a manual offset for fixed
-          // header height.
-          var rect = panel.getBoundingClientRect();
-          var top = rect.top + window.scrollY - 80;
-          window.scrollTo({ top: top, behavior: 'smooth' });
+          // Inline panels (funding / author-support) live in document
+          // flow — scroll them into view. Fullscreen modal variants
+          // (e.g. .republish--modal) are position:fixed and don't
+          // need scrolling — they already cover the viewport.
+          var isFixedModal = panel.classList.contains('republish--modal');
+          if (!isFixedModal) {
+            var rect = panel.getBoundingClientRect();
+            var top = rect.top + window.scrollY - 80;
+            window.scrollTo({ top: top, behavior: 'smooth' });
+          }
           if (typeof panel.focus === 'function') {
             panel.setAttribute('tabindex', '-1');
             try { panel.focus({ preventScroll: true }); } catch (e) {}
