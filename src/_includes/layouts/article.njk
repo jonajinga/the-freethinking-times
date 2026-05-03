@@ -39,16 +39,6 @@ isReadingPage: true
   <span class="print-header__url">{{ site.url }}</span>
 </div>
 
-{# Inline script: apply focus mode before paint to avoid layout shift #}
-
-{# ── Sticky reading header (matches library layout) ── #}
-<header class="library-reading-header article-reading-header">
-  {% if section %}
-  <a class="library-reading-header__back" href="/{{ section | slugify }}/">&larr; {{ section }}</a>
-  {% endif %}
-  <span class="library-reading-header__title">{{ title }}</span>
-</header>
-
 {# Pagefind metadata, hidden, used by search index #}
 <div aria-hidden="true" style="display:none">
   {% if section %}

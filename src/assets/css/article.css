@@ -39,24 +39,8 @@
   }
 }
 
-/* ── Sticky article reading header ──────────────────────────── */
-.article-reading-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: var(--z-nav);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
-}
-
-.article-reading-header.is-visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Hide masthead content when reading header takes over */
+/* Hide masthead content when reading header takes over (library only —
+ * the article variant was retired). */
 .masthead.is-replaced {
   opacity: 0;
   visibility: hidden;

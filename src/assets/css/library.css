@@ -2622,46 +2622,11 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
     font-size: max(1.05rem, 16px);
   }
 
-  /* Sticky header: hide chapter title to save horizontal space.
-     The work title (back link) and Panel button are sufficient on
-     library chapter pages. ARTICLE pages override this below — the
-     back link only shows the section slug, so the title is the only
-     cue for what the reader is actually reading. */
+  /* Sticky header on mobile: hide chapter title to save horizontal
+     space. The work title (back link) and Panel button are sufficient
+     for library chapter pages. */
   .library-reading-header__title {
     display: none;
-  }
-
-  /* Article sticky header on mobile: show the FULL title. We allow the
-     title to wrap up to two lines, scaling the font down so the typical
-     newspaper headline still fits. The header height grows from one
-     line to two, which is a fine cost for not truncating context. */
-  .article-reading-header {
-    align-items: center;
-    min-height: 56px;
-    padding-block: var(--space-2);
-  }
-  .article-reading-header .library-reading-header__title {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    flex: 1 1 auto;
-    min-width: 0;
-    font-size: clamp(0.7rem, 2.7vw, var(--text-sm));
-    line-height: 1.25;
-    white-space: normal;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  /* Back link stays compact and on a single line. */
-  .article-reading-header .library-reading-header__back {
-    flex-shrink: 0;
-    max-width: 35%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    align-self: flex-start;
-    padding-top: 2px;
   }
 
   /* Compact reading header on mobile */
