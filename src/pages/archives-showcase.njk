@@ -96,11 +96,11 @@ eleventyExcludeFromCollections: true
   transition: opacity 0.5s ease 0.7s, background var(--transition-fast);
 }
 .as-showcase__read:hover { background: var(--color-accent); color: var(--color-bg); text-decoration: none; }
-.as-showcase__actions { display: inline-flex; align-items: stretch; margin-top: var(--space-5); }
+.as-showcase__actions { display: inline-flex; align-items: stretch; flex-wrap: wrap; justify-content: center; gap: var(--space-3); margin-top: var(--space-5); }
 /* Match Read button height + margin so the two sit as a paired
  * unit, not a big-button-and-tiny-pill mismatch. */
 .as-showcase__read { margin-top: 0; }
-.as-showcase__listen { display: inline-flex; align-items: stretch; margin-left: var(--space-3); }
+.as-showcase__listen { display: inline-flex; align-items: stretch; }
 .as-showcase__listen .listen-btn {
   height: auto;
   padding: var(--space-3) var(--space-5);
