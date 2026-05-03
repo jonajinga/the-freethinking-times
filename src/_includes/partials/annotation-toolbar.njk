@@ -15,11 +15,13 @@
   </button>
   <div class="annotation-toolbar__main">
     {# Article-info toggle — reveal/hide eyebrow + byline + stats +
-       topics. No-op on library pages (no compact-header pattern there)
-       but kept for visual parity. #}
+       topics. Library pages have no compact-header pattern, so the
+       button has nothing to control there and is suppressed. #}
+    {% if readerPanelId != "library-panel" %}
     <button id="ann-info-btn" class="annotation-toolbar__btn" type="button" aria-label="Show article details" aria-expanded="false" title="Article details">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
     </button>
+    {% endif %}
     {# Listen pill — only renders when the page has a generated MP3. #}
     {% if audioManifest and audioManifest[page.url] %}
     <div id="ann-listen-slot" class="annotation-toolbar__slot">
@@ -76,11 +78,15 @@
     </button>
     {% endif %}
     {# Comments — auto-hides via reader-panel-migrate.js if the page
-       has no comments-body element to scroll to. #}
+       has no comments-body element to scroll to. Library pages don't
+       host article comments, so the button is suppressed entirely
+       rather than rendered-then-hidden. #}
+    {% if readerPanelId != "library-panel" %}
     <button id="ann-comments-btn" class="annotation-toolbar__btn" type="button" aria-label="Jump to comments" title="Comments"
       onclick="window.__tftShowComments(null, true);">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
     </button>
+    {% endif %}
     {# Feedback slot — populated by reader-panel-migrate.js with the
        migrated feedback button + popup. Empty on pages without one. #}
     <div id="ann-feedback-slot" class="annotation-toolbar__slot"></div>
