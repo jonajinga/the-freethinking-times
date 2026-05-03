@@ -225,48 +225,12 @@ isReadingPage: true
 
 </aside>
 
-{# ── Annotation toolbar ── #}
-<div id="annotation-toolbar" class="annotation-toolbar" role="toolbar" aria-label="Reader tools">
-  <div class="annotation-toolbar__main">
-    <button class="annotation-toolbar__btn library-panel-toggle" type="button" aria-label="Open Reader panel" aria-controls="library-panel" aria-expanded="false" title="Reader">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-    </button>
-    <button id="ann-highlight-btn" class="annotation-toolbar__btn annotation-toolbar__btn--needs-selection" type="button" aria-label="Highlight selection" title="Highlight">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-    </button>
-    <button id="ann-annotate-btn" class="annotation-toolbar__btn annotation-toolbar__btn--needs-selection" type="button" aria-label="Add note" title="Note">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-    </button>
-    <button id="ann-bookmark-btn" class="annotation-toolbar__btn" type="button" aria-label="Bookmark this spot" title="Bookmark this spot">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-    </button>
-    <div id="ann-listen-slot" class="annotation-toolbar__slot"></div>
-    <div id="ann-focus-slot" class="annotation-toolbar__slot"></div>
-    <div id="ann-save-slot" class="annotation-toolbar__slot"></div>
-    <button id="ann-share-btn" class="annotation-toolbar__btn" type="button" aria-label="Share, download, print" aria-controls="ann-share-popover" aria-expanded="false" title="Share, download, print">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-    </button>
-  </div>
 
-  <div id="annotation-toolbar-music" class="annotation-toolbar__music"></div>
-</div>
+{# Annotation toolbar — shared across article + library reading layouts. #}
+{% set readerPanelId = "library-panel" %}
+{% set readerToggleClass = "library-panel-toggle" %}
+{% include "partials/annotation-toolbar.njk" %}
 
-<div id="ann-share-popover" class="ann-share-popover" hidden role="menu" aria-labelledby="ann-share-btn">
-  <p class="ann-share-popover__subhead">Share</p>
-  <div id="ann-share-slot"></div>
-  <p class="ann-share-popover__subhead">Download</p>
-  <div id="ann-download-slot"></div>
-  <p class="ann-share-popover__subhead">Print / PDF</p>
-  <button class="ann-share-popover__item" type="button" data-print="article">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-    Chapter only
-  </button>
-  <button class="ann-share-popover__item" type="button" data-print="article-with-notes">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/><line x1="9" y1="11" x2="15" y2="11"/><line x1="9" y1="14" x2="13" y2="14"/></svg>
-    Chapter with notes &amp; highlights
-  </button>
-  <button class="ann-share-popover__item" type="button" data-print="notes-only"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>Notes &amp; highlights only</button>
-</div>
 
 {% block scripts %}
 
