@@ -110,7 +110,7 @@ isReadingPage: true
         {% for tag in tags %}{% if tag != "post" %}{% set _hasTopics = true %}{% endif %}{% endfor %}
         {% if _hasTopics %}
         <nav class="article-topics" aria-label="Topics" data-pagefind-ignore>
-          <span class="article-topics__label">Topics</span>
+          <a class="article-topics__label" href="/topics/">Topics</a>
           <ul class="article-topics__list" role="list">
             {% for tag in tags %}{% if tag != "post" %}<li><a href="/topics/{{ tag | slugify }}/">{{ tag }}</a></li>{% endif %}{% endfor %}
           </ul>

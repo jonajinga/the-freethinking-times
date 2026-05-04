@@ -88,7 +88,7 @@
 .article-header__eyebrow > * + *::before,
 .article-header__byline-meta > * + *:not(.republish-badge)::before,
 .article-meta-item + .article-meta-item::before,
-.article-topics > * + *:not(.article-topics__list)::before,
+.article-topics > * + *::before,
 .article-topics__list li + li::before {
   content: "|";
   /* Equal margin on both sides so the pipe sits balanced between the
@@ -872,10 +872,13 @@
    * --color-ink-faint sat too close to --color-ink-muted (the chip
    * colour) and the label visually merged with the row. */
   color: var(--color-accent);
+  text-decoration: none;
   flex-shrink: 0;
-  /* Visual padding on the right to substitute for the pipe we
-   * suppressed between the label and the first chip. */
-  margin-right: var(--space-3);
+}
+.article-topics__label:hover {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .article-topics__list {
   display: flex;
