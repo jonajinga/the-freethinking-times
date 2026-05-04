@@ -160,6 +160,23 @@ async function main() {
     if (stats[url].likes < 0) stats[url].likes = 0;
   }
 
+  // Sanity-cap shares relative to views. Umami's data-umami-event
+  // auto-track attaches a fresh click listener every time progress.js
+  // re-runs (which happens on every SPA nav), so a single click can
+  // emit the share-* event multiple times once a reader has navigated
+  // around. We saw an article with 87 views and 1000 "shares", which
+  // is ~11× more shares than views — implausible for any real article.
+  // Cap at 30 % of pageviews (typical viral article tops out around
+  // 3-5 %; 30 % is a generous ceiling) so a malformed sync run can't
+  // bleed obviously-wrong numbers into the article meta line.
+  for (const url of Object.keys(stats)) {
+    const cap = Math.max(0, Math.round((stats[url].views || 0) * 0.3));
+    if (stats[url].shares > cap) {
+      console.warn(`  shares cap: ${url} reduced ${stats[url].shares} -> ${cap} (views: ${stats[url].views})`);
+      stats[url].shares = cap;
+    }
+  }
+
   const out = join(__dirname, '..', 'src', '_data', 'articleStats.json');
   await writeFile(out, JSON.stringify(stats, null, 2));
   const totals = Object.values(stats).reduce((a, s) => ({ v: a.v + s.views, s: a.s + s.shares, l: a.l + s.likes }), { v: 0, s: 0, l: 0 });

@@ -101,13 +101,40 @@
     var bsky = document.getElementById('share-bluesky');
     var masto = document.getElementById('share-mastodon');
     var em = document.getElementById('share-email');
-    if (tw)   { tw.href   = 'https://twitter.com/intent/tweet?url=' + encUrl + '&text=' + encTitle; tw.setAttribute('data-umami-event', 'share-twitter'); }
-    if (fb)   { fb.href   = 'https://www.facebook.com/sharer/sharer.php?u=' + encUrl; fb.setAttribute('data-umami-event', 'share-facebook'); }
-    if (li)   { li.href   = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encUrl; li.setAttribute('data-umami-event', 'share-linkedin'); }
-    if (rd)   { rd.href   = 'https://www.reddit.com/submit?url=' + encUrl + '&title=' + encTitle; rd.setAttribute('data-umami-event', 'share-reddit'); }
-    if (bsky) { bsky.href = 'https://bsky.app/intent/compose?text=' + encodeURIComponent(shareTitle + '\n\n' + shareUrl); bsky.setAttribute('data-umami-event', 'share-bluesky'); }
-    if (masto) { masto.href = 'https://mastodon.social/share?text=' + encodeURIComponent(shareTitle + '\n\n' + shareUrl); masto.setAttribute('data-umami-event', 'share-mastodon'); }
-    if (em)   { em.href   = 'mailto:?subject=' + encTitle + '&body=' + encUrl; em.setAttribute('data-umami-event', 'share-email'); }
+    if (tw)    tw.href   = 'https://twitter.com/intent/tweet?url=' + encUrl + '&text=' + encTitle;
+    if (fb)    fb.href   = 'https://www.facebook.com/sharer/sharer.php?u=' + encUrl;
+    if (li)    li.href   = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encUrl;
+    if (rd)    rd.href   = 'https://www.reddit.com/submit?url=' + encUrl + '&title=' + encTitle;
+    if (bsky)  bsky.href = 'https://bsky.app/intent/compose?text=' + encodeURIComponent(shareTitle + '\n\n' + shareUrl);
+    if (masto) masto.href = 'https://mastodon.social/share?text=' + encodeURIComponent(shareTitle + '\n\n' + shareUrl);
+    if (em)    em.href   = 'mailto:?subject=' + encTitle + '&body=' + encUrl;
+
+    // Track share clicks via explicit umami.track instead of the
+    // data-umami-event attribute. progress.js re-runs on every SPA
+    // nav, so re-applying the attribute repeatedly was causing the
+    // auto-tracker to attach a fresh click listener each time and
+    // a single share click ended up emitting the event ~10× by the
+    // time the reader had navigated through a few articles. The
+    // __shareTracked flag pins each button to a single binding for
+    // the page lifetime.
+    [
+      [tw,    'share-twitter'],
+      [fb,    'share-facebook'],
+      [li,    'share-linkedin'],
+      [rd,    'share-reddit'],
+      [bsky,  'share-bluesky'],
+      [masto, 'share-mastodon'],
+      [em,    'share-email']
+    ].forEach(function (pair) {
+      var el = pair[0]; var name = pair[1];
+      if (!el || el.__shareTracked) return;
+      el.__shareTracked = true;
+      el.addEventListener('click', function () {
+        if (window.umami && typeof window.umami.track === 'function') {
+          try { window.umami.track(name, { url: shareUrl }); } catch (e) {}
+        }
+      });
+    });
 
     // Skip toggle/auto-close when panel has been relocated out of the
     // original header rail (into the Reader panel, or into the share
@@ -145,9 +172,12 @@
       if (e.key === 'Escape' && !sharePanel.hidden) { closeSharePanel(); shareBtn.focus(); }
     });
 
-    // Copy link inside panel
+    // Copy link inside panel — gated by __shareTracked so SPA-nav
+    // doesn't stack duplicate click listeners (which inflated share
+    // counts) and so a single click only fires umami.track once.
     var shareCopy = document.getElementById('share-copy');
-    if (shareCopy) {
+    if (shareCopy && !shareCopy.__shareTracked) {
+      shareCopy.__shareTracked = true;
       shareCopy.addEventListener('click', function() {
         var orig = shareCopy.textContent.trim();
         function onCopied() {
@@ -164,6 +194,9 @@
           ta.select();
           try { document.execCommand('copy'); onCopied(); } catch(e) {}
           document.body.removeChild(ta);
+        }
+        if (window.umami && typeof window.umami.track === 'function') {
+          try { window.umami.track('share-copy', { url: shareUrl }); } catch (e) {}
         }
       });
     }

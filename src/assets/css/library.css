@@ -2154,13 +2154,19 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
   background: rgba(250, 204, 21, 0.45);
 }
 
+/* Dark mode: a translucent yellow over a dark background reads as a
+ * muddy olive — a yellow highlight should still feel like yellow.
+ * Pin the background to a near-opaque highlighter yellow and force
+ * dark ink on top so the contrast (and the "highlighter" affordance)
+ * matches the light-mode look. */
 [data-theme="dark"] .library-highlight {
-  background: rgba(250, 204, 21, 0.38);
-  color: #fff8d6;
+  background: #fde047;
+  color: #1a1a1a;
 }
 
 [data-theme="dark"] .library-highlight:hover {
-  background: rgba(250, 204, 21, 0.55);
+  background: #facc15;
+  color: #1a1a1a;
 }
 
 /* Highlight color variants — light theme */
@@ -2175,19 +2181,19 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
 .library-highlight--purple { background: rgba(124, 58, 237, 0.15); }
 .library-highlight--purple:hover { background: rgba(124, 58, 237, 0.28); }
 
-/* Dark theme — opacity bumped to 0.38 (was 0.2) so the wash actually
- * reads against the dark surface. Hover states match the +0.17
- * boost the light theme uses. */
-[data-theme="dark"] .library-highlight--pink { background: rgba(244, 114, 182, 0.38); color: #fce7f3; }
-[data-theme="dark"] .library-highlight--pink:hover { background: rgba(244, 114, 182, 0.55); }
-[data-theme="dark"] .library-highlight--blue { background: rgba(96, 165, 250, 0.38); color: #dbeafe; }
-[data-theme="dark"] .library-highlight--blue:hover { background: rgba(96, 165, 250, 0.55); }
-[data-theme="dark"] .library-highlight--green { background: rgba(74, 222, 128, 0.38); color: #dcfce7; }
-[data-theme="dark"] .library-highlight--green:hover { background: rgba(74, 222, 128, 0.55); }
-[data-theme="dark"] .library-highlight--orange { background: rgba(251, 146, 60, 0.4); color: #fed7aa; }
-[data-theme="dark"] .library-highlight--orange:hover { background: rgba(251, 146, 60, 0.58); }
-[data-theme="dark"] .library-highlight--purple { background: rgba(167, 139, 250, 0.4); color: #ede9fe; }
-[data-theme="dark"] .library-highlight--purple:hover { background: rgba(167, 139, 250, 0.58); }
+/* Dark theme — opaque highlighter palette + dark ink, matching the
+ * yellow rule above so the colour variants stay visually consistent
+ * with the default and read like real highlighter washes. */
+[data-theme="dark"] .library-highlight--pink { background: #f9a8d4; color: #1a1a1a; }
+[data-theme="dark"] .library-highlight--pink:hover { background: #f472b6; color: #1a1a1a; }
+[data-theme="dark"] .library-highlight--blue { background: #93c5fd; color: #1a1a1a; }
+[data-theme="dark"] .library-highlight--blue:hover { background: #60a5fa; color: #1a1a1a; }
+[data-theme="dark"] .library-highlight--green { background: #86efac; color: #1a1a1a; }
+[data-theme="dark"] .library-highlight--green:hover { background: #4ade80; color: #1a1a1a; }
+[data-theme="dark"] .library-highlight--orange { background: #fdba74; color: #1a1a1a; }
+[data-theme="dark"] .library-highlight--orange:hover { background: #fb923c; color: #1a1a1a; }
+[data-theme="dark"] .library-highlight--purple { background: #c4b5fd; color: #1a1a1a; }
+[data-theme="dark"] .library-highlight--purple:hover { background: #a78bfa; color: #1a1a1a; }
 
 /* Sepia theme */
 [data-rs-bg="sepia"] .library-highlight { background: rgba(180, 140, 20, 0.25); }
@@ -2227,14 +2233,14 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
 .library-highlight--orange.library-highlight--note { border-bottom-color: rgba(234, 88, 12, 0.5); }
 .library-highlight--purple.library-highlight--note { border-bottom-color: rgba(124, 58, 237, 0.5); }
 
-/* Article-level dark background — same opacity boost as the global
- * dark-theme rules above. */
-[data-rs-bg="dark"] .library-highlight { background: rgba(250, 204, 21, 0.38); color: #fff8d6; }
-[data-rs-bg="dark"] .library-highlight--pink { background: rgba(244, 114, 182, 0.38); color: #fce7f3; }
-[data-rs-bg="dark"] .library-highlight--blue { background: rgba(96, 165, 250, 0.38); color: #dbeafe; }
-[data-rs-bg="dark"] .library-highlight--green { background: rgba(74, 222, 128, 0.38); color: #dcfce7; }
-[data-rs-bg="dark"] .library-highlight--orange { background: rgba(251, 146, 60, 0.4); color: #fed7aa; }
-[data-rs-bg="dark"] .library-highlight--purple { background: rgba(167, 139, 250, 0.4); color: #ede9fe; }
+/* Article-level dark background — same opaque-highlighter approach
+ * as the global dark-theme rules above. */
+[data-rs-bg="dark"] .library-highlight { background: #fde047; color: #1a1a1a; }
+[data-rs-bg="dark"] .library-highlight--pink { background: #f9a8d4; color: #1a1a1a; }
+[data-rs-bg="dark"] .library-highlight--blue { background: #93c5fd; color: #1a1a1a; }
+[data-rs-bg="dark"] .library-highlight--green { background: #86efac; color: #1a1a1a; }
+[data-rs-bg="dark"] .library-highlight--orange { background: #fdba74; color: #1a1a1a; }
+[data-rs-bg="dark"] .library-highlight--purple { background: #c4b5fd; color: #1a1a1a; }
 
 /* Dotted-underline note indicator: bumped to ~0.9 alpha on dark so
  * the dot pattern reads against the saturated highlight wash. */
