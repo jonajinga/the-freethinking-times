@@ -788,38 +788,70 @@
       });
     }
 
-    // Wrap the saved selection range in a <mark> for immediate visual feedback
+    // Walk every text node intersecting the range and wrap each
+    // segment in its own <mark>. Necessary for multi-paragraph
+    // selections — Range.surroundContents() throws when the range
+    // crosses element boundaries, and the extractContents fallback
+    // wraps invalid HTML (<mark> around <p>) which different
+    // browsers render differently. Per-text-node wrapping produces
+    // valid HTML and survives any cross-paragraph shape.
+    function wrapRangeInMarks(range, cls, annId, hasNote) {
+      if (!range) return [];
+      // Collect text nodes first — splitting + wrapping mid-iteration
+      // would invalidate the iterator.
+      var iter = document.createNodeIterator(range.commonAncestorContainer, NodeFilter.SHOW_TEXT, null);
+      var nodes = [], n;
+      while ((n = iter.nextNode())) {
+        try { if (range.intersectsNode(n)) nodes.push(n); } catch (e) {}
+      }
+      var marks = [];
+      for (var i = 0; i < nodes.length; i++) {
+        var node = nodes[i];
+        var len = node.nodeValue ? node.nodeValue.length : 0;
+        if (!len) continue;
+        var startOffset = (node === range.startContainer) ? range.startOffset : 0;
+        var endOffset   = (node === range.endContainer)   ? range.endOffset   : len;
+        if (startOffset >= endOffset) continue;
+        // Trim leading whitespace-only segments so the highlight doesn't
+        // visibly extend into the gutter at paragraph breaks.
+        var slice = node.nodeValue.slice(startOffset, endOffset);
+        if (!/\S/.test(slice)) continue;
+
+        var middle = node;
+        if (startOffset > 0) {
+          try { middle = node.splitText(startOffset); }
+          catch (e) { continue; }
+        }
+        if (endOffset - startOffset < middle.nodeValue.length) {
+          try { middle.splitText(endOffset - startOffset); }
+          catch (e) {}
+        }
+        var mark = document.createElement('mark');
+        mark.className = cls;
+        mark.dataset.annId = annId;
+        var parent = middle.parentNode;
+        if (!parent) continue;
+        parent.insertBefore(mark, middle);
+        mark.appendChild(middle);
+        addMarkClickHandler(mark, annId, hasNote);
+        marks.push(mark);
+      }
+      return marks;
+    }
+
+    // Wrap the saved selection range in <mark> elements. Uses the
+    // text-node walker so a single-paragraph selection and a multi-
+    // paragraph selection produce identically-valid markup.
     function wrapSelectionInMark(annId, hasNote, color) {
       if (!lastRange) return;
       var cls = 'library-highlight' + (hasNote ? ' library-highlight--note' : '');
       if (color && color !== 'yellow') cls += ' library-highlight--' + color;
-      var done = false;
 
-      // Try using the saved range first
-      if (lastRange.range) {
-        try {
-          var mark = document.createElement('mark');
-          mark.className = cls;
-          mark.dataset.annId = annId;
-          lastRange.range.surroundContents(mark);
-          addMarkClickHandler(mark, annId, hasNote);
-          done = true;
-        } catch (e) {
-          try {
-            var fragment = lastRange.range.extractContents();
-            var mark2 = document.createElement('mark');
-            mark2.className = cls;
-            mark2.dataset.annId = annId;
-            mark2.appendChild(fragment);
-            lastRange.range.insertNode(mark2);
-            addMarkClickHandler(mark2, annId, hasNote);
-            done = true;
-          } catch (e2) {}
-        }
-      }
+      var marks = [];
+      if (lastRange.range) marks = wrapRangeInMarks(lastRange.range, cls, annId, hasNote);
 
       // Fallback: search for the text in the body and wrap it
-      if (!done && lastRange.text && bodyEl) {
+      if (!marks.length && lastRange.text && bodyEl) {
         highlightTextInEl(bodyEl, lastRange.text, annId, hasNote, color);
       }
     }
