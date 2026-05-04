@@ -1042,14 +1042,18 @@
         bookmarkBtn.__syncAvail = syncBookmarkAvailability;
         syncBookmarkAvailability();
 
-        bookmarkBtn.addEventListener('click', function () {
-          if (bookmarkBtn.disabled) return;
+        // Compute the absolute Y (in document coordinates) where a
+        // bookmark would land + the section heading the spot belongs
+        // to. Shared by the click handler (commit) and the hover/focus
+        // handler (preview), so the indicator and the saved bookmark
+        // can never disagree about position.
+        function computeBookmarkAnchor() {
           var scrollTop = window.scrollY || document.documentElement.scrollTop;
           var docHeight = document.documentElement.scrollHeight - window.innerHeight;
           var pagePct = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
 
           var bodyOffset = -1;
-          if (lastRange && lastRange.range) {
+          if (lastRange && lastRange.range && bodyEl) {
             try {
               var selRect = lastRange.range.getBoundingClientRect();
               var bodyRect = bodyEl.getBoundingClientRect();
@@ -1057,37 +1061,22 @@
             } catch (e) {}
           }
 
-          var context = lastRange ? lastRange.text.slice(0, 80) : '';
-          // Find the heading the reader is actually inside. If text was
-          // selected, use the selection's position as the anchor so we
-          // don't get confused when the reader has scrolled past the
-          // selection before clicking Bookmark. Otherwise use a reading-
-          // line about a third of the way down the viewport — that's where
-          // the eye typically lands, rather than the very top.
+          var anchorY;
+          if (lastRange && lastRange.range) {
+            try {
+              anchorY = lastRange.range.getBoundingClientRect().top + window.scrollY;
+            } catch (_) {}
+          }
+          if (anchorY == null) anchorY = window.scrollY + window.innerHeight * 0.33;
+
           var bmSection = '';
           if (bodyEl) {
-            // Scope to direct descendants: article markdown renders all
-            // headings as top-level children, so this avoids picking up
-            // incidental h2/h3s inside footnote blocks, related-article
-            // cards, or embedded widgets.
             var allHeadings = bodyEl.querySelectorAll('h2, h3');
             var headings = [];
             for (var hx = 0; hx < allHeadings.length; hx++) {
               if (allHeadings[hx].parentNode === bodyEl) headings.push(allHeadings[hx]);
             }
-            if (!headings.length) {
-              // Fallback: any h2/h3 in the body if none are direct kids.
-              headings = Array.prototype.slice.call(allHeadings);
-            }
-            var anchorY;
-            if (lastRange && lastRange.range) {
-              try {
-                anchorY = lastRange.range.getBoundingClientRect().top + window.scrollY;
-              } catch (_) {}
-            }
-            if (anchorY == null) {
-              anchorY = window.scrollY + window.innerHeight * 0.33;
-            }
+            if (!headings.length) headings = Array.prototype.slice.call(allHeadings);
             for (var hi = headings.length - 1; hi >= 0; hi--) {
               var absTop = headings[hi].getBoundingClientRect().top + window.scrollY;
               if (absTop <= anchorY) {
@@ -1096,12 +1085,55 @@
               }
             }
           }
-          Bookmarks.add(pagePct, context, bodyOffset, bmSection);
+
+          var context = lastRange ? lastRange.text.slice(0, 80) : '';
+          return { pagePct: pagePct, bodyOffset: bodyOffset, anchorY: anchorY, section: bmSection, context: context };
+        }
+
+        // Placement indicator — a thin horizontal rule at the resolved
+        // anchor Y position, spanning the body's column width. Reveals
+        // on hover/focus of the bookmark button so readers can see
+        // exactly where the pin will land before they commit.
+        var previewEl = document.getElementById('bookmark-preview');
+        if (!previewEl) {
+          previewEl = document.createElement('div');
+          previewEl.id = 'bookmark-preview';
+          previewEl.className = 'bookmark-preview';
+          previewEl.setAttribute('aria-hidden', 'true');
+          previewEl.innerHTML = '<span class="bookmark-preview__line"></span><span class="bookmark-preview__pin" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>';
+          document.body.appendChild(previewEl);
+        }
+        function positionPreview() {
+          if (bookmarkBtn.disabled) { previewEl.classList.remove('is-visible'); return; }
+          var anchor = computeBookmarkAnchor();
+          var bodyRect = bodyEl ? bodyEl.getBoundingClientRect() : null;
+          if (!bodyRect) return;
+          // Convert document Y → viewport Y for the position-fixed indicator.
+          var viewportY = anchor.anchorY - (window.scrollY || document.documentElement.scrollTop);
+          previewEl.style.top = Math.round(viewportY) + 'px';
+          previewEl.style.left = Math.round(bodyRect.left) + 'px';
+          previewEl.style.width = Math.round(bodyRect.width) + 'px';
+          previewEl.classList.add('is-visible');
+        }
+        function hidePreview() { previewEl.classList.remove('is-visible'); }
+        bookmarkBtn.addEventListener('mouseenter', positionPreview);
+        bookmarkBtn.addEventListener('focus', positionPreview);
+        bookmarkBtn.addEventListener('mouseleave', hidePreview);
+        bookmarkBtn.addEventListener('blur', hidePreview);
+        // Touch users get a brief preview flash on touchstart so the
+        // landing point is visible before the click commits.
+        bookmarkBtn.addEventListener('touchstart', function () {
+          positionPreview();
+          setTimeout(hidePreview, 700);
+        }, { passive: true });
+
+        bookmarkBtn.addEventListener('click', function () {
+          if (bookmarkBtn.disabled) return;
+          var anchor = computeBookmarkAnchor();
+          Bookmarks.add(anchor.pagePct, anchor.context, anchor.bodyOffset, anchor.section);
           lastRange = null;
+          hidePreview();
           renderBookmarkIndicators();
-          // The button is icon-only now; show the confirmation via a
-          // short-lived class that drives a CSS tooltip, so the SVG
-          // stays put instead of being replaced by text.
           bookmarkBtn.classList.add('is-saved-flash');
           setTimeout(function () { bookmarkBtn.classList.remove('is-saved-flash'); }, 1200);
         });

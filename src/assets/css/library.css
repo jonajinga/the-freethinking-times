@@ -2084,6 +2084,56 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
   }
 }
 
+/* ── Bookmark placement preview ──
+ * Thin accent rule + pin glyph that previews where the bookmark
+ * will land on hover/focus of the toolbar bookmark button. Lives
+ * at body level (position: fixed) so it survives the toolbar's
+ * own stacking context. Pointer-events:none so it never blocks
+ * clicks on the article body underneath. */
+.bookmark-preview {
+  position: fixed;
+  pointer-events: none;
+  z-index: var(--z-overlay);
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.bookmark-preview.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.bookmark-preview__line {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--color-accent);
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.04), 0 6px 12px -8px rgba(0,0,0,0.18);
+}
+.bookmark-preview__pin {
+  position: absolute;
+  top: -10px;
+  left: -22px;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent);
+  background: var(--color-bg);
+  border: 1px solid var(--color-accent);
+  border-radius: 50%;
+  box-shadow: 0 4px 10px -4px rgba(0,0,0,0.18);
+}
+.bookmark-preview__pin svg { width: 12px; height: 12px; }
+[data-theme="dark"] .bookmark-preview__line {
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 6px 12px -8px rgba(0,0,0,0.5);
+}
+[data-theme="dark"] .bookmark-preview__pin {
+  background: var(--color-bg-alt);
+  box-shadow: 0 4px 10px -4px rgba(0,0,0,0.5);
+}
+
 /* ── Inline highlight marks ── */
 .library-highlight {
   background: rgba(250, 204, 21, 0.3);
@@ -2096,12 +2146,12 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
 }
 
 [data-theme="dark"] .library-highlight {
-  background: rgba(250, 204, 21, 0.15);
-  color: #f5f0e0;
+  background: rgba(250, 204, 21, 0.38);
+  color: #fff8d6;
 }
 
 [data-theme="dark"] .library-highlight:hover {
-  background: rgba(250, 204, 21, 0.25);
+  background: rgba(250, 204, 21, 0.55);
 }
 
 /* Highlight color variants — light theme */
@@ -2116,12 +2166,19 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
 .library-highlight--purple { background: rgba(124, 58, 237, 0.15); }
 .library-highlight--purple:hover { background: rgba(124, 58, 237, 0.28); }
 
-/* Dark theme */
-[data-theme="dark"] .library-highlight--pink { background: rgba(244, 114, 182, 0.2); color: #fce7f3; }
-[data-theme="dark"] .library-highlight--blue { background: rgba(96, 165, 250, 0.2); color: #dbeafe; }
-[data-theme="dark"] .library-highlight--green { background: rgba(74, 222, 128, 0.2); color: #dcfce7; }
-[data-theme="dark"] .library-highlight--orange { background: rgba(251, 146, 60, 0.2); color: #fed7aa; }
-[data-theme="dark"] .library-highlight--purple { background: rgba(167, 139, 250, 0.2); color: #ede9fe; }
+/* Dark theme — opacity bumped to 0.38 (was 0.2) so the wash actually
+ * reads against the dark surface. Hover states match the +0.17
+ * boost the light theme uses. */
+[data-theme="dark"] .library-highlight--pink { background: rgba(244, 114, 182, 0.38); color: #fce7f3; }
+[data-theme="dark"] .library-highlight--pink:hover { background: rgba(244, 114, 182, 0.55); }
+[data-theme="dark"] .library-highlight--blue { background: rgba(96, 165, 250, 0.38); color: #dbeafe; }
+[data-theme="dark"] .library-highlight--blue:hover { background: rgba(96, 165, 250, 0.55); }
+[data-theme="dark"] .library-highlight--green { background: rgba(74, 222, 128, 0.38); color: #dcfce7; }
+[data-theme="dark"] .library-highlight--green:hover { background: rgba(74, 222, 128, 0.55); }
+[data-theme="dark"] .library-highlight--orange { background: rgba(251, 146, 60, 0.4); color: #fed7aa; }
+[data-theme="dark"] .library-highlight--orange:hover { background: rgba(251, 146, 60, 0.58); }
+[data-theme="dark"] .library-highlight--purple { background: rgba(167, 139, 250, 0.4); color: #ede9fe; }
+[data-theme="dark"] .library-highlight--purple:hover { background: rgba(167, 139, 250, 0.58); }
 
 /* Sepia theme */
 [data-rs-bg="sepia"] .library-highlight { background: rgba(180, 140, 20, 0.25); }
@@ -2161,22 +2218,25 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
 .library-highlight--orange.library-highlight--note { border-bottom-color: rgba(234, 88, 12, 0.5); }
 .library-highlight--purple.library-highlight--note { border-bottom-color: rgba(124, 58, 237, 0.5); }
 
-/* Article-level dark background */
-[data-rs-bg="dark"] .library-highlight { background: rgba(250, 204, 21, 0.15); color: #f5f0e0; }
-[data-rs-bg="dark"] .library-highlight--pink { background: rgba(244, 114, 182, 0.2); color: #fce7f3; }
-[data-rs-bg="dark"] .library-highlight--blue { background: rgba(96, 165, 250, 0.2); color: #dbeafe; }
-[data-rs-bg="dark"] .library-highlight--green { background: rgba(74, 222, 128, 0.2); color: #dcfce7; }
-[data-rs-bg="dark"] .library-highlight--orange { background: rgba(251, 146, 60, 0.2); color: #fed7aa; }
-[data-rs-bg="dark"] .library-highlight--purple { background: rgba(167, 139, 250, 0.2); color: #ede9fe; }
+/* Article-level dark background — same opacity boost as the global
+ * dark-theme rules above. */
+[data-rs-bg="dark"] .library-highlight { background: rgba(250, 204, 21, 0.38); color: #fff8d6; }
+[data-rs-bg="dark"] .library-highlight--pink { background: rgba(244, 114, 182, 0.38); color: #fce7f3; }
+[data-rs-bg="dark"] .library-highlight--blue { background: rgba(96, 165, 250, 0.38); color: #dbeafe; }
+[data-rs-bg="dark"] .library-highlight--green { background: rgba(74, 222, 128, 0.38); color: #dcfce7; }
+[data-rs-bg="dark"] .library-highlight--orange { background: rgba(251, 146, 60, 0.4); color: #fed7aa; }
+[data-rs-bg="dark"] .library-highlight--purple { background: rgba(167, 139, 250, 0.4); color: #ede9fe; }
 
+/* Dotted-underline note indicator: bumped to ~0.9 alpha on dark so
+ * the dot pattern reads against the saturated highlight wash. */
 [data-theme="dark"] .library-highlight--note {
-  border-bottom-color: rgba(250, 204, 21, 0.5);
+  border-bottom-color: rgba(255, 220, 80, 0.9);
 }
-[data-theme="dark"] .library-highlight--pink.library-highlight--note { border-bottom-color: rgba(244, 114, 182, 0.5); }
-[data-theme="dark"] .library-highlight--blue.library-highlight--note { border-bottom-color: rgba(96, 165, 250, 0.5); }
-[data-theme="dark"] .library-highlight--green.library-highlight--note { border-bottom-color: rgba(74, 222, 128, 0.5); }
-[data-theme="dark"] .library-highlight--orange.library-highlight--note { border-bottom-color: rgba(251, 146, 60, 0.5); }
-[data-theme="dark"] .library-highlight--purple.library-highlight--note { border-bottom-color: rgba(167, 139, 250, 0.5); }
+[data-theme="dark"] .library-highlight--pink.library-highlight--note { border-bottom-color: rgba(244, 114, 182, 0.9); }
+[data-theme="dark"] .library-highlight--blue.library-highlight--note { border-bottom-color: rgba(147, 197, 253, 0.9); }
+[data-theme="dark"] .library-highlight--green.library-highlight--note { border-bottom-color: rgba(134, 239, 172, 0.9); }
+[data-theme="dark"] .library-highlight--orange.library-highlight--note { border-bottom-color: rgba(253, 186, 116, 0.95); }
+[data-theme="dark"] .library-highlight--purple.library-highlight--note { border-bottom-color: rgba(196, 181, 253, 0.95); }
 
 /* Note editor modal */
 .ann-note-overlay {
