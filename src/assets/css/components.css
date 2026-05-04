@@ -1982,14 +1982,6 @@ body, .masthead, .site-footer, .nav-dropdown, .gs-panel {
   line-height: var(--leading-snug);
 }
 
-.nav-mega__desc {
-  display: block;
-  font-size: var(--text-xs);
-  color: var(--color-ink-muted);
-  line-height: var(--leading-normal);
-  margin-top: 2px;
-}
-
 @media (max-width: 1024px) {
   .nav-mega { grid-template-columns: repeat(2, 1fr); }
   .nav-mega__col { padding: var(--space-4) var(--space-5); }

@@ -893,54 +893,17 @@
         setTimeout(updateSelectionState, 250);
       });
 
-      // Highlight color picker
-      var hlColors = [
-        { key: 'yellow', bg: 'rgba(250,204,21,0.45)', label: 'Yellow' },
-        { key: 'pink', bg: 'rgba(236,72,153,0.35)', label: 'Pink' },
-        { key: 'blue', bg: 'rgba(59,130,246,0.3)', label: 'Blue' },
-        { key: 'green', bg: 'rgba(34,197,94,0.35)', label: 'Green' },
-        { key: 'orange', bg: 'rgba(249,115,22,0.35)', label: 'Orange' },
-        { key: 'purple', bg: 'rgba(139,92,246,0.3)', label: 'Purple' }
-      ];
-      var lastHlColor = localStorage.getItem((_p || 'tft') + '-hl-color') || 'yellow';
-
-      function createHighlightPicker() {
-        var picker = document.createElement('div');
-        picker.id = 'hl-color-picker';
-        picker.className = 'hl-color-picker';
-        hlColors.forEach(function (c) {
-          var btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'hl-color-btn' + (c.key === lastHlColor ? ' is-active' : '');
-          btn.style.background = c.bg;
-          btn.title = c.label;
-          btn.setAttribute('aria-label', c.label);
-          btn.dataset.hlColor = c.key;
-          btn.addEventListener('click', function (e) {
-            e.stopPropagation();
-            lastHlColor = c.key;
-            try { localStorage.setItem((_p || 'tft') + '-hl-color', lastHlColor); } catch (ex) {}
-            picker.querySelectorAll('.hl-color-btn').forEach(function (b) {
-              b.classList.toggle('is-active', b.dataset.hlColor === lastHlColor);
-            });
-            doHighlight(lastHlColor);
-            picker.remove();
-          });
-          picker.appendChild(btn);
-        });
-        return picker;
-      }
-
-      // Saved selection for the color picker (mobile clears selection on tap)
-      var savedPickerRange = null;
+      // Highlights commit immediately on click — single yellow wash,
+       // no colour picker. The colour-variant CSS classes are still
+       // honoured by Annotations.add for any pre-existing entries
+       // saved with a non-yellow colour, but new highlights always
+       // land as plain yellow so the click feels instant.
+      var lastHlColor = 'yellow';
 
       function doHighlight(color) {
-        // Restore the saved range if the live one was cleared
-        if (!lastRange && savedPickerRange) lastRange = savedPickerRange;
         if (!lastRange) return;
         var annId = Annotations.add(lastRange.text, '', getNearestHeading(), color);
         wrapSelectionInMark(annId, false, color);
-        savedPickerRange = null;
         afterAction();
       }
 
@@ -948,27 +911,7 @@
         highlightBtn.addEventListener('click', function (e) {
           if (!lastRange) return;
           e.stopPropagation();
-          // Save the selection before the picker opens (mobile will clear it)
-          savedPickerRange = {
-            text: lastRange.text,
-            range: lastRange.range ? lastRange.range.cloneRange() : null
-          };
-          var existing = document.getElementById('hl-color-picker');
-          if (existing) { existing.remove(); return; }
-          var picker = createHighlightPicker();
-          highlightBtn.parentElement.appendChild(picker);
-          // Position near the button
-          picker.style.left = (highlightBtn.offsetLeft) + 'px';
-          picker.style.bottom = (highlightBtn.parentElement.offsetHeight + 4) + 'px';
-          // Close on outside click
-          setTimeout(function () {
-            document.addEventListener('click', function closePicker() {
-              var p = document.getElementById('hl-color-picker');
-              if (p) p.remove();
-              savedPickerRange = null;
-              document.removeEventListener('click', closePicker);
-            });
-          }, 10);
+          doHighlight('yellow');
         });
       }
 

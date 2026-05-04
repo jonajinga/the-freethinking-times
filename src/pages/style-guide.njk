@@ -238,6 +238,11 @@ permalink: /style-guide/
             <p style="color: var(--color-ink-faint); font-size: 0.82rem; margin-top: 0.4rem;">All UI chrome: nav, buttons, form labels, section badges, reading time.</p>
           </div>
         </div>
+
+        <div class="sg-subsection">
+          <h4>Dates</h4>
+          <p style="color: var(--color-ink-muted); font-size: 0.95rem;">Every human-readable date sitewide renders in <strong>Month DD, YYYY</strong> format — for example, "April 18, 2026". Server-side this is the <code>readableDate</code> and <code>shortDate</code> Eleventy filters (Luxon <code>LLLL d, yyyy</code>); client-side date renderers use <code>toLocaleDateString(undefined, &#123; year: 'numeric', month: 'long', day: 'numeric' &#125;)</code>. Abbreviated months ("Apr 18") and ISO ordering ("2026-04-18") are reserved for machine-readable contexts only — the <code>htmlDateString</code> filter and the <code>datetime</code> attribute on <code>&lt;time&gt;</code> elements.</p>
+        </div>
       </section>
 
       {# ── Type scale ── #}

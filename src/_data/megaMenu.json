@@ -2,44 +2,74 @@
   {
     "heading": "Read",
     "links": [
-      { "title": "Library",   "url": "/library/",   "desc": "Public-domain freethought texts in full." },
-      { "title": "Quotes",    "url": "/quotes/",    "desc": "Curated, attributed quotations." },
-      { "title": "Bookshelf", "url": "/bookshelf/", "desc": "Annotated reading list." },
-      { "title": "Timeline",  "url": "/timeline/",  "desc": "Two and a half millennia of history." },
-      { "title": "Glossary",  "url": "/glossary/",  "desc": "Plain-English term definitions." },
-      { "title": "All projects →", "url": "/projects/", "desc": "Every freethought project we run." }
+      { "title": "Library", "url": "/library/" },
+      { "title": "Quotes", "url": "/quotes/" },
+      { "title": "Bookshelf", "url": "/bookshelf/" },
+      { "title": "Timeline", "url": "/timeline/" },
+      { "title": "Glossary", "url": "/glossary/" },
+      { "title": "Thought Experiments", "url": "/thought-experiments/" },
+      { "title": "Trials of Thought", "url": "/trials/" },
+      { "title": "Documents", "url": "/documents/" },
+      { "title": "Photo Gallery", "url": "/gallery/" },
+      { "title": "Videos", "url": "/videos/" },
+      { "title": "Knowledge Map", "url": "/knowledge-map/" },
+      { "title": "Games", "url": "/games/" },
+      { "title": "All projects →", "url": "/projects/" }
     ]
   },
   {
     "heading": "Tools",
     "links": [
-      { "title": "Search",       "url": "/search/",       "desc": "Full-text site search." },
-      { "title": "Reading List", "url": "/reading-list/", "desc": "Articles saved for later." },
-      { "title": "Notes",        "url": "/notes/",        "desc": "Your highlights and bookmarks." },
-      { "title": "Archives",     "url": "/archives/",     "desc": "Every article, indexed." },
-      { "title": "Newsletter",   "url": "/newsletter/",   "desc": "Occasional email, no tracking." },
-      { "title": "All reader tools →", "url": "/reader-tools/", "desc": "Calendars, history, knowledge map, more." }
+      { "title": "Search", "url": "/search/" },
+      { "title": "Reading List", "url": "/reading-list/" },
+      { "title": "Notes & Highlights", "url": "/notes/" },
+      { "title": "Reading History", "url": "/reading-history/" },
+      { "title": "Reading Calendar", "url": "/reading-calendar/" },
+      { "title": "Print Basket", "url": "/print-basket/" },
+      { "title": "Archives", "url": "/archives/" },
+      { "title": "Most Read", "url": "/most-read/" },
+      { "title": "Random", "url": "/random/" },
+      { "title": "Music", "url": "/music/" },
+      { "title": "RSS Reader", "url": "/reader/" },
+      { "title": "Feeds", "url": "/feeds/" },
+      { "title": "All reader tools →", "url": "/reader-tools/" }
     ]
   },
   {
     "heading": "Community",
     "links": [
-      { "title": "Directory",  "url": "/community/",  "desc": "Freethought groups worldwide." },
-      { "title": "Events",     "url": "/events/",     "desc": "Conferences and meetups." },
-      { "title": "RSS Reader", "url": "/reader/",     "desc": "Built-in feed reader." },
-      { "title": "Contribute", "url": "/contribute/", "desc": "How to write for us." },
-      { "title": "Submit",     "url": "/submit/",     "desc": "Pitch an article, suggest a quote, recommend a book." }
+      { "title": "Directory", "url": "/community/" },
+      { "title": "Events", "url": "/events/" },
+      { "title": "Submit", "url": "/submit/" },
+      { "title": "Contribute", "url": "/contribute/" },
+      { "title": "Templates", "url": "/templates/" },
+      { "title": "Volunteer", "url": "/volunteer/" },
+      { "title": "Tips & Letters", "url": "/tips/" },
+      { "title": "Newsletter", "url": "/newsletter/" },
+      { "title": "Survey", "url": "/survey/" },
+      { "title": "Republish", "url": "/license/" },
+      { "title": "Community Guidelines", "url": "/community-guidelines/" }
     ]
   },
   {
     "heading": "About",
     "links": [
-      { "title": "About Us",         "url": "/about/",        "desc": "What we are, why we exist." },
-      { "title": "Masthead",         "url": "/masthead/",     "desc": "Who runs this publication." },
-      { "title": "Editorial Ethics", "url": "/ethics/",       "desc": "Standards for accuracy, sourcing, corrections." },
-      { "title": "Contact",          "url": "/contact/",      "desc": "Reach the editorial inbox." },
-      { "title": "Legal",            "url": "/legal/",        "desc": "Privacy, terms, license, accessibility, sitemap." },
-      { "title": "Editorial handbook →", "url": "/editorial/", "desc": "The full handbook." }
+      { "title": "About Us", "url": "/about/" },
+      { "title": "Start Here", "url": "/start-here/" },
+      { "title": "Masthead", "url": "/masthead/" },
+      { "title": "Contributors", "url": "/contributors/" },
+      { "title": "Editorial Ethics", "url": "/ethics/" },
+      { "title": "Editorial Handbook", "url": "/editorial/" },
+      { "title": "Transparency", "url": "/transparency/" },
+      { "title": "Costs", "url": "/costs/" },
+      { "title": "Changelog", "url": "/changelog/" },
+      { "title": "Tech Stack", "url": "/stack/" },
+      { "title": "Style Guide", "url": "/style-guide/" },
+      { "title": "Open Source", "url": "/open-source/" },
+      { "title": "Features", "url": "/features/" },
+      { "title": "Accessibility", "url": "/accessibility/" },
+      { "title": "Contact", "url": "/contact/" },
+      { "title": "Legal", "url": "/legal/" }
     ]
   }
 ]

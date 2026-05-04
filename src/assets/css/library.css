@@ -2113,7 +2113,10 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
 .bookmark-preview__pin {
   position: absolute;
   top: -10px;
-  left: -22px;
+  /* Anchor to the LEFT of the body column so the pin sits in the
+   * gutter and never covers reader prose. Wider negative offset on
+   * larger viewports where the body has more breathing room. */
+  left: -44px;
   width: 22px;
   height: 22px;
   display: inline-flex;
@@ -2124,6 +2127,12 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
   border: 1px solid var(--color-accent);
   border-radius: 50%;
   box-shadow: 0 4px 10px -4px rgba(0,0,0,0.18);
+}
+@media (max-width: 640px) {
+  /* On phones the body column hugs the gutter — pull the pin only a
+   * little so it stays in the page-edge margin without disappearing
+   * off-screen. */
+  .bookmark-preview__pin { left: -28px; }
 }
 .bookmark-preview__pin svg { width: 12px; height: 12px; }
 [data-theme="dark"] .bookmark-preview__line {
