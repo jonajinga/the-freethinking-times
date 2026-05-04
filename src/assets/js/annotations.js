@@ -359,35 +359,6 @@
       });
     }
 
-    // Detect the active reading surface so we can paint a freshly-
-    // inserted highlight with the correct colour from the very first
-    // paint, instead of relying on the CSS cascade to settle (which
-    // produced a brief light-yellow flash on dark surfaces).
-    function isDarkSurface() {
-      var root = document.documentElement;
-      var theme = root.getAttribute('data-theme');
-      if (theme === 'dark') return true;
-      if (theme === 'light') return false;
-      var rs = root.getAttribute('data-rs-bg') || root.getAttribute('data-gs-bg');
-      if (rs === 'dark') return true;
-      if (rs && rs !== 'default') return false;
-      try { return window.matchMedia('(prefers-color-scheme: dark)').matches; }
-      catch (e) { return false; }
-    }
-    function applyHighlightColors(mark, color) {
-      if (!isDarkSurface()) return;
-      var bg = '#6b5400', fg = '#fff8d6';
-      switch (color) {
-        case 'pink':   bg = '#6b1a3d'; fg = '#fce7f3'; break;
-        case 'blue':   bg = '#1e3a8a'; fg = '#dbeafe'; break;
-        case 'green':  bg = '#14532d'; fg = '#dcfce7'; break;
-        case 'orange': bg = '#7c2d12'; fg = '#fed7aa'; break;
-        case 'purple': bg = '#4c1d95'; fg = '#ede9fe'; break;
-      }
-      mark.style.background = bg;
-      mark.style.color = fg;
-    }
-
     function highlightTextInEl(el, text, annId, hasNote, color) {
       var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
       var node;
@@ -403,7 +374,6 @@
           mark.textContent = text;
           mark.style.cursor = 'pointer';
           mark.title = 'Click to view in reader panel';
-          if (typeof applyHighlightColors === 'function') applyHighlightColors(mark, color);
           mark.addEventListener('click', function () {
             if (window.__openReaderPanel) window.__openReaderPanel();
             setTimeout(function () {
@@ -831,7 +801,6 @@
           var mark = document.createElement('mark');
           mark.className = cls;
           mark.dataset.annId = annId;
-          applyHighlightColors(mark, color);
           lastRange.range.surroundContents(mark);
           addMarkClickHandler(mark, annId, hasNote);
           done = true;
@@ -841,7 +810,6 @@
             var mark2 = document.createElement('mark');
             mark2.className = cls;
             mark2.dataset.annId = annId;
-            applyHighlightColors(mark2, color);
             mark2.appendChild(fragment);
             lastRange.range.insertNode(mark2);
             addMarkClickHandler(mark2, annId, hasNote);

@@ -1666,12 +1666,12 @@ body, .masthead, .site-footer, .nav-dropdown, .gs-panel {
   display: flex;
   align-items: center;
   padding: var(--space-3) var(--space-4);
-  /* 3px optical lift so the section labels sit visually centred in
+  /* 4px optical lift so the section labels sit visually centred in
    * the masthead bar — the previous baseline read as slightly
    * top-heavy because the strip's bottom rule is heavier than its
    * top rule. */
-  padding-top: calc(var(--space-3) + 3px);
-  padding-bottom: calc(var(--space-3) - 3px);
+  padding-top: calc(var(--space-3) + 4px);
+  padding-bottom: calc(var(--space-3) - 4px);
   font-family: var(--font-ui);
   font-size: var(--text-sm);
   font-weight: 500;
