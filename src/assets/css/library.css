@@ -2147,7 +2147,12 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
 .library-highlight {
   background: rgba(250, 204, 21, 0.3);
   cursor: pointer;
-  transition: background var(--transition-fast);
+  /* No background-transition: a transition on background would cause
+   * a freshly-inserted <mark> to briefly animate the light-mode
+   * yellow value through to the dark-mode value when the dark rule
+   * applies, producing a visible "light flash → dark settle" on the
+   * very first paint of a new highlight. Hover already commits
+   * instantly without animation. */
 }
 
 .library-highlight:hover {
@@ -2169,6 +2174,23 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
 [data-theme="dark"] .library-highlight:hover {
   background: #856700;
   color: #fff8d6;
+}
+
+/* OS-preference dark mode (system dark, no explicit theme toggle).
+ * Mirrors the [data-theme="dark"] rules above so a freshly-created
+ * highlight doesn't flash the light-mode rgba(...) wash before the
+ * inline theme script settles. The :not([data-theme="light"]) gate
+ * keeps the rule from firing on users who have explicitly chosen
+ * light mode on a system that prefers dark. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .library-highlight {
+    background: #6b5400;
+    color: #fff8d6;
+  }
+  :root:not([data-theme="light"]) .library-highlight:hover {
+    background: #856700;
+    color: #fff8d6;
+  }
 }
 
 /* Highlight color variants — light theme */
@@ -2198,6 +2220,22 @@ body:has(.reading-floats.is-visible) .annotation-toolbar #back-to-top {
 [data-theme="dark"] .library-highlight--orange:hover { background: #9a3412; color: #fed7aa; }
 [data-theme="dark"] .library-highlight--purple { background: #4c1d95; color: #ede9fe; }
 [data-theme="dark"] .library-highlight--purple:hover { background: #5b21b6; color: #ede9fe; }
+
+/* OS-preference dark mode: same dark-saturated palette for colour
+ * variants so newly-created highlights don't flash the light-mode
+ * rgba wash on a system in dark mode without an explicit toggle. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .library-highlight--pink { background: #6b1a3d; color: #fce7f3; }
+  :root:not([data-theme="light"]) .library-highlight--pink:hover { background: #831a47; color: #fce7f3; }
+  :root:not([data-theme="light"]) .library-highlight--blue { background: #1e3a8a; color: #dbeafe; }
+  :root:not([data-theme="light"]) .library-highlight--blue:hover { background: #1d4ed8; color: #dbeafe; }
+  :root:not([data-theme="light"]) .library-highlight--green { background: #14532d; color: #dcfce7; }
+  :root:not([data-theme="light"]) .library-highlight--green:hover { background: #166534; color: #dcfce7; }
+  :root:not([data-theme="light"]) .library-highlight--orange { background: #7c2d12; color: #fed7aa; }
+  :root:not([data-theme="light"]) .library-highlight--orange:hover { background: #9a3412; color: #fed7aa; }
+  :root:not([data-theme="light"]) .library-highlight--purple { background: #4c1d95; color: #ede9fe; }
+  :root:not([data-theme="light"]) .library-highlight--purple:hover { background: #5b21b6; color: #ede9fe; }
+}
 
 /* Sepia theme */
 [data-rs-bg="sepia"] .library-highlight { background: rgba(180, 140, 20, 0.25); }
