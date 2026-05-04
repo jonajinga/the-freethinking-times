@@ -128,6 +128,15 @@
 
     function add(chapter, scrollPct) {
       var list = load();
+      // Skip if a bookmark already exists at this spot in the same
+      // chapter. Treat scroll positions within 2 percentage points as
+      // the same location (covers double-taps and thumb-jitter).
+      for (var i = 0; i < list.length; i++) {
+        var b = list[i];
+        if (b.chapter === chapter && Math.abs((b.scrollPct || 0) - scrollPct) < 2) {
+          return b.id;
+        }
+      }
       var id   = 'bm-' + Date.now();
       list.push({ id: id, chapter: chapter, scrollPct: scrollPct, ts: Date.now() });
       save(list);
@@ -335,7 +344,7 @@
   // ─── Utility ──────────────────────────────────────────────
   function fmtDate(ts) {
     if (!ts) return '';
-    try { return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }); }
+    try { return new Date(ts).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' }); }
     catch (e) { return ''; }
   }
 

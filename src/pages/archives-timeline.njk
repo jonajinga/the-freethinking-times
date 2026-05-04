@@ -511,7 +511,7 @@ eleventyExcludeFromCollections: true
       var item = document.createElement('a');
       item.className = 'at-item';
       item.href = a.url;
-      var dateStr = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', timeZone: 'UTC' });
+      var dateStr = d.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
       var lbtn = (window.__tftAudioBar && window.__tftAudioBar.renderListenButton) ? window.__tftAudioBar.renderListenButton(a.url, a.title) : '';
       item.innerHTML =
         '<span class="at-item__date">' + dateStr + '</span>' +

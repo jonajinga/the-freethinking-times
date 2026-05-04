@@ -77,7 +77,7 @@ function boot(root) {
   function formatDate(ts) {
     try {
       var d = new Date(ts);
-      return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+      return d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
     } catch (e) { return ''; }
   }
 

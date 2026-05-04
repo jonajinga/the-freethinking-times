@@ -153,7 +153,7 @@
 
   function fmtDate(ts) {
     if (!ts) return '';
-    try { return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }); }
+    try { return new Date(ts).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' }); }
     catch (e) { return ''; }
   }
 
@@ -173,8 +173,20 @@
 
     function add(scrollPct, context, bodyOffset, section) {
       var list = load();
+      // Skip if a bookmark already exists at this spot. Two bookmarks
+      // count as the same location when their scroll positions are
+      // within 2 percentage points OR their pixel body offsets are
+      // within 60px (covers thumb-jitter and accidental double-taps
+      // without merging genuinely adjacent paragraphs).
+      var newOffset = bodyOffset != null ? bodyOffset : -1;
+      for (var i = 0; i < list.length; i++) {
+        var b = list[i];
+        var pctClose = Math.abs((b.scrollPct || 0) - scrollPct) < 2;
+        var offsetClose = newOffset >= 0 && b.bodyOffset >= 0 && Math.abs(b.bodyOffset - newOffset) < 60;
+        if (pctClose || offsetClose) return b.id;
+      }
       var id = 'bm-' + Date.now();
-      list.push({ id: id, scrollPct: scrollPct, bodyOffset: bodyOffset != null ? bodyOffset : -1, context: context || '', section: section || '', ts: Date.now() });
+      list.push({ id: id, scrollPct: scrollPct, bodyOffset: newOffset, context: context || '', section: section || '', ts: Date.now() });
       save(list);
       return id;
     }
